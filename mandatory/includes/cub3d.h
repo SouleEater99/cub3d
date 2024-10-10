@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/08 13:23:52 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/08 13:35:47 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ typedef struct {
 
     char **map;
 
-    double dir_x;
-    double dir_y;
+    double dir_x;   // player direction x position
+    double dir_y;   // player direction y position
 
     double camera_x;
 
