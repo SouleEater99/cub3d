@@ -6,7 +6,7 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 12:57:30 by aelkheta          #+#    #+#              #
-#    Updated: 2024/10/08 13:18:20 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/10/10 14:58:33 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,10 @@ GEBUGFLAGS = -g3 -fsanitize=address
 LIBFT = libraries/libft/libft.a
 INCLUDES = -I includes
 MLXLFLAGS = -lmlx -lXext -lX11 -lm
+SRC_DIR = ./srcs
 # MLXLFLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 NAME = cub3d
-SRCS = ./srcs/cub3d.c
+SRCS = $(SRC_DIR)/cub3d.c $(SRC_DIR)/images.c
 
 OBJS = $(SRCS:%.c=%.o)
 
