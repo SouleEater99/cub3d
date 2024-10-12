@@ -21,6 +21,34 @@
 #include "./minilibx/minilibx-linux/mlx.h"
 #include "./minilibx/minilibx-linux/mlx_int.h"
 
+#define WIDTH 1900
+#define HIGH 1080
+#define CUB_SIZE 30
+
+typedef struct	s_image
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_image;
+
+
+
+
+typedef struct s_data
+{
+    int     x_player;
+    int     y_player;
+    t_image	*img;
+	void	*mlx;
+	void	*mlx_win;
+	char	**map;
+	int		row;
+	int		col;
+
+}t_data ;
 
 
 
