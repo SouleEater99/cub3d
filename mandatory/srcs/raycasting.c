@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:56:36 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/13 18:40:25 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/14 17:46:26 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,17 +103,19 @@ void raycasting(t_data *data)
         int color = 0xFFFFFF;
         if (side == 0)
         {
-            if (step_x > 0)         // this is mean the player look to the right or the East
-                color = 0xFF0000;   // red color
-            else                    // this is mean the player look to the left or the West
-                color = 0x00FF00;   // green color
+            color = CLR_EAW;
+            // if (step_x > 0)         // this is mean the player look to the right or the East
+            //     color = 0xFF0000;   // red color
+            // else                    // this is mean the player look to the left or the West
+            //     color = 0x00FF00;   // green color
         }
         else
         {
-            if (step_y > 0)         // this is mean the player look to the bottom or the South
-                color = 0x0000FF;   // blue color
-            else                    // this is mean the player look to the top or the South
-                color = 0xFFFF00;   // yellow color
+            color = CLR_SAN;
+            // if (step_y > 0)         // this is mean the player look to the bottom or the South
+            //     color = 0x0000FF;   // blue color
+            // else                    // this is mean the player look to the top or the South
+            //     color = 0xFFFF00;   // yellow color
 
         }
         
@@ -127,9 +129,9 @@ void raycasting(t_data *data)
         if(draw_end >= SCREEN_HEIGHT)
             draw_end = SCREEN_HEIGHT - 1;
 
-        draw_vert_line(data->image, x, 0, draw_start, 0xFFFFFF);
+        draw_vert_line(data->image, x, 0, draw_start, CLR_SKY);
         draw_vert_line(data->image, x, draw_start, draw_end, color);
-        draw_vert_line(data->image, x, draw_end, SCREEN_HEIGHT, 0xFFFFFF);
+        draw_vert_line(data->image, x, draw_end, SCREEN_HEIGHT, CLR_FLR);
     }
     
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/13 10:55:11 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/14 17:46:35 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,18 @@
 
 # define MAP_WIDTH      9       // just an example
 # define MAP_HEIGHT     9       // just an example
+
+// # define CLR_SKY        0x89CFF3
+// # define CLR_FLR        0xB99470
+
+// # define CLR_EAW        0xB5B5B5
+// # define CLR_SAN        0xF5F5F5
+
+# define CLR_SKY        0x69c9fa
+# define CLR_FLR        0xc28951
+
+# define CLR_EAW        0xcacaca
+# define CLR_SAN        0xf5f5f5
 
 typedef struct s_image
 {

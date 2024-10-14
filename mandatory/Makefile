@@ -6,7 +6,7 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 12:57:30 by aelkheta          #+#    #+#              #
-#    Updated: 2024/10/13 10:42:26 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/10/14 17:29:43 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,10 @@ OBJS = $(SRCS:%.c=%.o)
 
 all: $(NAME)
 
+run: all clean
+	@./cub3d
+	@ rm ./cub3d
+	
 $(NAME): $(OBJS)
 	@echo "Building..."
 	@$(CC) $(GCCFLAGS) $(OBJS) $(MLXLFLAGS) $(DEBUGFLAGS) $(INCLUDES) $(LIBFT) -o $(NAME)
