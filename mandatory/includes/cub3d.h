@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/08 13:35:47 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/13 10:55:11 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,34 @@ typedef struct {
     double ray_dir_x;
     double ray_dir_y;
 
+    // double side_dist_x;
+    // double side_dist_y;
+    
+    // double delta_dist_x;
+    // double delta_dist_y;
+    
+    // double perp_wall_dist;
+    // int step_x;
+    // int step_y;
+    
+    // int hit;
+    // int side;
+
     t_image *image;
 } t_data;
+
+// functions signature
+
+t_image     *create_image(t_data *data);
+void        put_pixel_in_img(t_image *image, int x, int y, int color);
+
+void        raycasting(t_data *data);
+
+void        init_game(t_data *data);
+void        init_map(t_data *data);
+
+
+void        free_array(char **arr);
+
 
 # endif // CUB3D_H

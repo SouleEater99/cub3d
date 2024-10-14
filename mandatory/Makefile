@@ -6,20 +6,20 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 12:57:30 by aelkheta          #+#    #+#              #
-#    Updated: 2024/10/10 14:58:33 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/10/13 10:42:26 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 GCCFLAGS = -Wall -Wextra -Werror
-GEBUGFLAGS = -g3 -fsanitize=address
+DEBUGFLAGS = -g3 -fsanitize=address
 LIBFT = libraries/libft/libft.a
 INCLUDES = -I includes
 MLXLFLAGS = -lmlx -lXext -lX11 -lm
 SRC_DIR = ./srcs
 # MLXLFLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 NAME = cub3d
-SRCS = $(SRC_DIR)/cub3d.c $(SRC_DIR)/images.c
+SRCS = $(SRC_DIR)/cub3d.c $(SRC_DIR)/images.c $(SRC_DIR)/raycasting.c $(SRC_DIR)/init_utiles.c $(SRC_DIR)/release_res.c
 
 OBJS = $(SRCS:%.c=%.o)
 
@@ -27,12 +27,12 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@echo "Building..."
-	@$(CC) $(GCCFLAGS) $(OBJS) $(MLXLFLAGS) $(GEBUGFLAGS) $(INCLUDES) $(LIBFT) -o $(NAME)
+	@$(CC) $(GCCFLAGS) $(OBJS) $(MLXLFLAGS) $(DEBUGFLAGS) $(INCLUDES) $(LIBFT) -o $(NAME)
 	@echo "Building done"
 
 %.o: %.c
 	@echo "Compiling object files..."
-	@$(CC) $(GCCFLAGS) $(INCLUDES) $(GEBUGFLAGS) -c -o $@ $<
+	@$(CC) $(GCCFLAGS) $(INCLUDES) $(DEBUGFLAGS) -c -o $@ $<
 	@echo "Compiling object files done"
 
 clean:
