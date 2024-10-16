@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/14 17:46:35 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/14 17:53:18 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@
 
 # define TILE_SIZE      32      // the cell grid size
 
-# define MOVE_SPEED     0.2     // player speed
-# define ROT_SPEED      0.05    // Rotation speed (in radians)
+# define MOVE_SPEED     0.3     // player speed
+# define ROT_SPEED      0.1     // Rotation speed (in radians)
 
 # define MAP_WIDTH      9       // just an example
 # define MAP_HEIGHT     9       // just an example
@@ -96,6 +96,14 @@ typedef struct {
     
     // int hit;
     // int side;
+
+    double side_dist_x;
+    double side_dist_y;
+    double delta_dist_x;
+    double delta_dist_y;
+
+    int step_x;
+    int step_y;
 
     t_image *image;
 } t_data;

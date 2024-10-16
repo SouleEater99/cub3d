@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:56:36 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/14 17:46:26 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/14 17:49:54 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,55 +37,49 @@ void raycasting(t_data *data)
         // the player postions tell us which cell we are in and where in this cell exactly.
         data->map_x = (int)data->player_x;  // the x player position in the map grid that tell us which grid cell we are in.
         data->map_y = (int)data->player_y;  // the y player position in the map grid that tell us which grid cell we are in.
-    
-        double side_dist_x;
-        double side_dist_y;
 
-        double delta_dist_x = fabs(1 / data->ray_dir_x);
-        double delta_dist_y = fabs(1 / data->ray_dir_y);
+        data->delta_dist_x = fabs(1 / data->ray_dir_x);
+        data->delta_dist_y = fabs(1 / data->ray_dir_y);
 
         double perp_wall_dist;
-
-        int step_x;
-        int step_y;
         
         int hit = 0;
         int side;
 
         if (data->ray_dir_x < 0)
         {
-            step_x = -1;
-            side_dist_x = (data->player_x - data->map_x) * delta_dist_x; 
+            data->step_x = -1;
+            data->side_dist_x = (data->player_x - data->map_x) * data->delta_dist_x; 
         }
         else
         {
-            step_x = 1;
-            side_dist_x = (data->map_x + 1.0 - data->player_x) * delta_dist_x;
+            data->step_x = 1;
+            data->side_dist_x = (data->map_x + 1.0 - data->player_x) * data->delta_dist_x;
         }
 
         if (data->ray_dir_y < 0)
         {
-            step_y = -1;
-            side_dist_y = (data->player_y - data->map_y) * delta_dist_y;
+            data->step_y = -1;
+            data->side_dist_y = (data->player_y - data->map_y) * data->delta_dist_y;
         }
         else
         {
-            step_y = 1;
-            side_dist_y = (data->map_y + 1.0 - data->player_y) * delta_dist_y;
+            data->step_y = 1;
+            data->side_dist_y = (data->map_y + 1.0 - data->player_y) * data->delta_dist_y;
         }
 
         while (hit == 0)
         {
-            if (side_dist_x < side_dist_y)
+            if (data->side_dist_x < data->side_dist_y)
             {
-                side_dist_x += delta_dist_x;
-                data->map_x += step_x;
+                data->side_dist_x += data->delta_dist_x;
+                data->map_x += data->step_x;
                 side = 0;
             }
             else
             {
-                side_dist_y += delta_dist_y;
-                data->map_y += step_y;
+                data->side_dist_y += data->delta_dist_y;
+                data->map_y += data->step_y;
                 side = 1;
             }
             if (data->map_x < 0 || data->map_x >= MAP_WIDTH || data->map_y < 0 || data->map_y >= MAP_HEIGHT)
@@ -96,15 +90,15 @@ void raycasting(t_data *data)
         }
         
         if (side == 0)
-            perp_wall_dist = side_dist_x - delta_dist_x;
+            perp_wall_dist = data->side_dist_x - data->delta_dist_x;
         else
-            perp_wall_dist = side_dist_y - delta_dist_y;
+            perp_wall_dist = data->side_dist_y - data->delta_dist_y;
         
         int color = 0xFFFFFF;
         if (side == 0)
         {
             color = CLR_EAW;
-            // if (step_x > 0)         // this is mean the player look to the right or the East
+            // if (data->step_x > 0)         // this is mean the player look to the right or the East
             //     color = 0xFF0000;   // red color
             // else                    // this is mean the player look to the left or the West
             //     color = 0x00FF00;   // green color
@@ -112,7 +106,7 @@ void raycasting(t_data *data)
         else
         {
             color = CLR_SAN;
-            // if (step_y > 0)         // this is mean the player look to the bottom or the South
+            // if (data->step_y > 0)         // this is mean the player look to the bottom or the South
             //     color = 0x0000FF;   // blue color
             // else                    // this is mean the player look to the top or the South
             //     color = 0xFFFF00;   // yellow color
