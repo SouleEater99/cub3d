@@ -6,13 +6,13 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 12:57:30 by aelkheta          #+#    #+#              #
-#    Updated: 2024/10/16 15:25:14 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/10/16 16:48:04 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 GCCFLAGS = -Wall -Wextra -Werror
-DEBUGFLAGS = -g3 -fsanitize=address
+DEBUGFLAGS = -g3 -O3 -fsanitize=address
 LIBFT = libraries/libft/libft.a
 INCLUDES = -I includes
 MLXLFLAGS = -lmlx -lXext -lX11 -lm
