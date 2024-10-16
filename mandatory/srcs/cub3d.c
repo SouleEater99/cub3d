@@ -6,155 +6,74 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:07:23 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/13 11:58:45 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:27:52 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <cub3d.h>
+#include <cub3d.h>
 
-void update_player_positions(t_data *data, int keycode)
+void	go_left_right(t_data *data, short rot_dir)
 {
-    int map_x;
-    int map_y;
-    
-    if (keycode == U_KEY)
-    {
-        map_x = (int)(data->player_x + data->dir_x * MOVE_SPEED);
-        map_y = (int)(data->player_y + data->dir_y * MOVE_SPEED);
-        
-        if (data->map[map_y][map_x] == '0' && map_x >= 0 && map_x < MAP_WIDTH && map_y >= 0 && map_y < SCREEN_HEIGHT)
-        {
-            data->player_x += data->dir_x * MOVE_SPEED;
-            data->player_y += data->dir_y * MOVE_SPEED;
-        }
-    }
-    
-    if (keycode == D_KEY)
-    {
-        map_x = (int)(data->player_x - data->dir_x * MOVE_SPEED);
-        map_y = (int)(data->player_y - data->dir_y * MOVE_SPEED);
+	double	old_dir_x;
+	double	old_plane_x;
 
-        if (data->map[map_y][map_x] == '0' && map_x >= 0 && map_x < MAP_WIDTH && map_y >= 0 && map_y < SCREEN_HEIGHT)
-        {
-            data->player_x -= data->dir_x * MOVE_SPEED;
-            data->player_y -= data->dir_y * MOVE_SPEED;
-        }
-    }
-
-    if (keycode == L_KEY) 
-    {
-        double old_dir_x = data->dir_x;
-        data->dir_x = data->dir_x * cos(-ROT_SPEED) - data->dir_y * sin(-ROT_SPEED);
-        data->dir_y = old_dir_x * sin(-ROT_SPEED) + data->dir_y * cos(-ROT_SPEED);
-
-        double old_plane_x = data->plane_x;
-        data->plane_x = data->plane_x * cos(-ROT_SPEED) - data->plane_y * sin(-ROT_SPEED);
-        data->plane_y = old_plane_x * sin(-ROT_SPEED) + data->plane_y * cos(-ROT_SPEED);
-    }
-
-    if (keycode == R_KEY) 
-    {
-        double old_dir_x = data->dir_x;
-        data->dir_x = data->dir_x * cos(ROT_SPEED) - data->dir_y * sin(ROT_SPEED);
-        data->dir_y = old_dir_x * sin(ROT_SPEED) + data->dir_y * cos(ROT_SPEED);
-
-        double old_plane_x = data->plane_x;
-        data->plane_x = data->plane_x * cos(ROT_SPEED) - data->plane_y * sin(ROT_SPEED);
-        data->plane_y = old_plane_x * sin(ROT_SPEED) + data->plane_y * cos(ROT_SPEED);
-    }
-
+	old_dir_x = data->dir_x;
+	data->dir_x = data->dir_x * cos(ROT_SPEED * rot_dir) - data->dir_y
+		* sin(ROT_SPEED * rot_dir);
+	data->dir_y = old_dir_x * sin(ROT_SPEED * rot_dir) + data->dir_y
+		* cos(ROT_SPEED * rot_dir);
+	old_plane_x = data->plane_x;
+	data->plane_x = data->plane_x * cos(ROT_SPEED * rot_dir) - data->plane_y
+		* sin(ROT_SPEED * rot_dir);
+	data->plane_y = old_plane_x * sin(ROT_SPEED * rot_dir) + data->plane_y
+		* cos(ROT_SPEED * rot_dir);
 }
 
-int keyhook(int keycode, t_data *data)
+void	go_up_down(t_data *data, short mov_dir)
 {
-    if (keycode == ESC_KEY)
-    {
-        mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-        // mlx_destroy_image(data->mlx_ptr, data->image->img_ptr);
-        // free_array(data->map);
-        free(data->mlx_ptr);
-        exit(0);
-    }
+	double	new_x;
+	double	new_y;
 
-    int map_x;
-    int map_y;
-
-    if (keycode == U_KEY)
-    {
-        map_x = (int)(data->player_x + data->dir_x * MOVE_SPEED);
-        map_y = (int)(data->player_y + data->dir_y * MOVE_SPEED);
-        
-        if (data->map[map_y][map_x] == '0' && map_x >= 0 && map_x < MAP_WIDTH && map_y >= 0 && map_y < SCREEN_HEIGHT)
-        {
-            data->player_x += data->dir_x * MOVE_SPEED;
-            data->player_y += data->dir_y * MOVE_SPEED;
-        }
-    }
-    
-    if (keycode == D_KEY)
-    {
-        map_x = (int)(data->player_x - data->dir_x * MOVE_SPEED);
-        map_y = (int)(data->player_y - data->dir_y * MOVE_SPEED);
-
-        if (data->map[map_y][map_x] == '0' && map_x >= 0 && map_x < MAP_WIDTH && map_y >= 0 && map_y < SCREEN_HEIGHT)
-        {
-            data->player_x -= data->dir_x * MOVE_SPEED;
-            data->player_y -= data->dir_y * MOVE_SPEED;
-        }
-    }
-
-    if (keycode == L_KEY) 
-    {
-        double old_dir_x = data->dir_x;
-        data->dir_x = data->dir_x * cos(-ROT_SPEED) - data->dir_y * sin(-ROT_SPEED);
-        data->dir_y = old_dir_x * sin(-ROT_SPEED) + data->dir_y * cos(-ROT_SPEED);
-
-        double old_plane_x = data->plane_x;
-        data->plane_x = data->plane_x * cos(-ROT_SPEED) - data->plane_y * sin(-ROT_SPEED);
-        data->plane_y = old_plane_x * sin(-ROT_SPEED) + data->plane_y * cos(-ROT_SPEED);
-    }
-
-    if (keycode == R_KEY) 
-    {
-        double old_dir_x = data->dir_x;
-        data->dir_x = data->dir_x * cos(ROT_SPEED) - data->dir_y * sin(ROT_SPEED);
-        data->dir_y = old_dir_x * sin(ROT_SPEED) + data->dir_y * cos(ROT_SPEED);
-
-        double old_plane_x = data->plane_x;
-        data->plane_x = data->plane_x * cos(ROT_SPEED) - data->plane_y * sin(ROT_SPEED);
-        data->plane_y = old_plane_x * sin(ROT_SPEED) + data->plane_y * cos(ROT_SPEED);
-    }
-
-    // if (keycode == U_KEY)
-    //     update_player_positions(data, keycode);
-    // if (keycode == D_KEY)
-    //     update_player_positions(data, keycode);
-
-    //     // update_player_positions(data);
-    // if (keycode == L_KEY)
-    //     update_player_positions(data, keycode);
-
-    //     // update_player_positions(data);
-    // if (keycode == R_KEY)
-    //     update_player_positions(data, keycode);
-
-    //     // update_player_positions(data);
-    
-    raycasting(data);
-    return (0);
+	new_x = data->player_x + data->dir_x * MOVE_SPEED * mov_dir;
+	new_y = data->player_y + data->dir_y * MOVE_SPEED * mov_dir;
+	if (data->map[(int)new_y][(int)new_x] == '0')
+	{
+		data->player_x = new_x;
+		data->player_y = new_y;
+	}
 }
 
-int main()
+void	update_player(t_data *data)
 {
-    t_data data;
-    
-    data.mlx_ptr = mlx_init();
-    data.win_ptr = mlx_new_window(data.mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT, "cub3D");
+	if (data->move_forward)
+		go_up_down(data, 1);
+	if (data->move_backward)
+		go_up_down(data, -1);
+	if (data->rotate_right)
+		go_left_right(data, 1);
+	if (data->rotate_left)
+		go_left_right(data, -1);
+}
 
-    init_game(&data);
-    raycasting(&data);
-     
-    mlx_hook(data.win_ptr, 2, 1L << 0, keyhook, &data);
-    mlx_loop(data.mlx_ptr);
-    return (0);
+int	game_loop(t_data *data)
+{
+	update_player(data);
+	raycasting(data);
+	return (0);
+}
+
+int	main(void)
+{
+	t_data	data;
+
+	memset(&data, 0, sizeof(t_data));
+	data.mlx_ptr = mlx_init();
+	data.win_ptr = mlx_new_window(data.mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT,
+			"cub3D");
+	init_game(&data);
+	mlx_hook(data.win_ptr, 2, 1L << 0, key_press, &data);
+	mlx_hook(data.win_ptr, 3, 1L << 1, key_release, &data);
+	mlx_loop_hook(data.mlx_ptr, game_loop, &data);
+	mlx_loop(data.mlx_ptr);
+	return (0);
 }

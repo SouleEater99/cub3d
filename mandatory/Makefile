@@ -6,7 +6,7 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 12:57:30 by aelkheta          #+#    #+#              #
-#    Updated: 2024/10/14 17:29:43 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/10/16 15:25:14 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ MLXLFLAGS = -lmlx -lXext -lX11 -lm
 SRC_DIR = ./srcs
 # MLXLFLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 NAME = cub3d
-SRCS = $(SRC_DIR)/cub3d.c $(SRC_DIR)/images.c $(SRC_DIR)/raycasting.c $(SRC_DIR)/init_utiles.c $(SRC_DIR)/release_res.c
+SRCS = $(SRC_DIR)/cub3d.c $(SRC_DIR)/images.c $(SRC_DIR)/raycasting.c $(SRC_DIR)/init_utiles.c $(SRC_DIR)/key_events.c $(SRC_DIR)/release_res.c
 
 OBJS = $(SRCS:%.c=%.o)
 

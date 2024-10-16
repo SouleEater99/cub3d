@@ -10,15 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <cub3d.h>
+#include <cub3d.h>
 
-void free_array(char **arr)
+void	free_array(char **arr)
 {
-    if (!arr)
-        return;
+	int	i;
 
-    int i = -1;
-    while (arr && arr[++i])
-        free(arr[i]);
-    free(arr);
+	if (!arr)
+		return ;
+	i = -1;
+	while (arr && arr[++i])
+		free(arr[i]);
+	free(arr);
 }

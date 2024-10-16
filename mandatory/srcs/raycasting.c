@@ -6,130 +6,134 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:56:36 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/14 17:49:54 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/16 16:31:41 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <cub3d.h>
+#include <cub3d.h>
 
-void draw_vert_line(t_image *image, int x, int draw_start, int draw_end, int color)
+void	draw_vert_line(t_image *image, int x, int draw_start, int draw_end,
+		int color)
 {
-    int y = draw_start -1;
-    while(++y < draw_end)
-    {
-        if(x >= 0 && x < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT)
-            put_pixel_in_img(image, x, y, color);
-    }    
+	int	y;
+
+	y = draw_start - 1;
+	while (++y < draw_end)
+	{
+		if (x >= 0 && x < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT)
+			put_pixel_in_img(image, x, y, color);
+	}
 }
 
-void raycasting(t_data *data)
+// void raycasting_loop(t_data *data)
+// {
+
+// }
+
+void	dda_algorithm(t_data *data)
 {
-    data->image = create_image(data);
-    
-    int x = -1;
-    while (++x < SCREEN_WIDTH)
-    {
-        data->camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
-        // if x = 0 we'll get the leftmost ray direction and if x = SCREEN_WIDTH we'll get the rightmost ray direction.
-        data->ray_dir_x = data->dir_x + data->plane_x * data->camera_x; // the direction of the ray.
-        data->ray_dir_y = data->dir_y + data->plane_y * data->camera_x; // the direction of the ray.
+	int	hit;
 
-        // the player postions tell us which cell we are in and where in this cell exactly.
-        data->map_x = (int)data->player_x;  // the x player position in the map grid that tell us which grid cell we are in.
-        data->map_y = (int)data->player_y;  // the y player position in the map grid that tell us which grid cell we are in.
+	hit = 0;
+	while (hit == 0)
+	{
+		if (data->side_dist_x < data->side_dist_y)
+		{
+			data->side_dist_x += data->delta_dist_x;
+			data->map_x += data->step_x;
+			data->side = 0;
+		}
+		else
+		{
+			data->side_dist_y += data->delta_dist_y;
+			data->map_y += data->step_y;
+			data->side = 1;
+		}
+		if (data->map_x < 0 || data->map_x >= MAP_WIDTH || data->map_y < 0
+			|| data->map_y >= MAP_HEIGHT)
+			break ; // we hit the border walls.
+		if (data->map[data->map_y][data->map_x] == '1')
+			hit = 1; // break ; we hit a wall;
+	}
+}
 
-        data->delta_dist_x = fabs(1 / data->ray_dir_x);
-        data->delta_dist_y = fabs(1 / data->ray_dir_y);
+void	draw_vert_cols(t_data *data, int x)
+{
+	int	color;
 
-        double perp_wall_dist;
-        
-        int hit = 0;
-        int side;
+	color = 0xFFFFFF;
+	if (data->side == 0)
+		data->perp_wall_dist = data->side_dist_x - data->delta_dist_x;
+	else
+		data->perp_wall_dist = data->side_dist_y - data->delta_dist_y;
+	if (data->side == 0)
+		color = CLR_EAW;
+	else
+		color = CLR_SAN;
+	data->line_height = (int)(SCREEN_HEIGHT / data->perp_wall_dist);
+	data->draw_start = -data->line_height / 2 + SCREEN_HEIGHT / 2;
+	if (data->draw_start < 0)
+		data->draw_start = 0;
+	data->draw_end = data->line_height / 2 + SCREEN_HEIGHT / 2;
+	if (data->draw_end >= SCREEN_HEIGHT)
+		data->draw_end = SCREEN_HEIGHT - 1;
+	draw_vert_line(data->image, x, 0, data->draw_start, CLR_SKY);
+	draw_vert_line(data->image, x, data->draw_start, data->draw_end, color);
+	draw_vert_line(data->image, x, data->draw_end, SCREEN_HEIGHT, CLR_FLR);
+}
 
-        if (data->ray_dir_x < 0)
-        {
-            data->step_x = -1;
-            data->side_dist_x = (data->player_x - data->map_x) * data->delta_dist_x; 
-        }
-        else
-        {
-            data->step_x = 1;
-            data->side_dist_x = (data->map_x + 1.0 - data->player_x) * data->delta_dist_x;
-        }
+void	calculate_side_dist_x_y(t_data *data)
+{
+	if (data->ray_dir_x < 0)
+	{
+		data->step_x = -1;
+		data->side_dist_x = (data->player_x - data->map_x) * data->delta_dist_x;
+	}
+	else
+	{
+		data->step_x = 1;
+		data->side_dist_x = (data->map_x + 1.0 - data->player_x)
+			* data->delta_dist_x;
+	}
+	if (data->ray_dir_y < 0)
+	{
+		data->step_y = -1;
+		data->side_dist_y = (data->player_y - data->map_y) * data->delta_dist_y;
+	}
+	else
+	{
+		data->step_y = 1;
+		data->side_dist_y = (data->map_y + 1.0 - data->player_y)
+			* data->delta_dist_y;
+	}
+}
 
-        if (data->ray_dir_y < 0)
-        {
-            data->step_y = -1;
-            data->side_dist_y = (data->player_y - data->map_y) * data->delta_dist_y;
-        }
-        else
-        {
-            data->step_y = 1;
-            data->side_dist_y = (data->map_y + 1.0 - data->player_y) * data->delta_dist_y;
-        }
+void	raycasting(t_data *data)
+{
+	int	x;
 
-        while (hit == 0)
-        {
-            if (data->side_dist_x < data->side_dist_y)
-            {
-                data->side_dist_x += data->delta_dist_x;
-                data->map_x += data->step_x;
-                side = 0;
-            }
-            else
-            {
-                data->side_dist_y += data->delta_dist_y;
-                data->map_y += data->step_y;
-                side = 1;
-            }
-            if (data->map_x < 0 || data->map_x >= MAP_WIDTH || data->map_y < 0 || data->map_y >= MAP_HEIGHT)
-                break; // we hit the border walls.
-                
-            if (data->map[data->map_y][data->map_x] == '1')
-                hit = 1; // break; we hit a wall;
-        }
-        
-        if (side == 0)
-            perp_wall_dist = data->side_dist_x - data->delta_dist_x;
-        else
-            perp_wall_dist = data->side_dist_y - data->delta_dist_y;
-        
-        int color = 0xFFFFFF;
-        if (side == 0)
-        {
-            color = CLR_EAW;
-            // if (data->step_x > 0)         // this is mean the player look to the right or the East
-            //     color = 0xFF0000;   // red color
-            // else                    // this is mean the player look to the left or the West
-            //     color = 0x00FF00;   // green color
-        }
-        else
-        {
-            color = CLR_SAN;
-            // if (data->step_y > 0)         // this is mean the player look to the bottom or the South
-            //     color = 0x0000FF;   // blue color
-            // else                    // this is mean the player look to the top or the South
-            //     color = 0xFFFF00;   // yellow color
-
-        }
-        
-        int line_height = (int)(SCREEN_HEIGHT / perp_wall_dist);
-
-        int draw_start = - line_height / 2 + SCREEN_HEIGHT / 2;
-        if (draw_start < 0)
-            draw_start = 0;
-            
-        int draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
-        if(draw_end >= SCREEN_HEIGHT)
-            draw_end = SCREEN_HEIGHT - 1;
-
-        draw_vert_line(data->image, x, 0, draw_start, CLR_SKY);
-        draw_vert_line(data->image, x, draw_start, draw_end, color);
-        draw_vert_line(data->image, x, draw_end, SCREEN_HEIGHT, CLR_FLR);
-    }
-    
-    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr, 0, 0);
-    mlx_destroy_image(data->mlx_ptr, data->image->img_ptr);
-    
-    free(data->image);
+	data->image = create_image(data);
+	x = -1;
+	while (++x < SCREEN_WIDTH)
+	{
+		data->camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
+		// if x = 0 we'll get the leftmost ray direction and if x = SCREEN_WIDTH we'll get the rightmost ray direction.
+		data->ray_dir_x = data->dir_x + data->plane_x * data->camera_x;
+		// the direction of the ray.
+		data->ray_dir_y = data->dir_y + data->plane_y * data->camera_x;
+		// the direction of the ray. the player postions tell us which cell we are in and where in this cell exactly.
+		data->map_x = (int)data->player_x;
+		// the x player position in the map grid that tell us which grid cell we are in.
+		data->map_y = (int)data->player_y;
+		// the y player position in the map grid that tell us which grid cell we are in.
+		data->delta_dist_x = fabs(1 / data->ray_dir_x);
+		data->delta_dist_y = fabs(1 / data->ray_dir_y);
+		calculate_side_dist_x_y(data);
+		dda_algorithm(data); // DDA algorithm
+		draw_vert_cols(data, x);
+	}
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr,
+		0, 0);
+	mlx_destroy_image(data->mlx_ptr, data->image->img_ptr);
+	free(data->image);
 }
