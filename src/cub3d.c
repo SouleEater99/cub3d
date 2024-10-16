@@ -20,7 +20,7 @@ void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void	ft_write_to_img(t_image *img, int x, int y, int color)
+void	ft_write_player_to_img(t_image *img, int x, int y, int color)
 {
 	int i;
 	int j;
@@ -34,6 +34,22 @@ void	ft_write_to_img(t_image *img, int x, int y, int color)
 		i++;
 	}
 }
+
+void	ft_write_cub_to_img(t_image *img, int x, int y, int color)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < CUB_SIZE - 1)
+	{
+		j = 0;
+		while (j < CUB_SIZE - 1)
+			my_mlx_pixel_put(img, x + i, y + j++, color);
+		i++;
+	}
+}
+
 void	ft_write_map_img(t_data *data)
 {
 	int i;
@@ -45,17 +61,27 @@ void	ft_write_map_img(t_data *data)
 		j = 0;
 		while (j < data->row)
 		{
-			printf("+++++++++++ { char : %c} ++++++++++\n", data->map[j][i]);
-			if (data->map[j][i] == '0')
-				ft_write_to_img(data->img, i * CUB_SIZE, j * CUB_SIZE, 0x00FFFFFF);
+			if (data->map[j][i] == 'P')
+				ft_write_cub_to_img(data->img, i * CUB_SIZE, j * CUB_SIZE, 0x00FF0000);
+			else if (data->map[j][i] == '0')
+				ft_write_cub_to_img(data->img, i * CUB_SIZE, j * CUB_SIZE, 0x00FFFFFF);
 			else
-				ft_write_to_img(data->img, i * CUB_SIZE, j * CUB_SIZE, 0x00808080);
+				ft_write_cub_to_img(data->img, i * CUB_SIZE, j * CUB_SIZE, 0x00808080);
 			j++;
 		}
 		i++;
 	}
 
 }
+
+// int	ft_loop_hook(void *param)
+// {
+// 	t_data *data;
+// 	unsigned int static i;
+
+// 	data = (t_data *)param;
+
+// }
 
 int	main(void)
 {
@@ -68,7 +94,7 @@ int	main(void)
 						"11111111111111111111111111111",
 						"10000000000001000000000000001",
 						"10000000000000000000000000001",
-						"10001111111111000000000000001",
+						"10001111111111000P00000000001",
 						"10000000000001000000000000001",
 						"10000000000001000000000000001",
 						"10000000000001111111111000001",
@@ -92,7 +118,9 @@ int	main(void)
 		&data->img->endian);
     printf("line_length : %d | bit_per_pixel : %d | pixel_data : %d\n", data->img->line_length, data->img->bits_per_pixel, WIDTH * (data->img->bits_per_pixel / 8));
 	ft_write_map_img(data);
-
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img->img, 0, 0);
+	// mlx_loop_hook(data->mlx, ft_loop_hook, data);
+	
 	mlx_loop(data->mlx);
+
 }

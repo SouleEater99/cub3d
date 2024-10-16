@@ -24,6 +24,7 @@
 #define WIDTH 1900
 #define HIGH 1080
 #define CUB_SIZE 30
+#define PLAYER_SIZE 15
 
 typedef struct	s_image
 {
