@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/16 16:43:28 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/17 22:50:08 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@
 
 # define TILE_SIZE      32      // the cell grid size
 
-# define MOVE_SPEED     0.02     // player speed
-# define ROT_SPEED      0.01     // Rotation speed (in radians)
+# define MOVE_SPEED     0.08     // player speed
+# define ROT_SPEED      0.04     // Rotation speed (in radians)
 
 # define MAP_WIDTH      9       // just an example
 # define MAP_HEIGHT     9       // just an example
