@@ -15,7 +15,8 @@ GCCFLAGS = -Wall -Wextra -Werror
 DEBUGFLAGS = -g3 -fsanitize=address
 LIBFT = libraries/libft/libft.a
 INCLUDES = -I includes
-MLXLFLAGS = -lmlx -lXext -lX11 -lm
+# MLXLFLAGS = -lmlx -lXext -lX11 -lm
+MLXLFLAGS = ./libraries/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
 SRC_DIR = ./srcs
 # MLXLFLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 NAME = cub3d
