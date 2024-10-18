@@ -16,7 +16,6 @@ DEBUGFLAGS = -g3 -fsanitize=address
 LIBFT = libraries/libft/libft.a
 INCLUDES = -I includes
 # MLXLFLAGS = -lmlx -lXext -lX11 -lm
-# MLXLFLAGS = ./libraries/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
 
 # OS detection
 UNAME := $(shell uname)
