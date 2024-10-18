@@ -14,6 +14,7 @@
 # define CUB3D_H
 
 # include <mlx.h>
+// # include "../libraries/minilibx-linux/mlx.h"
 # include <stdlib.h>
 # include <math.h>
 # include <stdio.h>             // just for debugging
@@ -24,11 +25,23 @@
 # define SCREEN_WIDTH   800
 # define SCREEN_HEIGHT  600
 
-# define ESC_KEY        65307
-# define U_KEY          65362
-# define D_KEY          65364
-# define R_KEY          65363
-# define L_KEY          65361
+#ifdef __APPLE__
+    // macOS keycodes
+    #define ESC_KEY        53
+    #define U_KEY          126
+    #define D_KEY          125
+    #define R_KEY          124
+    #define L_KEY          123
+#elif __linux__
+    // Linux (X11) keycodes
+    #define ESC_KEY        65307
+    #define U_KEY          65362
+    #define D_KEY          65364
+    #define R_KEY          65363
+    #define L_KEY          65361
+#else
+    #error "Unsupported platform"
+#endif
 
 # define RAY_LENGHT     500
 

@@ -16,19 +16,29 @@ DEBUGFLAGS = -g3 -fsanitize=address
 LIBFT = libraries/libft/libft.a
 INCLUDES = -I includes
 # MLXLFLAGS = -lmlx -lXext -lX11 -lm
-MLXLFLAGS = ./libraries/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
+# MLXLFLAGS = ./libraries/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
+
+# OS detection
+UNAME := $(shell uname)
+
+ifeq ($(UNAME),Darwin)
+    # macOS flags
+    MLXLFLAGS = ./libraries/minilibx_opengl_20191021/libmlx.a -framework OpenGL -framework AppKit
+else
+    # Linux flags
+    MLXLFLAGS = ./libraries/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
+endif
+
 SRC_DIR = ./srcs
-# MLXLFLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 NAME = cub3d
 SRCS = $(SRC_DIR)/cub3d.c $(SRC_DIR)/images.c $(SRC_DIR)/raycasting.c $(SRC_DIR)/init_utiles.c $(SRC_DIR)/key_events.c $(SRC_DIR)/release_res.c
-
 OBJS = $(SRCS:%.c=%.o)
 
 all: $(NAME)
 
 run: all clean
-	@./cub3d
-	@ rm ./cub3d
+	@./$(NAME)
+	@rm -f $(NAME)
 	
 $(NAME): $(OBJS)
 	@echo "Building..."
