@@ -47,13 +47,10 @@
 
 # define TILE_SIZE      32      // the cell grid size
 
-<<<<<<< HEAD
 # define MOVE_SPEED     0.08     // player speed
 # define ROT_SPEED      0.04     // Rotation speed (in radians)
-=======
-# define MOVE_SPEED     0.01     // player speed
-# define ROT_SPEED      0.006     // Rotation speed (in radians)
->>>>>>> 4c16cdee784627cde224be906594e964f48ef8a8
+// # define MOVE_SPEED     0.01     // player speed
+// # define ROT_SPEED      0.006     // Rotation speed (in radians)
 
 # define MAP_WIDTH      9       // just an example
 # define MAP_HEIGHT     9       // just an example
