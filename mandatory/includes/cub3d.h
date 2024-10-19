@@ -6,7 +6,11 @@
 /*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/10/17 22:50:08 by aziz             ###   ########.fr       */
+=======
+/*   Updated: 2024/10/16 19:41:44 by aelkheta         ###   ########.fr       */
+>>>>>>> 4c16cdee784627cde224be906594e964f48ef8a8
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +51,13 @@
 
 # define TILE_SIZE      32      // the cell grid size
 
+<<<<<<< HEAD
 # define MOVE_SPEED     0.08     // player speed
 # define ROT_SPEED      0.04     // Rotation speed (in radians)
+=======
+# define MOVE_SPEED     0.01     // player speed
+# define ROT_SPEED      0.006     // Rotation speed (in radians)
+>>>>>>> 4c16cdee784627cde224be906594e964f48ef8a8
 
 # define MAP_WIDTH      9       // just an example
 # define MAP_HEIGHT     9       // just an example
