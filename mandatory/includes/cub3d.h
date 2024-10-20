@@ -47,14 +47,19 @@
 
 # define TILE_SIZE      32      // the cell grid size
 
-// for mac
-// # define MOVE_SPEED     0.08     // player speed
-// # define ROT_SPEED      0.04     // Rotation speed (in radians)
+#ifdef __APPLE__                // for mac
 
-// for linux
+# define MOVE_SPEED     0.08     // player speed
+# define ROT_SPEED      0.04     // Rotation speed (in radians)
+
+#elif __linux__                 // for linux
 
 # define MOVE_SPEED     0.02     // player speed
 # define ROT_SPEED      0.01     // Rotation speed (in radians)
+
+#else
+    #error "Unsupported platform"
+#endif
 
 # define MAP_WIDTH      9       // just an example
 # define MAP_HEIGHT     9       // just an example
