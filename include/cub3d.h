@@ -46,19 +46,19 @@ typedef struct	s_image
 typedef struct s_data
 {
 	int		i;
-    int     x_player;
-    int     y_player;
     t_image	*img;
 	void	*mlx;
 	void	*mlx_win;
 	char	**map;
 	int		row;
 	int		col;
-	int		rotation;
+    double     x_player;
+    double     y_player;
 	double	rotation_angle;
 	double	walk_direction;
 	double	turn_direction;
 	double	move_speed;
+	int		move_step;
 	double	rotation_speed;
 	double	step;
 	

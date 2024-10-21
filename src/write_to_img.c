@@ -34,7 +34,8 @@ void	ft_write_cub_to_img(t_image *img, int x, int y, int color)
 
 void ft_write_line(t_data *data,int dx, int dy)
 {
-	printf("rotationAngle :%f | dx : %d | dy : %d\n",data->rotation_angle , abs(dx), abs(dy));
+	printf("rotationAngle :%f | dx : %d | dy : %d\n",data->rotation_angle  * (180 / PI), abs(dx), abs(dy));
+	printf("x_p : %f| y_P : %f\n",data->x_player, data->y_player);
 	double	x;
 	double	y;
 	double	x_increment;
@@ -71,7 +72,7 @@ void	ft_write_player_to_img(t_data *data)
 			my_mlx_pixel_put(data->img, data->x_player + i, data->y_player + j++, 0x00FF0000);
 		i++;
 	}
-	ft_write_line(data, cos(data->rotation_angle) *  30, sin(data->rotation_angle) * 15);
+	ft_write_line(data, cos(data->rotation_angle) *  30, sin(data->rotation_angle) * 30);
 }
 
 void	ft_write_map_img(t_data *data)

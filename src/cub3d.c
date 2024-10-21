@@ -19,37 +19,57 @@ void	ft_update_img(t_data *data)
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img->img, 0, 0);
 }
 
+int	ft_is_player_inside_wall(t_data *data)
+{
+	double	x;
+	double	y;
+
+	x = data->x_player + cos(data->rotation_angle) * data->move_step;
+	y = data->y_player + sin(data->rotation_angle) * data->move_step;
+	if (data->map[(int)y / 30][(int) x / 30] == '1')
+		return (0);
+	data->x_player = x;
+	data->y_player = y;
+	return (1);
+}
+
 int	ft_key_hook(int keycode, t_data *data)
 {
 	if (keycode == XK_Up)
 	{
-		data->y_player-=4;
-		ft_update_img(data);
+		data->walk_direction = 1;
+		data->move_step =	data->walk_direction * data->move_speed; 
+		if (ft_is_player_inside_wall(data)) 
+			ft_update_img(data);
 		
 	}
 	if (keycode == XK_Down)
 	{
-		data->y_player+=4;
-		ft_update_img(data);
+		data->walk_direction = -1;
+		data->move_step =	data->walk_direction * data->move_speed;
+		if (ft_is_player_inside_wall(data)) 
+			ft_update_img(data);
 
 	}
 	if (keycode == XK_Left)
 	{
 		data->turn_direction = -1;
-		data->rotation_angle = data->rotation_angle + (data->turn_direction * data->rotation_speed);
+		data->rotation_angle += (data->turn_direction * data->rotation_speed);
 		ft_update_img(data);
 
 	}
 	if (keycode == XK_Right)
 	{
 		data->turn_direction = 1;
-		data->rotation_angle = data->rotation_angle + (data->turn_direction * data->rotation_speed);
+		data->rotation_angle += (data->turn_direction * data->rotation_speed);
 		ft_update_img(data);
 		
 	}
 	return (1);
 
 }
+
+
 
 int	main(void)
 {
@@ -76,7 +96,6 @@ int	main(void)
 	data->img->img = mlx_new_image(data->mlx, WIDTH, HIGH);
 	data->img->addr = mlx_get_data_addr(data->img->img, &data->img->bits_per_pixel, &data->img->line_length,
 		&data->img->endian);
-    printf("line_length : %d | bit_per_pixel : %d | pixel_data : %d\n", data->img->line_length, data->img->bits_per_pixel, WIDTH * (data->img->bits_per_pixel / 8));
 	ft_update_img(data);
 	mlx_hook(data->mlx_win, 2, 1L << 0, ft_key_hook, data);
 	mlx_loop(data->mlx);
