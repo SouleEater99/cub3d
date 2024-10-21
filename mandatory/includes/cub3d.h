@@ -25,27 +25,20 @@
 # define SCREEN_WIDTH   800
 # define SCREEN_HEIGHT  600
 
-#ifdef __APPLE__
-    // macOS keycodes
-    #define ESC_KEY        53
-    #define U_KEY          126
-    #define D_KEY          125
-    #define R_KEY          124
-    #define L_KEY          123
-#elif __linux__
-    // Linux (X11) keycodes
-    #define ESC_KEY        65307
-    #define U_KEY          65362
-    #define D_KEY          65364
-    #define R_KEY          65363
-    #define L_KEY          65361
-#else
-    #error "Unsupported platform"
-#endif
-
 # define RAY_LENGHT     500
 
-# define TILE_SIZE      32      // the cell grid size
+# define MAP_WIDTH      9       // just an example
+# define MAP_HEIGHT     9       // just an example
+
+# define CLR_SKY        0x69c9fa
+# define CLR_FLR        0xc28951
+
+# define CLR_EAW        0xcacaca
+# define CLR_SAN        0xf5f5f5
+
+# define TILE_SIZE      16      // the cell grid size
+
+# define CENTER (SCREEN_WIDTH / 2 - MAP_WIDTH * TILE_SIZE / 2)
 
 #ifdef __APPLE__                // for mac
 
@@ -61,14 +54,24 @@
     #error "Unsupported platform"
 #endif
 
-# define MAP_WIDTH      9       // just an example
-# define MAP_HEIGHT     9       // just an example
+#ifdef __APPLE__
+    // macOS keycodes
+    #define ESC_KEY        53
+    #define U_KEY          126
+    #define D_KEY          125
+    #define R_KEY          124
+    #define L_KEY          123
 
-# define CLR_SKY        0x69c9fa
-# define CLR_FLR        0xc28951
-
-# define CLR_EAW        0xcacaca
-# define CLR_SAN        0xf5f5f5
+#elif __linux__
+    // Linux (X11) keycodes
+    #define ESC_KEY        65307
+    #define U_KEY          65362
+    #define D_KEY          65364
+    #define R_KEY          65363
+    #define L_KEY          65361
+#else
+    #error "Unsupported platform"
+#endif
 
 // # define CLR_SKY        0x89CFF3
 // # define CLR_FLR        0xB99470
