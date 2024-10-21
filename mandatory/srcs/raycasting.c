@@ -25,11 +25,6 @@ void	draw_vert_line(t_image *image, int x, int draw_start, int draw_end,
 	}
 }
 
-// void raycasting_loop(t_data *data)
-// {
-
-// }
-
 void	dda_algorithm(t_data *data)
 {
 	int	hit;
@@ -108,6 +103,92 @@ void	calculate_side_dist_x_y(t_data *data)
 	}
 }
 
+void draw_tile(t_image *image, int x, int y, int color)
+{
+    int i = x;
+    int j = y;
+    while(i < x + TILE_SIZE - 1)
+    {
+        j = y;
+        while (j < y + TILE_SIZE - 1)
+        {
+            put_pixel_in_img(image, i + CENTER, j, color);
+            j++;
+        }
+        i++;
+    }
+}
+
+void draw_map(t_data *data, t_image *image)
+{
+    int i = 0;
+    int j = 0;
+    
+    while (i < MAP_HEIGHT)
+    {
+        j = 0;
+        while (j < MAP_WIDTH)
+        {
+            if (data->map[i][j] == '1')
+                draw_tile(image, j * TILE_SIZE, i * TILE_SIZE, 0x000000);
+            else if (data->map[i][j] == '0' || data->map[i][j] == '0')
+                draw_tile(image, j * TILE_SIZE, i * TILE_SIZE, 0xFFFFFF); //0xAAAAAA
+            j++;
+        }
+        i++;   
+    }
+}
+
+void draw_line(t_data *data, t_image *image, int end_x, int end_y, int color)
+{
+    int dx = end_x - data->player_x * TILE_SIZE;
+    int dy = end_y - data->player_y * TILE_SIZE;
+
+    double steps = fmax(abs(dx), abs(dy));
+
+    double x_increment = (double)dx / steps;
+    double y_increment = (double)dy / steps;
+
+    double x = data->player_x * TILE_SIZE;
+    double y = data->player_y * TILE_SIZE;
+
+    for (int i = 0; i <= steps; i++)
+    {
+        int map_x = (int)(x / TILE_SIZE);
+        int map_y = (int)(y / TILE_SIZE);
+
+        if (map_x < 0 || map_x >= MAP_WIDTH || map_y < 0 || map_y >= MAP_HEIGHT)
+            break;
+
+        if (data->map[map_y][map_x] == '1')
+            break;
+
+        // mlx_pixel_put(data->mlx_ptr, data->win_ptr, round(x), round(y), color);
+        put_pixel_in_img(image, round(x) + CENTER, round(y), color);
+        x += x_increment;
+        y += y_increment;
+    }
+}
+
+void draw_mini_map(t_data *data)
+{
+	draw_map(data, data->image);
+	    
+	int x = -1;
+    while (++x < SCREEN_WIDTH)
+    {
+        data->camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
+
+        data->ray_dir_x = data->dir_x + data->plane_x * data->camera_x;
+        data->ray_dir_y = data->dir_y + data->plane_y * data->camera_x;
+
+        int end_x = data->player_x * TILE_SIZE + data->ray_dir_x * 500;
+        int end_y = data->player_y * TILE_SIZE + data->ray_dir_y * 500;
+
+        draw_line(data, data->image, end_x, end_y, 0xFF0000); //0xFFFFFF
+    }
+}
+
 void	raycasting(t_data *data)
 {
 	int	x;
@@ -132,6 +213,9 @@ void	raycasting(t_data *data)
 		dda_algorithm(data); // DDA algorithm
 		draw_vert_cols(data, x);
 	}
+
+	draw_mini_map(data);			// mini-map
+
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr,
 		0, 0);
 	mlx_destroy_image(data->mlx_ptr, data->image->img_ptr);
