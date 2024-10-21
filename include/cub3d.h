@@ -18,13 +18,18 @@
 #include <string.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <math.h>
 #include "./minilibx/minilibx-linux/mlx.h"
 #include "./minilibx/minilibx-linux/mlx_int.h"
 
-#define WIDTH 1900
-#define HIGH 1080
+#define WIDTH 840
+#define HIGH  480
 #define CUB_SIZE 30
-#define PLAYER_SIZE 15
+#define PLAYER_SIZE 10
+
+#ifndef PI
+#define PI 3.14
+#endif
 
 typedef struct	s_image
 {
@@ -40,6 +45,7 @@ typedef struct	s_image
 
 typedef struct s_data
 {
+	int		i;
     int     x_player;
     int     y_player;
     t_image	*img;
@@ -48,9 +54,26 @@ typedef struct s_data
 	char	**map;
 	int		row;
 	int		col;
+	int		rotation;
+	double	rotation_angle;
+	double	walk_direction;
+	double	turn_direction;
+	double	move_speed;
+	double	rotation_speed;
+	double	step;
+	
+
 
 }t_data ;
 
 
+void	ft_write_map_img(t_data *data);
+void	ft_write_player_to_img(t_data *data);
+void ft_write_line(t_data *data,int dx, int dy);
+void	ft_write_cub_to_img(t_image *img, int x, int y, int color);
+void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
+int	ft_key_hook(int keycode, t_data *data);
+void	ft_update_img(t_data *data);
+t_data *ft_init_data();
 
 #endif

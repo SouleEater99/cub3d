@@ -7,6 +7,8 @@ LIBFT = include/lib_ft/libft.a
 MLX_LIB =	./include/minilibx/minilibx-linux/libmlx.a \
 			./include/minilibx/minilibx-linux/libmlx_Linux.a
 SRC = ./src/cub3d.c\
+		./src/init.c\
+		./src/write_to_img.c\
 
 OBJ = $(SRC:.c=.o)
 
