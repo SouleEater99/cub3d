@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:56:36 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/22 09:20:09 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/22 09:56:54 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ void	calculate_side_dist_x_y(t_data *data)
 	}
 }
 
+// ====================================================================== //
+
 // void draw_tile(t_image *image, int x, int y, int color)
 // {
 //     int i = x;
@@ -189,7 +191,7 @@ void	calculate_side_dist_x_y(t_data *data)
 //     }
 // }
 
-// =========================================================================== //
+// ====================================================================== //
 
 # define MINIMAP_RADIUS 80
 # define MINIMAP_POS_X (SCREEN_WIDTH - MINIMAP_RADIUS - 20)
@@ -321,6 +323,26 @@ void draw_player_direction(t_data *data, t_image *image)
     }
 }
 
+void draw_minimap_border(t_image *image)
+{
+    // Draw circular border
+    int y = -MINIMAP_RADIUS;
+	while (++y <= MINIMAP_RADIUS)
+    {
+	    int x = -MINIMAP_RADIUS;
+		while (++x <= MINIMAP_RADIUS)
+        {
+            double distance = sqrt(x * x + y * y);
+            if (distance <= MINIMAP_RADIUS + 2 && distance >= MINIMAP_RADIUS - 2)
+            {
+                int screen_x = MINIMAP_POS_X + x;
+                int screen_y = MINIMAP_POS_Y + y;
+                put_pixel_in_img(image, screen_x, screen_y, 0xaaaaaa);
+            }
+        }
+	}   
+}
+
 void draw_mini_map(t_data *data)
 {
     // draw black background for our minimap
@@ -335,10 +357,10 @@ void draw_mini_map(t_data *data)
     // draw_player(data->image);
     
     // Draw the minimap border	// TODO
-    // draw_minimap_border(data->image);
+    draw_minimap_border(data->image);
 }
 
-// ========================================================================= //
+// ====================================================================== //
 
 void	raycasting(t_data *data)
 {

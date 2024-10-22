@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:17:16 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/16 18:09:25 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/22 10:54:19 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,26 @@ int	key_press(int keycode, t_data *data)
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 		exit(0);
 	}
-	else if (keycode == U_KEY)
+	else if (keycode == 'w' || keycode == U_KEY)
 		data->move_forward = 1;
-	else if (keycode == D_KEY)
+	else if (keycode == 's' || keycode == D_KEY)
 		data->move_backward = 1;
-	else if (keycode == L_KEY)
+	else if (keycode == 'a' || keycode == L_KEY)
 		data->rotate_left = 1;
-	else if (keycode == R_KEY)
+	else if (keycode == 'd' || keycode == R_KEY)
 		data->rotate_right = 1;
 	return (0);
 }
 
 int	key_release(int keycode, t_data *data)
 {
-	if (keycode == U_KEY)
+	if (keycode == 'w' || keycode == U_KEY)
 		data->move_forward = 0;
-	else if (keycode == D_KEY)
+	else if (keycode == 's' || keycode == D_KEY)
 		data->move_backward = 0;
-	else if (keycode == L_KEY)
+	else if (keycode == 'a' || keycode == L_KEY)
 		data->rotate_left = 0;
-	else if (keycode == R_KEY)
+	else if (keycode == 'd' || keycode == R_KEY)
 		data->rotate_right = 0;
 	return (0);
 }

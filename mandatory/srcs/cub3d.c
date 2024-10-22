@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:07:23 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/16 18:08:38 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/22 10:40:24 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,13 @@ int	game_loop(t_data *data)
 	return (0);
 }
 
-int	main(void)
+int	main(int ac, char **av)
 {
 	t_data	data;
 
 	memset(&data, 0, sizeof(t_data));
+	if (parse_map(&data, ac, av))
+		return (1);
 	data.mlx_ptr = mlx_init();
 	data.win_ptr = mlx_new_window(data.mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT,
 			"cub3D");

@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/22 09:19:24 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/22 11:46:17 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <string.h>
 # include <sys/time.h>
 # include <../libraries/libft/libft.h>
+#include <fcntl.h>              //  for open syscall
 
 # define PI 3.14159265358979323846
 
@@ -29,7 +30,7 @@
 
 # define RAY_LENGHT     500
 
-# define MAP_WIDTH      9       // just an example
+# define MAP_WIDTH      30      // just an example
 # define MAP_HEIGHT     9       // just an example
 
 # define CLR_SKY        0x69c9fa
@@ -161,10 +162,15 @@ t_image     *create_image(t_data *data);
 void        raycasting(t_data *data);
 
 void        init_game(t_data *data);
-void        init_map(t_data *data);
+int         init_map(t_data *data);
 
 void        free_array(char **arr);
 int         key_press(int keycode, t_data *data);
 int         key_release(int keycode, t_data *data);
+
+// parsing time
+
+int         parse_map(t_data *data, int ac, char **av);
+void        std_error(char *error);
 
 # endif // CUB3D_H
