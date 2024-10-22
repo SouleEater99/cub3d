@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/21 14:22:07 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/22 09:19:24 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <sys/time.h>
 # include <../libraries/libft/libft.h>
 
+# define PI 3.14159265358979323846
+
 # define SCREEN_WIDTH   800
 # define SCREEN_HEIGHT  600
 
@@ -36,7 +38,7 @@
 # define CLR_EAW        0xcacaca
 # define CLR_SAN        0xf5f5f5
 
-# define TILE_SIZE      16      // the cell grid size
+# define TILE_SIZE      32      // the cell grid size
 
 # define CENTER (SCREEN_WIDTH / 2 - MAP_WIDTH * TILE_SIZE / 2)
 
