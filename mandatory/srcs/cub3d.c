@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:07:23 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/22 10:40:24 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/23 18:39:49 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,19 @@ void	go_up_down(t_data *data, short mov_dir)
 
 	new_x = data->player_x + data->dir_x * MOVE_SPEED * mov_dir;
 	new_y = data->player_y + data->dir_y * MOVE_SPEED * mov_dir;
-	if (data->map[(int)new_y][(int)new_x] == '0')
-	{
-		data->player_x = new_x;
-		data->player_y = new_y;
-	}
+
+	// check each one separately for sliding/gliding effect.
+    if (data->map[(int)data->player_y][(int)new_x] == '0')
+        data->player_x = new_x;
+    
+    if (data->map[(int)new_y][(int)data->player_x] == '0')
+        data->player_y = new_y;
+	
+	// if (data->map[(int)new_y][(int)new_x] == '0')
+	// {
+	// 	data->player_x = new_x;
+	// 	data->player_y = new_y;
+	// }
 }
 
 void	update_player(t_data *data)
@@ -53,13 +61,6 @@ void	update_player(t_data *data)
 		go_left_right(data, 1);
 	if (data->rotate_left)
 		go_left_right(data, -1);
-}
-
-int	game_loop(t_data *data)
-{
-	update_player(data);
-	raycasting(data);
-	return (0);
 }
 
 int	main(int ac, char **av)
@@ -75,6 +76,7 @@ int	main(int ac, char **av)
 	init_game(&data);
 	mlx_hook(data.win_ptr, 2, 1L << 0, key_press, &data);
 	mlx_hook(data.win_ptr, 3, 1L << 1, key_release, &data);
+	mlx_hook(data.win_ptr, 17, 1L << 0, destroy_notify, &data);
 	mlx_loop_hook(data.mlx_ptr, game_loop, &data);
 	mlx_loop(data.mlx_ptr);
 	return (0);

@@ -6,11 +6,105 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/22 11:47:52 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/23 18:57:08 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include <cub3d.h>
+
+void print_file_cont(char *map_path)
+{
+    int fd = open(map_path, O_RDONLY);
+        return (printf("FILE: %s, LINE: %d\n", __FILE__, __LINE__), perror(map_path));
+
+    char *line = get_next_line(fd);
+    while (line)
+    {
+        printf("%s", line);
+        free(line);
+        line = get_next_line(fd);
+    }
+    printf("\n");
+    close(fd);
+}
+
+int map_height(char *map_path)
+{
+    int i;
+    int fd;
+    char *line;
+    
+    i = 0;
+    fd = open(map_path, O_RDONLY);
+    if (fd == -1)
+        return (printf("FILE: %s, LINE: %d\n", __FILE__, __LINE__), perror(map_path), -1);
+
+    line = get_next_line(fd);
+    while(line)
+    {
+        ++i;    
+        free(line);
+        line = get_next_line(fd);
+    }
+    close(fd);
+    return (i);
+}
+
+void print_map(char **map)
+{
+    while(map && *map)
+        printf("%s", *map++);
+    printf("\n");
+}
+
+int read_map(t_data *data, char *map_path)
+{
+    int i;
+    int fd;
+    int map_h;
+    
+    fd = open(map_path, O_RDONLY);
+    if (fd == -1)
+        return (printf("FILE: %s, LINE: %d\n", __FILE__, __LINE__), perror(map_path), 1);
+    
+    i = -1;
+    map_h = map_height(map_path);
+    data->map = (char **)malloc(sizeof(char *) * (map_h + 1));
+    while(++i < map_h)
+        data->map[i] = get_next_line(fd);
+    data->map[i] = NULL;
+    
+    data->map_height = map_h;
+    data->map_width = ft_strlen(data->map[0]);
+
+    print_map(data->map);
+    
+    // free_array(data->map);
+    close(fd);
+    return (0);
+}
+
+void init_payer_pos(t_data *data, char **map)
+{
+    int x, y;
+
+    y = -1;
+    while(map && map[++y])
+    {
+        x = -1;
+        while(map[y] && map[y][++x])
+        {
+            if (map[y][x] == 'N' || map[y][x] == 'S' || map[y][x] == 'E' || map[y][x] == 'W')
+            {
+                data->player_x = x - 1;
+                data->player_y = y;
+                // printf("\n ==== %s ====", map[y]);
+                // printf("======= %lf ======= %lf =======\n", data->player_y, data->player_x);
+                return ;
+            }
+        }
+    }
+}
 
 int parse_map(t_data *data, int ac, char **av)
 {
@@ -29,17 +123,11 @@ int parse_map(t_data *data, int ac, char **av)
 		return (1);
     }
     
-    int fd = open(av[1], O_RDONLY);
-    if (fd == -1)
-    {
-        write(2, "Error opening file\n", 20);
-        printf("==== Line: %d ====\n", __LINE__);
-        printf("==== File: %s ====\n", __FILE__);
+    if (read_map(data, av[1]))
         return (1);
-    }
-    close(fd);
     
-    if (init_map(data))
-        return (1);
+    init_payer_pos(data, data->map);
+    // if (init_map(data))
+    //     return (1);
     return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/22 11:46:17 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/23 18:41:43 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@
 
 # define RAY_LENGHT     500
 
-# define MAP_WIDTH      30      // just an example
-# define MAP_HEIGHT     9       // just an example
+// # define MAP_WIDTH      30      // just an example
+// # define MAP_HEIGHT     9       // just an example
 
 # define CLR_SKY        0x69c9fa
 # define CLR_FLR        0xc28951
@@ -39,39 +39,32 @@
 # define CLR_EAW        0xcacaca
 # define CLR_SAN        0xf5f5f5
 
-# define TILE_SIZE      32      // the cell grid size
+# define TILE_SIZE      16      // the cell grid size
 
 # define CENTER (SCREEN_WIDTH / 2 - MAP_WIDTH * TILE_SIZE / 2)
 
-#ifdef __APPLE__                // for mac
-
-# define MOVE_SPEED     0.08     // player speed
-# define ROT_SPEED      0.04     // Rotation speed (in radians)
-
-#elif __linux__                 // for linux
-
-# define MOVE_SPEED     0.02     // player speed
-# define ROT_SPEED      0.01     // Rotation speed (in radians)
-
-#else
-    #error "Unsupported platform"
-#endif
 
 #ifdef __APPLE__
     // macOS keycodes
-    #define ESC_KEY        53
-    #define U_KEY          126
-    #define D_KEY          125
-    #define R_KEY          124
-    #define L_KEY          123
+    # define ESC_KEY        53
+    # define U_KEY          126
+    # define D_KEY          125
+    # define R_KEY          124
+    # define L_KEY          123
+    
+    # define MOVE_SPEED     0.08     // player speed
+    # define ROT_SPEED      0.04     // Rotation speed (in radians)
 
 #elif __linux__
     // Linux (X11) keycodes
-    #define ESC_KEY        65307
-    #define U_KEY          65362
-    #define D_KEY          65364
-    #define R_KEY          65363
-    #define L_KEY          65361
+    # define ESC_KEY        65307
+    # define U_KEY          65362
+    # define D_KEY          65364
+    # define R_KEY          65363
+    # define L_KEY          65361
+    
+    # define MOVE_SPEED     0.04     // player speed
+    # define ROT_SPEED      0.02     // Rotation speed (in radians)
 #else
     #error "Unsupported platform"
 #endif
@@ -91,11 +84,29 @@ typedef struct s_image
     int endian;
 }   t_image;
 
+typedef struct s_player
+{
+    double dir_x;   // player direction x position
+    double dir_y;   // player direction y position
+    
+    double player_x;
+    double player_y;
+}   t_player;
+
+typedef struct s_map
+{
+    char **map;
+    int map_height;
+    int map_width;
+}   t_map;
+
 typedef struct {
     void *mlx_ptr;
     void *win_ptr;
 
     char **map;
+    int map_height;
+    int map_width;
 
     double dir_x;   // player direction x position
     double dir_y;   // player direction y position
@@ -108,8 +119,8 @@ typedef struct {
     double player_x;
     double player_y;
 
-    int map_x;
-    int map_y;
+    int map_x;      // player grid position
+    int map_y;      // player grid position
 
     double ray_dir_x;
     double ray_dir_y;
@@ -142,7 +153,6 @@ typedef struct {
 
 // functions signature
 
-
 /// @brief this function setting a pixel in an image with the cordinates given.
 /// @param image t_image *image: A pointer to a struct that holds the image information. This struct typically includes:
 /// @param img_data: A pointer to the raw image data (the actual pixel array).
@@ -167,6 +177,13 @@ int         init_map(t_data *data);
 void        free_array(char **arr);
 int         key_press(int keycode, t_data *data);
 int         key_release(int keycode, t_data *data);
+
+int         game_loop(t_data *data);
+int         destroy_notify(t_data *data);
+
+void        update_player(t_data *data);
+
+void        draw_mini_map(t_data *data);
 
 // parsing time
 
