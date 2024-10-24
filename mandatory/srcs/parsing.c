@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/23 18:57:08 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/24 10:23:12 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,13 @@ void init_payer_pos(t_data *data, char **map)
         x = -1;
         while(map[y] && map[y][++x])
         {
-            if (map[y][x] == 'N' || map[y][x] == 'S' || map[y][x] == 'E' || map[y][x] == 'W')
+            // if (map[y][x] == 'N' || map[y][x] == 'S' || map[y][x] == 'E' || map[y][x] == 'W')
+            if (strchr("NSEW", map[y][x]))
             {
-                data->player_x = x - 1;
+                data->map[y][x] = '0';
+                data->player_x = x;
                 data->player_y = y;
-                // printf("\n ==== %s ====", map[y]);
-                // printf("======= %lf ======= %lf =======\n", data->player_y, data->player_x);
+                printf("player at: [%lf][%lf] = [%c]\n", data->player_y, data->player_x, data->map[(int)data->player_y][(int)data->player_x]);
                 return ;
             }
         }

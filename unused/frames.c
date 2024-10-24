@@ -14,11 +14,18 @@
 #define R_KEY 65363
 #define L_KEY 65361
 
+# define w_KEY 'w'
+# define s_KEY 's'
+# define a_KEY 'a'
+# define d_KEY 'd'
+
+# define PI 3.14159265358979323846
+
 #define RAY_LENGHT 500
 
 #define TILE_SIZE 32 // the cell grid size
 
-#define MAP_WIDTH 30  // just an example
+#define MAP_WIDTH 38  // just an example
 #define MAP_HEIGHT 9 // just an example
 
 // # define CLR_SKY        0x89CFF3
@@ -65,8 +72,8 @@ typedef struct s_data
 	char	**map;
 	void	*mlx_ptr;
 	void	*win_ptr;
-	double dir_x; // player direction x position
-	double dir_y; // player direction y position
+	double	dir_x; // player direction x position
+	double	dir_y; // player direction y position
 	double	camera_x;
 	double	plane_x;
 	double	plane_y;
@@ -111,21 +118,23 @@ void	update_player(t_data *data)
 	{
 		new_x = data->player_x + data->dir_x * MOVE_SPEED;
 		new_y = data->player_y + data->dir_y * MOVE_SPEED;
-		if (data->map[(int)new_y][(int)new_x] == '0')
-		{
-			data->player_x = new_x;
+
+		if (data->map[(int)data->player_y][(int)new_x] == '0')
+        	data->player_x = new_x;
+    
+		if (data->map[(int)new_y][(int)data->player_x] == '0')
 			data->player_y = new_y;
-		}
 	}
 	if (data->move_backward)
 	{
 		new_x = data->player_x - data->dir_x * MOVE_SPEED;
 		new_y = data->player_y - data->dir_y * MOVE_SPEED;
-		if (data->map[(int)new_y][(int)new_x] == '0')
-		{
-			data->player_x = new_x;
+
+		if (data->map[(int)data->player_y][(int)new_x] == '0')
+        	data->player_x = new_x;
+    
+		if (data->map[(int)new_y][(int)data->player_x] == '0')
 			data->player_y = new_y;
-		}
 	}
 	if (data->rotate_left)
 	{
@@ -152,6 +161,7 @@ void	update_player(t_data *data)
 		data->plane_y = old_plane_x * sin(ROT_SPEED) + data->plane_y
 			* cos(ROT_SPEED);
 	}
+	printf("player at: [%lf][%lf]: [%c]\n", data->player_y, data->player_x, data->map[(int)data->player_y][(int)data->player_x]);
 }
 
 /// @brief this function setting a pixel in an image with the cordinates given.
@@ -368,11 +378,11 @@ void draw_player_direction(t_data *data, t_image *image)
 {
     // Draw direction indicator
     double angle = atan2(data->dir_y, data->dir_x);
-    double fov = 60 * M_PI / 180.0; // 60 degrees FOV
+    double fov = 60 * PI / 180.0; // 60 degrees FOV
     
     for (int i = -30; i <= 30; i += 2)
     {
-        double ray_angle = angle + (i * fov / 60);
+        double ray_angle = angle + (1 * fov / 60);
         double ray_length = MINIMAP_RADIUS * 0.3; // Length of direction indicator
         
         double end_x = MINIMAP_CENTER_X + cos(ray_angle) * ray_length;
@@ -433,10 +443,9 @@ void draw_player(t_image *image)
     }
 }
 
-void draw_mini_map(t_data *data)
+void draw_black_bg(t_data *data)
 {
-    // Draw black background for minimap
-    for (int y = -MINIMAP_RADIUS; y <= MINIMAP_RADIUS; y++)
+	for (int y = -MINIMAP_RADIUS; y <= MINIMAP_RADIUS; y++)
     {
         for (int x = -MINIMAP_RADIUS; x <= MINIMAP_RADIUS; x++)
         {
@@ -449,6 +458,13 @@ void draw_mini_map(t_data *data)
             }
         }
     }
+}
+
+
+void draw_mini_map(t_data *data)
+{
+    // Draw black background for minimap
+    // draw_black_bg(data);
     
     // Draw the map (walls and floor)
     draw_map(data, data->image);
@@ -460,23 +476,23 @@ void draw_mini_map(t_data *data)
     draw_player(data->image);
     
     // Draw the minimap border
-    draw_minimap_border(data->image);
+    // draw_minimap_border(data->image);
 }
 
 // ========================================================================== //
 
 void	raycasting(t_data *data)
 {
+	
 	int	x;
-		double perp_wall_dist;
+	double perp_wall_dist;
 	int	hit;
-		int side;
+	int side;
 	int	color;
 	int	line_height;
 	int	draw_start;
 	int	draw_end;
 
-	data->image = create_image(data);
 	x = -1;
 	while (++x < SCREEN_WIDTH)
 	{
@@ -575,7 +591,13 @@ void	raycasting(t_data *data)
 		draw_vert_line(data->image, x, draw_start, draw_end, color);
 		draw_vert_line(data->image, x, draw_end, SCREEN_HEIGHT, CLR_FLR);
 	}
+}
 
+void start_game(t_data *data)
+{
+	data->image = create_image(data);
+
+	raycasting(data);
 	draw_mini_map(data);
 
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr,
@@ -591,26 +613,26 @@ int	key_press(int keycode, t_data *data)
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 		exit(0);
 	}
-	else if (keycode == U_KEY)
+	else if (keycode == U_KEY || keycode == w_KEY)
 		data->move_forward = 1;
-	else if (keycode == D_KEY)
+	else if (keycode == D_KEY || keycode == s_KEY)
 		data->move_backward = 1;
-	else if (keycode == L_KEY)
+	else if (keycode == L_KEY || keycode == a_KEY)
 		data->rotate_left = 1;
-	else if (keycode == R_KEY)
+	else if (keycode == R_KEY || keycode == d_KEY)
 		data->rotate_right = 1;
 	return (0);
 }
 
 int	key_release(int keycode, t_data *data)
 {
-	if (keycode == U_KEY)
+	if (keycode == U_KEY || keycode == w_KEY)
 		data->move_forward = 0;
-	else if (keycode == D_KEY)
+	else if (keycode == D_KEY || keycode == s_KEY)
 		data->move_backward = 0;
-	else if (keycode == L_KEY)
+	else if (keycode == L_KEY || keycode == a_KEY)
 		data->rotate_left = 0;
-	else if (keycode == R_KEY)
+	else if (keycode == R_KEY || keycode == d_KEY)
 		data->rotate_right = 0;
 	return (0);
 }
@@ -618,20 +640,20 @@ int	key_release(int keycode, t_data *data)
 int	game_loop(t_data *data)
 {
 	update_player(data);
-	raycasting(data);
+	start_game(data);
 	return (0);
 }
 
 void	init_map(t_data *data)
 {
 	data->map = (char **)malloc(sizeof(char *) * (9 + 1));
-	data->map[0] = strdup("11111111111111111111111111111");
-	data->map[1] = strdup("10000000000000000000000000001");
-	data->map[2] = strdup("10001111111111111000100000001");
-	data->map[3] = strdup("10000000000000000000010000001");
-	data->map[4] = strdup("11000000000000000001000100001");
-	data->map[5] = strdup("10000000000000000001000100001");
-	data->map[6] = strdup("10101000000000010100010000001");
+	data->map[0] = strdup("1111111111111111111111111111111111111");
+	data->map[1] = strdup("1000000000000000000000000000000000001");
+	data->map[2] = strdup("1011111111111111111111111111111111101");
+	data->map[3] = strdup("10000000000000000000010001        101");
+	data->map[4] = strdup("1100000000000000000000000111111111101");
+	data->map[5] = strdup("1000000000000000000100000000000000001");
+	data->map[6] = strdup("1010100000000001010011111111111111111");
 	data->map[7] = strdup("10001000000000010100010000001");
 	data->map[8] = strdup("11111111111111111111111111111");
 	data->map[9] = NULL;
@@ -668,6 +690,12 @@ void	init_game(t_data *data)
 	init_textures(data);
 }
 
+int destroy_notify(t_data *data)
+{
+	free(data->mlx_ptr);
+	return (exit(0), 0);
+}
+
 int	main(void)
 {
 	t_data data;
@@ -681,8 +709,8 @@ int	main(void)
 
 	mlx_hook(data.win_ptr, 2, 1L << 0, key_press, &data);
 	mlx_hook(data.win_ptr, 3, 1L << 1, key_release, &data);
+	mlx_hook(data.win_ptr, 17, 1L << 0, destroy_notify, &data);
 	mlx_loop_hook(data.mlx_ptr, game_loop, &data);
-
 	mlx_loop(data.mlx_ptr);
 
 	return (0);

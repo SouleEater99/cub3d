@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:07:23 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/23 18:39:49 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/24 10:24:19 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,19 @@ void	go_up_down(t_data *data, short mov_dir)
 	new_y = data->player_y + data->dir_y * MOVE_SPEED * mov_dir;
 
 	// check each one separately for sliding/gliding effect.
-    if (data->map[(int)data->player_y][(int)new_x] == '0')
-        data->player_x = new_x;
+    // if (data->map[(int)data->player_y][(int)new_x] == '0')
+    //     data->player_x = new_x;
     
-    if (data->map[(int)new_y][(int)data->player_x] == '0')
-        data->player_y = new_y;
-	
-	// if (data->map[(int)new_y][(int)new_x] == '0')
-	// {
-	// 	data->player_x = new_x;
+    // if (data->map[(int)new_y][(int)data->player_x] == '0')
 	// 	data->player_y = new_y;
-	// }
+	
+	printf("player at: [%lf][%lf] = [%c]\n", data->player_y, data->player_x, data->map[(int)data->player_y][(int)data->player_x]);
+	if (data->map[(int)new_y][(int)new_x] == '0')
+	{
+		data->player_x = new_x;
+		data->player_y = new_y;
+	}
+	printf("player will be at: [%lf][%lf] = [%c]\n", new_y, new_x, data->map[(int)new_y][(int)new_x]);
 }
 
 void	update_player(t_data *data)

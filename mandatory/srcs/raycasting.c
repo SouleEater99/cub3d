@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:56:36 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/23 16:06:47 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/24 10:17:12 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void	raycasting(t_data *data)
 		draw_vert_cols(data, x);
 	}
 
-	draw_mini_map(data);		// draw the mini-map
+	// draw_mini_map(data);		// draw the mini-map
 
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr,
 		0, 0);
