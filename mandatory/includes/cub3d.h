@@ -6,15 +6,15 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/23 18:41:43 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/25 11:44:05 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # ifndef CUB3D_H
 # define CUB3D_H
 
-# include <mlx.h>
 // # include "../libraries/minilibx-linux/mlx.h"
+# include <mlx.h>
 # include <stdlib.h>
 # include <math.h>
 # include <stdio.h>             // just for debugging
@@ -77,77 +77,77 @@
 
 typedef struct s_image
 {
-    void *img_ptr;
-    void *img_data;
-    int bits_per_pixel;
-    int size_line;
-    int endian;
+    void    *img_ptr;
+    void    *img_data;
+    int     bits_per_pixel;
+    int     size_line;
+    int     endian;
 }   t_image;
 
 typedef struct s_player
 {
-    double dir_x;   // player direction x position
-    double dir_y;   // player direction y position
+    double  dir_x;   // player direction x position
+    double  dir_y;   // player direction y position
     
-    double player_x;
-    double player_y;
+    double  player_x;
+    double  player_y;
 }   t_player;
 
 typedef struct s_map
 {
-    char **map;
-    int map_height;
-    int map_width;
+    char    **map;
+    int     map_height;
+    int     map_width;
 }   t_map;
 
 typedef struct {
-    void *mlx_ptr;
-    void *win_ptr;
+    void    *mlx_ptr;
+    void    *win_ptr;
 
-    char **map;
-    int map_height;
-    int map_width;
+    char    **map;
+    int     map_height;
+    int     map_width;
 
-    double dir_x;   // player direction x position
-    double dir_y;   // player direction y position
+    double  dir_x;   // player direction x position
+    double  dir_y;   // player direction y position
 
-    double camera_x;
+    double  camera_x;
 
-    double plane_x;
-    double plane_y;
+    double  plane_x;
+    double  plane_y;
+    char    player_dir;
+    double  player_x;
+    double  player_y;
 
-    double player_x;
-    double player_y;
+    int     map_x;      // player grid position
+    int     map_y;      // player grid position
 
-    int map_x;      // player grid position
-    int map_y;      // player grid position
+    double  ray_dir_x;
+    double  ray_dir_y;
 
-    double ray_dir_x;
-    double ray_dir_y;
+    double  side_dist_x;
+    double  side_dist_y;
+    double  delta_dist_x;
+    double  delta_dist_y;
 
-    double side_dist_x;
-    double side_dist_y;
-    double delta_dist_x;
-    double delta_dist_y;
-
-    int step_x;
-    int step_y;
+    int     step_x;
+    int     step_y;
     
-    short rotate_right;
-    short rotate_left;
-    short move_forward;
-    short move_backward;
+    short   rotate_right;
+    short   rotate_left;
+    short   move_forward;
+    short   move_backward;
     
     t_image *image;
 
-	int	hit;
-	int side;
-	int	color;
+	int     hit;
+	int     side;
+	int     color;
 
-	double perp_wall_dist;
-	int	line_height;
-	int	draw_start;
-	int	draw_end;
+	double  perp_wall_dist;
+	int     line_height;
+	int     draw_start;
+	int     draw_end;
 
 } t_data;
 
@@ -181,6 +181,7 @@ int         key_release(int keycode, t_data *data);
 int         game_loop(t_data *data);
 int         destroy_notify(t_data *data);
 
+void	    start_game(t_data *data);
 void        update_player(t_data *data);
 
 void        draw_mini_map(t_data *data);

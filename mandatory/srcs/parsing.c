@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/24 10:23:12 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/25 10:46:27 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void init_payer_pos(t_data *data, char **map)
             // if (map[y][x] == 'N' || map[y][x] == 'S' || map[y][x] == 'E' || map[y][x] == 'W')
             if (strchr("NSEW", map[y][x]))
             {
+                data->player_dir = map[y][x];
                 data->map[y][x] = '0';
                 data->player_x = x;
                 data->player_y = y;

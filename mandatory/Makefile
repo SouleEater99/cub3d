@@ -6,13 +6,13 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 12:57:30 by aelkheta          #+#    #+#              #
-#    Updated: 2024/10/23 14:44:48 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/10/25 11:08:53 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC := cc
 GCCFLAGS := -Wall -Wextra -Werror
-DEBUGFLAGS := -g3 -fsanitize=address
+DEBUGFLAGS := -g3 # -fsanitize=address
 LIBFT := libraries/libft/libft.a
 INCLUDES := -I includes
 # MAP := maps/valid_map1.cub
@@ -41,7 +41,11 @@ all: $(NAME)
 run: all clean
 	@./$(NAME) ${MAP}
 	@rm -f $(NAME)
-	
+
+valg: all clean
+	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) ${MAP}
+	@rm -f $(NAME)
+
 $(NAME): $(OBJS)
 	@echo "Building..."
 	@$(CC) $(GCCFLAGS) $(OBJS) $(MLXLFLAGS) $(DEBUGFLAGS) $(INCLUDES) $(LIBFT) -o $(NAME)

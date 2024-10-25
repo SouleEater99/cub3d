@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:56:36 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/24 10:17:12 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/25 11:07:16 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,10 @@ void	calculate_side_dist_x_y(t_data *data)
 	}
 }
 
-void	raycasting(t_data *data)
+void raycasting(t_data *data)
 {
 	int	x;
-
-	data->image = create_image(data);
+	
 	x = -1;
 	while (++x < SCREEN_WIDTH)
 	{
@@ -127,11 +126,18 @@ void	raycasting(t_data *data)
 		dda_algorithm(data); // DDA algorithm
 		draw_vert_cols(data, x);
 	}
+}
 
-	// draw_mini_map(data);		// draw the mini-map
+void	start_game(t_data *data)
+{
+
+	data->image = create_image(data);
+	raycasting(data);
+	draw_mini_map(data);		// draw the mini-map
 
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr,
 		0, 0);
 	mlx_destroy_image(data->mlx_ptr, data->image->img_ptr);
 	free(data->image);
+	data->image = NULL;
 }

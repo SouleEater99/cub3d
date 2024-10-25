@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:12:56 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/08 13:10:02 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/25 11:43:36 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -389,3 +389,6 @@ int		mlx_do_sync(void *mlx_ptr);
 */
 int		mlx_get_screen_size(void *mlx_ptr, int *sizex, int *sizey);
 
+
+
+void mlx_destroy_display(void *mlx_ptr);

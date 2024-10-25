@@ -6,18 +6,31 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:17:16 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/23 18:39:57 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/25 11:46:39 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
+void clean_up(t_data *data)
+{
+	if (data->win_ptr)
+		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+	if (data->mlx_ptr)
+		mlx_destroy_display(data->mlx_ptr);
+	if (data->image)
+		mlx_destroy_image(data->mlx_ptr, data->image);
+	if (data->map)
+		free_array(data->map);
+	if (data->mlx_ptr)
+		free(data->mlx_ptr);
+}
+
 int	key_press(int keycode, t_data *data)
 {
 	if (keycode == ESC_KEY)
 	{
-		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-		free(data->mlx_ptr);
+		clean_up(data);
 		exit(0);
 	}
 	else if (keycode == 'w' || keycode == U_KEY)
@@ -47,13 +60,12 @@ int	key_release(int keycode, t_data *data)
 int	game_loop(t_data *data)
 {
 	update_player(data);
-	raycasting(data);
+	start_game(data);
 	return (0);
 }
 
 int destroy_notify(t_data *data)
 {
-	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-	free(data->mlx_ptr);
+	clean_up(data);
 	return (exit (0), 0);
 }
