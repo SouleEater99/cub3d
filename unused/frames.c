@@ -24,7 +24,7 @@
 
 #define RAY_LENGHT 500
 
-#define TILE_SIZE 32 // the cell grid size
+#define TILE_SIZE 16 // the cell grid size
 
 #define MAP_WIDTH 38  // just an example
 #define MAP_HEIGHT 9 // just an example

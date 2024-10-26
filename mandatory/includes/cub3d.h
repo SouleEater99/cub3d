@@ -6,7 +6,7 @@
 /*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/25 20:27:13 by aziz             ###   ########.fr       */
+/*   Updated: 2024/10/26 21:39:25 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 # include <string.h>
 # include <sys/time.h>
 # include <../libraries/libft/libft.h>
-#include <fcntl.h>              //  for open syscall
+# include <fcntl.h>              //  for open syscall
+# include <stdbool.h>
 
 # define PI 3.14159265358979323846
 
@@ -63,8 +64,8 @@
     # define R_KEY          65363
     # define L_KEY          65361
     
-    # define MOVE_SPEED     0.2     // player speed
-    # define ROT_SPEED      0.06     // Rotation speed (in radians)
+    # define MOVE_SPEED     0.03     // player speed
+    # define ROT_SPEED      0.01     // Rotation speed (in radians)
 #else
     #error "Unsupported platform"
 #endif
@@ -98,6 +99,7 @@ typedef struct s_map
     char    **map;
     int     map_height;
     int     map_width;
+    int     map_start;
 }   t_map;
 
 typedef struct {
@@ -149,6 +151,16 @@ typedef struct {
 	int     draw_start;
 	int     draw_end;
 
+    char    *no_texture_path;
+    char    *so_texture_path;
+    char    *we_texture_path;
+    char    *ea_texture_path;
+
+    int     map_start;
+    int     floor_color;
+    int     ceiling_color;
+    // int     sky_color;
+
 } t_data;
 
 // functions signature
@@ -189,6 +201,6 @@ void        draw_mini_map(t_data *data);
 // parsing time
 
 int         parse_map(t_data *data, int ac, char **av);
-void        std_error(char *error);
+// void        std_error(char *error);
 
 # endif // CUB3D_H
