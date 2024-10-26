@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/25 11:44:05 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/25 20:27:13 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define CLR_EAW        0xcacaca
 # define CLR_SAN        0xf5f5f5
 
-# define TILE_SIZE      16      // the cell grid size
+# define TILE_SIZE      32      // the cell grid size
 
 # define CENTER (SCREEN_WIDTH / 2 - MAP_WIDTH * TILE_SIZE / 2)
 
@@ -63,8 +63,8 @@
     # define R_KEY          65363
     # define L_KEY          65361
     
-    # define MOVE_SPEED     0.04     // player speed
-    # define ROT_SPEED      0.02     // Rotation speed (in radians)
+    # define MOVE_SPEED     0.2     // player speed
+    # define ROT_SPEED      0.06     // Rotation speed (in radians)
 #else
     #error "Unsupported platform"
 #endif

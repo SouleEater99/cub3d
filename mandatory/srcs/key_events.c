@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_events.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:17:16 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/25 11:46:39 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/25 20:38:33 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,17 @@ int	key_release(int keycode, t_data *data)
 	return (0);
 }
 
+void mouse_positions(t_data *data)
+{
+	int x, y;
+	if (!mlx_mouse_get_pos(data->win_ptr, &x, &y))
+		exit (1);
+	printf("%d %d\n", x, y);
+}
+
 int	game_loop(t_data *data)
 {
+	// mouse_positions(data);
 	update_player(data);
 	start_game(data);
 	return (0);
