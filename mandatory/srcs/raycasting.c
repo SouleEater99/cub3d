@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:56:36 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/26 15:57:43 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/26 16:23:07 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void	start_game(t_data *data)
 
 	data->image = create_image(data);
 	raycasting(data);
-	// draw_mini_map(data);		// draw the mini-map
+	draw_mini_map(data);		// draw the mini-map
 
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr,
 		0, 0);
