@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/26 16:22:44 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/26 18:49:12 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,8 @@ int init_payer_pos(t_data *data, char **map)
 {
     int x, y;
 
-    y = data->map_start;
+    // y = data->map_start;
+    y = -1;
     while(map && map[++y])
     {
         x = -1;
@@ -273,14 +274,14 @@ int parse_map(t_data *data, int ac, char **av)
     if (read_map(data, av[1]))
         return (1);
     
-    if (looad_textures(data, data->map))
-        return (1);
+    // if (looad_textures(data, data->map))
+    //     return (1);
 
-    if (looad_floor_sky_colors(data, data->map))
-        return (1);
+    // if (looad_floor_sky_colors(data, data->map))
+    //     return (1);
         
-    if (check_map_borders(data->map, data->map_height, data->map_width, data->map_start))
-        return (1);
+    // if (check_map_borders(data->map, data->map_height, data->map_width, data->map_start))
+    //     return (1);
         
     if (init_payer_pos(data, data->map))
         return (1);
