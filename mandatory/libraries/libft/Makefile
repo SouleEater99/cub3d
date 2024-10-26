@@ -6,7 +6,7 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/20 10:22:55 by aelkheta          #+#    #+#              #
-#    Updated: 2023/11/22 20:03:04 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/10/26 14:15:06 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRCS_M = ft_atoi.c \
 		ft_memcpy.c \
 		ft_strchr.c \
 		ft_strncmp.c \
+		ft_strcmp.c \
 		ft_isascii.c \
 		ft_memmove.c \
 		ft_strdup.c \

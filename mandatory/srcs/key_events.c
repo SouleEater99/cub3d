@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:17:16 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/25 11:46:39 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/26 15:56:42 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 
 void clean_up(t_data *data)
 {
+	if (data->no_texture_path)
+		free(data->no_texture_path);
+	if (data->so_texture_path)
+		free(data->so_texture_path);
+	if (data->we_texture_path)
+		free(data->we_texture_path);
+	if (data->ea_texture_path)
+		free(data->ea_texture_path);
+	
 	if (data->win_ptr)
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 	if (data->mlx_ptr)
