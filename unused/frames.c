@@ -1,19 +1,19 @@
-#include <math.h>
+# include <math.h>
 // #include <mlx.h>
 # include "../mandatory/libraries/minilibx-linux/mlx.h"
-#include <stdio.h> // just for debugging
-#include <stdlib.h>
-#include <string.h>
-#include <sys/time.h>
+# include <stdio.h> // just for debugging
+# include <stdlib.h>
+# include <string.h>
+# include <sys/time.h>
 
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 600
+# define SCREEN_WIDTH 800
+# define SCREEN_HEIGHT 600
 
-#define ESC_KEY 65307
-#define U_KEY 65362
-#define D_KEY 65364
-#define R_KEY 65363
-#define L_KEY 65361
+# define ESC_KEY 65307
+# define U_KEY 65362
+# define D_KEY 65364
+# define R_KEY 65363
+# define L_KEY 65361
 
 # define w_KEY 'w'
 # define s_KEY 's'
@@ -22,12 +22,12 @@
 
 # define PI 3.14159265358979323846
 
-#define RAY_LENGHT 500
+# define RAY_LENGHT 500
 
-#define TILE_SIZE 16 // the cell grid size
+# define TILE_SIZE 32 // the cell grid size
 
-#define MAP_WIDTH 38  // just an example
-#define MAP_HEIGHT 9 // just an example
+# define MAP_WIDTH 38  // just an example
+# define MAP_HEIGHT 9 // just an example
 
 // # define CLR_SKY        0x89CFF3
 // # define CLR_FLR        0xB99470
@@ -35,14 +35,14 @@
 // # define CLR_EAW        0xB5B5B5
 // # define CLR_SAN        0xF5F5F5
 
-#define CLR_SKY 0x69c9fa
-#define CLR_FLR 0xc28951
+# define CLR_SKY 0x69c9fa
+# define CLR_FLR 0xc28951
 
-#define CLR_EAW 0xcacaca
-#define CLR_SAN 0xf5f5f5
+# define CLR_EAW 0xcacaca
+# define CLR_SAN 0xf5f5f5
 
-#define MOVE_SPEED 0.09 // player speed per frame
-#define ROT_SPEED 0.04  // rotation speed per frame (in radians)
+# define MOVE_SPEED	0.04 // player speed per frame
+# define ROT_SPEED	0.02  // rotation speed per frame (in radians)
 
 # define CENTER (SCREEN_WIDTH / 2 - MAP_WIDTH * TILE_SIZE / 2)
 
@@ -101,13 +101,13 @@ typedef struct s_data
 	int is_minimap_fullscreen;
 }			t_data;
 
-void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
-{
-	char	*dst;
+// void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
+// {
+// 	char	*dst;
 
-	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
-}
+// 	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+// 	*(unsigned int *)dst = color;
+// }
 
 void	update_player(t_data *data)
 {
@@ -478,46 +478,16 @@ void full_draw_black_bg(t_data *data)
     }
 }
 
-void full_draw_map(t_data *data, t_image *image) {
-    // Calculate scale factor based on screen size and map dimensions
-    double scale_x = (double)SCREEN_WIDTH / (MAP_WIDTH * TILE_SIZE);
-    double scale_y = (double)SCREEN_HEIGHT / (MAP_HEIGHT * TILE_SIZE);
-    double scale = fmin(scale_x, scale_y); // Use the smaller scale to fit both dimensions
-
-    // Calculate the player's position in map coordinates
-    int player_map_x = (int)data->player_x;
-    int player_map_y = (int)data->player_y;
-
-    // Draw the entire map
-    for (int map_y = 0; map_y < MAP_HEIGHT; map_y++) {
-        for (int map_x = 0; map_x < MAP_WIDTH; map_x++) {
-            // Calculate the position for the tile in the scaled map
-            // Centering the map around the player
-            double tile_x = (map_x - player_map_x) * TILE_SIZE * scale + (SCREEN_WIDTH / 2);
-            double tile_y = (map_y - player_map_y) * TILE_SIZE * scale + (SCREEN_HEIGHT / 2);
-
-            // Ensure the tile is within screen bounds before drawing
-            if (tile_x >= 0 && tile_x < SCREEN_WIDTH && tile_y >= 0 && tile_y < SCREEN_HEIGHT) {
-                // Draw the tile based on its type
-                if (data->map[map_y][map_x] == '1') {
-                    draw_tile(image, tile_x, tile_y, 0x000000, data, scale); // Wall tile
-                } else if (data->map[map_y][map_x] == '0') {
-                    draw_tile(image, tile_x, tile_y, 0xAAAAAA, data, scale); // Floor tile
-                }
-            }
-        }
-    }
-}
 
 void draw_mini_map(t_data *data)
 {
     // Draw black background for minimap
-    // draw_black_bg(data);
-    full_draw_black_bg(data);
+    draw_black_bg(data);
+    // full_draw_black_bg(data);
 
     // Draw the map (walls and floor)
-    // draw_map(data, data->image);
-	full_draw_map(data, data->image);
+    draw_map(data, data->image);
+	// full_draw_map(data, data->image);
     
     // Draw the player's view cone
     draw_player_direction(data, data->image);
@@ -638,49 +608,49 @@ void	raycasting(t_data *data)
 		// if (draw_end >= SCREEN_HEIGHT)
 		// 	draw_end = SCREEN_HEIGHT - 1;
 
-			while (hit == 0)
+		while (hit == 0)
+		{
+			if (data->side_dist_x < data->side_dist_y)
 			{
-				if (data->side_dist_x < data->side_dist_y)
-				{
-					data->side_dist_x += data->delta_dist_x;
-					data->map_x += data->step_x;
-					side = 0; // X-axis
-				}
-				else
-				{
-					data->side_dist_y += data->delta_dist_y;
-					data->map_y += data->step_y;
-					side = 1; // Y-axis
-				}
-				// Check if ray has hit a wall
-				if (data->map[data->map_y][data->map_x] == '1')
-					hit = 1;
+				data->side_dist_x += data->delta_dist_x;
+				data->map_x += data->step_x;
+				side = 0; // X-axis
 			}
-
-			// Calculate the distance the ray has traveled
-			if (side == 0) // Wall was hit on the X-axis
-				perp_wall_dist = (data->map_x - data->player_x + (1 - data->step_x) / 2) / data->ray_dir_x;
-			else // Wall was hit on the Y-axis
-				perp_wall_dist = (data->map_y - data->player_y + (1 - data->step_y) / 2) / data->ray_dir_y;
-
-			// Calculate the height of the line to draw
-			line_height = (int)(SCREEN_HEIGHT / perp_wall_dist);
-			draw_start = -line_height / 2 + SCREEN_HEIGHT / 2;
-			if (draw_start < 0) draw_start = 0;
-			draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
-			if (draw_end >= SCREEN_HEIGHT) draw_end = SCREEN_HEIGHT - 1;
-
-			// Choose color based on side
-			if (side == 0)
-				color = 0xFF0000; // Red for vertical walls
 			else
-				color = 0x00FF00; // Green for horizontal walls
-
-			// Draw the vertical line on the screen
-			draw_vert_line(data->image, x, 0, draw_start, CLR_SKY);
-			draw_vert_line(data->image, x, draw_start, draw_end, color);
-			draw_vert_line(data->image, x, draw_end, SCREEN_HEIGHT, CLR_FLR);
+			{
+				data->side_dist_y += data->delta_dist_y;
+				data->map_y += data->step_y;
+				side = 1; // Y-axis
+			}
+			// Check if ray has hit a wall
+			if (data->map[data->map_y][data->map_x] == '1')
+				hit = 1;
 		}
+
+		// Calculate the distance the ray has traveled
+		if (side == 0) // Wall was hit on the X-axis
+			perp_wall_dist = (data->map_x - data->player_x + (1 - data->step_x) / 2) / data->ray_dir_x;
+		else // Wall was hit on the Y-axis
+			perp_wall_dist = (data->map_y - data->player_y + (1 - data->step_y) / 2) / data->ray_dir_y;
+
+		// Calculate the height of the line to draw
+		line_height = (int)(SCREEN_HEIGHT / perp_wall_dist);
+		draw_start = -line_height / 2 + SCREEN_HEIGHT / 2;
+		if (draw_start < 0) draw_start = 0;
+		draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
+		if (draw_end >= SCREEN_HEIGHT) draw_end = SCREEN_HEIGHT - 1;
+
+		// Choose color based on side
+		if (side == 0)
+			color = 0xFF0000; // Red for vertical walls
+		else
+			color = 0x00FF00; // Green for horizontal walls
+
+		// Draw the vertical line on the screen
+		draw_vert_line(data->image, x, 0, draw_start, CLR_SKY);
+		draw_vert_line(data->image, x, draw_start, draw_end, color);
+		draw_vert_line(data->image, x, draw_end, SCREEN_HEIGHT, CLR_FLR);
+	}
 
 }
 

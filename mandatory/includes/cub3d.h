@@ -6,7 +6,7 @@
 /*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/26 21:39:25 by aziz             ###   ########.fr       */
+/*   Updated: 2024/10/26 21:45:19 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@
     # define R_KEY          65363
     # define L_KEY          65361
     
-    # define MOVE_SPEED     0.03     // player speed
-    # define ROT_SPEED      0.01     // Rotation speed (in radians)
+    # define MOVE_SPEED     0.2     // player speed
+    # define ROT_SPEED      0.08     // Rotation speed (in radians)
 #else
     #error "Unsupported platform"
 #endif

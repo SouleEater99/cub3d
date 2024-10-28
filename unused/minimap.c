@@ -8,11 +8,12 @@
 # define SCREEN_WIDTH       800
 # define SCREEN_HEIGHT      600
 
-# define MAP_H              10
-# define MAP_W              18
+# define MAP_H              20
+# define MAP_W              30
 
 # define TILE_SIZE          64
 # define MOVE_SPEED         0.1
+# define SCALE              0.25
 
 # define ESC_KEY            65307
 # define UP_KEY             65362
@@ -27,7 +28,20 @@
 
 # define PI                 3.14159265358979323846
 
+# define PLAYER_RADIUS      6
 # define MINIMAP_RADIUS     80
+
+# define MAP_MID_X          (SCREEN_WIDTH / 2)
+# define MAP_MID_Y          (SCREEN_HEIGHT / 2)
+
+# define MINIMAP_MID_X      (SCREEN_WIDTH - MINIMAP_RADIUS - 20)
+# define MINIMAP_MID_Y      (MINIMAP_RADIUS + 20)
+
+# define LEFT_CLICK         1
+# define MIDDLE_CLICK       2
+# define RIGHT_CLICK        3
+# define SCROLL_UP          4
+# define SCROLL_DOWN        5
 
 typedef struct s_image
 {
@@ -52,7 +66,9 @@ typedef struct s_data
     int         minimap_radius;
     int         minimap_x_center;
     int         minimap_y_center;
+    double      move_speed;
     int         clicks;
+    int         player_radius;
 
     int         keys[65536];
 }   t_data;
@@ -133,28 +149,50 @@ int key_release(int keycode, t_data *data)
     return (0);
 }
 
-char **init_map(t_data *data)
+
+char **init_map()
 {
     char **map;
+    int i;
 
     map = malloc(sizeof(char *) * (MAP_H + 1));
     if (!map)
-    {
-        clean_up(data);
-        exit(1);
-    }
+        return (NULL);
+    
+    const char *map_lines[] = {
+        "11111111111111111111111111111",
+        "10000000000000000000000000001",
+        "11111111111111111111111111101",
+        "10000000000000000000000000101",
+        "10111111111111111111111110101",
+        "10100000000000000000000010101",
+        "10101111111111111111111010101",
+        "10101000000000000000001010101",
+        "10101000000000000000001010101",
+        "10101000000000000000001010101",
+        "10101000000000000000001010101",
+        "10101000000000000000001010101",
+        "10101000000000000000001010101",
+        "10101000000000000000001010101",
+        "10101000000000000000000010101",
+        "10101111111111111111111110101",
+        "10100000000000000000000000101",
+        "10111111111111111111111111101",
+        "10000000000000000000000000001",
+        "11111111111111111111111111111",
+        NULL
+    };
 
-    map[0] = strdup("111111111111111111");
-    map[1] = strdup("100000000000000001");
-    map[2] = strdup("100000000000000001");
-    map[3] = strdup("100000000000000001");
-    map[4] = strdup("100000000000000001");
-    map[5] = strdup("100000000000000001");
-    map[6] = strdup("100000000000000001");
-    map[7] = strdup("100000000000000001");
-    map[8] = strdup("100000000000000001");
-    map[9] = strdup("111111111111111111");
-    map[10] = NULL;
+    for (i = 0; map_lines[i]; i++)
+    {
+        map[i] = strdup(map_lines[i]);
+        if (!map[i])
+        {
+            free_map(map);
+            return (NULL);
+        }
+    }
+    map[i] = NULL;
     return (map);
 }
 
@@ -174,35 +212,6 @@ void draw_background(t_data *data, t_image *image)
         }
     }
 }
-
-// void draw_tile(t_data *data, t_image *image, double x, double y, int color)
-// {
-//     int size = (int)(TILE_SIZE * data->scale);
-//     // int i = x;
-//     // int j;
-    
-//     // Calculate screen position relative to player's position
-//     double screen_x =  + (x - data->player_x * TILE_SIZE * data->scale);
-//     double screen_y = data->minimap_y_center + (y - data->player_y * TILE_SIZE * data->scale);
-    
-//     for (int di = 0; di < size; di++)
-//     {
-//         for (int dj = 0; dj < size; dj++)
-//         {
-//             double pixel_x = screen_x + di;
-//             double pixel_y = screen_y + dj;
-            
-//             // Calculate distance from minimap center
-//             double dx = pixel_x - data->minimap_x_center;
-//             double dy = pixel_y - data->minimap_y_center;
-//             double distance = sqrt(dx * dx + dy * dy);
-            
-//             // Only draw if inside the circle
-//             if (distance <= data->minimap_radius)
-//                 put_pixel_in_img(image, pixel_x, pixel_y, color);
-//         }
-//     }
-// }
 
 void draw_tile(t_data *data, t_image *image, double x, double y, int color)
 {
@@ -235,14 +244,14 @@ void draw_player(t_data *data, t_image *image)
     int y;
     double dist;
 
-    x = -3;
-    while (++x <= 3)
+    x = -data->player_radius;
+    while (++x <= data->player_radius)
     {
-        y = -3;
-        while (++y <= 3)
+        y = -data->player_radius;
+        while (++y <= data->player_radius)
         {
             dist = sqrt(x * x + y * y);
-            if (dist <= 3)
+            if (dist <= data->player_radius)
                 put_pixel_in_img(image, data->minimap_x_center + x,  data->minimap_y_center + y, 0xFF0000);
         }
     }
@@ -288,20 +297,27 @@ void update_player(t_data *data)
     new_y = data->player_y;
 
     if (data->keys[W_KEY] || data->keys[UP_KEY])
-        new_y -= MOVE_SPEED;
+        new_y -= data->move_speed;
     if (data->keys[S_KEY] || data->keys[DOWN_KEY])
-        new_y += MOVE_SPEED;
+        new_y += data->move_speed;
     if (data->keys[A_KEY] || data->keys[LEFT_KEY])
-        new_x -= MOVE_SPEED;
+        new_x -= data->move_speed;
     if (data->keys[D_KEY] || data->keys[RIGHT_KEY])
-        new_x += MOVE_SPEED;
+        new_x += data->move_speed;
 
-    // Collision detection
     if (data->map[(int)new_y][(int)new_x] != '1')
     {
         data->player_x = new_x;
         data->player_y = new_y;
     }
+
+    // Check horizontal movement
+    // if (data->map[(int)data->player_y][(int)new_x] != '1')
+    //     data->player_x = new_x;
+    
+    // // Check vertical movement
+    // if (data->map[(int)new_y][(int)data->player_x] != '1')
+    //     data->player_y = new_y;
 }
 
 void draw_minimap(t_data *data)
@@ -331,32 +347,61 @@ int game_loop(t_data *data)
 
 int mouse_events(int button, int x, int y, t_data *data)
 {
-	printf("Button %d pressed at (%d, %d)\n", button, y, x);
-	if (button == 1)
+    printf("Button %d pressed at (%d, %d)\n", button, x, y);
+    if (button == LEFT_CLICK)
     {
-		data->clicks++;
+        data->clicks++;
         if (data->clicks % 2 != 0)
         {
-            data->scale = 1;
-            data->minimap_radius = 800;
+            data->scale = SCALE * 2;
+            data->move_speed = MOVE_SPEED * 4;
+            data->player_radius = PLAYER_RADIUS * 2;
+            data->minimap_radius = MINIMAP_RADIUS * 10;
+            data->minimap_x_center = MAP_MID_X;
+            data->minimap_y_center = MAP_MID_Y;
         }
         else
         {
-            data->scale = 0.25;
-            data->minimap_radius = 80;
+            data->scale = SCALE;
+            data->move_speed = MOVE_SPEED;
+            data->player_radius = PLAYER_RADIUS;
+            data->minimap_radius = MINIMAP_RADIUS;
+            data->minimap_x_center = MINIMAP_MID_X;
+            data->minimap_y_center = MINIMAP_MID_Y;
         }
-        // printf("Left click!\n");
-
+        printf("Left click!\n");
     }
-	else if (button == 2)
-		printf("Middle click!\n");
-	else if (button == 3)
-		printf("Right click!\n");
-	else if (button == 4)
-		printf("Scroll up!\n");
-	else if (button == 5)
-		printf("Scroll down!\n");
-	return 0;
+    else if (button == MIDDLE_CLICK)
+    {
+        printf("Middle click!\n");
+    }
+    else if (button == RIGHT_CLICK)
+    {
+        printf("Right click!\n");
+    }
+    else if (button == SCROLL_UP)
+    {
+        if (data->scale < 2.0)
+        {
+            data->scale += 0.1;
+            data->move_speed += 0.01;
+            data->minimap_radius += 5;
+            data->player_radius += 1;
+        }
+        printf("Zooming in!\n");
+    }
+    else if (button == SCROLL_DOWN)
+    {
+        if (data->scale > 0.2)
+        {
+            data->scale -= 0.1;
+            data->move_speed -= 0.01;
+            data->minimap_radius -= 5;
+            data->player_radius -= 1;
+        }
+        printf("Zooming out!\n");
+    }
+    return 0;
 }
 
 int main(void)
@@ -374,16 +419,17 @@ int main(void)
         return (1);
     }
 
-    if (!(data.map = init_map(&data)))
+    if (!(data.map = init_map()))
         return (1);
 
-
     data.minimap_radius = MINIMAP_RADIUS;
-    data.minimap_x_center =  SCREEN_WIDTH / 2;
-    data.minimap_y_center =  SCREEN_HEIGHT / 2;
-    data.scale = 0.25;
-    data.player_x = 5.0;
-    data.player_y = 5.0;
+    data.minimap_x_center = MINIMAP_MID_X;
+    data.minimap_y_center = MINIMAP_MID_Y;
+    data.move_speed = MOVE_SPEED;
+    data.scale = SCALE;
+    data.player_radius = PLAYER_RADIUS;
+    data.player_x = 1.0;
+    data.player_y = 1.0;
 
     mlx_hook(data.wind_ptr, 2, 1L << 0, key_press, &data);
     mlx_hook(data.wind_ptr, 3, 1L << 1, key_release, &data);
