@@ -52,8 +52,8 @@
     # define R_KEY          124
     # define L_KEY          123
     
-    # define MOVE_SPEED     0.08     // player speed
-    # define ROT_SPEED      0.04     // Rotation speed (in radians)
+    # define MOVE_SPEED     0.09     // player speed
+    # define ROT_SPEED      0.06     // Rotation speed (in radians)
 
 #elif __linux__
     // Linux (X11) keycodes

@@ -16,8 +16,8 @@ void clean_up(t_data *data)
 {
 	if (data->win_ptr)
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-	if (data->mlx_ptr)
-		mlx_destroy_display(data->mlx_ptr);
+	// if (data->mlx_ptr)
+	// 	mlx_destroy_display(data->mlx_ptr);
 	if (data->image)
 		mlx_destroy_image(data->mlx_ptr, data->image);
 	if (data->map)
