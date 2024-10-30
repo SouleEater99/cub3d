@@ -6,7 +6,7 @@
 /*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/26 21:45:19 by aziz             ###   ########.fr       */
+/*   Updated: 2024/10/30 14:02:53 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,25 @@
 
 # define RAY_LENGHT     500
 
-// # define MAP_WIDTH      30      // just an example
-// # define MAP_HEIGHT     9       // just an example
+# define MAP_WIDTH      30      // just an example
+# define MAP_HEIGHT     9       // just an example
+
+# define PLAYER_RADIUS      6
+# define MINIMAP_RADIUS     80
+
+# define SCALE              0.25
+
+# define MAP_MID_X          (SCREEN_WIDTH / 2)
+# define MAP_MID_Y          (SCREEN_HEIGHT / 2)
+
+# define MINIMAP_MID_X      (SCREEN_WIDTH - MINIMAP_RADIUS - 20)
+# define MINIMAP_MID_Y      (MINIMAP_RADIUS + 20)
+
+# define LEFT_CLICK         1
+# define MIDDLE_CLICK       2
+# define RIGHT_CLICK        3
+# define SCROLL_UP          4
+# define SCROLL_DOWN        5
 
 # define CLR_SKY        0x69c9fa
 # define CLR_FLR        0xc28951
@@ -161,6 +178,14 @@ typedef struct {
     int     ceiling_color;
     // int     sky_color;
 
+    double      scale;
+    int         minimap_radius;
+    int         minimap_x_center;
+    int         minimap_y_center;
+    double      move_speed;
+    int         clicks;
+    int         player_radius;
+
 } t_data;
 
 // functions signature
@@ -197,6 +222,8 @@ void	    start_game(t_data *data);
 void        update_player(t_data *data);
 
 void        draw_mini_map(t_data *data);
+
+int mouse_events(int button, int x, int y, t_data *data);
 
 // parsing time
 
