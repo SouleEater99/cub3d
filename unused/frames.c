@@ -1,18 +1,19 @@
-#include <math.h>
-#include <mlx.h>
-#include <stdio.h> // just for debugging
-#include <stdlib.h>
-#include <string.h>
-#include <sys/time.h>
+# include <math.h>
+// #include <mlx.h>
+# include "../mandatory/libraries/minilibx-linux/mlx.h"
+# include <stdio.h> // just for debugging
+# include <stdlib.h>
+# include <string.h>
+# include <sys/time.h>
 
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 600
+# define SCREEN_WIDTH 800
+# define SCREEN_HEIGHT 600
 
-#define ESC_KEY 65307
-#define U_KEY 65362
-#define D_KEY 65364
-#define R_KEY 65363
-#define L_KEY 65361
+# define ESC_KEY 65307
+# define U_KEY 65362
+# define D_KEY 65364
+# define R_KEY 65363
+# define L_KEY 65361
 
 # define w_KEY 'w'
 # define s_KEY 's'
@@ -21,12 +22,12 @@
 
 # define PI 3.14159265358979323846
 
-#define RAY_LENGHT 500
+# define RAY_LENGHT 500
 
-#define TILE_SIZE 32 // the cell grid size
+# define TILE_SIZE 32 // the cell grid size
 
-#define MAP_WIDTH 38  // just an example
-#define MAP_HEIGHT 9 // just an example
+# define MAP_WIDTH 38  // just an example
+# define MAP_HEIGHT 9 // just an example
 
 // # define CLR_SKY        0x89CFF3
 // # define CLR_FLR        0xB99470
@@ -34,14 +35,14 @@
 // # define CLR_EAW        0xB5B5B5
 // # define CLR_SAN        0xF5F5F5
 
-#define CLR_SKY 0x69c9fa
-#define CLR_FLR 0xc28951
+# define CLR_SKY 0x69c9fa
+# define CLR_FLR 0xc28951
 
-#define CLR_EAW 0xcacaca
-#define CLR_SAN 0xf5f5f5
+# define CLR_EAW 0xcacaca
+# define CLR_SAN 0xf5f5f5
 
-#define MOVE_SPEED 0.009 // player speed per frame
-#define ROT_SPEED 0.004  // rotation speed per frame (in radians)
+# define MOVE_SPEED	0.04 // player speed per frame
+# define ROT_SPEED	0.02  // rotation speed per frame (in radians)
 
 # define CENTER (SCREEN_WIDTH / 2 - MAP_WIDTH * TILE_SIZE / 2)
 
@@ -97,15 +98,16 @@ typedef struct s_data
 	
 	t_image	*image;
 	t_texture textures[4];
+	int is_minimap_fullscreen;
 }			t_data;
 
-void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
-{
-	char	*dst;
+// void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
+// {
+// 	char	*dst;
 
-	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
-}
+// 	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+// 	*(unsigned int *)dst = color;
+// }
 
 void	update_player(t_data *data)
 {
@@ -161,7 +163,7 @@ void	update_player(t_data *data)
 		data->plane_y = old_plane_x * sin(ROT_SPEED) + data->plane_y
 			* cos(ROT_SPEED);
 	}
-	printf("player at: [%lf][%lf]: [%c]\n", data->player_y, data->player_x, data->map[(int)data->player_y][(int)data->player_x]);
+	// printf("player at: [%lf][%lf]: [%c]\n", data->player_y, data->player_x, data->map[(int)data->player_y][(int)data->player_x]);
 }
 
 /// @brief this function setting a pixel in an image with the cordinates given.
@@ -460,14 +462,32 @@ void draw_black_bg(t_data *data)
     }
 }
 
+void full_draw_black_bg(t_data *data)
+{
+	for (int y = 0; y <= SCREEN_HEIGHT; y++)
+    {
+        for (int x = 0; x <= SCREEN_WIDTH; x++)
+        {
+            if (x < SCREEN_WIDTH && y < SCREEN_HEIGHT)
+            {
+                int screen_x = x;
+                int screen_y = y;
+                put_pixel_in_img(data->image, screen_x, screen_y, 0x222222);
+            }
+        }
+    }
+}
+
 
 void draw_mini_map(t_data *data)
 {
     // Draw black background for minimap
-    // draw_black_bg(data);
-    
+    draw_black_bg(data);
+    // full_draw_black_bg(data);
+
     // Draw the map (walls and floor)
     draw_map(data, data->image);
+	// full_draw_map(data, data->image);
     
     // Draw the player's view cone
     draw_player_direction(data, data->image);
@@ -534,63 +554,104 @@ void	raycasting(t_data *data)
 			data->side_dist_y = (data->map_y + 1.0 - data->player_y)
 				* data->delta_dist_y;
 		}
+		// while (hit == 0)
+		// {
+		// 	if (data->side_dist_x < data->side_dist_y)
+		// 	{
+		// 		data->side_dist_x += data->delta_dist_x;
+		// 		data->map_x += data->step_x;
+		// 		side = 0;
+		// 	}
+		// 	else
+		// 	{
+		// 		data->side_dist_y += data->delta_dist_y;
+		// 		data->map_y += data->step_y;
+		// 		side = 1;
+		// 	}
+		// 	if (data->map_x < 0 || data->map_x >= MAP_WIDTH || data->map_y < 0
+		// 		|| data->map_y >= MAP_HEIGHT)
+		// 		break ; // we hit the border walls.
+		// 	if (data->map[data->map_y][data->map_x] == '1')
+		// 		hit = 1; // break ; we hit a wall;
+		// }
+		// if (side == 0)
+		// 	perp_wall_dist = data->side_dist_x - data->delta_dist_x;
+		// else
+		// 	perp_wall_dist = data->side_dist_y - data->delta_dist_y;
+		// color = 0xFFFFFF;
+		// if (side == 0)
+		// {
+		// 	color = CLR_EAW;
+		// 	// if (data->step_x > 0)        
+		// 		// this is mean the player look to the right or the East
+		// 	//     color = 0xFF0000;   // red color
+		// 	// else                   
+		// 		// this is mean the player look to the left or the West
+		// 	//     color = 0x00FF00;   // green color
+		// }
+		// else
+		// {
+		// 	color = CLR_SAN;
+		// 	// if (data->step_y > 0)        
+		// 		// this is mean the player look to the bottom or the South
+		// 	//     color = 0x0000FF;   // blue color
+		// 	// else                   
+		// 		// this is mean the player look to the top or the South
+		// 	//     color = 0xFFFF00;   // yellow color
+		// }
+		
+		// line_height = (int)(SCREEN_HEIGHT / perp_wall_dist);
+		// draw_start = -line_height / 2 + SCREEN_HEIGHT / 2;
+		// if (draw_start < 0)
+		// 	draw_start = 0;
+		// draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
+		// if (draw_end >= SCREEN_HEIGHT)
+		// 	draw_end = SCREEN_HEIGHT - 1;
+
 		while (hit == 0)
 		{
 			if (data->side_dist_x < data->side_dist_y)
 			{
 				data->side_dist_x += data->delta_dist_x;
 				data->map_x += data->step_x;
-				side = 0;
+				side = 0; // X-axis
 			}
 			else
 			{
 				data->side_dist_y += data->delta_dist_y;
 				data->map_y += data->step_y;
-				side = 1;
+				side = 1; // Y-axis
 			}
-			if (data->map_x < 0 || data->map_x >= MAP_WIDTH || data->map_y < 0
-				|| data->map_y >= MAP_HEIGHT)
-				break ; // we hit the border walls.
+			// Check if ray has hit a wall
 			if (data->map[data->map_y][data->map_x] == '1')
-				hit = 1; // break ; we hit a wall;
+				hit = 1;
 		}
-		if (side == 0)
-			perp_wall_dist = data->side_dist_x - data->delta_dist_x;
-		else
-			perp_wall_dist = data->side_dist_y - data->delta_dist_y;
-		color = 0xFFFFFF;
-		if (side == 0)
-		{
-			color = CLR_EAW;
-			// if (data->step_x > 0)        
-				// this is mean the player look to the right or the East
-			//     color = 0xFF0000;   // red color
-			// else                   
-				// this is mean the player look to the left or the West
-			//     color = 0x00FF00;   // green color
-		}
-		else
-		{
-			color = CLR_SAN;
-			// if (data->step_y > 0)        
-				// this is mean the player look to the bottom or the South
-			//     color = 0x0000FF;   // blue color
-			// else                   
-				// this is mean the player look to the top or the South
-			//     color = 0xFFFF00;   // yellow color
-		}
-		
+
+		// Calculate the distance the ray has traveled
+		if (side == 0) // Wall was hit on the X-axis
+			perp_wall_dist = (data->map_x - data->player_x + (1 - data->step_x) / 2) / data->ray_dir_x;
+		else // Wall was hit on the Y-axis
+			perp_wall_dist = (data->map_y - data->player_y + (1 - data->step_y) / 2) / data->ray_dir_y;
+
+		// Calculate the height of the line to draw
 		line_height = (int)(SCREEN_HEIGHT / perp_wall_dist);
 		draw_start = -line_height / 2 + SCREEN_HEIGHT / 2;
-		if (draw_start < 0)
-			draw_start = 0;
+		if (draw_start < 0) draw_start = 0;
 		draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
-		if (draw_end >= SCREEN_HEIGHT)
-			draw_end = SCREEN_HEIGHT - 1;
+		if (draw_end >= SCREEN_HEIGHT) draw_end = SCREEN_HEIGHT - 1;
+
+		// Choose color based on side
+		if (side == 0)
+			color = 0xFF0000; // Red for vertical walls
+		else
+			color = 0x00FF00; // Green for horizontal walls
+
+		// Draw the vertical line on the screen
 		draw_vert_line(data->image, x, 0, draw_start, CLR_SKY);
 		draw_vert_line(data->image, x, draw_start, draw_end, color);
 		draw_vert_line(data->image, x, draw_end, SCREEN_HEIGHT, CLR_FLR);
 	}
+
 }
 
 void start_game(t_data *data)
@@ -686,6 +747,7 @@ void	init_game(t_data *data)
 	data->plane_y = 0.66; // for the field of view
 	data->player_x = 2; // player positions
 	data->player_y = 2; // player positions
+	data->is_minimap_fullscreen = 0;
 	init_map(data);
 	init_textures(data);
 }
@@ -694,6 +756,23 @@ int destroy_notify(t_data *data)
 {
 	free(data->mlx_ptr);
 	return (exit(0), 0);
+}
+
+int mouse_events(int button, int x, int y, t_data * data)
+{
+	(void)data;
+	printf("Button %d pressed at (%d, %d)\n", button, y, x);
+	if (button == 1)
+		printf("Left click!\n");
+	else if (button == 2)
+		printf("Middle click!\n");
+	else if (button == 3)
+		printf("Right click!\n");
+	else if (button == 4)
+		printf("Scroll up!\n");
+	else if (button == 5)
+		printf("Scroll down!\n");
+	return 0;
 }
 
 int	main(void)
@@ -710,6 +789,7 @@ int	main(void)
 	mlx_hook(data.win_ptr, 2, 1L << 0, key_press, &data);
 	mlx_hook(data.win_ptr, 3, 1L << 1, key_release, &data);
 	mlx_hook(data.win_ptr, 17, 1L << 0, destroy_notify, &data);
+	mlx_mouse_hook(data.win_ptr, mouse_events, &data);
 	mlx_loop_hook(data.mlx_ptr, game_loop, &data);
 	mlx_loop(data.mlx_ptr);
 

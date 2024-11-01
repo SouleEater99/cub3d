@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_events.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:17:16 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/25 11:46:39 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/10/26 21:36:05 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 
 void clean_up(t_data *data)
 {
+	if (data->no_texture_path)
+		free(data->no_texture_path);
+	if (data->so_texture_path)
+		free(data->so_texture_path);
+	if (data->we_texture_path)
+		free(data->we_texture_path);
+	if (data->ea_texture_path)
+		free(data->ea_texture_path);
+	
 	if (data->win_ptr)
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 	// if (data->mlx_ptr)
@@ -57,8 +66,17 @@ int	key_release(int keycode, t_data *data)
 	return (0);
 }
 
+void mouse_positions(t_data *data)
+{
+	int x, y;
+	if (!mlx_mouse_get_pos(data->win_ptr, &x, &y))
+		exit (1);
+	printf("%d %d\n", x, y);
+}
+
 int	game_loop(t_data *data)
 {
+	// mouse_positions(data);
 	update_player(data);
 	start_game(data);
 	return (0);
