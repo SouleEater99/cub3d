@@ -1,4 +1,5 @@
-# include "../mandatory/libraries/minilibx-linux/mlx.h"
+// # include "../mandatory/libraries/minilibx-linux/mlx.h"
+# include "../mandatory/libraries/minilibx_opengl_20191021/mlx.h"
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -124,7 +125,7 @@ void clean_up(t_data *data)
         mlx_destroy_window(data->mlx_ptr, data->wind_ptr);
     if (data->mlx_ptr)
     {
-        mlx_destroy_display(data->mlx_ptr);
+        // mlx_destroy_display(data->mlx_ptr);
         free(data->mlx_ptr);
     }
     free_map(data->map);
@@ -414,7 +415,7 @@ int main(void)
 
     if (!(data.wind_ptr = mlx_new_window(data.mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT, "Minimap")))
     {
-        mlx_destroy_display(data.mlx_ptr);
+        // mlx_destroy_display(data.mlx_ptr);
         free(data.mlx_ptr);
         return (1);
     }

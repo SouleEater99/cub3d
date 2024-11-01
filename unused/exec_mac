@@ -1,0 +1,1 @@
+gcc -Wall -Wextra -Werror -O3 -g3 -fsanitize=address minimap.c ../mandatory/libraries/minilibx_opengl_20191021/libmlx.a -framework OpenGL -framework AppKit && ./a.out
