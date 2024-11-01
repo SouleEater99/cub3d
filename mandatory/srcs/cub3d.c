@@ -18,15 +18,15 @@ void	go_left_right(t_data *data, short rot_dir)
 	double	old_plane_x;
 
 	old_dir_x = data->dir_x;
-	data->dir_x = data->dir_x * cos(ROT_SPEED * rot_dir) - data->dir_y
-		* sin(ROT_SPEED * rot_dir);
-	data->dir_y = old_dir_x * sin(ROT_SPEED * rot_dir) + data->dir_y
-		* cos(ROT_SPEED * rot_dir);
+	data->dir_x = data->dir_x * cos(data->rot_speed * rot_dir) - data->dir_y
+		* sin(data->rot_speed * rot_dir);
+	data->dir_y = old_dir_x * sin(data->rot_speed * rot_dir) + data->dir_y
+		* cos(data->rot_speed * rot_dir);
 	old_plane_x = data->plane_x;
-	data->plane_x = data->plane_x * cos(ROT_SPEED * rot_dir) - data->plane_y
-		* sin(ROT_SPEED * rot_dir);
-	data->plane_y = old_plane_x * sin(ROT_SPEED * rot_dir) + data->plane_y
-		* cos(ROT_SPEED * rot_dir);
+	data->plane_x = data->plane_x * cos(data->rot_speed * rot_dir) - data->plane_y
+		* sin(data->rot_speed * rot_dir);
+	data->plane_y = old_plane_x * sin(data->rot_speed * rot_dir) + data->plane_y
+		* cos(data->rot_speed * rot_dir);
 }
 
 void	go_up_down(t_data *data, short mov_dir)
@@ -34,8 +34,8 @@ void	go_up_down(t_data *data, short mov_dir)
 	double	new_x;
 	double	new_y;
 
-	new_x = data->player_x + data->dir_x * MOVE_SPEED * mov_dir;
-	new_y = data->player_y + data->dir_y * MOVE_SPEED * mov_dir;
+	new_x = data->player_x + data->dir_x * data->move_speed * mov_dir;
+	new_y = data->player_y + data->dir_y * data->move_speed * mov_dir;
 
 	// check each one separately for sliding/gliding effect.
 	printf("player at: [%lf][%lf] = [%c]\n", data->player_y, data->player_x, data->map[(int)data->player_y][(int)data->player_x]);

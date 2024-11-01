@@ -23,7 +23,7 @@
 # define PLAYER_RADIUS      6
 # define MINIMAP_RADIUS     80
 
-# define SCALE              0.25
+# define SCALE              0.50
 
 # define MAP_MID_X          (SCREEN_WIDTH / 2)
 # define MAP_MID_Y          (SCREEN_HEIGHT / 2)

@@ -60,6 +60,7 @@ void	init_game(t_data *data)
 	}
 
 	data->scale = SCALE;
+	data->rot_speed = ROT_SPEED;
 	data->move_speed = MOVE_SPEED;
 	data->player_radius = PLAYER_RADIUS;
 	data->minimap_radius = MINIMAP_RADIUS;

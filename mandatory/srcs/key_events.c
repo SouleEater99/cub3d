@@ -83,8 +83,9 @@ int mouse_events(int button, int x, int y, t_data *data)
         if (data->clicks % 2 != 0)
         {
             data->scale = SCALE * 2;
+        	data->rot_speed = ROT_SPEED * 4;
             data->move_speed = MOVE_SPEED * 4;
-            data->player_radius = PLAYER_RADIUS * 2;
+            data->player_radius = PLAYER_RADIUS;
             data->minimap_radius = MINIMAP_RADIUS * 10;
             data->minimap_x_center = MAP_MID_X;
             data->minimap_y_center = MAP_MID_Y;
@@ -92,6 +93,7 @@ int mouse_events(int button, int x, int y, t_data *data)
         else
         {
             data->scale = SCALE;
+        	data->rot_speed = ROT_SPEED;
             data->move_speed = MOVE_SPEED;
             data->player_radius = PLAYER_RADIUS;
             data->minimap_radius = MINIMAP_RADIUS;
@@ -110,24 +112,24 @@ int mouse_events(int button, int x, int y, t_data *data)
     }
     else if (button == SCROLL_UP)
     {
-        if (data->scale < 2.0)
-        {
-            data->scale += 0.1;
-            data->move_speed += 0.01;
-            data->minimap_radius += 5;
-            data->player_radius += 1;
-        }
+        // if (data->scale < 2.0)
+        // {
+        //     data->scale += 0.1;
+        //     data->move_speed += 0.01;
+        //     data->minimap_radius += 5;
+        //     data->player_radius += 1;
+        // }
         printf("Zooming in!\n");
     }
     else if (button == SCROLL_DOWN)
     {
-        if (data->scale > 0.2)
-        {
-            data->scale -= 0.1;
-            data->move_speed -= 0.01;
-            data->minimap_radius -= 5;
-            data->player_radius -= 1;
-        }
+        // if (data->scale > 0.2)
+        // {
+        //     data->scale -= 0.1;
+        //     data->move_speed -= 0.01;
+        //     data->minimap_radius -= 5;
+        //     data->player_radius -= 1;
+        // }
         printf("Zooming out!\n");
     }
     return 0;

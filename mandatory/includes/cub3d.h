@@ -115,6 +115,7 @@ typedef struct {
     int         minimap_x_center;
     int         minimap_y_center;
     double      move_speed;
+    double      rot_speed;
     int         clicks;
     int         player_radius;
 
