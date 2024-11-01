@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_events.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:17:16 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/30 14:02:42 by aziz             ###   ########.fr       */
+/*   Updated: 2024/11/01 10:27:18 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,33 @@ int	key_release(int keycode, t_data *data)
 // 	printf("%d %d\n", x, y);
 // }
 
+int check_click_space(t_data *data, int x, int y)
+{
+    (void)data;
+
+    int dx = x - data->minimap_x_center;
+    int dy = y - data->minimap_y_center;
+    double distance = sqrt(dx * dx + dy * dy);
+    if (distance <= data->minimap_radius)
+        return (1);
+    return (0);
+}
+
+// void click_animation(t_data *data) // todo
+// {
+//     data->minimap_radius = MINIMAP_RADIUS - 4;
+//     draw_mini_map(data);
+//     data->minimap_radius = MINIMAP_RADIUS + 4;
+//     draw_mini_map(data);
+// }
+
 int mouse_events(int button, int x, int y, t_data *data)
 {
     printf("Button %d pressed at (%d, %d)\n", button, x, y);
     if (button == LEFT_CLICK)
     {
         data->clicks++;
-        if (data->clicks % 2 != 0)
+        if (data->clicks % 2 != 0 && check_click_space(data, x, y))
         {
             data->scale = SCALE * 2;
         	data->rot_speed = ROT_SPEED * 4;
@@ -89,6 +109,7 @@ int mouse_events(int button, int x, int y, t_data *data)
             data->minimap_radius = MINIMAP_RADIUS * 10;
             data->minimap_x_center = MAP_MID_X;
             data->minimap_y_center = MAP_MID_Y;
+            // click_animation(data); // TODO
         }
         else
         {
@@ -103,35 +124,13 @@ int mouse_events(int button, int x, int y, t_data *data)
         printf("Left click!\n");
     }
     else if (button == MIDDLE_CLICK)
-    {
         printf("Middle click!\n");
-    }
     else if (button == RIGHT_CLICK)
-    {
         printf("Right click!\n");
-    }
     else if (button == SCROLL_UP)
-    {
-        // if (data->scale < 2.0)
-        // {
-        //     data->scale += 0.1;
-        //     data->move_speed += 0.01;
-        //     data->minimap_radius += 5;
-        //     data->player_radius += 1;
-        // }
         printf("Zooming in!\n");
-    }
     else if (button == SCROLL_DOWN)
-    {
-        // if (data->scale > 0.2)
-        // {
-        //     data->scale -= 0.1;
-        //     data->move_speed -= 0.01;
-        //     data->minimap_radius -= 5;
-        //     data->player_radius -= 1;
-        // }
         printf("Zooming out!\n");
-    }
     return 0;
 }
 

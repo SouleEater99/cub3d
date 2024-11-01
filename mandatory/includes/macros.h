@@ -1,29 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   macros.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/01 10:27:39 by aelkheta          #+#    #+#             */
+/*   Updated: 2024/11/01 10:29:49 by aelkheta         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 # pragma once
 
-# define PI 3.14159265358979323846
+# define PI                 3.14159265358979323846
 
-# define SCREEN_WIDTH   800
-# define SCREEN_HEIGHT  600
+# define SCREEN_WIDTH       800
+# define SCREEN_HEIGHT      600
 
-# define RAY_LENGHT     500
+# define RAY_LENGHT         500
 
-# define MAP_WIDTH      30      // just an example
-# define MAP_HEIGHT     9       // just an example
+# define MAP_WIDTH          30      // just an example
+# define MAP_HEIGHT         9       // just an example
 
-# define CLR_SKY        0x69c9fa
-# define CLR_FLR        0xc28951
+# define CLR_SKY            0x69c9fa
+# define CLR_FLR            0xc28951
 
-# define CLR_EAW        0xcacaca
-# define CLR_SAN        0xf5f5f5
+# define CLR_EAW            0xcacaca
+# define CLR_SAN            0xf5f5f5
 
-# define TILE_SIZE      32      // the cell grid size
+# define TILE_SIZE          64      // the cell grid size
 
-# define CENTER (SCREEN_WIDTH / 2 - MAP_WIDTH * TILE_SIZE / 2)
+# define CENTER             (SCREEN_WIDTH / 2 - MAP_WIDTH * TILE_SIZE / 2)
 
 # define PLAYER_RADIUS      6
 # define MINIMAP_RADIUS     80
 
-# define SCALE              0.50
+# define SCALE              0.25
 
 # define MAP_MID_X          (SCREEN_WIDTH / 2)
 # define MAP_MID_Y          (SCREEN_HEIGHT / 2)
