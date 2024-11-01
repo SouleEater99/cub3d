@@ -70,8 +70,8 @@ void	init_game(t_data *data)
 	data->map_width = MAP_WIDTH;
 	data->map_height = MAP_HEIGHT;
 
-	data->player_x = 2;   // player positions
-	data->player_y = 2;   // player positions
+	data->player_x = 2.0;   // player positions
+	data->player_y = 2.0;   // player positions
 
 	init_map(data);
 }

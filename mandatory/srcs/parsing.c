@@ -256,20 +256,22 @@ int looad_textures(t_data *data, char **map)
 
 int parse_map(t_data *data, int ac, char **av)
 {
-    if (ac != 2)
-    {
-        write(2, "Error, there is no map\n", 24);
-        return (1);
-    }
+    (void) ac;
+    (void) av;
+    // if (ac != 2)
+    // {
+    //     write(2, "Error, there is no map\n", 24);
+    //     return (1);
+    // }
     
-    printf("map file is: %s\n", av[1]);
-    if (!ft_strnstr(&av[1][ft_strlen(av[1]) - 4], ".cub", 4))
-    {
-        write(2, "Error, map file extention\n", 27);
-        printf("==== Line: %d ====\n", __LINE__);
-        printf("==== File: %s ====\n", __FILE__);
-		return (1);
-    }
+    // printf("map file is: %s\n", av[1]);
+    // if (!ft_strnstr(&av[1][ft_strlen(av[1]) - 4], ".cub", 4))
+    // {
+    //     write(2, "Error, map file extention\n", 27);
+    //     printf("==== Line: %d ====\n", __LINE__);
+    //     printf("==== File: %s ====\n", __FILE__);
+	// 	return (1);
+    // }
     
     if (read_map(data, av[1]))
         return (1);

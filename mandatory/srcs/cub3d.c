@@ -86,6 +86,8 @@ void	update_player(t_data *data)
 
 int main(int ac, char **av)
 {
+	(void) ac;
+	(void) av;
     t_data data;
 
     memset(&data, 0, sizeof(t_data));

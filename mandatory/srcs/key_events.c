@@ -76,8 +76,6 @@ int	key_release(int keycode, t_data *data)
 
 int check_click_space(t_data *data, int x, int y)
 {
-    (void)data;
-
     int dx = x - data->minimap_x_center;
     int dy = y - data->minimap_y_center;
     double distance = sqrt(dx * dx + dy * dy);
@@ -86,20 +84,29 @@ int check_click_space(t_data *data, int x, int y)
     return (0);
 }
 
-// void click_animation(t_data *data) // todo
-// {
-//     data->minimap_radius = MINIMAP_RADIUS - 4;
-//     draw_mini_map(data);
-//     data->minimap_radius = MINIMAP_RADIUS + 4;
-//     draw_mini_map(data);
-// }
+#include <unistd.h> // For usleep function
+
+void click_animation(t_data *data)
+{
+    int original_radius = data->minimap_radius;
+
+    data->minimap_radius = original_radius - 4;
+    draw_mini_map(data);
+
+    data->minimap_radius = original_radius + 4;
+    draw_mini_map(data);
+
+    data->minimap_radius = original_radius;
+    draw_mini_map(data);
+}
 
 int mouse_events(int button, int x, int y, t_data *data)
 {
     printf("Button %d pressed at (%d, %d)\n", button, x, y);
     if (button == LEFT_CLICK)
     {
-        data->clicks++;
+		if (check_click_space(data, x, y))
+	        data->clicks++;
         if (data->clicks % 2 != 0 && check_click_space(data, x, y))
         {
             data->scale = SCALE * 2;
