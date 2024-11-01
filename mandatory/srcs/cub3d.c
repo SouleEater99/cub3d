@@ -6,7 +6,7 @@
 /*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:07:23 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/25 21:06:18 by aziz             ###   ########.fr       */
+/*   Updated: 2024/10/30 13:17:18 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,22 +67,22 @@ void	update_player(t_data *data)
 		go_left_right(data, -1);
 }
 	
-int mouse_events(int button, int x, int y, t_data *data)
-{
-	(void)data;
-	printf("Button %d pressed at (%d, %d)\n", button, y, x);
-	if (button == 1)
-		printf("Left click!\n");
-	else if (button == 2)
-		printf("Middle click!\n");
-	else if (button == 3)
-		printf("Right click!\n");
-	else if (button == 4)
-		printf("Scroll up!\n");
-	else if (button == 5)
-		printf("Scroll down!\n");
-	return 0;
-}
+// int mouse_events(int button, int x, int y, t_data *data)
+// {
+// 	(void)data;
+// 	printf("Button %d pressed at (%d, %d)\n", button, y, x);
+// 	if (button == 1)
+// 		printf("Left click!\n");
+// 	else if (button == 2)
+// 		printf("Middle click!\n");
+// 	else if (button == 3)
+// 		printf("Right click!\n");
+// 	else if (button == 4)
+// 		printf("Scroll up!\n");
+// 	else if (button == 5)
+// 		printf("Scroll down!\n");
+// 	return 0;
+// }
 
 int main(int ac, char **av)
 {

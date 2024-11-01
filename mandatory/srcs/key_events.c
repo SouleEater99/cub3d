@@ -6,7 +6,7 @@
 /*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:17:16 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/26 21:36:05 by aziz             ###   ########.fr       */
+/*   Updated: 2024/10/30 14:02:42 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,73 @@ int	key_release(int keycode, t_data *data)
 	return (0);
 }
 
-void mouse_positions(t_data *data)
+// void mouse_positions(t_data *data)
+// {
+// 	int x, y;
+// 	if (!mlx_mouse_get_pos(data->win_ptr, &x, &y))
+// 		exit (1);
+// 	printf("%d %d\n", x, y);
+// }
+
+int mouse_events(int button, int x, int y, t_data *data)
 {
-	int x, y;
-	if (!mlx_mouse_get_pos(data->win_ptr, &x, &y))
-		exit (1);
-	printf("%d %d\n", x, y);
+    printf("Button %d pressed at (%d, %d)\n", button, x, y);
+    if (button == LEFT_CLICK)
+    {
+        data->clicks++;
+        if (data->clicks % 2 != 0)
+        {
+            data->scale = SCALE * 2;
+            data->move_speed = MOVE_SPEED * 4;
+            data->player_radius = PLAYER_RADIUS * 2;
+            data->minimap_radius = MINIMAP_RADIUS * 10;
+            data->minimap_x_center = MAP_MID_X;
+            data->minimap_y_center = MAP_MID_Y;
+        }
+        else
+        {
+            data->scale = SCALE;
+            data->move_speed = MOVE_SPEED;
+            data->player_radius = PLAYER_RADIUS;
+            data->minimap_radius = MINIMAP_RADIUS;
+            data->minimap_x_center = MINIMAP_MID_X;
+            data->minimap_y_center = MINIMAP_MID_Y;
+        }
+        printf("Left click!\n");
+    }
+    else if (button == MIDDLE_CLICK)
+    {
+        printf("Middle click!\n");
+    }
+    else if (button == RIGHT_CLICK)
+    {
+        printf("Right click!\n");
+    }
+    else if (button == SCROLL_UP)
+    {
+        if (data->scale < 2.0)
+        {
+            data->scale += 0.1;
+            data->move_speed += 0.01;
+            data->minimap_radius += 5;
+            data->player_radius += 1;
+        }
+        printf("Zooming in!\n");
+    }
+    else if (button == SCROLL_DOWN)
+    {
+        if (data->scale > 0.2)
+        {
+            data->scale -= 0.1;
+            data->move_speed -= 0.01;
+            data->minimap_radius -= 5;
+            data->player_radius -= 1;
+        }
+        printf("Zooming out!\n");
+    }
+    return 0;
 }
+
 
 int	game_loop(t_data *data)
 {

@@ -48,19 +48,14 @@ valg: all clean
 	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) ${MAP}
 	@rm -f $(NAME)
 
-debug: $(OBJS)
-	@$(CC) $(GCCFLAGS) $(OBJS) $(MLXLFLAGS) $(DEBUGFLAGS) $(INCLUDES) $(LIBFT) -o $(NAME)
-	@./$(NAME) ${MAP}
-	@rm -f $(NAME)
-
 $(NAME): $(OBJS)
 	@echo "Building..."
-	@$(CC) $(GCCFLAGS) $(OBJS) $(MLXLFLAGS) $(INCLUDES) $(LIBFT) -o $(NAME)
+	@$(CC) $(GCCFLAGS) ${DEBUGFLAGS} $(OBJS) $(MLXLFLAGS) $(INCLUDES) $(LIBFT) -o $(NAME)
 	@echo "Building done"
 
 %.o: %.c
 	@echo "Compiling object files..."
-	@$(CC) $(GCCFLAGS) $(INCLUDES) -c -o $@ $< #  $(DEBUGFLAGS)
+	@$(CC) $(GCCFLAGS) ${DEBUGFLAGS} $(INCLUDES) -c -o $@ $<
 	@echo "Compiling object files done"
 
 clean:

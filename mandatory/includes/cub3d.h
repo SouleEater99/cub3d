@@ -6,7 +6,7 @@
 /*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/26 21:45:19 by aziz             ###   ########.fr       */
+/*   Updated: 2024/10/30 14:02:53 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,58 +23,7 @@
 # include <../libraries/libft/libft.h>
 # include <fcntl.h>              //  for open syscall
 # include <stdbool.h>
-
-# define PI 3.14159265358979323846
-
-# define SCREEN_WIDTH   800
-# define SCREEN_HEIGHT  600
-
-# define RAY_LENGHT     500
-
-// # define MAP_WIDTH      30      // just an example
-// # define MAP_HEIGHT     9       // just an example
-
-# define CLR_SKY        0x69c9fa
-# define CLR_FLR        0xc28951
-
-# define CLR_EAW        0xcacaca
-# define CLR_SAN        0xf5f5f5
-
-# define TILE_SIZE      32      // the cell grid size
-
-# define CENTER (SCREEN_WIDTH / 2 - MAP_WIDTH * TILE_SIZE / 2)
-
-
-#ifdef __APPLE__
-    // macOS keycodes
-    # define ESC_KEY        53
-    # define U_KEY          126
-    # define D_KEY          125
-    # define R_KEY          124
-    # define L_KEY          123
-    
-    # define MOVE_SPEED     0.09     // player speed
-    # define ROT_SPEED      0.06     // Rotation speed (in radians)
-
-#elif __linux__
-    // Linux (X11) keycodes
-    # define ESC_KEY        65307
-    # define U_KEY          65362
-    # define D_KEY          65364
-    # define R_KEY          65363
-    # define L_KEY          65361
-    
-    # define MOVE_SPEED     0.2     // player speed
-    # define ROT_SPEED      0.08     // Rotation speed (in radians)
-#else
-    #error "Unsupported platform"
-#endif
-
-// # define CLR_SKY        0x89CFF3
-// # define CLR_FLR        0xB99470
-
-// # define CLR_EAW        0xB5B5B5
-// # define CLR_SAN        0xF5F5F5
+# include <macros.h>
 
 typedef struct s_image
 {
@@ -161,6 +110,14 @@ typedef struct {
     int     ceiling_color;
     // int     sky_color;
 
+    double      scale;
+    int         minimap_radius;
+    int         minimap_x_center;
+    int         minimap_y_center;
+    double      move_speed;
+    int         clicks;
+    int         player_radius;
+
 } t_data;
 
 // functions signature
@@ -197,6 +154,8 @@ void	    start_game(t_data *data);
 void        update_player(t_data *data);
 
 void        draw_mini_map(t_data *data);
+
+int mouse_events(int button, int x, int y, t_data *data);
 
 // parsing time
 
