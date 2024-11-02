@@ -12,8 +12,7 @@
 
 #include <cub3d.h>
 
-void	draw_vert_line(t_image *image, int x, int draw_start, int draw_end,
-		int color)
+void	draw_vert_line(t_image *image, int x, int draw_start, int draw_end, int color)
 {
 	int	y;
 
@@ -120,8 +119,10 @@ void raycasting(t_data *data)
 		// the x player position in the map grid that tell us which grid cell we are in.
 		data->map_y = (int)data->player_y;
 		// the y player position in the map grid that tell us which grid cell we are in.
-		data->delta_dist_x = fabs(1 / data->ray_dir_x);
-		data->delta_dist_y = fabs(1 / data->ray_dir_y);
+		
+		data->delta_dist_x = (data->ray_dir_x == 0) ? 1e30 : fabs(1 / data->ray_dir_x);
+		data->delta_dist_y = (data->ray_dir_y == 0) ? 1e30 : fabs(1 / data->ray_dir_y);
+		
 		calculate_side_dist_x_y(data);
 		dda_algorithm(data); // DDA algorithm
 		draw_vert_cols(data, x);

@@ -156,7 +156,7 @@ void        update_player(t_data *data);
 
 void        draw_mini_map(t_data *data);
 
-int mouse_events(int button, int x, int y, t_data *data);
+int         mouse_events(int button, int x, int y, t_data *data);
 
 // parsing time
 

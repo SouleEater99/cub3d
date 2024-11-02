@@ -68,8 +68,8 @@
     # define R_KEY          65363
     # define L_KEY          65361
     
-    # define MOVE_SPEED     0.2     // player speed
-    # define ROT_SPEED      0.08     // Rotation speed (in radians)
+    # define MOVE_SPEED     0.04    // player speed
+    # define ROT_SPEED      0.02    // Rotation speed (in radians)
 #else
     #error "Unsupported platform"
 #endif

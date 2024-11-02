@@ -249,7 +249,6 @@ void draw_player(t_data *data, t_image *image)
     }
 }
 
-
 void draw_player_direction(t_data *data, t_image *image)
 {
     // Draw direction indicator
