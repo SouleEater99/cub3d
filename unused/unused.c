@@ -281,3 +281,21 @@ void	raycasting(t_data *data)
 		//     // raycasting(data);
 		//     return (0);
 		// }
+
+
+// int mouse_events(int button, int x, int y, t_data *data)
+// {
+// 	(void)data;
+// 	printf("Button %d pressed at (%d, %d)\n", button, y, x);
+// 	if (button == 1)
+// 		printf("Left click!\n");
+// 	else if (button == 2)
+// 		printf("Middle click!\n");
+// 	else if (button == 3)
+// 		printf("Right click!\n");
+// 	else if (button == 4)
+// 		printf("Scroll up!\n");
+// 	else if (button == 5)
+// 		printf("Scroll down!\n");
+// 	return 0;
+// }

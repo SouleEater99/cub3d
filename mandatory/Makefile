@@ -48,6 +48,9 @@ valg: all clean
 	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) ${MAP}
 	@rm -f $(NAME)
 
+proj:
+	gcc -Wall -Wextra -Werror -O3 -g3 ./srcs/project.c -o raycasting ./libraries/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm && ./raycasting && rm ./raycasting
+
 $(NAME): $(OBJS)
 	@echo "Building..."
 	@$(CC) $(GCCFLAGS) ${DEBUGFLAGS} $(OBJS) $(MLXLFLAGS) $(INCLUDES) $(LIBFT) -o $(NAME)
