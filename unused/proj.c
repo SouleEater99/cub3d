@@ -96,14 +96,34 @@ typedef struct s_map
     int     map_start;
 }   t_map;
 
-typedef struct s_data {
+typedef struct s_structure
+{
+    char    *no_texture_path;
+    char    *so_texture_path;
+    char    *we_texture_path;
+    char    *ea_texture_path;
+}   t_texture;
+
+
+typedef struct s_mlx
+{
     void    *mlx_ptr;
     void    *win_ptr;
+}    t_mlx;
 
-    // char    **map;
-    // int     map_height;
-    // int     map_width;
+typedef struct s_minimap
+{
+    double  scale;
+    int     clicks;
+    int     player_radius;
+    int     minimap_radius;
+    int     minimap_x_center;
+    int     minimap_y_center;
+}   t_minimap;
 
+typedef struct s_data {
+
+    t_mlx   mlx;
     t_map   map;
 
     double  dir_x;
@@ -133,7 +153,7 @@ typedef struct s_data {
     short   rotate_left;
     short   move_forward;
     short   move_backward;
-
+    
     int     hit;
     int     side;
     int     color;
@@ -145,22 +165,15 @@ typedef struct s_data {
     int     draw_start;
     int     draw_end;
 
-    char    *no_texture_path;
-    char    *so_texture_path;
-    char    *we_texture_path;
-    char    *ea_texture_path;
+    t_texture   texture;
 
-    int     floor_color;
-    int     ceiling_color;
-
-    double  scale;
-    int     minimap_radius;
-    int     minimap_x_center;
-    int     minimap_y_center;
-    double  move_speed;
     double  rot_speed;
-    int     clicks;
-    int     player_radius;
+    double  move_speed;
+
+    // int     floor_color;
+    // int     ceiling_color;
+
+    t_minimap   minimap;
 } t_data;
 
 void    put_pixel_in_img(t_image *image, int x, int y, int color)
@@ -181,7 +194,7 @@ t_image *create_image(t_data *data)
     img = malloc(sizeof(t_image));
     if (!img)
         return (NULL);
-    img->img_ptr = mlx_new_image(data->mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT);
+    img->img_ptr = mlx_new_image(data->mlx.mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT);
     if (!img->img_ptr)
     {
         free(img);
@@ -191,7 +204,7 @@ t_image *create_image(t_data *data)
             &img->size_line, &img->endian);
     if (!img->img_data)
     {
-        mlx_destroy_image(data->mlx_ptr, img->img_ptr);
+        mlx_destroy_image(data->mlx.mlx_ptr, img->img_ptr);
         free(img);
         return (NULL);
     }
@@ -278,13 +291,13 @@ void init_player_direction(t_data *data)
 
 int init_game(t_data *data)
 {
-    data->scale = SCALE;
     data->rot_speed = ROT_SPEED;
     data->move_speed = MOVE_SPEED;
-    data->player_radius = PLAYER_RADIUS;
-    data->minimap_radius = MINIMAP_RADIUS;
-    data->minimap_x_center = MINIMAP_MID_X;
-    data->minimap_y_center = MINIMAP_MID_Y;
+    data->minimap.scale = SCALE;
+    data->minimap.player_radius = PLAYER_RADIUS;
+    data->minimap.minimap_radius = MINIMAP_RADIUS;
+    data->minimap.minimap_x_center = MINIMAP_MID_X;
+    data->minimap.minimap_y_center = MINIMAP_MID_Y;
 
     data->map.map_width = MAP_WIDTH;
     data->map.map_height = MAP_HEIGHT;
@@ -310,28 +323,28 @@ void clean_up(t_data *data)
     if (!data)
         return;
         
-    if (data->no_texture_path)
-        free(data->no_texture_path);
-    if (data->so_texture_path)
-        free(data->so_texture_path);
-    if (data->we_texture_path)
-        free(data->we_texture_path);
-    if (data->ea_texture_path)
-        free(data->ea_texture_path);
+    // if (data->texture.no_texture_path)
+    //     free(data->texture.no_texture_path);
+    // if (data->texture.so_texture_path)
+    //     free(data->texture.so_texture_path);
+    // if (data->texture.we_texture_path)
+    //     free(data->texture.we_texture_path);
+    // if (data->texture.ea_texture_path)
+    //     free(data->texture.ea_texture_path);
     
     if (data->image)
     {
-        if (data->image->img_ptr && data->mlx_ptr)
-            mlx_destroy_image(data->mlx_ptr, data->image->img_ptr);
+        if (data->image->img_ptr && data->mlx.mlx_ptr)
+            mlx_destroy_image(data->mlx.mlx_ptr, data->image->img_ptr);
         free(data->image);
     }
     
-    if (data->win_ptr && data->mlx_ptr)
-        mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-    if (data->mlx_ptr)
+    if (data->mlx.win_ptr && data->mlx.mlx_ptr)
+        mlx_destroy_window(data->mlx.mlx_ptr, data->mlx.win_ptr);
+    if (data->mlx.mlx_ptr)
     {
-        mlx_destroy_display(data->mlx_ptr);
-        free(data->mlx_ptr);
+        mlx_destroy_display(data->mlx.mlx_ptr);
+        free(data->mlx.mlx_ptr);
     }
     if (data->map.map)
         free_map(data->map.map);
@@ -370,36 +383,36 @@ int key_release(int keycode, t_data *data)
 
 int check_click_space(t_data *data, int x, int y)
 {
-    int dx = x - data->minimap_x_center;
-    int dy = y - data->minimap_y_center;
+    int dx = x - data->minimap.minimap_x_center;
+    int dy = y - data->minimap.minimap_y_center;
     double distance = sqrt(dx * dx + dy * dy);
-    return (distance <= data->minimap_radius);
+    return (distance <= data->minimap.minimap_radius);
 }
 
 int mouse_events(int button, int x, int y, t_data *data)
 {
     if (button == LEFT_CLICK && check_click_space(data, x, y))
     {
-        data->clicks++;
-        if (data->clicks % 2 != 0)
+        data->minimap.clicks++;
+        if (data->minimap.clicks % 2 != 0)
         {
-            data->scale = SCALE * 2;
             data->rot_speed = ROT_SPEED * 8;
             data->move_speed = MOVE_SPEED * 8;
-            data->player_radius = PLAYER_RADIUS;
-            data->minimap_radius = MINIMAP_RADIUS * 10;
-            data->minimap_x_center = MAP_MID_X;
-            data->minimap_y_center = MAP_MID_Y;
+            data->minimap.scale = SCALE * 2;
+            data->minimap.player_radius = PLAYER_RADIUS;
+            data->minimap.minimap_radius = MINIMAP_RADIUS * 10;
+            data->minimap.minimap_x_center = MAP_MID_X;
+            data->minimap.minimap_y_center = MAP_MID_Y;
         }
         else
         {
-            data->scale = SCALE;
             data->rot_speed = ROT_SPEED;
             data->move_speed = MOVE_SPEED;
-            data->player_radius = PLAYER_RADIUS;
-            data->minimap_radius = MINIMAP_RADIUS;
-            data->minimap_x_center = MINIMAP_MID_X;
-            data->minimap_y_center = MINIMAP_MID_Y;
+            data->minimap.scale = SCALE;
+            data->minimap.player_radius = PLAYER_RADIUS;
+            data->minimap.minimap_radius = MINIMAP_RADIUS;
+            data->minimap.minimap_x_center = MINIMAP_MID_X;
+            data->minimap.minimap_y_center = MINIMAP_MID_Y;
         }
     }
     return (0);
@@ -561,15 +574,15 @@ void move_player(t_data *data)
 
 void draw_background(t_data *data, t_image *image)
 {
-	for (int y = -data->minimap_radius; y <= data->minimap_radius; y++)
+	for (int y = -data->minimap.minimap_radius; y <= data->minimap.minimap_radius; y++)
     {
-        for (int x = -data->minimap_radius; x <= data->minimap_radius; x++)
+        for (int x = -data->minimap.minimap_radius; x <= data->minimap.minimap_radius; x++)
         {
             double distance = sqrt(x * x + y * y);
-            if (distance <= data->minimap_radius)
+            if (distance <= data->minimap.minimap_radius)
             {
-                int screen_x = data->minimap_x_center + x;
-                int screen_y = data->minimap_y_center + y;
+                int screen_x = data->minimap.minimap_x_center + x;
+                int screen_y = data->minimap.minimap_y_center + y;
                 put_pixel_in_img(image, screen_x, screen_y, 0x222222);
             }
         }
@@ -583,9 +596,9 @@ void draw_tile(t_data *data, t_image *image, double x, double y, int color)
     double  screen_y;
     double  distance;
 
-    size = (int)(TILE_SIZE * data->scale);
-    screen_x = data->minimap_x_center + (x - data->player_x * TILE_SIZE * data->scale);
-    screen_y = data->minimap_y_center + (y - data->player_y * TILE_SIZE * data->scale);
+    size = (int)(TILE_SIZE * data->minimap.scale);
+    screen_x = data->minimap.minimap_x_center + (x - data->player_x * TILE_SIZE * data->minimap.scale);
+    screen_y = data->minimap.minimap_y_center + (y - data->player_y * TILE_SIZE * data->minimap.scale);
     
     int di = -1;
     while (++di < size)
@@ -593,9 +606,9 @@ void draw_tile(t_data *data, t_image *image, double x, double y, int color)
         int dj = -1;
         while (++dj < size)
         {
-            distance = sqrt(pow(screen_x + di - data->minimap_x_center, 2)
-                + pow(screen_y + dj - data->minimap_y_center, 2));
-            if (distance <= data->minimap_radius)
+            distance = sqrt(pow(screen_x + di - data->minimap.minimap_x_center, 2)
+                + pow(screen_y + dj - data->minimap.minimap_y_center, 2));
+            if (distance <= data->minimap.minimap_radius)
                 put_pixel_in_img(image, screen_x + di, screen_y + dj, color);
         }
     }
@@ -605,7 +618,7 @@ void draw_map(t_data *data, t_image *image)
 {
     // double scale = 0.25;
     
-    int visible_range = (int)(data->minimap_radius / (TILE_SIZE * data->scale)) + 1;
+    int visible_range = (int)(data->minimap.minimap_radius / (TILE_SIZE * data->minimap.scale)) + 1;
     
     int player_map_x = (int)data->player_x;
     int player_map_y = (int)data->player_y;
@@ -620,8 +633,8 @@ void draw_map(t_data *data, t_image *image)
             // Check if the tile is within map bounds
             if (map_x >= 0 && map_x < MAP_WIDTH && map_y >= 0 && map_y < MAP_HEIGHT)
             {
-                double tile_x = map_x * TILE_SIZE * data->scale;
-                double tile_y = map_y * TILE_SIZE * data->scale;
+                double tile_x = map_x * TILE_SIZE * data->minimap.scale;
+                double tile_y = map_y * TILE_SIZE * data->minimap.scale;
                 
                 if (data->map.map[map_y][map_x] == '1')
                     draw_tile(data, image, tile_x, tile_y, 0x000000);
@@ -638,15 +651,15 @@ void draw_player(t_data *data, t_image *image)
     int y;
     double dist;
 
-    x = -data->player_radius;
-    while (++x <= data->player_radius)
+    x = -data->minimap.player_radius;
+    while (++x <= data->minimap.player_radius)
     {
-        y = -data->player_radius;
-        while (++y <= data->player_radius)
+        y = -data->minimap.player_radius;
+        while (++y <= data->minimap.player_radius)
         {
             dist = sqrt(x * x + y * y);
-            if (dist <= data->player_radius)
-                put_pixel_in_img(image, data->minimap_x_center + x,  data->minimap_y_center + y, 0xffff00);
+            if (dist <= data->minimap.player_radius)
+                put_pixel_in_img(image, data->minimap.minimap_x_center + x,  data->minimap.minimap_y_center + y, 0xffff00);
         }
     }
 }
@@ -662,12 +675,12 @@ void draw_player_direction(t_data *data, t_image *image)
         double ray_angle = angle + (i * fov / 60);
         double ray_length = MINIMAP_RADIUS * 0.3; // Length of direction indicator
         
-        double end_x = data->minimap_x_center + cos(ray_angle) * ray_length;
-        double end_y = data->minimap_y_center + sin(ray_angle) * ray_length;
+        double end_x = data->minimap.minimap_x_center + cos(ray_angle) * ray_length;
+        double end_y = data->minimap.minimap_y_center + sin(ray_angle) * ray_length;
         
         // Draw ray line
-        double dx = end_x - data->minimap_x_center;
-        double dy = end_y - data->minimap_y_center;
+        double dx = end_x - data->minimap.minimap_x_center;
+        double dy = end_y - data->minimap.minimap_y_center;
         double steps = fmax(fabs(dx), fabs(dy));
         
         if (steps == 0)
@@ -675,14 +688,14 @@ void draw_player_direction(t_data *data, t_image *image)
         
         double x_increment = dx / steps;
         double y_increment = dy / steps;
-        double x = data->minimap_x_center;
-        double y = data->minimap_y_center;
+        double x = data->minimap.minimap_x_center;
+        double y = data->minimap.minimap_y_center;
         
 		int step = -1;
         while (++step <= steps)
         {
-            double dist_x = x - data->minimap_x_center;
-            double dist_y = y - data->minimap_y_center;
+            double dist_x = x - data->minimap.minimap_x_center;
+            double dist_y = y - data->minimap.minimap_y_center;
 			
             if (sqrt(dist_x * dist_x + dist_y * dist_y) <= MINIMAP_RADIUS)
                 put_pixel_in_img(image, round(x), round(y), 0xFF0000);
@@ -725,7 +738,7 @@ int game_loop(t_data *data)
     draw_minimap(data);
 
     // Put image to window
-    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr, 0, 0);
+    mlx_put_image_to_window(data->mlx.mlx_ptr, data->mlx.win_ptr, data->image->img_ptr, 0, 0);
 
     return (0);
 }
@@ -735,12 +748,12 @@ int main(void)
     t_data data;
 
     memset(&data, 0, sizeof(t_data));
-    data.mlx_ptr = mlx_init();
-    if (!data.mlx_ptr)
+    data.mlx.mlx_ptr = mlx_init();
+    if (!data.mlx.mlx_ptr)
         return (1);
 
-    data.win_ptr = mlx_new_window(data.mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT, "Raycaster");
-    if (!data.win_ptr)
+    data.mlx.win_ptr = mlx_new_window(data.mlx.mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT, "Raycaster");
+    if (!data.mlx.win_ptr)
     {
         clean_up(&data);
         return (1);
@@ -752,11 +765,11 @@ int main(void)
         return (1);
     }
 
-    mlx_hook(data.win_ptr, 2, 1L<<0, key_press, &data);
-    mlx_hook(data.win_ptr, 3, 1L<<1, key_release, &data);
-    mlx_hook(data.win_ptr, 4, 1L<<2, mouse_events, &data);
-    mlx_loop_hook(data.mlx_ptr, game_loop, &data);
-    mlx_loop(data.mlx_ptr);
+    mlx_hook(data.mlx.win_ptr, 2, 1L<<0, key_press, &data);
+    mlx_hook(data.mlx.win_ptr, 3, 1L<<1, key_release, &data);
+    mlx_hook(data.mlx.win_ptr, 4, 1L<<2, mouse_events, &data);
+    mlx_loop_hook(data.mlx.mlx_ptr, game_loop, &data);
+    mlx_loop(data.mlx.mlx_ptr);
 
     return (0);
 }
