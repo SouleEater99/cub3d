@@ -62,9 +62,6 @@ int	ft_key_hook(int keycode, t_data *data)
 		data->turn_direction = -1;
 		data->rotation_angle += (data->turn_direction * data->rotation_speed);
 		data->rotation_angle = ft_normalize_angle(data->rotation_angle * (180 / PI)) * (PI / 180);
-		// if (data->rotation_angle < 0)
-			// data->rotation_angle = 2*PI;
-		printf("rotation_angle : %f \n", data->rotation_angle);
 		if (ft_is_angle_facing_down(data->rotation_angle) == 1)
 			printf("facing down \n");
 		else
@@ -81,9 +78,6 @@ int	ft_key_hook(int keycode, t_data *data)
 		data->turn_direction = 1;
 		data->rotation_angle += (data->turn_direction * data->rotation_speed);
 		data->rotation_angle = ft_normalize_angle(data->rotation_angle * (180 / PI)) * (PI / 180);
-		// if (data->rotation_angle > 2 * PI)
-			// data->rotation_angle = 0;
-		printf("rotation_angle : %f \n", data->rotation_angle);
 		ft_update_img(data);
 		if (ft_is_angle_facing_down(data->rotation_angle) == 1)
 			printf("facing down \n");

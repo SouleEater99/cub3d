@@ -143,12 +143,19 @@ void ft_get_horz_hit(t_data *data, t_ray *ray, long *x, long *y)
 	}
 }
 
-int		ft_calc_distance(t_data *data, int x, int y)
-{
-	int distance;
+// int		ft_calc_distance(t_data *data, int x, int y)
+// {
+// 	int distance;
 
-	distance = abs((int)data->x_player - x) + abs((int)data->y_player - y);
-	return (distance );
+// 	distance = abs((int)data->x_player - x) + abs((int)data->y_player - y);
+// 	return (distance );
+// }
+
+int ft_calc_distance(t_data *data, int x, int y)
+{
+    double dx = data->x_player - x;
+    double dy = data->y_player - y;
+    return (int)sqrt(dx * dx + dy * dy); // Euclidean distance
 }
 
 void	ft_get_wall_hit(t_data *data, t_ray *ray)
@@ -158,8 +165,14 @@ void	ft_get_wall_hit(t_data *data, t_ray *ray)
 	long VirtHitX;
 	long VirtHitY;
 
-	ft_get_horz_hit(data, ray, &HorzHitX, &HorzHitY);
-	ft_get_virt_hit(data, ray, &VirtHitX, &VirtHitY);
+	HorzHitX = 0;
+	HorzHitY = 0;
+	VirtHitX = 0;
+	VirtHitY = 0;
+	if (ray->RayAngle != 0 && ray->RayAngle != PI)
+		ft_get_virt_hit(data, ray, &VirtHitX, &VirtHitY);
+	if (ray->RayAngle != PI / 2 && ray->RayAngle != (3 * PI) / 2)
+		ft_get_horz_hit(data, ray, &HorzHitX, &HorzHitY);
 	if (ft_calc_distance(data, HorzHitX, HorzHitY) < ft_calc_distance(data, VirtHitX, VirtHitY))
 	{
 		ray->distance = ft_calc_distance(data, HorzHitX, HorzHitY);
@@ -172,7 +185,7 @@ void	ft_get_wall_hit(t_data *data, t_ray *ray)
 		ray->WallHitX = VirtHitX;
 		ray->WallHitY = VirtHitY;
 	}
-	ft_write_line(data, ray->WallHitX - data->x_player, ray->WallHitY - data->y_player, 0x000000FF);
+	ft_write_line(data, ray->WallHitX - data->x_player, ray->WallHitY - data->y_player, 0x00FF0000);
 }
 
 void ft_cast_all_rays(t_data *data)
@@ -184,16 +197,20 @@ void ft_cast_all_rays(t_data *data)
 
 	i = 0;
 	ray = data->ray;
-	angle = data->rotation_angle - (FOV_ANGLE / 2) * (PI / 180);
-	// ft_write_line(data, cos(data->rotation_angle) *  30, sin(data->rotation_angle) * 30, 0x00FF0000);
+	angle = data->rotation_angle - ((FOV_ANGLE / 2) * (PI / 180));
 	while (i < WIDTH)
 	{
 		angle = angle + ((double)FOV_ANGLE / (double)WIDTH) * (PI / 180);
+		if (angle >  2 * PI)
+			angle = 0;
+		else if (angle < 0)
+			angle += 2 * PI;
 		(ray + i)->RayAngle = angle;
 		ft_get_wall_hit(data, ray + i);
-		// printf ("#### { ray_angle : %f} ##### \n", ray[i].RayAngle);
+		// printf ("#### { ray_angle : %f} ##### \n", (ray + i)->RayAngle);
 		i++;
 	}
+	ft_write_line(data, cos(data->rotation_angle) *  30, sin(data->rotation_angle) * 30, 0x000000FF);
 }
 
 void ft_write_player_to_img(t_data *data)

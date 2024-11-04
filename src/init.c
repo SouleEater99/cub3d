@@ -23,7 +23,7 @@ t_data *ft_init_data()
     data->walk_direction = 0;
 	data->rotation_angle = (11 * PI) /6 ;
     data->move_speed = 2;
-    data->rotation_speed = 2 * (PI / 180);
+    data->rotation_speed = 1 * (PI / 180);
 	return (data);
 }
 
@@ -33,6 +33,7 @@ void	ft_free_all(t_data *data, char *msg, int status)
 	{
 		mlx_destroy_window(data->mlx, data->mlx_win);
 		mlx_destroy_display(data->mlx);
+		free(data->ray);
 		free(data);
 	}
 	if (msg)
