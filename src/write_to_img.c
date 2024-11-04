@@ -97,7 +97,7 @@ void ft_get_horz_hit(t_data *data, t_ray *ray)
 	ray->ystep = CUB_SIZE;
 	if (ft_is_angle_facing_down(RayAngle))
 	{
-		ray->WallHitY = (long)(data->y_player / CUB_SIZE) * CUB_SIZE + CUB_SIZE;
+		ray->WallHitY = (data->y_player / CUB_SIZE) * CUB_SIZE + CUB_SIZE;
 		ray->WallHitX = ((ray->WallHitY - data->y_player) / tan(RayAngle)) + data->x_player;
 		ray->xstep = ray->ystep / tan(RayAngle);
 		while ((ray->WallHitX > 0 && ray->WallHitX < data->col * CUB_SIZE) && (ray->WallHitY < data->row * CUB_SIZE && ray->WallHitY > 0))
@@ -114,7 +114,7 @@ void ft_get_horz_hit(t_data *data, t_ray *ray)
 	else
 	{
 		printf("###########################\n");
-		ray->WallHitY = (long)(data->y_player / CUB_SIZE) * CUB_SIZE;
+		ray->WallHitY = (data->y_player / CUB_SIZE) * CUB_SIZE;
 		// ray->WallHitX = ((data->y_player - data->ray->WallHitY) / tan(RayAngle)) + data->x_player;
 		ray->WallHitX = ((ray->WallHitY - data->y_player) / tan(RayAngle)) + data->x_player;
 		ray->xstep = ray->ystep / tan(RayAngle);
