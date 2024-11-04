@@ -14,10 +14,13 @@
 # define SCREEN_WIDTH       800
 # define SCREEN_HEIGHT      600
 
+// # define SCREEN_WIDTH       1920
+// # define SCREEN_HEIGHT      1080
+
 # define RAY_LENGHT         500
 
-# define MAP_WIDTH          30      // just an example
-# define MAP_HEIGHT         9       // just an example
+// # define MAP_WIDTH          30      // just an example
+// # define MAP_HEIGHT         30       // just an example
 
 # define CLR_SKY            0x69c9fa
 # define CLR_FLR            0xc28951
@@ -25,9 +28,9 @@
 # define CLR_EAW            0xcacaca
 # define CLR_SAN            0xf5f5f5
 
-# define TILE_SIZE          64      // the cell grid size
+# define TILE_SIZE          32      // the cell grid size
 
-# define CENTER             (SCREEN_WIDTH / 2 - MAP_WIDTH * TILE_SIZE / 2)
+// # define CENTER             (SCREEN_WIDTH / 2 - MAP_WIDTH * TILE_SIZE / 2)
 
 # define PLAYER_RADIUS      6
 # define MINIMAP_RADIUS     80
@@ -65,8 +68,8 @@
     # define R_KEY          65363
     # define L_KEY          65361
     
-    # define MOVE_SPEED     0.006    // player speed
-    # define ROT_SPEED      0.004    // Rotation speed (in radians)
+    # define MOVE_SPEED     0.008    // player speed
+    # define ROT_SPEED      0.006    // Rotation speed (in radians)
 # else
     #error "Unsupported platform"
 # endif
@@ -94,15 +97,13 @@ typedef struct s_map
     int     map_height;
     int     map_width;
     int     map_start;
+    int     *line_len;
+    // char    *map_path;
 }   t_map;
 
 typedef struct s_data {
     void    *mlx_ptr;
     void    *win_ptr;
-
-    // char    **map;
-    // int     map_height;
-    // int     map_width;
 
     t_map   map;
 
@@ -210,42 +211,77 @@ void free_map(char **map)
     free(map);
 }
 
-int init_map(t_data *data)
+int read_map(t_data *data, char *map_path)
 {
-    const char *map_lines[] = {
-        "11111111111111111111111111111",
-        "10000000000000000000000000001",
-        "10001111111111000000000000001",
-        "10000000000000001111111111101",
-        "11000000000000000000000000001",
-        "10000111111011111100000000001",
-        "10000000000000000001111111101",
-        "10000000000000000000000000001",
-        "11111111111111111111111111111",
-        NULL
-    };
+    int     i;
+    int     fd;
+    char    *line;
+    char    **lines;
 
-    data->map.map = (char **)malloc(sizeof(char *) * (data->map.map_height + 1));
-    if (!data->map.map)
+    fd = open(map_path, O_RDONLY);
+    if (fd == -1)
+        return (printf("FILE: %s, LINE: %d\n", __FILE__, __LINE__), perror(map_path), 0);
+    
+    i = 0;
+    line = get_next_line(fd);
+    if (!line)
+        return (close(fd), 0);
+    
+    data->map.map_width = ft_strlen(line) - 1;
+    while (line)
+    {
+        ++i;
+        printf("%s", line);  // For debug
+        free(line);
+        line = get_next_line(fd);
+    }
+    data->map.map_height = i;
+    close(fd);
+
+    fd = open(map_path, O_RDONLY);
+    if (fd == -1)
+        return (0);
+    
+    lines = (char **)malloc(sizeof(char *) * (data->map.map_height + 1));
+    if (!lines)
+        return (close(fd), 0);
+    
+    // Read and store each line
+    i = 0;
+    while (i < data->map.map_height)
+    {
+        lines[i] = get_next_line(fd);
+        if (!lines[i])
+        {
+            while (--i >= 0)
+                free(lines[i]);
+            free(lines);
+            return (close(fd), 0);
+        }
+        i++;
+    }
+    lines[i] = NULL;
+    
+    close(fd);
+    data->map.map = lines;
+    return (1);
+}
+
+int init_map(t_data *data, char *map_path)
+{    
+    if (!read_map(data, map_path))
         return (1);
 
-    for (int i = 0; map_lines[i]; i++)
-    {
-        data->map.map[i] = strdup(map_lines[i]);
-        if (!data->map.map[i])
-        {
-            free_map(data->map.map);
-            return (1);
-        }
-    }
-    data->map.map[data->map.map_height] = NULL;
     return (0);
 }
 
-void init_player_direction(t_data *data)
+int init_player_direction(t_data *data)
 {
     data->player_dir = 'S';  // Set default direction
     
+    if (!data->player_dir)
+        return (1);
+
     if (data->player_dir == 'N')
     {
         data->dir_x = 0;
@@ -274,9 +310,10 @@ void init_player_direction(t_data *data)
         data->plane_x = 0;
         data->plane_y = -0.66;
     }
+    return (0);
 }
 
-int init_game(t_data *data)
+int init_game(t_data *data, char *map_path)
 {
     data->scale = SCALE;
     data->rot_speed = ROT_SPEED;
@@ -286,15 +323,17 @@ int init_game(t_data *data)
     data->minimap_x_center = MINIMAP_MID_X;
     data->minimap_y_center = MINIMAP_MID_Y;
 
-    data->map.map_width = MAP_WIDTH;
-    data->map.map_height = MAP_HEIGHT;
+    // data->map.map_width = MAP_WIDTH;
+    // data->map.map_height = MAP_HEIGHT;
+    // data->map.map_path = av[1];
 
     data->player_x = 2.0;
     data->player_y = 2.0;
 
-    init_player_direction(data);
+    if (init_player_direction(data))
+        return (1);
 
-    if (init_map(data) != 0)
+    if (init_map(data, map_path) != 0)
         return (1);
 
     // Create the persistent image
@@ -328,11 +367,15 @@ void clean_up(t_data *data)
     
     if (data->win_ptr && data->mlx_ptr)
         mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+
+    #ifdef __linux__
     if (data->mlx_ptr)
     {
         mlx_destroy_display(data->mlx_ptr);
         free(data->mlx_ptr);
     }
+    #endif
+
     if (data->map.map)
         free_map(data->map.map);
 }
@@ -561,9 +604,12 @@ void move_player(t_data *data)
 
 void draw_background(t_data *data, t_image *image)
 {
-	for (int y = -data->minimap_radius; y <= data->minimap_radius; y++)
+    int y = -data->minimap_radius - 1;
+
+	while (++y <= data->minimap_radius)
     {
-        for (int x = -data->minimap_radius; x <= data->minimap_radius; x++)
+        int x = -data->minimap_radius - 1;
+        while (++x <= data->minimap_radius)
         {
             double distance = sqrt(x * x + y * y);
             if (distance <= data->minimap_radius)
@@ -618,7 +664,11 @@ void draw_map(t_data *data, t_image *image)
             int map_y = player_map_y + dy;
             
             // Check if the tile is within map bounds
-            if (map_x >= 0 && map_x < MAP_WIDTH && map_y >= 0 && map_y < MAP_HEIGHT)
+            // if (map_x >= 0 && map_x < data->map.map_width && map_y >= 0 && map_y < data->map.map_height)
+            if (map_x >= 0 && map_x < data->map.map_width && 
+                map_y >= 0 && map_y < data->map.map_height && 
+                data->map.map[map_y] != NULL &&  // Check if row exists
+                map_x < (int)ft_strlen(data->map.map[map_y]))
             {
                 double tile_x = map_x * TILE_SIZE * data->scale;
                 double tile_y = map_y * TILE_SIZE * data->scale;
@@ -730,11 +780,59 @@ int game_loop(t_data *data)
     return (0);
 }
 
-int main(void)
+void print_error (char *error_str, char *file, int line)
+{
+    ft_putstr_fd("\n", 2);
+    ft_putstr_fd(error_str, 2);
+    ft_putstr_fd("File: ------> ", 2);
+    ft_putstr_fd(file, 2);
+    ft_putstr_fd("\n", 2);
+    ft_putstr_fd("Line: ------> ", 2);
+    ft_putnbr_fd(line, 2);
+    ft_putstr_fd("\n\n", 2);
+}
+
+int check_map_extension(const char *map_path)
+{
+    int fd;
+
+    if ((fd = open(map_path, O_RDONLY)) == -1)
+    {
+        print_error("Error: File does not exist!\n", __FILE__, __LINE__);
+        return (0);
+    }
+    else
+        close(fd);
+
+    if (!ft_strnstr(&map_path[ft_strlen(map_path) - 4], ".cub", 4))
+    {
+        print_error("Error, map file extension!\n", __FILE__, __LINE__);
+		return (0);
+    }
+    return (1);
+}
+
+int parse_map(int ac, char **av)
+{
+    if (ac != 2)
+    {
+        print_error("Error: Bad arguments!\n", __FILE__, __LINE__);
+        return (0);
+    }
+    if (!check_map_extension(av[1]))
+        return (0);
+    return (1);
+}
+
+int main(int ac, char **av)
 {
     t_data data;
 
+    if (!parse_map(ac, av))
+        return (1);
+
     memset(&data, 0, sizeof(t_data));
+
     data.mlx_ptr = mlx_init();
     if (!data.mlx_ptr)
         return (1);
@@ -746,7 +844,7 @@ int main(void)
         return (1);
     }
 
-    if (init_game(&data) != 0)
+    if (init_game(&data, av[1]) != 0)
     {
         clean_up(&data);
         return (1);

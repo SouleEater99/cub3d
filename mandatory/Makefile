@@ -16,7 +16,8 @@ DEBUGFLAGS := -g3 -fsanitize=address
 LIBFT := libraries/libft/libft.a
 INCLUDES := -I includes
 # MAP := maps/valid_map1.cub
-MAP ?= maps/valid_map1.cub
+
+MAP ?= maps/invalid_map2.cub
 
 # MLXLFLAGS = -lmlx -lXext -lX11 -lm
 
@@ -49,7 +50,8 @@ valg: all clean
 	@rm -f $(NAME)
 
 proj:
-	gcc -Wall -Wextra -Werror -O3 ${DEBUGFLAGS} ./srcs/project.c -o raycasting ./libraries/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm && ./raycasting && rm ./raycasting
+	@gcc -Wall -Wextra -Werror -O3 -g3 -fsanitize=address ./srcs/project.c -o raycasting ./libraries/minilibx-linux/libmlx_Linux.a ./libraries/libft/libft.a -lXext -lX11 -lm
+	@./raycasting ${MAP} && rm ./raycasting
 
 $(NAME): $(OBJS)
 	@echo "Building..."
