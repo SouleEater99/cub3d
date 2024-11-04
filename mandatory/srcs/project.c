@@ -656,9 +656,11 @@ void draw_map(t_data *data, t_image *image)
     int player_map_x = (int)data->player_x;
     int player_map_y = (int)data->player_y;
     
-    for (int dy = -visible_range; dy <= visible_range; dy++)
+    int dy = -visible_range -1;
+    while (++dy <= visible_range)
     {
-        for (int dx = -visible_range; dx <= visible_range; dx++)
+        int dx = -visible_range - 1;
+        while (++dx <= visible_range)
         {
             int map_x = player_map_x + dx;
             int map_y = player_map_y + dy;
