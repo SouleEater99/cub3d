@@ -26,7 +26,6 @@ int	ft_is_player_inside_wall(t_data *data)
 
 	x = data->x_player + cos(data->rotation_angle) * data->move_step;
 	y = data->y_player + sin(data->rotation_angle) * data->move_step;
-	printf("++ x_player_check : %f | y_player_check : %f  ++\n", x, y);
 	if (data->map[(int)y / CUB_SIZE][(int) x / CUB_SIZE] == '1')
 		return (0);
 	data->x_player = x;

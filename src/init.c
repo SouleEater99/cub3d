@@ -11,14 +11,17 @@ t_data *ft_init_data()
 	data->img = malloc(sizeof(t_image));
 	if (!data->img)
 		return (free(data), NULL);
+	data->ray = malloc(sizeof(t_ray) * WIDTH + 1);
+	if (!data->ray)
+		return (free(data->img), free(data), NULL);
 	data->row = 12;
 	data->col = 24;
 	data->mlx = mlx_init();
-	data->x_player = 1 * 40 + 20;
-	data->y_player = 1 * 40 + 20;
+	data->x_player = 5 * 40 + 20;
+	data->y_player = 5 * 40 + 20;
     data->turn_direction = 0;
     data->walk_direction = 0;
-	data->rotation_angle = (11 * PI) / 6;
+	data->rotation_angle = (11 * PI) /6 ;
     data->move_speed = 2;
     data->rotation_speed = 2 * (PI / 180);
 	return (data);

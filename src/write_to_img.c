@@ -74,7 +74,7 @@ int ft_is_angle_facing_right(double angle)
 	return (0);
 }
 
-int	ft_board_protect(t_data *data, int x, int y)
+int ft_board_protect(t_data *data, int x, int y)
 {
 	if ((x > 0 && x < data->col * CUB_SIZE) && (y > 0 && y < data->row * CUB_SIZE))
 		return (1);
@@ -89,75 +89,111 @@ int ft_is_a_wall(t_data *data, int x, int y)
 	return (0);
 }
 
-void ft_get_horz_hit(t_data *data, t_ray *ray)
+void ft_get_virt_hit(t_data *data,t_ray *ray, long *x, long *y)
 {
-	double RayAngle;
+	long ystep;
+	long xstep;
 
-	RayAngle = data->rotation_angle;
-	ray->ystep = CUB_SIZE;
-	if (ft_is_angle_facing_down(RayAngle))
+	if (ft_is_angle_facing_right(ray->RayAngle))
+		*x = (long)(data->x_player / CUB_SIZE) * CUB_SIZE + CUB_SIZE;
+	else
+		*x = (long)(data->x_player / CUB_SIZE) * CUB_SIZE;
+	*y = ((*x - data->x_player) * tan(ray->RayAngle)) + data->y_player;
+	xstep = CUB_SIZE;
+	if (!ft_is_angle_facing_right(ray->RayAngle))
+		xstep *= -1;
+	ystep = xstep * tan(ray->RayAngle);
+	if (!ft_is_angle_facing_down(ray->RayAngle) && ystep > 0)
+		ystep *= -1;
+	while ((*x > 0 && *x < data->col * CUB_SIZE) && (*y < data->row * CUB_SIZE && *y > 0))
 	{
-		ray->WallHitY = (data->y_player / CUB_SIZE) * CUB_SIZE + CUB_SIZE;
-		ray->WallHitX = ((ray->WallHitY - data->y_player) / tan(RayAngle)) + data->x_player;
-		ray->xstep = ray->ystep / tan(RayAngle);
-		while ((ray->WallHitX > 0 && ray->WallHitX < data->col * CUB_SIZE) && (ray->WallHitY < data->row * CUB_SIZE && ray->WallHitY > 0))
-		{
-		// printf("WallHitX : %ld | WallHitY : %ld \n", ray->WallHitX, ray->WallHitY);
-		// printf("PlayerX : %f | PlayerY : %f \n", data->x_player, data->y_player);
-		// printf("RayAngle : %f | Xstep : %ld\n", RayAngle * ( 180 / PI), ray->xstep);
-			if (ft_is_a_wall(data, ray->WallHitX + 1, ray->WallHitY + 1))
-				return;
-			ray->WallHitY += ray->ystep;
-			ray->WallHitX += ray->xstep;
-		}
+		if (ft_is_angle_facing_right(ray->RayAngle) && ft_is_a_wall(data, *x + 1, *y + 1))
+			return;
+		else if (!ft_is_angle_facing_right(ray->RayAngle) && ft_is_a_wall(data, *x - 1, *y - 1))
+			return;
+		*x += xstep;
+		*y += ystep;
+	}
+}
+
+void ft_get_horz_hit(t_data *data, t_ray *ray, long *x, long *y)
+{
+	long ystep;
+	long xstep;
+
+	if (ft_is_angle_facing_down(ray->RayAngle))
+		*y = (long)(data->y_player / CUB_SIZE) * CUB_SIZE + CUB_SIZE;
+	else
+		*y = (long)(data->y_player / CUB_SIZE) * CUB_SIZE;
+	*x = ((*y - data->y_player) / tan(ray->RayAngle)) + data->x_player;
+	ystep = CUB_SIZE;
+	if (!ft_is_angle_facing_down(ray->RayAngle))
+		ystep *= -1;
+	xstep = ystep / tan(ray->RayAngle);
+	if (!ft_is_angle_facing_right(ray->RayAngle) && xstep > 0)
+		xstep *= -1;
+	while ((*x > 0 && *x < data->col * CUB_SIZE) && (*y < data->row * CUB_SIZE && *y > 0))
+	{
+		if (ft_is_angle_facing_down(ray->RayAngle) && ft_is_a_wall(data, *x + 1, *y + 1))
+			return;
+		if (!ft_is_angle_facing_down(ray->RayAngle) && ft_is_a_wall(data, *x - 1, *y - 1))
+			return;
+		*y += ystep;
+		*x += xstep;
+	}
+}
+
+int		ft_calc_distance(t_data *data, int x, int y)
+{
+	int distance;
+
+	distance = abs((int)data->x_player - x) + abs((int)data->y_player - y);
+	return (distance );
+}
+
+void	ft_get_wall_hit(t_data *data, t_ray *ray)
+{
+	long	HorzHitX;
+	long	HorzHitY;
+	long VirtHitX;
+	long VirtHitY;
+
+	ft_get_horz_hit(data, ray, &HorzHitX, &HorzHitY);
+	ft_get_virt_hit(data, ray, &VirtHitX, &VirtHitY);
+	if (ft_calc_distance(data, HorzHitX, HorzHitY) < ft_calc_distance(data, VirtHitX, VirtHitY))
+	{
+		ray->distance = ft_calc_distance(data, HorzHitX, HorzHitY);
+		ray->WallHitX = HorzHitX;
+		ray->WallHitY = HorzHitY;
 	}
 	else
 	{
-		printf("###########################\n");
-		ray->WallHitY = (data->y_player / CUB_SIZE) * CUB_SIZE;
-		// ray->WallHitX = ((data->y_player - data->ray->WallHitY) / tan(RayAngle)) + data->x_player;
-		ray->WallHitX = ((ray->WallHitY - data->y_player) / tan(RayAngle)) + data->x_player;
-		ray->xstep = ray->ystep / tan(RayAngle);
-		while ((ray->WallHitX > 0 && ray->WallHitX < data->col * CUB_SIZE) && (ray->WallHitY < data->row * CUB_SIZE && ray->WallHitY > 0))
-		{
-		printf("WallHitX : %ld | WallHitY : %ld \n", ray->WallHitX, ray->WallHitY);
-		printf("PlayerX : %f | PlayerY : %f \n", data->x_player, data->y_player);
-		printf("RayAngle : %f | Xstep : %ld\n", RayAngle * ( 180 / PI), ray->xstep);
-			if (ft_is_a_wall(data, ray->WallHitX - 1, ray->WallHitY - 1))
-				return;
-			ray->WallHitY -= ray->ystep;
-			ray->WallHitX += ray->xstep;
-		}
+		ray->distance = ft_calc_distance(data, VirtHitX, VirtHitY);
+		ray->WallHitX = VirtHitX;
+		ray->WallHitY = VirtHitY;
 	}
+	ft_write_line(data, ray->WallHitX - data->x_player, ray->WallHitY - data->y_player, 0x000000FF);
 }
 
 void ft_cast_all_rays(t_data *data)
 {
-	// 	double	ray_angle;
-	// 	int		i;
+		int		i;
+		double	angle;
+		t_ray	*ray;
 
-	// i = 0;
-	// ray_angle = data->rotation_angle - (FOV_ANGLE / 2) * (PI / 180);
-	ft_get_horz_hit(data, data->ray);
-	printf("================ WallHitX : %ld | WallHitY : %ld ==================\n", data->ray->WallHitX, data->ray->WallHitY);
-	// if ((data->ray->WallHitX > 0 && data->ray->WallHitX < data->col * CUB_SIZE) && (data->ray->WallHitY > 0 && data->ray->WallHitY < data->row * CUB_SIZE))
-	// {
-		ft_write_line(data, data->ray->WallHitX - data->x_player, data->ray->WallHitY - data->y_player, 0x000000FF);
 
-	// }
+	i = 0;
+	ray = data->ray;
+	angle = data->rotation_angle - (FOV_ANGLE / 2) * (PI / 180);
 	// ft_write_line(data, cos(data->rotation_angle) *  30, sin(data->rotation_angle) * 30, 0x00FF0000);
-	// while (i < WIDTH)
-	// {
-	// 	ft_write_line(data, cos(ray_angle) *  30, sin(ray_angle) * 30, 0x00FF0000);
-	// 	ray_angle = ray_angle + ((double)FOV_ANGLE / (double)WIDTH) * (PI / 180);
-	// 	i++;
-	// 	printf ("#### { ray_angle : %f} ##### \n", ray_angle);
-	// }
-
-	// if (!ft_is_angle_facing_down(data->rotation_angle))
-	// {
-
-	// }
+	while (i < WIDTH)
+	{
+		angle = angle + ((double)FOV_ANGLE / (double)WIDTH) * (PI / 180);
+		(ray + i)->RayAngle = angle;
+		ft_get_wall_hit(data, ray + i);
+		// printf ("#### { ray_angle : %f} ##### \n", ray[i].RayAngle);
+		i++;
+	}
 }
 
 void ft_write_player_to_img(t_data *data)

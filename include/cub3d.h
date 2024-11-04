@@ -48,8 +48,7 @@ typedef struct s_ray
 {
 	long	WallHitX;
 	long	WallHitY;
-	long	xstep;
-	long	ystep;
+	double	RayAngle;
 	double	distance;
 }t_ray;
 
@@ -71,7 +70,7 @@ typedef struct s_data
 	double	move_step;
 	double	rotation_speed;
 	double	step;
-	t_ray	ray[WIDTH];
+	t_ray	*ray;
 	
 
 
@@ -91,8 +90,11 @@ int		ft_is_angle_facing_down(double angle);
 int		ft_is_angle_facing_right(double angle);
 void	ft_cast_all_rays(t_data *data);
 int	ft_is_a_wall(t_data *data, int x, int y);
-void	ft_get_horz_hit(t_data *data, t_ray *ray);
+void ft_get_horz_hit(t_data *data, t_ray *ray, long *x, long *y);
+void ft_get_virt_hit(t_data *data, t_ray *ray, long *x, long *y);
 int	ft_normalize_angle(int angle);
 int	ft_board_protect(t_data *data, int x, int y);
+int		ft_calc_distance(t_data *data, int x, int y);
+void	ft_get_wall_hit(t_data *data, t_ray *ray);
 
 #endif
