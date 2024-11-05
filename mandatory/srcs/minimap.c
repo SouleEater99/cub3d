@@ -244,7 +244,7 @@ void draw_player(t_data *data, t_image *image)
         {
             dist = sqrt(x * x + y * y);
             if (dist <= data->player_radius)
-                put_pixel_in_img(image, data->minimap_x_center + x,  data->minimap_y_center + y, 0xFF0000);
+                put_pixel_in_img(image, data->minimap_x_center + x,  data->minimap_y_center + y, 0xFFFF00);
         }
     }
 }
@@ -258,8 +258,8 @@ void draw_player_direction(t_data *data, t_image *image)
     while (++i <= 30)
     {
         double ray_angle = angle + (i * fov / 60);
-        double ray_length = MINIMAP_RADIUS * 0.3; // Length of direction indicator
-        
+        double ray_length = MINIMAP_RADIUS * 0.3;
+
         double end_x = data->minimap_x_center + cos(ray_angle) * ray_length;
         double end_y = data->minimap_y_center + sin(ray_angle) * ray_length;
         
@@ -281,9 +281,10 @@ void draw_player_direction(t_data *data, t_image *image)
         {
             double dist_x = x - data->minimap_x_center;
             double dist_y = y - data->minimap_y_center;
-			
+
             if (sqrt(dist_x * dist_x + dist_y * dist_y) <= MINIMAP_RADIUS)
                 put_pixel_in_img(image, round(x), round(y), 0xFF0000);
+            
             x += x_increment;
             y += y_increment;
         }

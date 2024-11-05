@@ -20,7 +20,7 @@
 # define RAY_LENGHT         500
 
 # define MAP_WIDTH          30      // just an example
-# define MAP_HEIGHT         9       // just an example
+# define MAP_HEIGHT         30      // just an example
 
 # define CLR_SKY            0x69c9fa
 # define CLR_FLR            0xc28951

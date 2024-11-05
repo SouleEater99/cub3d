@@ -59,29 +59,58 @@ void print_map(char **map)
 
 int read_map(t_data *data, char *map_path)
 {
-    int i;
-    int fd;
-    int map_h;
-    
+    int     i;
+    int     fd;
+    char    *line;
+    char    **lines;
+
     fd = open(map_path, O_RDONLY);
     if (fd == -1)
-        return (printf("FILE: %s, LINE: %d\n", __FILE__, __LINE__), perror(map_path), 1);
+        return (printf("FILE: %s, LINE: %d\n", __FILE__, __LINE__), perror(map_path), 0);
     
-    i = -1;
-    map_h = map_height(map_path);
-    data->map = (char **)malloc(sizeof(char *) * (map_h + 1));
-    while(++i < map_h)
-        data->map[i] = get_next_line(fd);
-    data->map[i] = NULL;
+    i = 0;
+    line = get_next_line(fd);
+    if (!line)
+        return (close(fd), 0);
     
-    data->map_height = map_h;
-    data->map_width = ft_strlen(data->map[0]);
-
-    // print_map(data->map);
-    
-    // free_array(data->map);
+    data->map_width = ft_strlen(line) - 1;
+    while (line)
+    {
+        ++i;
+        printf("%s", line);  // For debug
+        free(line);
+        line = get_next_line(fd);
+    }
+    data->map_height = i;
     close(fd);
-    return (0);
+
+    fd = open(map_path, O_RDONLY);
+    if (fd == -1)
+        return (0);
+    
+    lines = (char **)malloc(sizeof(char *) * (data->map_height + 1));
+    if (!lines)
+        return (close(fd), 0);
+    
+    // Read and store each line
+    i = 0;
+    while (i < data->map_height)
+    {
+        lines[i] = get_next_line(fd);
+        if (!lines[i])
+        {
+            while (--i >= 0)
+                free(lines[i]);
+            free(lines);
+            return (close(fd), 0);
+        }
+        i++;
+    }
+    lines[i] = NULL;
+    
+    close(fd);
+    data->map = lines;
+    return (1);
 }
 
 /// @brief checks for white-space characters.  In the "C" and "POSIX" locales, these are: space, form-feed ('\f'), newline  ('\n'),  carriage  return  ('\r'), horizontal tab ('\t'), and vertical tab ('\v').
@@ -105,33 +134,38 @@ bool is_empty_line(char *line)
 
 int init_payer_pos(t_data *data, char **map)
 {
-    int x, y;
+    (void)map;
+    // int x, y;
 
-    // y = data->map_start;
-    y = -1;
-    while(map && map[++y])
-    {
-        x = -1;
-        // printf("%s", map[y]);
-        if (is_empty_line(map[y]))
-            continue;
-        while(map[y] && map[y][++x])
-        {
-            if (!ft_strchr("NSEW01\t\n ", map[y][x]))
-            {
-                fprintf(stderr, "Error: map not valid: not supported characters: [%d][%d]:[%c]\n", y, x, map[y][x]);
-                exit(1);
-            }
-            if (strchr("NSEW", map[y][x]))
-            {
-                data->player_dir = map[y][x];
-                data->map[y][x] = '0';
-                data->player_x = x;
-                data->player_y = y;
-                printf("player at: [%lf][%lf] = [%c]\n", data->player_y, data->player_x, data->map[(int)data->player_y][(int)data->player_x]);
-            }
-        }
-    }
+    // // y = data->map_start;
+    // y = -1;
+    // while(map && map[++y])
+    // {
+    //     x = -1;
+    //     // printf("%s", map[y]);
+    //     if (is_empty_line(map[y]))
+    //         continue;
+    //     while(map[y] && map[y][++x])
+    //     {
+    //         if (!ft_strchr("NSEW01\t\n ", map[y][x]))
+    //         {
+    //             fprintf(stderr, "Error: map not valid: not supported characters: [%d][%d]:[%c]\n", y, x, map[y][x]);
+    //             exit(1);
+    //         }
+    //         if (strchr("NSEW", map[y][x]))
+    //         {
+    //             data->player_dir = map[y][x];
+    //             data->map[y][x] = '0';
+    //             data->player_x = x;
+    //             data->player_y = y;
+    //             printf("player at: [%lf][%lf] = [%c]\n", data->player_y, data->player_x, data->map[(int)data->player_y][(int)data->player_x]);
+    //         }
+    //     }
+    // }
+
+    data->player_x = 2.0;
+    data->player_y = 2.0;
+
     return (0);
 }
 
@@ -258,20 +292,20 @@ int parse_map(t_data *data, int ac, char **av)
 {
     (void) ac;
     (void) av;
-    // if (ac != 2)
-    // {
-    //     write(2, "Error, there is no map\n", 24);
-    //     return (1);
-    // }
+    if (ac != 2)
+    {
+        write(2, "Error, there is no map\n", 24);
+        return (1);
+    }
     
-    // printf("map file is: %s\n", av[1]);
-    // if (!ft_strnstr(&av[1][ft_strlen(av[1]) - 4], ".cub", 4))
-    // {
-    //     write(2, "Error, map file extention\n", 27);
-    //     printf("==== Line: %d ====\n", __LINE__);
-    //     printf("==== File: %s ====\n", __FILE__);
-	// 	return (1);
-    // }
+    printf("map file is: %s\n", av[1]);
+    if (!ft_strnstr(&av[1][ft_strlen(av[1]) - 4], ".cub", 4))
+    {
+        write(2, "Error, map file extention\n", 27);
+        printf("==== Line: %d ====\n", __LINE__);
+        printf("==== File: %s ====\n", __FILE__);
+		return (1);
+    }
     
     if (read_map(data, av[1]))
         return (1);
@@ -288,7 +322,5 @@ int parse_map(t_data *data, int ac, char **av)
     if (init_payer_pos(data, data->map))
         return (1);
 
-    // if (init_map(data))
-    //     return (1);
     return 0;
 }

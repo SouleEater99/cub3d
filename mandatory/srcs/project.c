@@ -829,9 +829,11 @@ int parse_map(int ac, char **av)
 int main(int ac, char **av)
 {
     t_data data;
+    (void)ac;
+    (void)av;
 
-    if (!parse_map(ac, av))
-        return (1);
+    // if (!parse_map(ac, av))
+    //     return (1);
 
     memset(&data, 0, sizeof(t_data));
 

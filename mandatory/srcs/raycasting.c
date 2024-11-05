@@ -110,6 +110,11 @@ void raycasting(t_data *data)
 	while (++x < SCREEN_WIDTH)
 	{
 		data->camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
+
+		// printf("camera_x: %lf\n", data->camera_x);
+		printf("ray_dir_x: %lf\n", data->ray_dir_x);
+		printf("ray_dir_y: %lf\n", data->ray_dir_y);
+
 		// if x = 0 we'll get the leftmost ray direction and if x = SCREEN_WIDTH we'll get the rightmost ray direction.
 		data->ray_dir_x = data->dir_x + data->plane_x * data->camera_x;
 		// the direction of the ray.
@@ -123,6 +128,8 @@ void raycasting(t_data *data)
 		data->delta_dist_x = (data->ray_dir_x == 0) ? 1e30 : fabs(1 / data->ray_dir_x);
 		data->delta_dist_y = (data->ray_dir_y == 0) ? 1e30 : fabs(1 / data->ray_dir_y);
 		
+		// printf("delta dist x: %lf | delta dist y: %lf\n", data->delta_dist_x, data->delta_dist_y);
+
 		calculate_side_dist_x_y(data);
 		dda_algorithm(data); // DDA algorithm
 		draw_vert_cols(data, x);
@@ -131,7 +138,6 @@ void raycasting(t_data *data)
 
 void	start_game(t_data *data)
 {
-
 	data->image = create_image(data);
 	raycasting(data);
 	draw_mini_map(data);		// draw the mini-map
