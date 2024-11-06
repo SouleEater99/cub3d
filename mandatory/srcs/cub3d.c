@@ -75,8 +75,8 @@ int main(int ac, char **av)
 
     memset(&data, 0, sizeof(t_data));
     
-	// if (parse_map(&data, ac, av))
-    //     return (1);
+	if (!parse_map(&data, ac, av))
+        return (1);
 
     data.mlx_ptr = mlx_init();
 	if (!data.mlx_ptr)

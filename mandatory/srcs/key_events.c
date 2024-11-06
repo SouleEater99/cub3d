@@ -12,29 +12,6 @@
 
 #include <cub3d.h>
 
-void clean_up(t_data *data)
-{
-	if (data->no_texture_path)
-		free(data->no_texture_path);
-	if (data->so_texture_path)
-		free(data->so_texture_path);
-	if (data->we_texture_path)
-		free(data->we_texture_path);
-	if (data->ea_texture_path)
-		free(data->ea_texture_path);
-	
-	if (data->win_ptr)
-		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-	if (data->mlx_ptr)
-		mlx_destroy_display(data->mlx_ptr);
-	if (data->image)
-		mlx_destroy_image(data->mlx_ptr, data->image);
-	if (data->map)
-		free_array(data->map);
-	if (data->mlx_ptr)
-		free(data->mlx_ptr);
-}
-
 int	key_press(int keycode, t_data *data)
 {
 	if (keycode == ESC_KEY)
@@ -65,14 +42,6 @@ int	key_release(int keycode, t_data *data)
 		data->rotate_right = 0;
 	return (0);
 }
-
-// void mouse_positions(t_data *data)
-// {
-// 	int x, y;
-// 	if (!mlx_mouse_get_pos(data->win_ptr, &x, &y))
-// 		exit (1);
-// 	printf("%d %d\n", x, y);
-// }
 
 int check_click_space(t_data *data, int x, int y)
 {
@@ -110,8 +79,8 @@ int mouse_events(int button, int x, int y, t_data *data)
         if (data->clicks % 2 != 0 && check_click_space(data, x, y))
         {
             data->scale = SCALE * 2;
-        	data->rot_speed = ROT_SPEED * 4;
-            data->move_speed = MOVE_SPEED * 4;
+        	data->rot_speed = ROT_SPEED * 6;
+            data->move_speed = MOVE_SPEED * 6;
             data->player_radius = PLAYER_RADIUS;
             data->minimap_radius = MINIMAP_RADIUS * 10;
             data->minimap_x_center = MAP_MID_X;

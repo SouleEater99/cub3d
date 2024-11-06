@@ -1,0 +1,25 @@
+=> bluetoothctl    
+Agent registered
+[CHG] Controller 10:F6:0A:71:C1:17 Pairable: yes
+[BST-900]# devices
+Device 93:D6:58:CD:B5:17 BST-900
+[BST-900]# info 93:D6:58:CD:B5:17
+Device 93:D6:58:CD:B5:17 (public)
+        Name: BST-900
+        Alias: BST-900
+        Class: 0x00240404
+        Icon: audio-headset
+        Paired: yes
+        Trusted: yes
+        Blocked: no
+        Connected: yes
+        LegacyPairing: no
+        UUID: Audio Sink                (0000110b-0000-1000-8000-00805f9b34fb)
+        UUID: A/V Remote Control Target (0000110c-0000-1000-8000-00805f9b34fb)
+        UUID: A/V Remote Control        (0000110e-0000-1000-8000-00805f9b34fb)
+        UUID: Handsfree                 (0000111e-0000-1000-8000-00805f9b34fb)
+        UUID: PnP Information           (00001200-0000-1000-8000-00805f9b34fb)
+        Modalias: bluetooth:v05D6p000Ad0240
+        ManufacturerData Key: 0x7262
+        ManufacturerData Value:
+  32 32 78 78 11 22 33 44 55 66 aa bb 00 00        22xx."3DUf....  

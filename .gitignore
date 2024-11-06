@@ -1,0 +1,6 @@
+./mandatory/srcs/*.o
+./bonus/srcs/*.o
+./bonus/cub3d_bonus
+./mandatory/a.out
+./bonus/a.out
+./bluetooth.txt

@@ -190,9 +190,11 @@
 
 void draw_background(t_data *data, t_image *image)
 {
-	for (int y = -data->minimap_radius; y <= data->minimap_radius; y++)
+    int y = -data->minimap_radius - 1;
+	while (++y <= data->minimap_radius)
     {
-        for (int x = -data->minimap_radius; x <= data->minimap_radius; x++)
+        int x = -data->minimap_radius - 1;
+        while (++x <= data->minimap_radius)
         {
             double distance = sqrt(x * x + y * y);
             if (distance <= data->minimap_radius)
@@ -308,7 +310,11 @@ void draw_map(t_data *data, t_image *image)
             int map_y = player_map_y + dy;
             
             // Check if the tile is within map bounds
-            if (map_x >= 0 && map_x < MAP_WIDTH && map_y >= 0 && map_y < MAP_HEIGHT)
+            // if (map_x >= 0 && map_x < data->map_width && map_y >= 0 && map_y < data->map_height)
+            if (map_x >= 0 && map_x < data->map_width && 
+                map_y >= 0 && map_y < data->map_height && 
+                data->map[map_y] != NULL &&  // Check if row exists
+                map_x < data->map_line_len[map_y])
             {
                 double tile_x = map_x * TILE_SIZE * data->scale;
                 double tile_y = map_y * TILE_SIZE * data->scale;

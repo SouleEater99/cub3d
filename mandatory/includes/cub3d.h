@@ -58,6 +58,7 @@ typedef struct {
     char    **map;
     int     map_height;
     int     map_width;
+    int     *map_line_len;
 
     double  dir_x;   // player direction x position
     double  dir_y;   // player direction y position
@@ -161,6 +162,10 @@ int         mouse_events(int button, int x, int y, t_data *data);
 // parsing time
 
 int         parse_map(t_data *data, int ac, char **av);
+void        print_error (char *error_str, char *file, int line);
+void        free_map(char **map);
+void        clean_up(t_data *data);
+
 // void        std_error(char *error);
 
 # endif // CUB3D_H

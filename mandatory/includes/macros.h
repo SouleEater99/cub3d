@@ -28,7 +28,7 @@
 # define CLR_EAW            0xcacaca
 # define CLR_SAN            0xf5f5f5
 
-# define TILE_SIZE          64      // the cell grid size
+# define TILE_SIZE          32      // the cell grid size
 
 # define CENTER             (SCREEN_WIDTH / 2 - MAP_WIDTH * TILE_SIZE / 2)
 
@@ -49,6 +49,9 @@
 # define SCROLL_UP          4
 # define SCROLL_DOWN        5
 
+# define PLAYER_DIR         "NSEW"
+# define SUPPORTED_CHARS    "NSEW01\t\n "
+
 #ifdef __APPLE__
     // macOS keycodes
     # define ESC_KEY        53
@@ -68,8 +71,8 @@
     # define R_KEY          65363
     # define L_KEY          65361
     
-    # define MOVE_SPEED     0.04    // player speed
-    # define ROT_SPEED      0.02    // Rotation speed (in radians)
+    # define MOVE_SPEED     0.06    // player speed
+    # define ROT_SPEED      0.03    // Rotation speed (in radians)
 #else
     #error "Unsupported platform"
 #endif

@@ -112,8 +112,8 @@ void raycasting(t_data *data)
 		data->camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
 
 		// printf("camera_x: %lf\n", data->camera_x);
-		printf("ray_dir_x: %lf\n", data->ray_dir_x);
-		printf("ray_dir_y: %lf\n", data->ray_dir_y);
+		// printf("ray_dir_x: %lf\n", data->ray_dir_x);
+		// printf("ray_dir_y: %lf\n", data->ray_dir_y);
 
 		// if x = 0 we'll get the leftmost ray direction and if x = SCREEN_WIDTH we'll get the rightmost ray direction.
 		data->ray_dir_x = data->dir_x + data->plane_x * data->camera_x;

@@ -76,7 +76,7 @@ void	init_game(t_data *data)
 	// data->plane_x = -data->dir_y * fov_width;
 	// data->plane_y = data->dir_x * fov_width;
 	
-	data->player_dir = 'E';
+	// data->player_dir = 'E';
 
 	if (data->player_dir == 'N')		// North
 	{
@@ -118,11 +118,11 @@ void	init_game(t_data *data)
 	data->minimap_x_center = MINIMAP_MID_X;
 	data->minimap_y_center = MINIMAP_MID_Y;
 
-	data->map_width = MAP_WIDTH;
-	data->map_height = MAP_HEIGHT;
+	// data->map_width = MAP_WIDTH;
+	// data->map_height = MAP_HEIGHT;
 
 	data->player_x = 2.0;   // player positions
 	data->player_y = 2.0;   // player positions
 
-	init_map(data);
+	// init_map(data);
 }
