@@ -37,6 +37,7 @@ SRCS_M = ft_atoi.c \
 		ft_memcpy.c \
 		ft_strchr.c \
 		ft_strncmp.c \
+		ft_strcmp.c \
 		ft_isascii.c \
 		ft_memmove.c \
 		ft_strdup.c \
