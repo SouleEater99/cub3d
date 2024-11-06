@@ -104,9 +104,17 @@ int mouse_events(int button, int x, int y, t_data *data)
     else if (button == RIGHT_CLICK)
         printf("Right click!\n");
     else if (button == SCROLL_UP)
+    {
+        // data->scale += 0.2;
+        // data->minimap_radius += 1;
         printf("Zooming in!\n");
+    }
     else if (button == SCROLL_DOWN)
+    {
+        // data->scale -= 0.2;
+        // data->minimap_radius -= 1;
         printf("Zooming out!\n");
+    }
     return 0;
 }
 

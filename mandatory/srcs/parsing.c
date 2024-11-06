@@ -213,21 +213,62 @@
 //     return (0);
 // }
 
-char *ft_strchrstr(char *str1, char *str2)
+// char *ft_strchrstr(char *str1, char *str2)
+// {
+//     int i, j;
+
+//     if (!str1 || !str2)
+//         return NULL;
+
+//     i = 0;
+//     while (str1[++i])
+//     {
+//         j = 0;
+//         while (str2[++j])
+//         {
+//             if (str1[i] == str2[j])
+//                 return &str1[i];
+//         }
+//     }
+//     return NULL;
+// }
+
+int check_line_comp(char *line, char *chars)
 {
     int i = -1;
-    char *found;
-    if (!str1 || !str2)
+    if (!line || !chars)
         return (0);
-    
-    found = NULL;
-    while (str1[++i])
+    while (line[++i])
     {
-        found = ft_strchr(str2, str1[i]);
-        if (found)
-            return (found);
+        if (!ft_strchr(chars, line[i]))
+        {
+            printf("====> %s\n", line);
+            return (0);
+        }
     }
-    return (NULL);
+    return (1);
+}
+
+int check_player_positions(char *line, char *player_chars)
+{
+    int i = -1;
+    static int player_dir = 0;
+
+    if (!line || !player_chars)
+        return (0);
+    while (line[++i])
+    {
+        if (!ft_strrchr(player_chars, line[i]))
+            continue;
+        else
+        {
+            if (!player_dir)
+                player_dir = line[i];
+            else
+                return (print_error("Error: multiple players!\n", __FILE__, __LINE__), 0);
+        }
+    }
+    return (player_dir);
 }
 
 int read_map(t_data *data, char *map_path)
@@ -278,29 +319,43 @@ int read_map(t_data *data, char *map_path)
         if (i == data->map_height - 1)
             data->map_line_len[i] = ft_strlen(lines[i]);
 
-        if (ft_strchrstr(lines[i], PLAYER_DIR))
+        if (!check_line_comp(lines[i], SUPPORTED_CHARS)) // PLAYER_DIR
 	    {
-            if (!data->player_dir)
-                data->player_dir = 'E';
-            else
-                return (print_error("Error: unsupported character!\n", __FILE__, __LINE__), close(fd), 0);
-            printf("%s", lines[i]);
-        }
-            
-        if (!lines[i] || !ft_strchrstr(lines[i], SUPPORTED_CHARS))
-        {
-            while (--i >= 0)
-                free(lines[i]);
-            free(lines);
+            lines[++i] = NULL;
+            free_map(lines);
             free(data->map_line_len);
             return (print_error("Error: unsupported character!\n", __FILE__, __LINE__), close(fd), 0);
         }
+
+        if (!check_player_positions(lines[i], PLAYER_DIR))
+        {
+            lines[++i] = NULL;
+            free_map(lines);
+            free(data->map_line_len);
+            return (print_error("Error: asfasf!\n", __FILE__, __LINE__), close(fd), 0);
+        }
+            
+        // if (!lines[i]) // || !check_line_components(lines[i], SUPPORTED_CHARS))
+        // {
+        //     // while (--i >= 0)
+        //     //     free(lines[i]);
+        //     // free(lines);
+        //     // lines[i] = NULL;
+
+        //     free_map(lines);
+        //     free(data->map_line_len);
+        //     return (print_error("Error: unsupported character!\n", __FILE__, __LINE__), close(fd), 0);
+        // }
         i++;
     }
     lines[i] = NULL;
     
     if (!data->player_dir)
+    {
+        free_map(lines);
+        free(data->map_line_len);
         return (print_error("Error: no player found!\n", __FILE__, __LINE__), close(fd), 0);
+    }
 
     close(fd);
     data->map = lines;
@@ -365,6 +420,7 @@ int parse_map(t_data *data, int ac, char **av)
     if (ac != 2)
     {
         print_error("Error: Bad arguments!\n", __FILE__, __LINE__);
+        printf("Usage: <./cub3d> <Path to the map>.\n");
         return (0);
     }
     if (!check_map_extension(av[1]))
