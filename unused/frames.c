@@ -1,6 +1,6 @@
 # include <math.h>
 // #include <mlx.h>
-# include "../mandatory/libraries/minilibx-linux/mlx.h"
+# include "../mandatory/includes/mlx.h"
 # include <stdio.h> // just for debugging
 # include <stdlib.h>
 # include <string.h>
@@ -382,7 +382,8 @@ void draw_player_direction(t_data *data, t_image *image)
     double angle = atan2(data->dir_y, data->dir_x);
     double fov = 60 * PI / 180.0; // 60 degrees FOV
     
-    for (int i = -30; i <= 30; i += 2)
+	int i = -30 -1; 
+    while (++i <= 30)
     {
         double ray_angle = angle + (1 * fov / 60);
         double ray_length = MINIMAP_RADIUS * 0.3; // Length of direction indicator
@@ -402,7 +403,8 @@ void draw_player_direction(t_data *data, t_image *image)
         double x = MINIMAP_CENTER_X;
         double y = MINIMAP_CENTER_Y;
         
-        for (int step = 0; step <= steps; step++)
+		int step = -1;
+        while (++step <= steps)
         {
             double dist_x = x - MINIMAP_CENTER_X;
             double dist_y = y - MINIMAP_CENTER_Y;
@@ -629,9 +631,9 @@ void	raycasting(t_data *data)
 
 		// Calculate the distance the ray has traveled
 		if (side == 0) // Wall was hit on the X-axis
-			perp_wall_dist = (data->map_x - data->player_x + (1 - data->step_x) / 2) / data->ray_dir_x;
+			perp_wall_dist = data->side_dist_x - data->delta_dist_x;//(data->map_x - data->player_x + (1 - data->step_x) / 2) / data->ray_dir_x;
 		else // Wall was hit on the Y-axis
-			perp_wall_dist = (data->map_y - data->player_y + (1 - data->step_y) / 2) / data->ray_dir_y;
+			perp_wall_dist = data->side_dist_y - data->delta_dist_y;//(data->map_y - data->player_y + (1 - data->step_y) / 2) / data->ray_dir_y;
 
 		// Calculate the height of the line to draw
 		line_height = (int)(SCREEN_HEIGHT / perp_wall_dist);

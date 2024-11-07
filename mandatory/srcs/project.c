@@ -1,4 +1,5 @@
-#include <mlx.h>
+// #include <mlx.h>
+# include "../includes/mlx.h"
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
@@ -68,8 +69,8 @@
     # define R_KEY          65363
     # define L_KEY          65361
     
-    # define MOVE_SPEED     0.008    // player speed
-    # define ROT_SPEED      0.006    // Rotation speed (in radians)
+    # define MOVE_SPEED     0.08    // player speed
+    # define ROT_SPEED      0.06    // Rotation speed (in radians)
 # else
     #error "Unsupported platform"
 # endif
