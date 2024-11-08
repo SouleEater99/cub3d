@@ -43,7 +43,7 @@ void	dda_algorithm(t_data *data)
 			data->map_y += data->step_y;
 			data->side = 1;
 		}
-		if (data->map_x < 0 || data->map_x >= data->map_width || data->map_y < 0
+		if (data->map_x < 0 || data->map_x >= data->map_line_len[data->map_y] || data->map_y < 0 // data->map_x >= data->map_width
 			|| data->map_y >= data->map_height)
 			break ; // we hit the border walls.
 		if (data->map[data->map_y][data->map_x] == '1')
@@ -64,6 +64,9 @@ void	draw_vert_cols(t_data *data, int x)
 		color = CLR_EAW;
 	else
 		color = CLR_SAN;
+
+	// printf("%lf\n", data->perp_wall_dist);
+	
 	data->line_height = (int)(SCREEN_HEIGHT / data->perp_wall_dist);
 	data->draw_start = -data->line_height / 2 + SCREEN_HEIGHT / 2;
 	if (data->draw_start < 0)
@@ -139,7 +142,8 @@ void raycasting(t_data *data)
 void	start_game(t_data *data)
 {
 	data->image = create_image(data);
-	raycasting(data);
+	if (data->clicks % 2 == 0)
+		raycasting(data);
 	draw_mini_map(data);		// draw the mini-map
 
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr,

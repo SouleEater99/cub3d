@@ -67,6 +67,10 @@ void	update_player(t_data *data)
 		go_left_right(data, -1);
 }
 
+#define BRED "\e[1;31m"
+#define BGRN "\e[1;32m"
+#define COLOR_RESET "\e[0m"
+
 int main(int ac, char **av)
 {
 	(void) ac;
@@ -76,24 +80,31 @@ int main(int ac, char **av)
     memset(&data, 0, sizeof(t_data));
     
 	if (!parse_map(&data, ac, av))
+	{
+		printf(BRED"\nInvalid map try again later ❌\n\n"COLOR_RESET);
+		clean_up(&data);
         return (1);
+	}
 
-    data.mlx_ptr = mlx_init();
-	if (!data.mlx_ptr)
-		return (1);
+	printf(BGRN"\nValid map ✅\n\n"COLOR_RESET);
+	clean_up(&data);
 
-    data.win_ptr = mlx_new_window(data.mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT, "cub3D");
-	if (!data.win_ptr)
-		return (1);
+    // data.mlx_ptr = mlx_init();
+	// if (!data.mlx_ptr)
+	// 	return (1);
+
+    // data.win_ptr = mlx_new_window(data.mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT, "cub3D");
+	// if (!data.win_ptr)
+	// 	return (1);
 		
-    init_game(&data);
+    // init_game(&data);
 	
-    mlx_hook(data.win_ptr, 2, 1L << 0, key_press, &data);
-    mlx_hook(data.win_ptr, 3, 1L << 1, key_release, &data);
-    mlx_hook(data.win_ptr, 17, 1L << 0, destroy_notify, &data);
-	mlx_mouse_hook(data.win_ptr, mouse_events, &data);
+    // mlx_hook(data.win_ptr, 2, 1L << 0, key_press, &data);
+    // mlx_hook(data.win_ptr, 3, 1L << 1, key_release, &data);
+    // mlx_hook(data.win_ptr, 17, 1L << 0, destroy_notify, &data);
+	// mlx_mouse_hook(data.win_ptr, mouse_events, &data);
 
-    mlx_loop_hook(data.mlx_ptr, game_loop, &data);
-    mlx_loop(data.mlx_ptr);
+    // mlx_loop_hook(data.mlx_ptr, game_loop, &data);
+    // mlx_loop(data.mlx_ptr);
     return (0);
 }

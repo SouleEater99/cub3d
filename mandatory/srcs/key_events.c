@@ -53,21 +53,19 @@ int check_click_space(t_data *data, int x, int y)
     return (0);
 }
 
-#include <unistd.h> // For usleep function
+// void click_animation(t_data *data)
+// {
+//     int original_radius = data->minimap_radius;
 
-void click_animation(t_data *data)
-{
-    int original_radius = data->minimap_radius;
+//     data->minimap_radius = original_radius - 4;
+//     draw_mini_map(data);
 
-    data->minimap_radius = original_radius - 4;
-    draw_mini_map(data);
+//     data->minimap_radius = original_radius + 4;
+//     draw_mini_map(data);
 
-    data->minimap_radius = original_radius + 4;
-    draw_mini_map(data);
-
-    data->minimap_radius = original_radius;
-    draw_mini_map(data);
-}
+//     data->minimap_radius = original_radius;
+//     draw_mini_map(data);
+// }
 
 int mouse_events(int button, int x, int y, t_data *data)
 {
@@ -75,27 +73,29 @@ int mouse_events(int button, int x, int y, t_data *data)
     if (button == LEFT_CLICK)
     {
 		if (check_click_space(data, x, y))
-	        data->clicks++;
-        if (data->clicks % 2 != 0 && check_click_space(data, x, y))
         {
-            data->scale = SCALE * 2;
-        	data->rot_speed = ROT_SPEED * 6;
-            data->move_speed = MOVE_SPEED * 6;
-            data->player_radius = PLAYER_RADIUS;
-            data->minimap_radius = MINIMAP_RADIUS * 10;
-            data->minimap_x_center = MAP_MID_X;
-            data->minimap_y_center = MAP_MID_Y;
-            // click_animation(data); // TODO
-        }
-        else
-        {
-            data->scale = SCALE;
-        	data->rot_speed = ROT_SPEED;
-            data->move_speed = MOVE_SPEED;
-            data->player_radius = PLAYER_RADIUS;
-            data->minimap_radius = MINIMAP_RADIUS;
-            data->minimap_x_center = MINIMAP_MID_X;
-            data->minimap_y_center = MINIMAP_MID_Y;
+            data->clicks++;
+            if (data->clicks % 2 != 0)
+            {
+                data->scale = SCALE * 2;
+                data->rot_speed = ROT_SPEED * 2;
+                data->move_speed = MOVE_SPEED * 2;
+                data->player_radius = PLAYER_RADIUS;
+                data->minimap_radius = MINIMAP_RADIUS * 4;
+                data->minimap_x_center = MAP_MID_X;
+                data->minimap_y_center = MAP_MID_Y;
+                // click_animation(data); // TODO
+            }
+            else
+            {
+                data->scale = SCALE;
+                data->rot_speed = ROT_SPEED;
+                data->move_speed = MOVE_SPEED;
+                data->player_radius = PLAYER_RADIUS;
+                data->minimap_radius = MINIMAP_RADIUS;
+                data->minimap_x_center = MINIMAP_MID_X;
+                data->minimap_y_center = MINIMAP_MID_Y;
+            }
         }
         printf("Left click!\n");
     }
