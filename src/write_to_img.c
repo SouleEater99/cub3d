@@ -176,18 +176,18 @@ void	ft_get_wall_hit(t_data *data, t_ray *ray)
 	if (ft_calc_distance(data, HorzHitX, HorzHitY) < ft_calc_distance(data, VirtHitX, VirtHitY))
 	{
 		ray->distance = ft_calc_distance(data, HorzHitX, HorzHitY);
-		ray->WallSliceHigh = CUB_SIZE * data->plan_distance / ray->distance;
+		ray->WallSliceHigh = (CUB_SIZE / ray->distance) * data->plan_distance;
 		ray->WallHitX = HorzHitX;
 		ray->WallHitY = HorzHitY;
 	}
 	else
 	{
 		ray->distance = ft_calc_distance(data, VirtHitX, VirtHitY);
-		ray->WallSliceHigh = CUB_SIZE * data->plan_distance / ray->distance;
+		ray->WallSliceHigh = (CUB_SIZE / ray->distance) * data->plan_distance;
 		ray->WallHitX = VirtHitX;
 		ray->WallHitY = VirtHitY;
 	}
-	// printf("ray->wallslichigh : %d\n", ray->WallSliceHigh);
+	printf("ray->wallslichigh : %d\n", ray->WallSliceHigh);
 	// ft_write_line(data, ray->WallHitX - data->x_player, ray->WallHitY - data->y_player, 0x00FF0000);
 }
 
@@ -218,17 +218,17 @@ void ft_cast_all_rays(t_data *data)
 
 void ft_write_player_to_img(t_data *data)
 {
-// 	int i;
-// 	int j;
+	// int i;
+	// int j;
 
-// 	i = 0;
-// 	while (i < PLAYER_SIZE)
-// 	{
-// 		j = 0;
-// 		while (j < PLAYER_SIZE)
-// 			my_mlx_pixel_put(data->img, data->x_player + i, data->y_player + j++, 0x00FF0000);
-// 		i++;
-// 	}
+	// i = 0;
+	// while (i < PLAYER_SIZE)
+	// {
+	// 	j = 0;
+	// 	while (j < PLAYER_SIZE)
+	// 		my_mlx_pixel_put(data->img, data->x_player + i, data->y_player + j++, 0x00FF0000);
+	// 	i++;
+	// }
 	ft_cast_all_rays(data);
 }
 

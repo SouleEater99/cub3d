@@ -17,15 +17,18 @@ void	ft_update_img(t_data *data)
 	// ft_write_map_img(data);
 	ft_write_player_to_img(data);
 	t_ray *ray = data->ray;
-	int j;
+	int j = 0;
 	int i = 0;
 
-	while (i < NUM_RAYS)
+	mlx_clear_window(data->mlx, data->mlx_win);
+	while (i < NUM_RAYS / 4)
 	{
 		j = 0;
 		while (j < (ray + i)->WallSliceHigh)
 		{
-			ft_write_line(data, i ,  j++ , 0x00FF0000);
+			// if (ft_board_protect(data, i, j))
+				my_mlx_pixel_put(data->img, i, j, WHITE);
+			j++;
 
 		}
 		i++;

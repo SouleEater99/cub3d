@@ -23,11 +23,15 @@
 #include "./minilibx/minilibx-linux/mlx_int.h"
 
 #define WIDTH 1080
-#define HIGH  480
+#define HIGH  800
 #define CUB_SIZE 40
 #define PLAYER_SIZE 4
 #define WALL_STRIP 1
 #define	NUM_RAYS WIDTH / WALL_STRIP
+#define	BLUE 0x000000FF
+#define	GREEN 0x0000FF00
+#define	RED 0x00FF0000
+#define	WHITE 0x00FFFFFF
 
 #ifndef PI
 #define PI 3.14
