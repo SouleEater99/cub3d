@@ -107,9 +107,9 @@ void ft_get_virt_hit(t_data *data,t_ray *ray, long *x, long *y)
 		ystep *= -1;
 	while ((*x > 0 && *x < data->col * CUB_SIZE) && (*y < data->row * CUB_SIZE && *y > 0))
 	{
-		if (ft_is_angle_facing_right(ray->RayAngle) && ft_is_a_wall(data, *x + 1, *y + 1))
+		if (ft_is_angle_facing_right(ray->RayAngle) && ft_is_a_wall(data, *x + 1, *y))
 			return;
-		else if (!ft_is_angle_facing_right(ray->RayAngle) && ft_is_a_wall(data, *x - 1, *y - 1))
+		else if (!ft_is_angle_facing_right(ray->RayAngle) && ft_is_a_wall(data, *x - 1, *y))
 			return;
 		*x += xstep;
 		*y += ystep;
@@ -134,9 +134,9 @@ void ft_get_horz_hit(t_data *data, t_ray *ray, long *x, long *y)
 		xstep *= -1;
 	while ((*x > 0 && *x < data->col * CUB_SIZE) && (*y < data->row * CUB_SIZE && *y > 0))
 	{
-		if (ft_is_angle_facing_down(ray->RayAngle) && ft_is_a_wall(data, *x + 1, *y + 1))
+		if (ft_is_angle_facing_down(ray->RayAngle) && ft_is_a_wall(data, *x , *y + 1))
 			return;
-		if (!ft_is_angle_facing_down(ray->RayAngle) && ft_is_a_wall(data, *x - 1, *y - 1))
+		if (!ft_is_angle_facing_down(ray->RayAngle) && ft_is_a_wall(data, *x, *y - 1))
 			return;
 		*y += ystep;
 		*x += xstep;
@@ -176,16 +176,19 @@ void	ft_get_wall_hit(t_data *data, t_ray *ray)
 	if (ft_calc_distance(data, HorzHitX, HorzHitY) < ft_calc_distance(data, VirtHitX, VirtHitY))
 	{
 		ray->distance = ft_calc_distance(data, HorzHitX, HorzHitY);
+		ray->WallSliceHigh = WIDTH * data->plan_distance / ray->distance;
 		ray->WallHitX = HorzHitX;
 		ray->WallHitY = HorzHitY;
 	}
 	else
 	{
 		ray->distance = ft_calc_distance(data, VirtHitX, VirtHitY);
+		ray->WallSliceHigh = WIDTH * data->plan_distance / ray->distance;
 		ray->WallHitX = VirtHitX;
 		ray->WallHitY = VirtHitY;
 	}
-	ft_write_line(data, ray->WallHitX - data->x_player, ray->WallHitY - data->y_player, 0x00FF0000);
+
+	// ft_write_line(data, ray->WallHitX - data->x_player, ray->WallHitY - data->y_player, 0x00FF0000);
 }
 
 void ft_cast_all_rays(t_data *data)
@@ -197,10 +200,10 @@ void ft_cast_all_rays(t_data *data)
 
 	i = 0;
 	ray = data->ray;
-	angle = data->rotation_angle - ((FOV_ANGLE / 2) * (PI / 180));
-	while (i < WIDTH)
+	angle = data->rotation_angle - ((FOV_ANGLE / 2));
+	while (i < NUM_RAYS)
 	{
-		angle = angle + ((double)FOV_ANGLE / (double)WIDTH) * (PI / 180);
+		angle += (double)FOV_ANGLE / (double)NUM_RAYS;
 		if (angle >  2 * PI)
 			angle = 0;
 		else if (angle < 0)
@@ -210,7 +213,7 @@ void ft_cast_all_rays(t_data *data)
 		// printf ("#### { ray_angle : %f} ##### \n", (ray + i)->RayAngle);
 		i++;
 	}
-	ft_write_line(data, cos(data->rotation_angle) *  30, sin(data->rotation_angle) * 30, 0x000000FF);
+
 }
 
 void ft_write_player_to_img(t_data *data)

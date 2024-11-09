@@ -11,7 +11,7 @@ t_data *ft_init_data()
 	data->img = malloc(sizeof(t_image));
 	if (!data->img)
 		return (free(data), NULL);
-	data->ray = malloc(sizeof(t_ray) * WIDTH + 1);
+	data->ray = malloc(sizeof(t_ray) * NUM_RAYS + 1);
 	if (!data->ray)
 		return (free(data->img), free(data), NULL);
 	data->row = 12;
@@ -22,8 +22,9 @@ t_data *ft_init_data()
     data->turn_direction = 0;
     data->walk_direction = 0;
 	data->rotation_angle = (11 * PI) /6 ;
+	data->plan_distance = (WIDTH / 2) / tan(FOV_ANGLE / 2);
     data->move_speed = 2;
-    data->rotation_speed = 1 * (PI / 180);
+    data->rotation_speed = 2 * (PI / 180); // whene it is 1 in right direction it is stop in 1.0032 riadines
 	return (data);
 }
 

@@ -14,8 +14,24 @@
 
 void	ft_update_img(t_data *data)
 {
-	ft_write_map_img(data);
-	ft_write_player_to_img(data);
+	// ft_write_map_img(data);
+	// ft_write_player_to_img(data);
+	t_ray *ray = data->ray;
+	int j;
+	int i = 0;
+
+	while (i < NUM_RAYS)
+	{
+		j = 0;
+		while (j < (ray + i)->WallSliceHigh)
+		{
+			mlx_clear_window(data->mlx, data->mlx_win);
+			ft_write_line(data, i * 10 , (HIGH / 2) + j++ , 0x00FF0000);
+			if (i == 0)
+				printf("++++++++++ { wallslicehigh : %d} ++++++++++++\n", (ray + i)->WallSliceHigh);
+		}
+		i++;
+	}
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img->img, 0, 0);
 }
 

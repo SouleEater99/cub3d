@@ -26,13 +26,14 @@
 #define HIGH  480
 #define CUB_SIZE 40
 #define PLAYER_SIZE 4
-#define	FOV_ANGLE 66
-#define WALL_STRIP 4
+#define WALL_STRIP 1
+#define	NUM_RAYS WIDTH / WALL_STRIP
 
 #ifndef PI
 #define PI 3.14
 #endif
 
+#define	FOV_ANGLE (66 * (PI / 180))
 
 typedef struct	s_image
 {
@@ -50,6 +51,7 @@ typedef struct s_ray
 	long	WallHitY;
 	double	RayAngle;
 	double	distance;
+	int	WallSliceHigh;
 }t_ray;
 
 typedef struct s_data
@@ -69,6 +71,7 @@ typedef struct s_data
 	double	move_speed;
 	double	move_step;
 	double	rotation_speed;
+	double	plan_distance;
 	double	step;
 	t_ray	*ray;
 	
