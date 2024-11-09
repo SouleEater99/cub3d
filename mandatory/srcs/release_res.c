@@ -38,6 +38,9 @@ void free_map(char **map)
 
 void clean_up(t_data *data)
 {
+	if (data->map_line_len)
+		free(data->map_line_len);
+		
 	if (data->no_texture_path)
 		free(data->no_texture_path);
 	if (data->so_texture_path)

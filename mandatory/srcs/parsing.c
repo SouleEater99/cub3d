@@ -301,11 +301,10 @@ int read_map(t_data *data, char *map_path)
                 free(lines[i]);
             free(lines);
             close(fd);
-            return (0);
+            return (print_error("Error: fail to get the next line!\n", __FILE__, __LINE__), 0);
         }
     }
     lines[i] = NULL;
-    data->map = lines;
     close(fd); // to be deleted.
 
     // ====================================== //
@@ -316,12 +315,12 @@ int read_map(t_data *data, char *map_path)
     int flag = 0;
     while(++i < data->map_height && flag != 4)
     {
-        if (is_empty_line(lines[i]))
+        if (is_empty_line(data->map[i]))
             continue;
 
-        printf("%s", lines[i]);
+        printf("%s", data->map[i]);
 
-        char *map_line = ft_strtrim(lines[i], "\n");
+        char *map_line = ft_strtrim(data->map[i], "\n");
         char **splited = ft_split(map_line, ' ');
         
         if (!splited || arr_len(splited) < 2)
@@ -348,10 +347,10 @@ int read_map(t_data *data, char *map_path)
     
     while (++i < data->map_height && flag != 2)
     {
-        if (is_empty_line(lines[i]))
+        if (is_empty_line(data->map[i]))
             continue;
 
-        char *map_line = ft_strtrim(lines[i], "\n");
+        char *map_line = ft_strtrim(data->map[i], "\n");
         printf("\n ====== %s =======\n", map_line);
         char **splited = ft_split(map_line, ' ');
         if (!splited || arr_len(splited) < 2)
@@ -361,69 +360,82 @@ int read_map(t_data *data, char *map_path)
             data->floor_color = str_to_color(splited[1]);
         else if (!ft_strcmp("C", splited[0]))
             data->ceiling_color = str_to_color(splited[1]);
+
+        free_array(splited);
+        free(map_line);
         flag++;
     }
+
+    while (i < data->map_height && is_empty_line(lines[i]))
+        i++;
+
     data->map_start = i;
+    data->map_height -= i;
+
+    while (--i >= 0)
+        free(lines[i]);
+    
+    data->map = &lines[i];
+
+    printf("map start: %d\n", data->map_start);
 
     // ====================================== //
     
 
+    i = data->map_start - 1;
+    while (++i < data->map_height)
+    {
+        // data->map[i] = get_next_line(fd);
+
+        data->map_line_len[i] = ft_strlen(data->map[i]) - 1;
+        if (i == data->map_height - 1)
+            data->map_line_len[i] = ft_strlen(data->map[i]);
+
+        if (!check_line_components(data->map[i], SUPPORTED_CHARS)) // PLAYER_DIR
+	    {
+            data->map[++i] = NULL;
+            free_map(data->map);
+            free(data->map_line_len);
+            return (print_error("Error: unsupported character!\n", __FILE__, __LINE__), close(fd), 0);
+        }
+
+        // if (!data->map[i])
+        // {
+            // free_map(data->map);
+            // free(data->map_line_len);
+            // return (print_error("Error: fail to get the next line!\n", __FILE__, __LINE__), close(fd), 0);
+        // }
+    }
+    
     // ====================================== //
 
-    // i = -1;
-    // while (++i < data->map_height)
-    // {
-    //     // lines[i] = get_next_line(fd);
+    i = -1;
+    while(++i < data->map_height)
+    {
+        int j = -1;
+        while(++j < data->map_line_len[i])
+        {
+            if (ft_strchr(PLAYER_DIR, data->map[i][j]))
+            {
+                if (!data->player_dir)
+                {
+                    data->player_x = (double)j + 1; // to be fixed.
+                    data->player_y = (double)i + 1; // to be fixed.
+                    data->player_dir = data->map[i][j];
+                    data->map[i][j] = '0';
+                }
+                else
+                    return (print_error("Error: multiple players found!\n", __FILE__, __LINE__), close(fd), 0);
+            }
+        }
+    }
 
-    //     data->map_line_len[i] = ft_strlen(lines[i]) - 1;
-    //     if (i == data->map_height - 1)
-    //         data->map_line_len[i] = ft_strlen(lines[i]);
-
-    //     if (!check_line_components(lines[i], SUPPORTED_CHARS)) // PLAYER_DIR
-	//     {
-    //         lines[++i] = NULL;
-    //         free_map(lines);
-    //         free(data->map_line_len);
-    //         return (print_error("Error: unsupported character!\n", __FILE__, __LINE__), close(fd), 0);
-    //     }
-
-    //     if (!lines[i])
-    //     {
-    //         free_map(lines);
-    //         free(data->map_line_len);
-    //         return (print_error("Error: fail to get the next line!\n", __FILE__, __LINE__), close(fd), 0);
-    //     }
-    // }
-    // lines[i] = NULL;
-    // data->map = lines;
-    
-    // i = -1;
-    // while(++i < data->map_height)
-    // {
-    //     int j = -1;
-    //     while(++j < data->map_line_len[i])
-    //     {
-    //         if (ft_strchr(PLAYER_DIR, data->map[i][j]))
-    //         {
-    //             if (!data->player_dir)
-    //             {
-    //                 data->player_x = (double)j + 1; // to be fixed.
-    //                 data->player_y = (double)i + 1; // to be fixed.
-    //                 data->player_dir = data->map[i][j];
-    //                 data->map[i][j] = '0';
-    //             }
-    //             else
-    //                 return (print_error("Error: multiple players found!\n", __FILE__, __LINE__), close(fd), 0);
-    //         }
-    //     }
-    // }
-
-    // if (!data->player_dir)
-    // {
-    //     free_map(lines);
-    //     free(data->map_line_len);
-    //     return (print_error("Error: no player found!\n", __FILE__, __LINE__), close(fd), 0);
-    // }
+    if (!data->player_dir)
+    {
+        // free_map(lines);
+        // free(data->map_line_len);
+        return (print_error("Error: no player found!\n", __FILE__, __LINE__), close(fd), 0);
+    }
 
     // close(fd);
     return (1);
