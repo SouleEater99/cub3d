@@ -62,8 +62,8 @@ void clean_up(t_data *data)
 
 	if (data->image)
 		mlx_destroy_image(data->mlx_ptr, data->image);
-	if (data->map)
-		free_array(data->map);
+	// if (data->map)
+	// 	free_array(data->map);
 	if (data->mlx_ptr)
 		free(data->mlx_ptr);
 }
