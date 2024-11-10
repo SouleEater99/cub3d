@@ -5,8 +5,11 @@ void my_mlx_pixel_put(t_image *img, int x, int y, int color)
 {
 	char *dst;
 
-	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
+	if ((x > 0 && x < WIDTH) && (y > 0 && y < HIGH))
+	{
+		dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+		*(unsigned int *)dst = color;
+	}
 }
 
 void ft_write_cub_to_img(t_image *img, int x, int y, int color)
@@ -48,7 +51,7 @@ void ft_write_line(t_data *data, int dx, int dy, int color)
 	x_increment = dx / data->step;
 	y_increment = dy / data->step;
 	x = (unsigned int)data->x_player * data->minimap_scale_factor; // + PLAYER_SIZE / 2;
-	y = (unsigned int)data->y_player * data->minimap_scale_factor; //	+ PLAYER_SIZE / 2;
+	y = (unsigned int)data->y_player * data->minimap_scale_factor   ; //	+ PLAYER_SIZE / 2;
 	data->i = 0;
 	while (data->i <= data->step)
 	{
@@ -187,7 +190,6 @@ void	ft_get_wall_hit(t_data *data, t_ray *ray)
 		ray->WallHitX = VirtHitX;
 		ray->WallHitY = VirtHitY;
 	}
-	// printf("ray->wallslichigh : %d\n", ray->WallSliceHigh);
 	ft_write_line(data, data->minimap_scale_factor * (ray->WallHitX - data->x_player), data->minimap_scale_factor * (ray->WallHitY - data->y_player), 0x00FF0000);
 }
 
@@ -211,8 +213,11 @@ void ft_cast_all_rays(t_data *data)
 		(ray + i)->RayAngle = angle;
 		ft_get_wall_hit(data, ray + i);
 		// printf ("#### { ray_angle : %f} ##### \n", (ray + i)->RayAngle);
+		if (i < 10)
+			printf("ray->wallslichigh : %d\n", (ray + i)->WallSliceHigh);
 		i++;
 	}
+	printf("plan distance : %f\n",data->plan_distance);
 
 }
 

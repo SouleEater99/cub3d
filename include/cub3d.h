@@ -28,6 +28,11 @@
 #define PLAYER_SIZE 4
 #define WALL_STRIP 1
 #define	NUM_RAYS WIDTH / WALL_STRIP
+#define WHITE	0x00FFFFFF
+#define RED    0x00FF0000
+#define YELLOW 0x00FFFF00
+#define BLUE   0x000000FF
+#define GREEN  0x0000FF00
 
 #ifndef PI
 #define PI 3.14

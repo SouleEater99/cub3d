@@ -23,7 +23,7 @@ t_data *ft_init_data()
     data->walk_direction = 0;
 	data->rotation_angle = PI / 2 ;
 	data->minimap_scale_factor = 0.2;
-	data->plan_distance = (WIDTH / 2) / tan(FOV_ANGLE / 2);
+	data->plan_distance = (320 / 2) / tan(FOV_ANGLE / 2);
     data->move_speed = 2;
     data->rotation_speed = 2 * (PI / 180); // whene it is 1 in right direction it is stop in 1.0032 riadines
 	return (data);
@@ -35,6 +35,7 @@ void	ft_free_all(t_data *data, char *msg, int status)
 	{
 		mlx_destroy_window(data->mlx, data->mlx_win);
 		mlx_destroy_display(data->mlx);
+		free(data->img);
 		free(data->ray);
 		free(data);
 	}

@@ -14,26 +14,32 @@
 
 void	ft_update_img(t_data *data)
 {
+	data->img->img = mlx_new_image(data->mlx, WIDTH, HIGH);
+	data->img->addr = mlx_get_data_addr(data->img->img, &data->img->bits_per_pixel, &data->img->line_length,
+		&data->img->endian);
 	ft_write_map_img(data);
 	ft_write_player_to_img(data);
-	// t_ray *ray = data->ray;
-	// int j = 0;
-	// int i = 0;
+	t_ray *ray = data->ray;
+	int j = 0;
+	int i = 0;
+	
 
-	// mlx_clear_window(data->mlx, data->mlx_win);
-	// while (i < NUM_RAYS / 4)
-	// {
-	// 	j = 0;
-	// 	while (j < (ray + i)->WallSliceHigh)
-	// 	{
-	// 		// if (ft_board_protect(data, i, j))
-	// 			my_mlx_pixel_put(data->img, i, j, WHITE);
-	// 		j++;
+	while (i < NUM_RAYS)
+	{
+		j = 0;
+		int y = (HIGH / 2) - (ray->WallSliceHigh / 2);
+		while (j < (ray->WallSliceHigh))
+		{
+			// if (ft_board_protect(data, i, j))
+				my_mlx_pixel_put(data->img, i * WALL_STRIP, y + j, RED);
+			j++;
 
-	// 	}
-	// 	i++;
-	// }
+		}
+		i++;
+		ray++;
+	}
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img->img, 0, 0);
+	mlx_destroy_image(data->mlx, data->img->img);
 }
 
 int	ft_is_player_inside_wall(t_data *data)
@@ -139,9 +145,6 @@ int	main(void)
 	data->map = map;
 
 	data->mlx_win = mlx_new_window(data->mlx, WIDTH, HIGH, "Hello world!");
-	data->img->img = mlx_new_image(data->mlx, WIDTH, HIGH);
-	data->img->addr = mlx_get_data_addr(data->img->img, &data->img->bits_per_pixel, &data->img->line_length,
-		&data->img->endian);
 	ft_update_img(data);
 	mlx_hook(data->mlx_win, 2, 1L << 0, ft_key_hook, data);
 	mlx_hook(data->mlx_win, 2, 1L << 0, ft_key_hook, data);
