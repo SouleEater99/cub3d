@@ -22,6 +22,7 @@ t_data *ft_init_data()
     data->turn_direction = 0;
     data->walk_direction = 0;
 	data->rotation_angle = PI / 2 ;
+	data->minimap_scale_factor = 0.2;
 	data->plan_distance = (WIDTH / 2) / tan(FOV_ANGLE / 2);
     data->move_speed = 2;
     data->rotation_speed = 2 * (PI / 180); // whene it is 1 in right direction it is stop in 1.0032 riadines

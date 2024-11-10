@@ -14,25 +14,25 @@
 
 void	ft_update_img(t_data *data)
 {
-	// ft_write_map_img(data);
+	ft_write_map_img(data);
 	ft_write_player_to_img(data);
-	t_ray *ray = data->ray;
-	int j = 0;
-	int i = 0;
+	// t_ray *ray = data->ray;
+	// int j = 0;
+	// int i = 0;
 
-	mlx_clear_window(data->mlx, data->mlx_win);
-	while (i < NUM_RAYS / 4)
-	{
-		j = 0;
-		while (j < (ray + i)->WallSliceHigh)
-		{
-			// if (ft_board_protect(data, i, j))
-				my_mlx_pixel_put(data->img, i, j, WHITE);
-			j++;
+	// mlx_clear_window(data->mlx, data->mlx_win);
+	// while (i < NUM_RAYS / 4)
+	// {
+	// 	j = 0;
+	// 	while (j < (ray + i)->WallSliceHigh)
+	// 	{
+	// 		// if (ft_board_protect(data, i, j))
+	// 			my_mlx_pixel_put(data->img, i, j, WHITE);
+	// 		j++;
 
-		}
-		i++;
-	}
+	// 	}
+	// 	i++;
+	// }
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img->img, 0, 0);
 }
 

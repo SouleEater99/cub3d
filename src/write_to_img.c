@@ -47,8 +47,8 @@ void ft_write_line(t_data *data, int dx, int dy, int color)
 		data->step = abs(dy);
 	x_increment = dx / data->step;
 	y_increment = dy / data->step;
-	x = (unsigned int)data->x_player; // + PLAYER_SIZE / 2;
-	y = (unsigned int)data->y_player; //	+ PLAYER_SIZE / 2;
+	x = (unsigned int)data->x_player * data->minimap_scale_factor; // + PLAYER_SIZE / 2;
+	y = (unsigned int)data->y_player * data->minimap_scale_factor; //	+ PLAYER_SIZE / 2;
 	data->i = 0;
 	while (data->i <= data->step)
 	{
@@ -187,8 +187,8 @@ void	ft_get_wall_hit(t_data *data, t_ray *ray)
 		ray->WallHitX = VirtHitX;
 		ray->WallHitY = VirtHitY;
 	}
-	printf("ray->wallslichigh : %d\n", ray->WallSliceHigh);
-	// ft_write_line(data, ray->WallHitX - data->x_player, ray->WallHitY - data->y_player, 0x00FF0000);
+	// printf("ray->wallslichigh : %d\n", ray->WallSliceHigh);
+	ft_write_line(data, data->minimap_scale_factor * (ray->WallHitX - data->x_player), data->minimap_scale_factor * (ray->WallHitY - data->y_player), 0x00FF0000);
 }
 
 void ft_cast_all_rays(t_data *data)
@@ -218,17 +218,17 @@ void ft_cast_all_rays(t_data *data)
 
 void ft_write_player_to_img(t_data *data)
 {
-	// int i;
-	// int j;
+	int i;
+	int j;
 
-	// i = 0;
-	// while (i < PLAYER_SIZE)
-	// {
-	// 	j = 0;
-	// 	while (j < PLAYER_SIZE)
-	// 		my_mlx_pixel_put(data->img, data->x_player + i, data->y_player + j++, 0x00FF0000);
-	// 	i++;
-	// }
+	i = 0;
+	while (i < PLAYER_SIZE)
+	{
+		j = 0;
+		while (j < PLAYER_SIZE)
+			my_mlx_pixel_put(data->img, data->minimap_scale_factor * ( data->x_player + i), data->minimap_scale_factor * (data->y_player + j++), 0x00FF0000);
+		i++;
+	}
 	ft_cast_all_rays(data);
 }
 
@@ -244,9 +244,9 @@ void ft_write_map_img(t_data *data)
 		while (j < data->row)
 		{
 			if (data->map[j][i] == '0')
-				ft_write_cub_to_img(data->img, i * CUB_SIZE, j * CUB_SIZE, 0x00FFFFFF);
+				ft_write_cub_to_img(data->img, data->minimap_scale_factor * (i * CUB_SIZE), data->minimap_scale_factor * (j * CUB_SIZE), 0x00FFFFFF);
 			else
-				ft_write_cub_to_img(data->img, i * CUB_SIZE, j * CUB_SIZE, 0x00808080);
+				ft_write_cub_to_img(data->img, data->minimap_scale_factor * (i * CUB_SIZE), data->minimap_scale_factor * (j * CUB_SIZE), 0x00808080);
 			j++;
 		}
 		i++;
