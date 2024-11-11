@@ -12,7 +12,31 @@
 
 #include <cub3d.h>
 
-void	go_left_right(t_data *data, short rot_dir)
+void go_left_right(t_data *data, int16_t mov_dir)
+{
+    double new_x;
+    double new_y;
+
+    // Calculate perpendicular direction.
+    // double perp_dir_x = data->dir_y;
+    // double perp_dir_y = -data->dir_x;
+
+    // new_x = data->player_x + perp_dir_x * data->move_speed * mov_dir;
+    // new_y = data->player_y + perp_dir_y * data->move_speed * mov_dir;
+
+	new_x = data->player_x + data->dir_y * data->move_speed * mov_dir;
+    new_y = data->player_y - data->dir_x * data->move_speed * mov_dir;
+
+    printf("player at: [%lf][%lf] = [%c]\n", data->player_y, data->player_x, data->map[(int)data->player_y][(int)data->player_x]);
+
+    if (data->map[(int)data->player_y][(int)new_x] == '0')
+        data->player_x = new_x;
+
+    if (data->map[(int)new_y][(int)data->player_x] == '0')
+        data->player_y = new_y;
+}
+
+void rotate_left_right(t_data *data, int16_t rot_dir)
 {
 	double	old_dir_x;
 	double	old_plane_x;
@@ -29,7 +53,7 @@ void	go_left_right(t_data *data, short rot_dir)
 		* cos(data->rot_speed * rot_dir);
 }
 
-void	go_up_down(t_data *data, short mov_dir)
+void	go_up_down(t_data *data, int16_t mov_dir)
 {
 	double	new_x;
 	double	new_y;
@@ -61,10 +85,14 @@ void	update_player(t_data *data)
 		go_up_down(data, 1);
 	if (data->move_backward)
 		go_up_down(data, -1);
-	if (data->rotate_right)
+	if (data->move_left)
 		go_left_right(data, 1);
-	if (data->rotate_left)
+	if (data->move_right)
 		go_left_right(data, -1);
+	if (data->rotate_right)
+		rotate_left_right(data, 1);
+	if (data->rotate_left)
+		rotate_left_right(data, -1);
 }
 
 #define BRED "\e[1;31m"

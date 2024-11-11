@@ -19,26 +19,34 @@ int	key_press(int keycode, t_data *data)
 		clean_up(data);
 		exit(0);
 	}
-	else if (keycode == 'w' || keycode == U_KEY)
+	else if (keycode == 'w') // || keycode == U_KEY)
 		data->move_forward = 1;
-	else if (keycode == 's' || keycode == D_KEY)
+	else if (keycode == 's') // || keycode == D_KEY)
 		data->move_backward = 1;
-	else if (keycode == 'a' || keycode == L_KEY)
+    else if (keycode == 'a')
+        data->move_left = 1;
+    else if (keycode == 'd')
+        data->move_right = 1;
+	else if (keycode == L_KEY) // keycode == 'a' || 
 		data->rotate_left = 1;
-	else if (keycode == 'd' || keycode == R_KEY)
+	else if (keycode == R_KEY) // keycode == 'd' || 
 		data->rotate_right = 1;
 	return (0);
 }
 
 int	key_release(int keycode, t_data *data)
 {
-	if (keycode == 'w' || keycode == U_KEY)
+	if (keycode == 'w') // || keycode == U_KEY
 		data->move_forward = 0;
-	else if (keycode == 's' || keycode == D_KEY)
+	else if (keycode == 's') // || keycode == D_KEY
 		data->move_backward = 0;
-	else if (keycode == 'a' || keycode == L_KEY)
+    else if (keycode == 'a')
+        data->move_left = 0;
+    else if (keycode == 'd')
+        data->move_right = 0;
+	else if (keycode == L_KEY) // keycode == 'a' || 
 		data->rotate_left = 0;
-	else if (keycode == 'd' || keycode == R_KEY)
+	else if (keycode == R_KEY) // keycode == 'd' || 
 		data->rotate_right = 0;
 	return (0);
 }

@@ -177,6 +177,8 @@ char **read_map_lines(const char *map_path, int *height)
     return (lines);
 }
 
+// # define and &&
+
 /// @brief parse map metadata (01NSEW).
 /// @param data a data structure that has all the nessecery variables.
 /// @param map_lines 
@@ -234,6 +236,13 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
                 color_ptr = &data->floor_color;
             else if (!ft_strcmp("C", parts[0]))
                 color_ptr = &data->ceiling_color;
+            
+            else
+            {
+                free(trimmed);
+                free_array(parts);
+                return (print_error("Error:  bad texture or color arguments!\n", __FILE__, __LINE__), 0);
+            }
 
             if (color_ptr)
             {
@@ -247,7 +256,7 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
                 colors_found++;
             }
         }
-
+        
         free(trimmed);
         free_array(parts);
         (*current_line)++;

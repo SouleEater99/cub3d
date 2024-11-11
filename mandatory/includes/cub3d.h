@@ -25,6 +25,10 @@
 # include <stdbool.h>
 # include <macros.h>
 
+// uint16_t lala;
+// int64_t tata;
+// uint_least64_t fafa;
+
 typedef struct s_image
 {
     void    *img_ptr;
@@ -43,6 +47,12 @@ typedef struct s_player
     double  player_y;
 }   t_player;
 
+typedef struct s_ray
+{
+    double  ray_dir_x;
+    double  ray_dir_y;
+}   t_ray;
+
 typedef struct s_map
 {
     char    **map;
@@ -59,66 +69,74 @@ typedef struct s_map
     int     ceiling_color;
 }   t_map;
 
+typedef struct s_mlx
+{
+    void        *mlx_ptr;
+    void        *win_ptr;
+}   t_mlx;
+
 typedef struct {
-    void    *mlx_ptr;
-    void    *win_ptr;
+    void        *mlx_ptr;
+    void        *win_ptr;
 
-    t_map   map_;
-    char    **map;
-    int     map_height;
-    int     map_width;
-    int     *map_line_len;
+    t_map       map_;
+    char        **map;
+    int         map_height;
+    int         map_width;
+    int         *map_line_len;
 
-    double  dir_x;   // player direction x position
-    double  dir_y;   // player direction y position
+    double      dir_x;   // player direction x position
+    double      dir_y;   // player direction y position
 
-    double  camera_x;
+    double      camera_x;
 
-    double  plane_x;
-    double  plane_y;
-    char    player_dir;
-    double  player_x;
-    double  player_y;
+    double      plane_x;
+    double      plane_y;
+    char        player_dir;
+    double      player_x;
+    double      player_y;
 
-    int     map_x;      // player grid position
-    int     map_y;      // player grid position
+    int         map_x;      // player grid position
+    int         map_y;      // player grid position
 
-    double  ray_dir_x;
-    double  ray_dir_y;
+    double      ray_dir_x;
+    double      ray_dir_y;
 
-    double  side_dist_x;
-    double  side_dist_y;
-    double  delta_dist_x;
-    double  delta_dist_y;
+    double      side_dist_x;
+    double      side_dist_y;
+    double      delta_dist_x;
+    double      delta_dist_y;
 
-    int     step_x;
-    int     step_y;
+    int         step_x;
+    int         step_y;
     
-    short   rotate_right;
-    short   rotate_left;
-    short   move_forward;
-    short   move_backward;
+    int16_t     rotate_right;
+    int16_t     rotate_left;
+    int16_t     move_forward;
+    int16_t     move_backward;
+    int16_t     move_right;
+    int16_t     move_left;
     
-    t_image *image;
+    t_image     *image;
 
-	int     hit;
-	int     side;
-	int     color;
+	int         hit;
+	int         side;
+	int         color;
 
-	double  perp_wall_dist;
-	int     line_height;
-	int     draw_start;
-	int     draw_end;
+	double      perp_wall_dist;
+	int         line_height;
+	int         draw_start;
+	int         draw_end;
 
-    char    *no_texture_path;
-    char    *so_texture_path;
-    char    *we_texture_path;
-    char    *ea_texture_path;
+    char        *no_texture_path;
+    char        *so_texture_path;
+    char        *we_texture_path;
+    char        *ea_texture_path;
 
-    int     map_start;
-    int     floor_color;
-    int     ceiling_color;
-    // int     sky_color;
+    int         map_start;
+    int         floor_color;
+    int         ceiling_color;
+    int         sky_color;
 
     double      scale;
     int         minimap_radius;
