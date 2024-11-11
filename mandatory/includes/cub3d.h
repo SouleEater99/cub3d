@@ -49,12 +49,21 @@ typedef struct s_map
     int     map_height;
     int     map_width;
     int     map_start;
+    
+    char    *no_texture_path;
+    char    *so_texture_path;
+    char    *we_texture_path;
+    char    *ea_texture_path;
+
+    int     floor_color;
+    int     ceiling_color;
 }   t_map;
 
 typedef struct {
     void    *mlx_ptr;
     void    *win_ptr;
 
+    t_map   map_;
     char    **map;
     int     map_height;
     int     map_width;

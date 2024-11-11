@@ -302,16 +302,18 @@ void draw_map(t_data *data, t_image *image)
     int player_map_x = (int)data->player_x;
     int player_map_y = (int)data->player_y;
     
-    for (int dy = -visible_range; dy <= visible_range; dy++)
+    int dy = -visible_range - 1;
+    while (++dy <= visible_range)
     {
-        for (int dx = -visible_range; dx <= visible_range; dx++)
+        int dx = -visible_range - 1;
+        while (++dx <= visible_range)
         {
             int map_x = player_map_x + dx;
             int map_y = player_map_y + dy;
-            
+
             // Check if the tile is within map bounds
             // if (map_x >= 0 && map_x < data->map_width && map_y >= 0 && map_y < data->map_height)
-            if (map_x >= 0 && map_x < data->map_width && 
+            if (map_x >= 0 && //map_x < data->map_width && 
                 map_y >= 0 && map_y < data->map_height && 
                 data->map[map_y] != NULL &&  // Check if row exists
                 map_x < data->map_line_len[map_y])
