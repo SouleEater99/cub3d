@@ -18,6 +18,7 @@ void	ft_render_projection(t_data *data, t_ray *ray)
 	int i = 0;
 	int	start;
 	int end;
+	u_int32_t color;
 
 
 	while (i < data->num_rays)
@@ -29,9 +30,12 @@ void	ft_render_projection(t_data *data, t_ray *ray)
 			my_mlx_pixel_put(data, i * WALL_STRIP, j++, 0x0000FFFF);
 		j = 0;
 		while (j < (ray->WallSliceHigh))
-				my_mlx_pixel_put(data, i * WALL_STRIP, start + j++, RED);
+		{
+			color = data->texture[((ray->WallHitY % TEXTURE_SIZE) * TEXTURE_SIZE) + (ray->WallHitX % TEXTURE_SIZE)];
+			my_mlx_pixel_put(data, i * WALL_STRIP, start + j++, color);
+		}
 		while (end < data->high)
-				my_mlx_pixel_put(data, i * WALL_STRIP, end++, 0xFFFFFFF0);
+			my_mlx_pixel_put(data, i * WALL_STRIP, end++, 0xFFFFFFF0);
 		i++;
 		ray++;
 	}
@@ -46,7 +50,6 @@ void	ft_update_img(t_data *data)
 	ft_render_projection(data, data->ray);
 	ft_write_map_img(data);
 	ft_write_player_to_img(data, data->ray);
-	
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img->img, 0, 0);
 	mlx_destroy_image(data->mlx, data->img->img);
 }

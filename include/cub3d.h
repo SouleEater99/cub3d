@@ -22,7 +22,8 @@
 #include "./minilibx/minilibx-linux/mlx.h"
 #include "./minilibx/minilibx-linux/mlx_int.h"
 
-#define CUB_SIZE 40
+#define	TEXTURE_SIZE 64
+#define CUB_SIZE 64
 #define PLAYER_SIZE 4
 #define WALL_STRIP 1
 #define WHITE	0x00FFFFFF
@@ -79,6 +80,7 @@ typedef struct s_data
 	double	plan_distance;
 	double	step;
 	double	minimap_scale_factor;
+	u_int32_t *texture;
 	t_ray	*ray;
 
 	
@@ -106,5 +108,6 @@ int	ft_board_protect(t_data *data, int x, int y);
 int		ft_calc_distance(t_data *data, int x, int y);
 void	ft_get_wall_hit(t_data *data, t_ray *ray);
 void	ft_render_projection(t_data *data, t_ray *ray);
+void	ft_setup_texture(u_int32_t *texture);
 
 #endif

@@ -39,8 +39,6 @@ void ft_write_cub_to_img(t_data *data, int x, int y, int color)
 
 void ft_write_line(t_data *data, int dx, int dy, int color)
 {
-	// printf("rotationAngle :%f | dx : %d | dy : %d\n",data->rotation_angle  * (180 / PI), abs(dx), abs(dy));
-	// printf("x_p : %f| y_P : %f\n",data->x_player, data->y_player);
 	double x;
 	double y;
 	double x_increment;
