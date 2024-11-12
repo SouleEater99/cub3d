@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/12 12:13:28 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/12 18:01:47 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,8 +177,6 @@ char **read_map_lines(const char *map_path, int *height)
     return (lines);
 }
 
-// # define and &&
-
 /// @brief parse map metadata (01NSEW).
 /// @param data a data structure that has all the nessecery variables.
 /// @param map_lines 
@@ -239,9 +237,11 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
             
             else
             {
+                print_error("Error: bad texture or color arguments!\n", __FILE__, __LINE__);
+                printf(BRED"%d: %s\n"COLOR_RESET, *current_line, trimmed);
                 free(trimmed);
                 free_array(parts);
-                return (print_error("Error: bad texture or color arguments!\n", __FILE__, __LINE__), 0);
+                return (0);
             }
 
             if (color_ptr)
@@ -250,7 +250,7 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
                 if (*color_ptr == -1)
                 {
                     print_error("Error: bad color!\n", __FILE__, __LINE__);
-                    printf("=> %d: %s\n", *current_line, trimmed);
+                    printf(BRED"%d: %s\n"COLOR_RESET, *current_line, trimmed);
                     free(trimmed);
                     free_array(parts);
                     return (0);
@@ -332,6 +332,45 @@ void print_map(t_map *map)
     printf("\n");
 }
 
+// void print_str(char *str, int index)
+// {
+//     int i = -1;
+//     while(++i < index)
+//         printf(" ");
+//     printf("%s", str);
+// }
+
+void ft_panic(int line_num, int col_num, const char *line, void (*clean_func)(t_data *), void *data) {
+    printf("%d:%d: %s", line_num, col_num, line);
+    
+    if (clean_func)
+        clean_func(data);
+    // print_str("▲", col_num);
+    exit(EXIT_FAILURE);
+}
+
+int validate_map_borders(t_data *data, char **map, int height)
+{
+    int i = -1;
+    printf("\n\n=======================================\n\n");
+    
+    int j = -1;
+    while (map[0][++j] && map[0][j] == '1');
+    if (map[0][j] != '\n')
+    {
+        print_error("Error: invalid map border!\n", __FILE__, __LINE__);
+        ft_panic(data->map_start + 1, j + 1, map[0], clean_up, data);
+        exit (100);
+    }
+    
+    while(++i < height)
+    {
+        printf("%s", map[i]);
+    }
+    printf("\n\n=======================================\n\n");
+    return (1);
+}
+
 /// @brief 
 /// @param data 
 /// @param ac 
@@ -382,16 +421,22 @@ int parse_map(t_data *data, int ac, char **av)
         return (0);
     }
 
-    data->map_.map = data->map;
-    data->map_.map_height = data->map_height;
-    data->map_.ceiling_color = data->ceiling_color;
-    data->map_.floor_color = data->floor_color;
-    data->map_.no_texture_path = data->no_texture_path;
-    data->map_.so_texture_path = data->so_texture_path;
-    data->map_.ea_texture_path = data->ea_texture_path;
-    data->map_.we_texture_path = data->we_texture_path;
+    if (!validate_map_borders(data, data->map, data->map_height))
+    {
+        free_array(lines);
+        return (0);
+    }
 
-    print_map(&data->map_);
+    // data->map_.map = data->map;
+    // data->map_.map_height = data->map_height;
+    // data->map_.ceiling_color = data->ceiling_color;
+    // data->map_.floor_color = data->floor_color;
+    // data->map_.no_texture_path = data->no_texture_path;
+    // data->map_.so_texture_path = data->so_texture_path;
+    // data->map_.ea_texture_path = data->ea_texture_path;
+    // data->map_.we_texture_path = data->we_texture_path;
+
+    // print_map(&data->map_);
 
     return (1);
 }

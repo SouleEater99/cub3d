@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:07:23 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/12 13:32:16 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/12 17:32:23 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,6 @@ void	update_player(t_data *data)
 		rotate_left_right(data, -1);
 }
 
-#define BRED "\e[1;31m"
-#define BGRN "\e[1;32m"
-#define COLOR_RESET "\e[0m"
-
 int main(int ac, char **av)
 {
     t_data data;
@@ -107,7 +103,7 @@ int main(int ac, char **av)
     
 	if (!parse_map(&data, ac, av))
 	{
-		printf(BRED"\nInvalid map try again later ❌\n\n"COLOR_RESET);
+		printf("\nInvalid map try again later ❌\n\n");
 		clean_up(&data);
         return (1);
 	}

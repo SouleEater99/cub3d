@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/12 12:14:11 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/12 17:30:03 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@
 // uint16_t lala;
 // int64_t tata;
 // uint_least64_t fafa;
+// # define and &&
+
+#define BRED "\e[1;31m"
+#define BGRN "\e[1;32m"
+#define COLOR_RESET "\e[0m"
 
 typedef struct s_image
 {
