@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:07:23 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/30 13:17:18 by aziz             ###   ########.fr       */
+/*   Updated: 2024/11/12 13:32:16 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,6 @@ void	update_player(t_data *data)
 
 int main(int ac, char **av)
 {
-	(void) ac;
-	(void) av;
     t_data data;
 
     memset(&data, 0, sizeof(t_data));
@@ -113,9 +111,7 @@ int main(int ac, char **av)
 		clean_up(&data);
         return (1);
 	}
-
 	printf(BGRN"\nValid map ✅\n\n"COLOR_RESET);
-	// clean_up(&data);
 
     data.mlx_ptr = mlx_init();
 	if (!data.mlx_ptr)

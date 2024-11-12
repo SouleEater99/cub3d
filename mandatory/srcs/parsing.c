@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/26 18:49:12 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/12 12:13:28 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,14 +94,14 @@ bool is_empty_line(const char *line)
     return (!line[i]);
 }
 
-/// @brief Takes a string color and convert it to inteager.
+/// @brief Takes a string color (255,255,0) and convert it to inteager.
 /// @param str_color string color to be converted to inteager.
 /// @return inteager color
 // int str_to_color(const char *str_color)
-int parse_color(const char *str_color)
+int64_t parse_color(const char *str_color)
 {
-    int color;
-    char **colors;
+    int64_t color;
+    char    **colors;
 
     color = -1;
     colors = ft_split(str_color, ',');
@@ -230,7 +230,7 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
         
         else if (colors_found < 2)
         {
-            int *color_ptr = NULL;
+            int64_t *color_ptr = NULL;
             
             if (!ft_strcmp("F", parts[0]))
                 color_ptr = &data->floor_color;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/30 14:02:53 by aziz             ###   ########.fr       */
+/*   Updated: 2024/11/12 12:14:11 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,9 +134,11 @@ typedef struct {
     char        *ea_texture_path;
 
     int         map_start;
-    int         floor_color;
-    int         ceiling_color;
-    int         sky_color;
+    // uint32_t    floor_color;
+    // uint32_t    ceiling_color;
+    int64_t     floor_color;
+    int64_t     ceiling_color;
+    // int         sky_color;
 
     double      scale;
     int         minimap_radius;

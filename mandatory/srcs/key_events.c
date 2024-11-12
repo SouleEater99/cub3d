@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:17:16 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/01 10:27:18 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/12 12:45:48 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	key_press(int keycode, t_data *data)
 		clean_up(data);
 		exit(0);
 	}
-	else if (keycode == 'w') // || keycode == U_KEY)
+	else if (keycode == 'w' || keycode == U_KEY) // || keycode == U_KEY)
 		data->move_forward = 1;
-	else if (keycode == 's') // || keycode == D_KEY)
+	else if (keycode == 's' || keycode == D_KEY) // || keycode == D_KEY)
 		data->move_backward = 1;
     else if (keycode == 'a')
         data->move_left = 1;
@@ -36,9 +36,9 @@ int	key_press(int keycode, t_data *data)
 
 int	key_release(int keycode, t_data *data)
 {
-	if (keycode == 'w') // || keycode == U_KEY
+	if (keycode == 'w' || keycode == U_KEY) // || keycode == U_KEY
 		data->move_forward = 0;
-	else if (keycode == 's') // || keycode == D_KEY
+	else if (keycode == 's' || keycode == D_KEY) // || keycode == D_KEY
 		data->move_backward = 0;
     else if (keycode == 'a')
         data->move_left = 0;
