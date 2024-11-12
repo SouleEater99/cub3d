@@ -12,32 +12,41 @@
 
 #include "../include/cub3d.h"
 
-void	ft_update_img(t_data *data)
+void	ft_render_projection(t_data *data, t_ray *ray)
 {
-	data->img->img = mlx_new_image(data->mlx, WIDTH, HIGH);
-	data->img->addr = mlx_get_data_addr(data->img->img, &data->img->bits_per_pixel, &data->img->line_length,
-		&data->img->endian);
-	ft_write_map_img(data);
-	ft_write_player_to_img(data);
-	t_ray *ray = data->ray;
 	int j = 0;
 	int i = 0;
-	
+	int	start;
+	int end;
 
-	while (i < NUM_RAYS)
+
+	while (i < data->num_rays)
 	{
+		start = (data->high / 2) - (ray->WallSliceHigh / 2);
+		end = (data->high / 2) + (ray->WallSliceHigh / 2);
 		j = 0;
-		int y = (HIGH / 2) - (ray->WallSliceHigh / 2);
+		while (j < start)
+			my_mlx_pixel_put(data, i * WALL_STRIP, j++, 0x0000FFFF);
+		j = 0;
 		while (j < (ray->WallSliceHigh))
-		{
-			// if (ft_board_protect(data, i, j))
-				my_mlx_pixel_put(data->img, i * WALL_STRIP, y + j, RED);
-			j++;
-
-		}
+				my_mlx_pixel_put(data, i * WALL_STRIP, start + j++, RED);
+		while (end < data->high)
+				my_mlx_pixel_put(data, i * WALL_STRIP, end++, 0xFFFFFFF0);
 		i++;
 		ray++;
 	}
+}
+
+void	ft_update_img(t_data *data)
+{
+	data->img->img = mlx_new_image(data->mlx, data->width, data->high);
+	data->img->addr = mlx_get_data_addr(data->img->img, &data->img->bits_per_pixel, &data->img->line_length,
+		&data->img->endian);
+	ft_cast_all_rays(data);
+	ft_render_projection(data, data->ray);
+	ft_write_map_img(data);
+	ft_write_player_to_img(data, data->ray);
+	
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img->img, 0, 0);
 	mlx_destroy_image(data->mlx, data->img->img);
 }
@@ -144,7 +153,7 @@ int	main(void)
 	data = ft_init_data();
 	data->map = map;
 
-	data->mlx_win = mlx_new_window(data->mlx, WIDTH, HIGH, "Hello world!");
+	data->mlx_win = mlx_new_window(data->mlx, data->width, data->high, "Hello world!");
 	ft_update_img(data);
 	mlx_hook(data->mlx_win, 2, 1L << 0, ft_key_hook, data);
 	mlx_hook(data->mlx_win, 2, 1L << 0, ft_key_hook, data);

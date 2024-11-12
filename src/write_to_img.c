@@ -1,18 +1,20 @@
 
 #include "../include/cub3d.h"
 
-void my_mlx_pixel_put(t_image *img, int x, int y, int color)
+void my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char *dst;
+	t_image	*img;
 
-	if ((x > 0 && x < WIDTH) && (y > 0 && y < HIGH))
+	img = data->img;
+	if ((x > 0 && x < data->width) && (y > 0 && y < data->high))
 	{
 		dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
 		*(unsigned int *)dst = color;
 	}
 }
 
-void ft_write_cub_to_img(t_image *img, int x, int y, int color)
+void ft_write_cub_to_img(t_data *data, int x, int y, int color)
 {
 	int i;
 	int j;
@@ -23,16 +25,16 @@ void ft_write_cub_to_img(t_image *img, int x, int y, int color)
 		j = 0;
 		while (j < CUB_SIZE - 1)
 		{
-			my_mlx_pixel_put(img, x + j++, y + i, color);
+			my_mlx_pixel_put(data, x + j++, y + i, color);
 			if (j == CUB_SIZE - 1)
-				my_mlx_pixel_put(img, x + j, y + i, 0);
+				my_mlx_pixel_put(data, x + j, y + i, 0);
 		}
 		i++;
 	}
 	j = 0;
 	if (i == CUB_SIZE - 1)
 		while (j < CUB_SIZE - 1)
-			my_mlx_pixel_put(img, x + j++, y + i, 0);
+			my_mlx_pixel_put(data, x + j++, y + i, 0);
 }
 
 void ft_write_line(t_data *data, int dx, int dy, int color)
@@ -56,7 +58,7 @@ void ft_write_line(t_data *data, int dx, int dy, int color)
 	while (data->i <= data->step)
 	{
 		if (ft_board_protect(data, x, y))
-			my_mlx_pixel_put(data->img, x, y, color);
+			my_mlx_pixel_put(data, x, y, color);
 		x += x_increment;
 		y += y_increment;
 		data->i++;
@@ -79,7 +81,7 @@ int ft_is_angle_facing_right(double angle)
 
 int ft_board_protect(t_data *data, int x, int y)
 {
-	if ((x > 0 && x < data->col * CUB_SIZE) && (y > 0 && y < data->row * CUB_SIZE))
+	if ((x > 0 && x < data->width) && (y > 0 && y < data->high))
 		return (1);
 	return (0);
 }
@@ -108,7 +110,7 @@ void ft_get_virt_hit(t_data *data,t_ray *ray, long *x, long *y)
 	ystep = xstep * tan(ray->RayAngle);
 	if (!ft_is_angle_facing_down(ray->RayAngle) && ystep > 0)
 		ystep *= -1;
-	while ((*x > 0 && *x < data->col * CUB_SIZE) && (*y < data->row * CUB_SIZE && *y > 0))
+	while ((*x > 0 && *x < data->width) && (*y < data->high && *y > 0))
 	{
 		if (ft_is_angle_facing_right(ray->RayAngle) && ft_is_a_wall(data, *x + 1, *y))
 			return;
@@ -135,7 +137,7 @@ void ft_get_horz_hit(t_data *data, t_ray *ray, long *x, long *y)
 	xstep = ystep / tan(ray->RayAngle);
 	if (!ft_is_angle_facing_right(ray->RayAngle) && xstep > 0)
 		xstep *= -1;
-	while ((*x > 0 && *x < data->col * CUB_SIZE) && (*y < data->row * CUB_SIZE && *y > 0))
+	while ((*x > 0 && *x < data->width) && (*y < data->high && *y > 0))
 	{
 		if (ft_is_angle_facing_down(ray->RayAngle) && ft_is_a_wall(data, *x , *y + 1))
 			return;
@@ -190,7 +192,6 @@ void	ft_get_wall_hit(t_data *data, t_ray *ray)
 		ray->WallHitX = VirtHitX;
 		ray->WallHitY = VirtHitY;
 	}
-	ft_write_line(data, data->minimap_scale_factor * (ray->WallHitX - data->x_player), data->minimap_scale_factor * (ray->WallHitY - data->y_player), 0x00FF0000);
 }
 
 void ft_cast_all_rays(t_data *data)
@@ -203,25 +204,22 @@ void ft_cast_all_rays(t_data *data)
 	i = 0;
 	ray = data->ray;
 	angle = data->rotation_angle - ((FOV_ANGLE / 2));
-	while (i < NUM_RAYS)
+	while (i < data->num_rays)
 	{
-		angle += (double)FOV_ANGLE / (double)NUM_RAYS;
+		angle += (double)FOV_ANGLE / (double)data->num_rays;
 		if (angle >  2 * PI)
 			angle = 0;
 		else if (angle < 0)
 			angle += 2 * PI;
 		(ray + i)->RayAngle = angle;
 		ft_get_wall_hit(data, ray + i);
-		// printf ("#### { ray_angle : %f} ##### \n", (ray + i)->RayAngle);
-		if (i < 10)
-			printf("ray->wallslichigh : %d\n", (ray + i)->WallSliceHigh);
 		i++;
 	}
 	printf("plan distance : %f\n",data->plan_distance);
 
 }
 
-void ft_write_player_to_img(t_data *data)
+void ft_write_player_to_img(t_data *data, t_ray *ray)
 {
 	int i;
 	int j;
@@ -231,10 +229,16 @@ void ft_write_player_to_img(t_data *data)
 	{
 		j = 0;
 		while (j < PLAYER_SIZE)
-			my_mlx_pixel_put(data->img, data->minimap_scale_factor * ( data->x_player + i), data->minimap_scale_factor * (data->y_player + j++), 0x00FF0000);
+			my_mlx_pixel_put(data, data->minimap_scale_factor * ( data->x_player + i), data->minimap_scale_factor * (data->y_player + j++), 0x00FF0000);
 		i++;
 	}
-	ft_cast_all_rays(data);
+	i = 0;
+	while (i < data->num_rays)
+	{
+		ft_write_line(data, data->minimap_scale_factor * (ray->WallHitX - data->x_player), data->minimap_scale_factor * (ray->WallHitY - data->y_player), 0x00FF0000);
+		ray++;
+		i++;
+	}
 }
 
 void ft_write_map_img(t_data *data)
@@ -243,15 +247,15 @@ void ft_write_map_img(t_data *data)
 	int j;
 
 	i = 0;
-	while (i < data->col)
+	while (i < data->row)
 	{
 		j = 0;
-		while (j < data->row)
+		while (j < data->col)
 		{
 			if (data->map[j][i] == '0')
-				ft_write_cub_to_img(data->img, data->minimap_scale_factor * (i * CUB_SIZE), data->minimap_scale_factor * (j * CUB_SIZE), 0x00FFFFFF);
+				ft_write_cub_to_img(data, data->minimap_scale_factor * (i * CUB_SIZE), data->minimap_scale_factor * (j * CUB_SIZE), 0x00FFFFFF);
 			else
-				ft_write_cub_to_img(data->img, data->minimap_scale_factor * (i * CUB_SIZE), data->minimap_scale_factor * (j * CUB_SIZE), 0x00808080);
+				ft_write_cub_to_img(data, data->minimap_scale_factor * (i * CUB_SIZE), data->minimap_scale_factor * (j * CUB_SIZE), 0x00808080);
 			j++;
 		}
 		i++;

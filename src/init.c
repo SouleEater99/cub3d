@@ -11,11 +11,10 @@ t_data *ft_init_data()
 	data->img = malloc(sizeof(t_image));
 	if (!data->img)
 		return (free(data), NULL);
-	data->ray = malloc(sizeof(t_ray) * NUM_RAYS + 1);
-	if (!data->ray)
-		return (free(data->img), free(data), NULL);
-	data->row = 12;
-	data->col = 24;
+	data->row = 24;
+	data->col = 12;
+	data->width = data->row * CUB_SIZE;
+	data->high = data->col * CUB_SIZE;
 	data->mlx = mlx_init();
 	data->x_player = 5 * 40 + 20;
 	data->y_player = 5 * 40 + 20;
@@ -23,6 +22,10 @@ t_data *ft_init_data()
     data->walk_direction = 0;
 	data->rotation_angle = PI / 2 ;
 	data->minimap_scale_factor = 0.2;
+	data->num_rays = data->width / WALL_STRIP;
+	data->ray = malloc(sizeof(t_ray) * data->num_rays);
+	if (!data->ray)
+		return (free(data->img), free(data), NULL);
 	data->plan_distance = (320 / 2) / tan(FOV_ANGLE / 2);
     data->move_speed = 2;
     data->rotation_speed = 2 * (PI / 180); // whene it is 1 in right direction it is stop in 1.0032 riadines

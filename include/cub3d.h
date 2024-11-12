@@ -22,12 +22,9 @@
 #include "./minilibx/minilibx-linux/mlx.h"
 #include "./minilibx/minilibx-linux/mlx_int.h"
 
-#define WIDTH 1080
-#define HIGH  480
 #define CUB_SIZE 40
 #define PLAYER_SIZE 4
 #define WALL_STRIP 1
-#define	NUM_RAYS WIDTH / WALL_STRIP
 #define WHITE	0x00FFFFFF
 #define RED    0x00FF0000
 #define YELLOW 0x00FFFF00
@@ -68,9 +65,12 @@ typedef struct s_data
 	char	**map;
 	int		row;
 	int		col;
+	int		width;
+	int		high;
     double     x_player;
     double     y_player;
 	double	rotation_angle;
+	double	num_rays;
 	double	walk_direction;
 	double	turn_direction;
 	double	move_speed;
@@ -87,10 +87,10 @@ typedef struct s_data
 
 
 void	ft_write_map_img(t_data *data);
-void	ft_write_player_to_img(t_data *data);
+void	ft_write_player_to_img(t_data *data, t_ray *ray);
 void ft_write_line(t_data *data,int dx, int dy, int color);
-void	ft_write_cub_to_img(t_image *img, int x, int y, int color);
-void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
+void	ft_write_cub_to_img(t_data *data, int x, int y, int color);
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int	ft_key_hook(int keycode, t_data *data);
 void	ft_update_img(t_data *data);
 t_data *ft_init_data();
@@ -105,5 +105,6 @@ int	ft_normalize_angle(int angle);
 int	ft_board_protect(t_data *data, int x, int y);
 int		ft_calc_distance(t_data *data, int x, int y);
 void	ft_get_wall_hit(t_data *data, t_ray *ray);
+void	ft_render_projection(t_data *data, t_ray *ray);
 
 #endif
