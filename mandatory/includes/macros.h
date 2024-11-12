@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 10:27:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/01 10:29:49 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:49:36 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@
 # define CLR_EAW            0xcacaca
 # define CLR_SAN            0xf5f5f5
 
-# define TILE_SIZE          32      // the cell grid size
+# define TILE_SIZE          64      // the cell grid size
+
+# define TEXTURE_HEIGHT     64
+# define TEXTURE_WIDTH      64
 
 # define CENTER             (SCREEN_WIDTH / 2 - MAP_WIDTH * TILE_SIZE / 2)
 

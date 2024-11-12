@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:56:36 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/12 12:43:06 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/12 17:00:13 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,19 @@ void	draw_vert_cols(t_data *data, int x)
 	draw_vert_line(data->image, x, 0, data->draw_start, CLR_SKY);
 	draw_vert_line(data->image, x, data->draw_start, data->draw_end, color);
 	draw_vert_line(data->image, x, data->draw_end, SCREEN_HEIGHT, CLR_FLR);
+
+	// uint32_t *wall_texture = (uint32_t *)malloc(sizeof(uint32_t) * TEXTURE_HEIGHT * TEXTURE_WIDTH);
+	// int x = -1;
+	// while (++x < TEXTURE_WIDTH)
+	// {
+	// 	int y = -1;
+	// 	while (++y < TEXTURE_WIDTH)
+	// 	{
+	// 		wall_texture [(TEXTURE_WIDTH * y) + x] = (x % 8 && y % 8) ? 0xFF0000FF : 0xFF000000;
+	// 	}		
+	// }
+	
+	// free(wall_texture);
 }
 
 void	calculate_side_dist_x_y(t_data *data)
@@ -144,7 +157,7 @@ void	start_game(t_data *data)
 	data->image = create_image(data);
 	if (data->clicks % 2 == 0)
 		raycasting(data);
-	// draw_mini_map(data);		// draw the mini-map
+	draw_mini_map(data);		// draw the mini-map
 
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr,
 		0, 0);
