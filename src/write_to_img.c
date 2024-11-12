@@ -179,16 +179,18 @@ void	ft_get_wall_hit(t_data *data, t_ray *ray)
 	if (ft_calc_distance(data, HorzHitX, HorzHitY) < ft_calc_distance(data, VirtHitX, VirtHitY))
 	{
 		ray->distance = ft_calc_distance(data, HorzHitX, HorzHitY);
-		ray->WallSliceHigh = (CUB_SIZE / ray->distance) * data->plan_distance;
+		ray->WallSliceHigh = ((double)CUB_SIZE / ray->distance) * (double)data->plan_distance;
 		ray->WallHitX = HorzHitX;
 		ray->WallHitY = HorzHitY;
+		ray->IsHitVirt = 0;
 	}
 	else
 	{
 		ray->distance = ft_calc_distance(data, VirtHitX, VirtHitY);
-		ray->WallSliceHigh = (CUB_SIZE / ray->distance) * data->plan_distance;
+		ray->WallSliceHigh = ((double)CUB_SIZE / ray->distance) * (double)data->plan_distance;
 		ray->WallHitX = VirtHitX;
 		ray->WallHitY = VirtHitY;
+		ray->IsHitVirt = 1;
 	}
 }
 
@@ -213,7 +215,6 @@ void ft_cast_all_rays(t_data *data)
 		ft_get_wall_hit(data, ray + i);
 		i++;
 	}
-	printf("plan distance : %f\n",data->plan_distance);
 
 }
 

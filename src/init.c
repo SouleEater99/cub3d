@@ -7,15 +7,16 @@ void	ft_setup_texture(u_int32_t *texture)
 	int	y;
 
 	x = 0;
-	y = 0;
 	while (x < TEXTURE_SIZE)
 	{
+		y = 0;
 		while (y < TEXTURE_SIZE)
 		{
 			if (x % 8 && y % 8)
-				texture[(y++ * TEXTURE_SIZE) + x] = (u_int32_t)BLUE;
+				texture[(y * TEXTURE_SIZE) + x] = (u_int32_t)BLUE;
 			else
-				texture[(y++ * TEXTURE_SIZE) + x] = 0;
+				texture[(y * TEXTURE_SIZE) + x] = 0;
+			y++;
 		}
 		x++;
 	}

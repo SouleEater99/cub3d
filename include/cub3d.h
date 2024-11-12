@@ -54,7 +54,8 @@ typedef struct s_ray
 	long	WallHitY;
 	double	RayAngle;
 	double	distance;
-	int	WallSliceHigh;
+	double	WallSliceHigh;
+	int	IsHitVirt;
 }t_ray;
 
 typedef struct s_data
@@ -68,10 +69,10 @@ typedef struct s_data
 	int		col;
 	int		width;
 	int		high;
+	int		num_rays;
     double     x_player;
     double     y_player;
 	double	rotation_angle;
-	double	num_rays;
 	double	walk_direction;
 	double	turn_direction;
 	double	move_speed;

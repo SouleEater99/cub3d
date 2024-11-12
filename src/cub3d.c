@@ -19,23 +19,33 @@ void	ft_render_projection(t_data *data, t_ray *ray)
 	int	start;
 	int end;
 	u_int32_t color;
+	unsigned int		texture_offset_x;
+	unsigned int		texture_offset_y;
 
 
 	while (i < data->num_rays)
 	{
 		start = (data->high / 2) - (ray->WallSliceHigh / 2);
 		end = (data->high / 2) + (ray->WallSliceHigh / 2);
+		if (ray->IsHitVirt)
+			texture_offset_x = ray->WallHitY % TEXTURE_SIZE;
+		else
+			texture_offset_x = ray->WallHitX % TEXTURE_SIZE;
 		j = 0;
+		printf("x is equql to : x=%d ===================================>\n", texture_offset_x);
 		while (j < start)
 			my_mlx_pixel_put(data, i * WALL_STRIP, j++, 0x0000FFFF);
 		j = 0;
 		while (j < (ray->WallSliceHigh))
 		{
-			color = data->texture[((ray->WallHitY % TEXTURE_SIZE) * TEXTURE_SIZE) + (ray->WallHitX % TEXTURE_SIZE)];
-			my_mlx_pixel_put(data, i * WALL_STRIP, start + j++, color);
+			texture_offset_y = j * ((double)TEXTURE_SIZE / ray->WallSliceHigh);
+			if (texture_offset_x < TEXTURE_SIZE && texture_offset_y < TEXTURE_SIZE)
+				color = data->texture[(texture_offset_y * TEXTURE_SIZE) + texture_offset_x];
+			my_mlx_pixel_put(data,i * WALL_STRIP, start + j++,color);
 		}
-		while (end < data->high)
-			my_mlx_pixel_put(data, i * WALL_STRIP, end++, 0xFFFFFFF0);
+		j = end;
+		while (j < data->high)
+			my_mlx_pixel_put(data, i * WALL_STRIP, j++, 0xFFFFFFF0);
 		i++;
 		ray++;
 	}
@@ -50,6 +60,17 @@ void	ft_update_img(t_data *data)
 	ft_render_projection(data, data->ray);
 	ft_write_map_img(data);
 	ft_write_player_to_img(data, data->ray);
+	int x = 0;
+	while (x < TEXTURE_SIZE)
+	{
+		int y = 0;
+		while (y < TEXTURE_SIZE)
+		{
+			my_mlx_pixel_put(data, x, y, data->texture[(y  * TEXTURE_SIZE) + x]);
+			y++;
+		}
+		x++;
+	}
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img->img, 0, 0);
 	mlx_destroy_image(data->mlx, data->img->img);
 }
