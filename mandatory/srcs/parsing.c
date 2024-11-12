@@ -241,7 +241,7 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
             {
                 free(trimmed);
                 free_array(parts);
-                return (print_error("Error:  bad texture or color arguments!\n", __FILE__, __LINE__), 0);
+                return (print_error("Error: bad texture or color arguments!\n", __FILE__, __LINE__), 0);
             }
 
             if (color_ptr)
@@ -249,9 +249,11 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
                 *color_ptr = parse_color(parts[1]);
                 if (*color_ptr == -1)
                 {
+                    print_error("Error: bad color!\n", __FILE__, __LINE__);
+                    printf("=> %d: %s\n", *current_line, trimmed);
                     free(trimmed);
                     free_array(parts);
-                    return (false);
+                    return (0);
                 }
                 colors_found++;
             }
