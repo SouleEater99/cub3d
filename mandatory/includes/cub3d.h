@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/12 17:30:03 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/13 09:10:34 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,16 @@ typedef struct s_map
     int     ceiling_color;
 }   t_map;
 
+typedef struct s_texture
+{
+    void    *image;
+    char    *data;
+    int     width;
+    int     height;
+    int     bits_per_pixel;
+    int     line_length;
+    int     endian;
+}   t_texture;
 typedef struct s_mlx
 {
     void        *mlx_ptr;
@@ -138,6 +148,8 @@ typedef struct {
     char        *we_texture_path;
     char        *ea_texture_path;
 
+    t_texture   *textures[4];
+
     int         map_start;
     // uint32_t    floor_color;
     // uint32_t    ceiling_color;
@@ -199,6 +211,8 @@ int         parse_map(t_data *data, int ac, char **av);
 void        print_error (char *error_str, char *file, int line);
 void        free_map(char **map);
 void        clean_up(t_data *data);
+
+t_texture   *load_texture(void *mlx, char *filename);
 
 // void        std_error(char *error);
 

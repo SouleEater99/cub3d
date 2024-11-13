@@ -50,6 +50,10 @@
 # define SCROLL_UP          4
 # define SCROLL_DOWN        5
 
+#define TEXTURE_WIDTH       64
+#define TEXTURE_HEIGHT      64
+#define NUM_TEXTURES        4
+
 # ifdef __APPLE__
     // macOS keycodes
     # define ESC_KEY        53
@@ -72,8 +76,8 @@
     // # define MOVE_SPEED     0.08    // player speed
     // # define ROT_SPEED      0.06    // Rotation speed (in radians)
 
-    # define MOVE_SPEED     0.04    // player speed
-    # define ROT_SPEED      0.02    // Rotation speed (in radians)
+    # define MOVE_SPEED     0.02    // player speed
+    # define ROT_SPEED      0.01    // Rotation speed (in radians)
 
 # else
     #error "Unsupported platform"
@@ -87,6 +91,16 @@ typedef struct s_image
     int     size_line;
     int     endian;
 }   t_image;
+
+typedef struct s_texture {
+    void    *img_ptr;
+    int     *data;
+    int     width;
+    int     height;
+    int     bits_per_pixel;
+    int     size_line;
+    int     endian;
+} t_texture;
 
 typedef struct s_player
 {
@@ -167,6 +181,16 @@ typedef struct s_data {
     double  rot_speed;
     int     clicks;
     int     player_radius;
+    
+    char    *textures_path[NUM_TEXTURES];
+    int     *textures[NUM_TEXTURES];
+
+    // t_texture    textures[4];  // NO, SO, WE, EA
+    double      wall_x;        // Where exactly the wall was hit
+    int         tex_x;         // X coordinate on the texture
+    int         tex_y;         // Y coordinate on the texture
+    double      step;          // How much to increase the texture coordinate per screen pixel
+    double      tex_pos;       // Starting texture coordinate
 } t_data;
 
 void    put_pixel_in_img(t_image *image, int x, int y, int color)
@@ -537,6 +561,90 @@ void calculate_side_dist_x_y(t_data *data)
     }
 }
 
+
+// int get_wall_texture(t_data *data, int map_x, int map_y)
+// {
+//     // Example wall types in the map:
+//     // 1 = stone wall, 2 = wood wall, 3 = brick wall, etc.
+//     int wall_type = data->map.map[map_x][map_y];  // Assume `map` is a 2D array representing the game world
+
+//     if (wall_type == 1)
+//         return 0;  // Texture index for stone wall
+//     else if (wall_type == 2)
+//         return 1;  // Texture index for wood wall
+//     else if (wall_type == 3)
+//         return 2;  // Texture index for brick wall
+//     else
+//         return 3;  // Default or other texture
+// }
+
+// void raycasting(t_data *data) {
+//     int x = -1;
+
+//     data->textures[0] = ;
+//     while (++x < SCREEN_WIDTH) {
+//         data->camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
+//         data->ray_dir_x = data->dir_x + data->plane_x * data->camera_x;
+//         data->ray_dir_y = data->dir_y + data->plane_y * data->camera_x;
+
+//         data->map_x = (int)data->player_x;
+//         data->map_y = (int)data->player_y;
+//         data->delta_dist_x = fabs(1 / data->ray_dir_x);
+//         data->delta_dist_y = fabs(1 / data->ray_dir_y);
+
+//         if (data->ray_dir_x < 0) {
+//             data->step_x = -1;
+//             data->side_dist_x = (data->player_x - data->map_x) * data->delta_dist_x;
+//         } else {
+//             data->step_x = 1;
+//             data->side_dist_x = (data->map_x + 1.0 - data->player_x) * data->delta_dist_x;
+//         }
+//         if (data->ray_dir_y < 0) {
+//             data->step_y = -1;
+//             data->side_dist_y = (data->player_y - data->map_y) * data->delta_dist_y;
+//         } else {
+//             data->step_y = 1;
+//             data->side_dist_y = (data->map_y + 1.0 - data->player_y) * data->delta_dist_y;
+//         }
+
+//         dda_algorithm(data);
+
+//         if (data->side == 0)
+//             data->perp_wall_dist = data->side_dist_x - data->delta_dist_x;
+//         else
+//             data->perp_wall_dist = data->side_dist_y - data->delta_dist_y;
+
+//         data->line_height = (int)(SCREEN_HEIGHT / data->perp_wall_dist);
+//         data->draw_start = -data->line_height / 2 + SCREEN_HEIGHT / 2;
+//         if (data->draw_start < 0) data->draw_start = 0;
+//         data->draw_end = data->line_height / 2 + SCREEN_HEIGHT / 2;
+//         if (data->draw_end >= SCREEN_HEIGHT) data->draw_end = SCREEN_HEIGHT - 1;
+
+//         // Determine texture coordinates
+//         double wall_x;
+//         if (data->side == 0)
+//             wall_x = data->player_y + data->perp_wall_dist * data->ray_dir_y;
+//         else
+//             wall_x = data->player_x + data->perp_wall_dist * data->ray_dir_x;
+//         wall_x -= floor(wall_x);
+
+//         int tex_x = (int)(wall_x * (double)TEXTURE_WIDTH);
+//         if (data->side == 0 && data->ray_dir_x > 0) tex_x = TEXTURE_WIDTH - tex_x - 1;
+//         if (data->side == 1 && data->ray_dir_y < 0) tex_x = TEXTURE_WIDTH - tex_x - 1;
+
+//         int tex_num = get_wall_texture(data, data->map_x, data->map_y);
+//         double step = 1.0 * TEXTURE_HEIGHT / data->line_height;
+//         double tex_pos = (data->draw_start - SCREEN_HEIGHT / 2 + data->line_height / 2) * step;
+
+//         for (int y = data->draw_start; y < data->draw_end; y++) {
+//             int tex_y = (int)tex_pos & (TEXTURE_HEIGHT - 1);
+//             tex_pos += step;
+//             int color = data->textures[tex_num][TEXTURE_HEIGHT * tex_y + tex_x];
+//             put_pixel_in_img(data->image, x, y, color);
+//         }
+//     }
+// }
+
 void raycasting(t_data *data)
 {
     int x;
@@ -557,13 +665,53 @@ void raycasting(t_data *data)
         data->delta_dist_y = fabs(1 / data->ray_dir_y);
 
         // Calculate step and initial side_dist
-        calculate_side_dist_x_y(data);
+        // calculate_side_dist_x_y(data);
+        if (data->ray_dir_x < 0)
+        {
+            data->step_x = -1;
+            data->side_dist_x = (data->player_x - data->map_x) * data->delta_dist_x;
+        }
+        else
+        {
+            data->step_x = 1;
+            data->side_dist_x = (data->map_x + 1.0 - data->player_x) * data->delta_dist_x;
+        }
+        
+        if (data->ray_dir_y < 0)
+        {
+            data->step_y = -1;
+            data->side_dist_y = (data->player_y - data->map_y) * data->delta_dist_y;
+        }
+        else
+        {
+            data->step_y = 1;
+            data->side_dist_y = (data->map_y + 1.0 - data->player_y) * data->delta_dist_y;
+        }
 
         // Perform DDA algorithm
         dda_algorithm(data);
 
         // Draw the vertical wall strips
-        draw_vert_cols(data, x);
+        // draw_vert_cols(data, x);
+        int color = 0xFFFFFF;
+
+        if (data->side == 0)
+            data->perp_wall_dist = data->side_dist_x - data->delta_dist_x;
+        else
+            data->perp_wall_dist = data->side_dist_y - data->delta_dist_y;
+
+        color = (data->side == 0) ? CLR_EAW : CLR_SAN;
+
+        data->line_height = (int)(SCREEN_HEIGHT / data->perp_wall_dist);
+        data->draw_start = -data->line_height / 2 + SCREEN_HEIGHT / 2;
+        data->draw_start = (data->draw_start < 0) ? 0 : data->draw_start;
+
+        data->draw_end = data->line_height / 2 + SCREEN_HEIGHT / 2;
+        data->draw_end = (data->draw_end >= SCREEN_HEIGHT) ? SCREEN_HEIGHT - 1 : data->draw_end;
+
+        draw_vert_line(data->image, x, 0, data->draw_start, CLR_SKY);
+        draw_vert_line(data->image, x, data->draw_start, data->draw_end, color);
+        draw_vert_line(data->image, x, data->draw_end, SCREEN_HEIGHT, CLR_FLR);
     }
 }
 

@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:56:36 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/12 17:00:13 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/13 10:43:02 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,19 +77,6 @@ void	draw_vert_cols(t_data *data, int x)
 	draw_vert_line(data->image, x, 0, data->draw_start, CLR_SKY);
 	draw_vert_line(data->image, x, data->draw_start, data->draw_end, color);
 	draw_vert_line(data->image, x, data->draw_end, SCREEN_HEIGHT, CLR_FLR);
-
-	// uint32_t *wall_texture = (uint32_t *)malloc(sizeof(uint32_t) * TEXTURE_HEIGHT * TEXTURE_WIDTH);
-	// int x = -1;
-	// while (++x < TEXTURE_WIDTH)
-	// {
-	// 	int y = -1;
-	// 	while (++y < TEXTURE_WIDTH)
-	// 	{
-	// 		wall_texture [(TEXTURE_WIDTH * y) + x] = (x % 8 && y % 8) ? 0xFF0000FF : 0xFF000000;
-	// 	}		
-	// }
-	
-	// free(wall_texture);
 }
 
 void	calculate_side_dist_x_y(t_data *data)
@@ -165,3 +152,184 @@ void	start_game(t_data *data)
 	free(data->image);
 	data->image = NULL;
 }
+
+// #include <math.h>
+// #include <stdlib.h>
+
+// /* Constants for improved readability */
+// #define TEXTURE_SIZE 64
+// #define MAX_TEXTURE_DISTANCE 8.0
+// #define MIN_TEXTURE_DISTANCE 1.0
+
+// /* Texture mapping helper functions */
+// static void calculate_wall_height(t_data *data)
+// {
+//     // Calculate perpendicular wall distance to avoid fisheye effect
+//     if (data->side == 0)
+//         data->perp_wall_dist = (data->side_dist_x - data->delta_dist_x);
+//     else
+//         data->perp_wall_dist = (data->side_dist_y - data->delta_dist_y);
+    
+//     // Calculate wall height and drawing boundaries
+//     data->line_height = (int)(SCREEN_HEIGHT / data->perp_wall_dist);
+//     data->draw_start = -data->line_height / 2 + SCREEN_HEIGHT / 2;
+//     data->draw_start = (data->draw_start < 0) ? 0 : data->draw_start;
+//     data->draw_end = data->line_height / 2 + SCREEN_HEIGHT / 2;
+//     data->draw_end = (data->draw_end >= SCREEN_HEIGHT) ? SCREEN_HEIGHT - 1 : data->draw_end;
+// }
+
+// static void calculate_texture_coordinates(t_data *data, t_texture *texture, 
+//                                        double *wall_x, int *tex_x)
+// {
+//     // Calculate where exactly the wall was hit
+//     *wall_x = (data->side == 0) 
+//         ? data->player_y + data->perp_wall_dist * data->ray_dir_y
+//         : data->player_x + data->perp_wall_dist * data->ray_dir_x;
+//     *wall_x -= floor(*wall_x);  // Get fractional part
+
+//     // Calculate x coordinate on the texture
+//     *tex_x = (int)(*wall_x * (double)texture->width);
+//     if ((data->side == 0 && data->ray_dir_x > 0) || 
+//         (data->side == 1 && data->ray_dir_y < 0))
+//         *tex_x = texture->width - *tex_x - 1;
+// }
+
+// static void draw_textured_wall(t_data *data, int x, int tex_x, t_texture *texture)
+// {
+//     // Input validation
+//     if (data->draw_end <= data->draw_start || !texture || !texture->data ||
+//         tex_x < 0 || tex_x >= texture->width)
+//         return;
+
+//     // Calculate texture step and starting position
+//     double step = (double)texture->height / (data->draw_end - data->draw_start);
+//     double tex_pos = 0.0;
+
+//     // Draw the textured wall slice
+//     for (int y = data->draw_start; y < data->draw_end; y++)
+//     {
+//         int tex_y = (int)tex_pos & (texture->height - 1);
+//         tex_pos += step;
+
+//         // Get texture color
+//         int tex_offset = tex_y * texture->width + tex_x;
+//         if (tex_offset >= 0 && tex_offset < texture->width * texture->height)
+//         {
+//             int color = texture->data[tex_offset];
+            
+//             // Apply distance-based shading for depth perception
+//             if (data->perp_wall_dist > MIN_TEXTURE_DISTANCE)
+//             {
+//                 double shade = MIN_TEXTURE_DISTANCE / 
+//                     fmin(data->perp_wall_dist, MAX_TEXTURE_DISTANCE);
+//                 int r = (int)(((color >> 16) & 0xFF) * shade);
+//                 int g = (int)(((color >> 8) & 0xFF) * shade);
+//                 int b = (int)((color & 0xFF) * shade);
+//                 color = (r << 16) | (g << 8) | b;
+//             }
+            
+//             put_pixel_in_img(data->image, x, y, color);
+//         }
+//     }
+// }
+
+// /* DDA (Digital Differential Analysis) implementation */
+// static void dda_algorithm(t_data *data)
+// {
+//     int hit = 0;
+//     while (hit == 0)
+//     {
+//         // Jump to next map square in x or y direction
+//         if (data->side_dist_x < data->side_dist_y)
+//         {
+//             data->side_dist_x += data->delta_dist_x;
+//             data->map_x += data->step_x;
+//             data->side = 0;
+//         }
+//         else
+//         {
+//             data->side_dist_y += data->delta_dist_y;
+//             data->map_y += data->step_y;
+//             data->side = 1;
+//         }
+
+//         // Check if ray has hit a wall or map boundary
+//         if (data->map_x < 0 || data->map_x >= data->map_line_len[data->map_y] || 
+//             data->map_y < 0 || data->map_y >= data->map_height)
+//             break;  // Hit map boundary
+        
+//         if (data->map[data->map_y][data->map_x] == '1')
+//             hit = 1;  // Hit wall
+//     }
+// }
+
+// /* Main raycasting function */
+// void raycasting(t_data *data)
+// {
+//     t_texture *wall_texture = load_texture(data->mlx_ptr, 
+//         "textures/north_wall.xpm");
+//     if (!wall_texture)
+//         return;  // Handle texture loading failure
+
+//     // Cast rays for each vertical screen line
+//     for (int x = 0; x < SCREEN_WIDTH; x++)
+//     {
+//         // Calculate ray position and direction
+//         data->camera_x = 2.0 * x / (double)SCREEN_WIDTH - 1.0;
+//         data->ray_dir_x = data->dir_x + data->plane_x * data->camera_x;
+//         data->ray_dir_y = data->dir_y + data->plane_y * data->camera_x;
+
+//         // Set initial ray position
+//         data->map_x = (int)data->player_x;
+//         data->map_y = (int)data->player_y;
+
+//         // Calculate ray step sizes
+//         data->delta_dist_x = fabs(data->ray_dir_x) < 1e-20 ? 1e30 : 
+//             fabs(1.0 / data->ray_dir_x);
+//         data->delta_dist_y = fabs(data->ray_dir_y) < 1e-20 ? 1e30 : 
+//             fabs(1.0 / data->ray_dir_y);
+
+//         // Calculate ray steps and initial side distances
+//         calculate_side_dist_x_y(data);
+        
+//         // Perform DDA
+//         dda_algorithm(data);
+
+//         // Calculate wall height and drawing bounds
+//         calculate_wall_height(data);
+
+//         // Calculate texture coordinates
+//         double wall_x;
+//         int tex_x;
+//         calculate_texture_coordinates(data, wall_texture, &wall_x, &tex_x);
+
+//         // Draw the textured wall slice
+// 		draw_vert_line(data->image, x, 0, data->draw_start, CLR_SKY);
+//         draw_textured_wall(data, x, tex_x, wall_texture);
+// 		draw_vert_line(data->image, x, data->draw_end, SCREEN_HEIGHT, CLR_FLR);
+//     }
+
+//     free(wall_texture);
+// }
+
+// /* Game rendering function */
+// void start_game(t_data *data)
+// {
+//     data->image = create_image(data);
+//     if (!data->image)
+//         return;  // Handle image creation failure
+
+//     if (data->clicks % 2 == 0)
+//         raycasting(data);
+        
+//     draw_mini_map(data);
+
+//     // Display the rendered image
+//     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, 
+//         data->image->img_ptr, 0, 0);
+        
+//     // Cleanup
+//     mlx_destroy_image(data->mlx_ptr, data->image->img_ptr);
+//     free(data->image);
+//     data->image = NULL;
+// }

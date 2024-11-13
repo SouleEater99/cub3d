@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/12 18:01:47 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/13 11:18:21 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,22 @@ char **read_map_lines(const char *map_path, int *height)
     return (lines);
 }
 
+t_texture *load_texture(void *mlx, char *filename)
+{
+    t_texture *texture = malloc(sizeof(t_texture));
+    if (!texture)
+        return NULL;
+
+    texture->image = mlx_xpm_file_to_image(mlx, filename, &texture->width, &texture->height);
+    if (!texture->image)
+    {
+        free(texture);
+        return NULL;
+    }
+    texture->data = mlx_get_data_addr(texture->image, &texture->bits_per_pixel, &texture->line_length, &texture->endian);
+    return texture;
+}
+
 /// @brief parse map metadata (01NSEW).
 /// @param data a data structure that has all the nessecery variables.
 /// @param map_lines 
@@ -222,6 +238,7 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
             if (texture_ptr)
             {
                 *texture_ptr = ft_strdup(parts[1]);
+                data->textures[textures_found] = load_texture(data->mlx_ptr, *texture_ptr);
                 textures_found++;
             }
         }
@@ -332,13 +349,13 @@ void print_map(t_map *map)
     printf("\n");
 }
 
-// void print_str(char *str, int index)
-// {
-//     int i = -1;
-//     while(++i < index)
-//         printf(" ");
-//     printf("%s", str);
-// }
+void print_str(char *str, int index)
+{
+    int i = -1;
+    while(++i < index)
+        printf(" ");
+    printf("%s", str);
+}
 
 void ft_panic(int line_num, int col_num, const char *line, void (*clean_func)(t_data *), void *data) {
     printf("%d:%d: %s", line_num, col_num, line);
@@ -351,22 +368,55 @@ void ft_panic(int line_num, int col_num, const char *line, void (*clean_func)(t_
 
 int validate_map_borders(t_data *data, char **map, int height)
 {
-    int i = -1;
+    int i = 0;
     printf("\n\n=======================================\n\n");
     
+
+    // check first and last line
     int j = -1;
-    while (map[0][++j] && map[0][j] == '1');
-    if (map[0][j] != '\n')
+    int line = 0;
+    while (map[line][++j] && ft_strchr("1 ", map[line][j]));
+    if (map[line][j] != '\n')
     {
         print_error("Error: invalid map border!\n", __FILE__, __LINE__);
         ft_panic(data->map_start + 1, j + 1, map[0], clean_up, data);
         exit (100);
     }
-    
-    while(++i < height)
+    j = -1;
+    line = data->map_height - 1;
+    while (map[line][++j] && ft_strchr("1 ", map[line][j]));
+
+    if (map[line][j] != '\n' && map[line][j] != '\0')
     {
-        printf("%s", map[i]);
+        print_error("Error: invalid map border!\n", __FILE__, __LINE__);
+        ft_panic(line + 1, j + 1, map[line], clean_up, data);
+        printf("\n\n=======================================\n\n");
+        
+        exit (100);
     }
+
+    // start from the second line to the line befor the last.
+    while (++i < height - 1)
+    {
+        if (is_empty_line(map[i]))
+            continue;
+        j = -1;
+        while(++j < data->map_line_len[i] && ft_isspace(map[i][j]))
+            ;
+        // printf("\n\n>>> [%c] [%c] <<<\n\n", map[i][j], map[i][data->map_line_len[i] - 1]);
+        if (map[i][j] != '1' || map[i][data->map_line_len[i] - 1] != '1')
+        {
+            print_error("Error: invalid map border!\n", __FILE__, __LINE__);
+            ft_panic(i + data->map_start + 1, j + 1, map[i], clean_up, data);
+            printf("\n\n=======================================\n\n");
+            
+            return (exit(111), 0);
+        }
+    }
+    
+    (void)i;
+    (void)height;
+
     printf("\n\n=======================================\n\n");
     return (1);
 }
