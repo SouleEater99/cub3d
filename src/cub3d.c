@@ -28,24 +28,24 @@ void	ft_render_projection(t_data *data, t_ray *ray)
 		start = (data->high / 2) - (ray->WallSliceHigh / 2);
 		end = (data->high / 2) + (ray->WallSliceHigh / 2);
 		if (ray->IsHitVirt)
-			texture_offset_x = ray->WallHitY % TEXTURE_SIZE;
+			texture_offset_x = (int)ray->WallHitY % TEXTURE_SIZE;
 		else
-			texture_offset_x = ray->WallHitX % TEXTURE_SIZE;
+			texture_offset_x = (int)ray->WallHitX % TEXTURE_SIZE;
 		j = 0;
-		printf("x is equql to : x=%d ===================================>\n", texture_offset_x);
 		while (j < start)
 			my_mlx_pixel_put(data, i * WALL_STRIP, j++, 0x0000FFFF);
 		j = 0;
 		while (j < (ray->WallSliceHigh))
 		{
-			texture_offset_y = j * ((double)TEXTURE_SIZE / ray->WallSliceHigh);
+			texture_offset_y = (j * TEXTURE_SIZE) / ray->WallSliceHigh;
 			if (texture_offset_x < TEXTURE_SIZE && texture_offset_y < TEXTURE_SIZE)
 				color = data->texture[(texture_offset_y * TEXTURE_SIZE) + texture_offset_x];
+			// color = 0xFFFFFFFF;
 			my_mlx_pixel_put(data,i * WALL_STRIP, start + j++,color);
 		}
 		j = end;
 		while (j < data->high)
-			my_mlx_pixel_put(data, i * WALL_STRIP, j++, 0xFFFFFFF0);
+			my_mlx_pixel_put(data, i * WALL_STRIP, j++, 0xFF0F0F00);
 		i++;
 		ray++;
 	}
@@ -60,17 +60,7 @@ void	ft_update_img(t_data *data)
 	ft_render_projection(data, data->ray);
 	ft_write_map_img(data);
 	ft_write_player_to_img(data, data->ray);
-	int x = 0;
-	while (x < TEXTURE_SIZE)
-	{
-		int y = 0;
-		while (y < TEXTURE_SIZE)
-		{
-			my_mlx_pixel_put(data, x, y, data->texture[(y  * TEXTURE_SIZE) + x]);
-			y++;
-		}
-		x++;
-	}
+	ft_write_line(data, cos(data->rotation_angle) * 60, sin(data->rotation_angle) * 60, BLUE);
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img->img, 0, 0);
 	mlx_destroy_image(data->mlx, data->img->img);
 }
@@ -89,11 +79,12 @@ int	ft_is_player_inside_wall(t_data *data)
 	return (1);
 }
 
-int	ft_normalize_angle(int angle)
+double	ft_normalize_angle(double angle)
 {
-	angle = angle % 360;
-	if (angle < 0)
-		angle += 360;
+	if (angle > 2 * PI)
+ 	   angle -= 2 * PI;
+	else if (angle < 0)
+ 	   angle += 2 * PI;
 	return (angle);
 }
 
@@ -117,7 +108,7 @@ int	ft_key_hook(int keycode, t_data *data)
 	{
 		data->turn_direction = -1;
 		data->rotation_angle += (data->turn_direction * data->rotation_speed);
-		data->rotation_angle = ft_normalize_angle(data->rotation_angle * (180 / PI)) * (PI / 180);
+		data->rotation_angle = ft_normalize_angle(data->rotation_angle);
 		if (ft_is_angle_facing_down(data->rotation_angle) == 1)
 			printf("facing down \n");
 		else
@@ -133,7 +124,7 @@ int	ft_key_hook(int keycode, t_data *data)
 	{
 		data->turn_direction = 1;
 		data->rotation_angle += (data->turn_direction * data->rotation_speed);
-		data->rotation_angle = ft_normalize_angle(data->rotation_angle * (180 / PI)) * (PI / 180);
+		data->rotation_angle = ft_normalize_angle(data->rotation_angle);
 		ft_update_img(data);
 		if (ft_is_angle_facing_down(data->rotation_angle) == 1)
 			printf("facing down \n");

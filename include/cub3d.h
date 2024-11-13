@@ -50,8 +50,8 @@ typedef struct	s_image
 
 typedef struct s_ray
 {
-	long	WallHitX;
-	long	WallHitY;
+	double	WallHitX;
+	double	WallHitY;
 	double	RayAngle;
 	double	distance;
 	double	WallSliceHigh;
@@ -91,7 +91,7 @@ typedef struct s_data
 
 void	ft_write_map_img(t_data *data);
 void	ft_write_player_to_img(t_data *data, t_ray *ray);
-void ft_write_line(t_data *data,int dx, int dy, int color);
+void ft_write_line(t_data *data, double dx, double dy, int color);
 void	ft_write_cub_to_img(t_data *data, int x, int y, int color);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int	ft_key_hook(int keycode, t_data *data);
@@ -102,11 +102,11 @@ int		ft_is_angle_facing_down(double angle);
 int		ft_is_angle_facing_right(double angle);
 void	ft_cast_all_rays(t_data *data);
 int	ft_is_a_wall(t_data *data, int x, int y);
-void ft_get_horz_hit(t_data *data, t_ray *ray, long *x, long *y);
-void ft_get_virt_hit(t_data *data, t_ray *ray, long *x, long *y);
-int	ft_normalize_angle(int angle);
-int	ft_board_protect(t_data *data, int x, int y);
-int		ft_calc_distance(t_data *data, int x, int y);
+void ft_get_horz_hit(t_data *data, t_ray *ray, double *x, double *y);
+void ft_get_virt_hit(t_data *data, t_ray *ray, double *x, double *y);
+double	ft_normalize_angle(double angle);
+int	ft_board_protect(t_data *data, double x, double y);
+double		ft_calc_distance(t_data *data, double x, double y);
 void	ft_get_wall_hit(t_data *data, t_ray *ray);
 void	ft_render_projection(t_data *data, t_ray *ray);
 void	ft_setup_texture(u_int32_t *texture);
