@@ -373,25 +373,32 @@ int init_game(t_data *data, char *map_path)
     return (0);
 }
 
+void safe_free(void *ptr)
+{
+    if (ptr)
+        free(ptr);
+    ptr = NULL;
+}
+
 void clean_up(t_data *data)
 {
     if (!data)
         return;
         
     if (data->no_texture_path)
-        free(data->no_texture_path);
+        safe_free(data->no_texture_path);
     if (data->so_texture_path)
-        free(data->so_texture_path);
+        safe_free(data->so_texture_path);
     if (data->we_texture_path)
-        free(data->we_texture_path);
+        safe_free(data->we_texture_path);
     if (data->ea_texture_path)
-        free(data->ea_texture_path);
+        safe_free(data->ea_texture_path);
     
     if (data->image)
     {
         if (data->image->img_ptr && data->mlx_ptr)
             mlx_destroy_image(data->mlx_ptr, data->image->img_ptr);
-        free(data->image);
+        safe_free(data->image);
     }
     
     if (data->win_ptr && data->mlx_ptr)
@@ -401,7 +408,7 @@ void clean_up(t_data *data)
     if (data->mlx_ptr)
     {
         mlx_destroy_display(data->mlx_ptr);
-        free(data->mlx_ptr);
+        safe_free(data->mlx_ptr);
     }
     #endif
 

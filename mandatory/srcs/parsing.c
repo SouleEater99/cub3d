@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/13 12:11:22 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/13 13:12:57 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,37 +363,42 @@ void ft_panic(int line_num, int col_num, const char *line, void (*clean_func)(t_
     if (clean_func)
         clean_func(data);
     // print_str("▲", col_num);
-    exit(EXIT_FAILURE);
+    // exit(EXIT_FAILURE);
 }
 
-int validate_map_borders(t_data *data, char **map, int height)
+int check_first_last(t_data *data, char **map, int map_start, int map_height)
 {
-    int i = 0;
-    printf("\n\n=======================================\n\n");
-    
-
-    // check first and last line
     int j = -1;
     int line = 0;
     while (map[line][++j] && ft_strchr("1 ", map[line][j]));
     if (map[line][j] != '\n')
     {
         print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-        ft_panic(data->map_start + 1, j + 1, map[0], clean_up, data);
-        exit (100);
+        ft_panic(map_start + 1, j + 1, map[0], clean_up, data);
+        return (0);
+        // exit (100);
     }
     j = -1;
-    line = data->map_height - 1;
+    line = map_height - 1;
     while (map[line][++j] && ft_strchr("1 ", map[line][j]));
 
     if (map[line][j] != '\n' && map[line][j] != '\0')
     {
         print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-        ft_panic(line + 1, j + 1, map[line], clean_up, data);
-        printf("\n\n=======================================\n\n");
-        
-        exit (100);
+        ft_panic(line + 1, j + 1, map[line], clean_up, data);       
+        return (0); 
+        // exit (100);
     }
+    return (1);
+}
+
+int validate_map_borders(t_data *data, char **map, int height)
+{
+    int i = 0;
+    int j = -1;
+
+    if (!check_first_last(data, map, data->map_start, data->map_height))
+        return (0);
 
     // start from the second line to the line befor the last.
     while (++i < height - 1)
@@ -407,10 +412,8 @@ int validate_map_borders(t_data *data, char **map, int height)
         if (map[i][j] != '1' || map[i][data->map_line_len[i] - 1] != '1')
         {
             print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-            ft_panic(i + data->map_start + 1, j + 1, map[i], clean_up, data);
-            printf("\n\n=======================================\n\n");
-            
-            return (exit(111), 0);
+            ft_panic(i + data->map_start + 1, j + 1, map[i], clean_up, data);            
+            return (0);
         }
         
         while(j + 1 < data->map_line_len[i])
@@ -418,27 +421,18 @@ int validate_map_borders(t_data *data, char **map, int height)
             if ((map[i][j] == '0' && map[i][j + 1] == ' ') || (map[i][j] == ' ' && map[i][j + 1] == '0'))
             {
                 print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-                ft_panic(i + data->map_start + 1, j + 1, map[i], clean_up, data);
-                printf("\n\n=======================================\n\n");
-                
-                return (exit(111), 0);
+                ft_panic(i + data->map_start + 1, j + 1, map[i], clean_up, data);                
+                return (0);
             }
             if ((i + 1 < height && map[i][j] == '0' && j < data->map_line_len[i + 1] && map[i + 1][j] == ' ') || (map[i][j] == ' ' && i + 1 < height && map[i + 1][j] == '0'))
             {
                 print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-                ft_panic(i + data->map_start + 1, j + 1, map[i], clean_up, data);
-                printf("\n\n=======================================\n\n");
-                
-                return (exit(111), 0);
+                ft_panic(i + data->map_start + 1, j + 1, map[i], clean_up, data);                
+                return (0);
             }
             j++;
         }
     }
-    
-    (void)i;
-    (void)height;
-
-    printf("\n\n=======================================\n\n");
     return (1);
 }
 
