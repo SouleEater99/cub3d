@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/13 13:12:57 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/13 13:40:26 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -366,6 +366,12 @@ void ft_panic(int line_num, int col_num, const char *line, void (*clean_func)(t_
     // exit(EXIT_FAILURE);
 }
 
+/// @brief check the first line and the last one if all ones
+/// @param data 
+/// @param map 
+/// @param map_start 
+/// @param map_height 
+/// @return 
 int check_first_last(t_data *data, char **map, int map_start, int map_height)
 {
     int j = -1;
@@ -392,6 +398,11 @@ int check_first_last(t_data *data, char **map, int map_start, int map_height)
     return (1);
 }
 
+/// @brief check if map is surounded by walls.
+/// @param data 
+/// @param map 
+/// @param height 
+/// @return true if map is surounded by walls.
 int validate_map_borders(t_data *data, char **map, int height)
 {
     int i = 0;
