@@ -141,6 +141,14 @@ int	ft_key_hook(int keycode, t_data *data)
 	{
 		ft_free_all(data, "destroy display\n", 1);
 	}
+	if (keycode == XK_m)
+	{
+		if (data->minimap_scale_factor == 0.2)
+			data->minimap_scale_factor = 1;
+		else
+			data->minimap_scale_factor = 0.2;
+		ft_update_img(data);
+	}
 	return (1);
 
 }

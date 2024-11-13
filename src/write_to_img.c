@@ -114,23 +114,15 @@ void ft_get_virt_hit(t_data *data,t_ray *ray, double *x, double *y)
 	if (!IsFaceDown && ystep > 0)
 		ystep *= -1;
 
-	double NextTouchX = *x;
-	double NextTouchY = *y;
 	if (!IsFaceRight)
-		NextTouchX--;
-	while ((NextTouchX > 0 && NextTouchX < data->width) && (NextTouchY < data->high && NextTouchY > 0))
+		*x -= 1;
+	while ((*x > 0 && *x < data->width) && (*y < data->high && *y > 0))
 	{
-		if (ft_is_a_wall(data, NextTouchX, NextTouchY))
-		{
-			*y = NextTouchY;
-			*x = NextTouchX;
+		if (ft_is_a_wall(data, *x, *y))
 			break;
-		}
-		NextTouchY += ystep;
-		NextTouchX += xstep;
+		*y += ystep;
+		*x += xstep;
 	}
-	*x = NextTouchX;
-	*y = NextTouchY;
 }
 
 void ft_get_horz_hit(t_data *data, t_ray *ray, double *x, double *y)
@@ -154,23 +146,15 @@ void ft_get_horz_hit(t_data *data, t_ray *ray, double *x, double *y)
 	xstep = ystep / tan(ray->RayAngle);
 	if (!IsFaceRight && xstep > 0)
 		xstep *= -1;
-	double NextTouchX = *x;
-	double NextTouchY = *y;
 	if (!IsFaceDown)
-		NextTouchY--;
-	while ((NextTouchX > 0 && NextTouchX < data->width) && (NextTouchY < data->high && NextTouchY > 0))
+		*y -= 1;
+	while ((*x > 0 && *x < data->width) && (*y < data->high && *y > 0))
 	{
-		if (ft_is_a_wall(data, NextTouchX, NextTouchY))
-		{
-			*y = NextTouchY;
-			*x = NextTouchX;
+		if (ft_is_a_wall(data, *x, *y))
 			break;
-		}
-		NextTouchY += ystep;
-		NextTouchX += xstep;
+		*y += ystep;
+		*x += xstep;
 	}
-	*x = NextTouchX;
-	*y = NextTouchY;
 }
 
 double ft_calc_distance(t_data *data, double x, double y)
@@ -221,7 +205,6 @@ void ft_cast_all_rays(t_data *data)
 		int		i;
 		double	angle;
 		t_ray	*ray;
-
 
 	i = 0;
 	ray = data->ray;
