@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/13 11:18:21 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/13 12:11:22 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -403,7 +403,7 @@ int validate_map_borders(t_data *data, char **map, int height)
         j = -1;
         while(++j < data->map_line_len[i] && ft_isspace(map[i][j]))
             ;
-        // printf("\n\n>>> [%c] [%c] <<<\n\n", map[i][j], map[i][data->map_line_len[i] - 1]);
+        printf("\n\n>>> [%d] [%d] <<<\n\n", map[i][j], map[i][data->map_line_len[i] - 1]);
         if (map[i][j] != '1' || map[i][data->map_line_len[i] - 1] != '1')
         {
             print_error("Error: invalid map border!\n", __FILE__, __LINE__);
@@ -411,6 +411,27 @@ int validate_map_borders(t_data *data, char **map, int height)
             printf("\n\n=======================================\n\n");
             
             return (exit(111), 0);
+        }
+        
+        while(j + 1 < data->map_line_len[i])
+        {
+            if ((map[i][j] == '0' && map[i][j + 1] == ' ') || (map[i][j] == ' ' && map[i][j + 1] == '0'))
+            {
+                print_error("Error: invalid map border!\n", __FILE__, __LINE__);
+                ft_panic(i + data->map_start + 1, j + 1, map[i], clean_up, data);
+                printf("\n\n=======================================\n\n");
+                
+                return (exit(111), 0);
+            }
+            if ((i + 1 < height && map[i][j] == '0' && j < data->map_line_len[i + 1] && map[i + 1][j] == ' ') || (map[i][j] == ' ' && i + 1 < height && map[i + 1][j] == '0'))
+            {
+                print_error("Error: invalid map border!\n", __FILE__, __LINE__);
+                ft_panic(i + data->map_start + 1, j + 1, map[i], clean_up, data);
+                printf("\n\n=======================================\n\n");
+                
+                return (exit(111), 0);
+            }
+            j++;
         }
     }
     
