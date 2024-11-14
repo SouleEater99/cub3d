@@ -6,7 +6,7 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 12:57:30 by aelkheta          #+#    #+#              #
-#    Updated: 2024/11/13 09:42:59 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/11/14 08:18:20 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,11 +37,11 @@ NAME := cub3d
 SRCS := $(SRC_DIR)/cub3d.c $(SRC_DIR)/images.c $(SRC_DIR)/raycasting.c $(SRC_DIR)/init_utiles.c $(SRC_DIR)/key_events.c $(SRC_DIR)/release_res.c $(SRC_DIR)/parsing.c $(SRC_DIR)/errors.c $(SRC_DIR)/minimap.c
 OBJS := $(SRCS:%.c=%.o)
 
-all: $(NAME) clean
+all: $(NAME)
 	# make -C ./libraries/libft
 	# make clean -C ./libraries/libft
 
-run: all clean
+run: all
 	@./$(NAME) ${MAP}
 	@rm -f $(NAME)
 

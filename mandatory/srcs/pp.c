@@ -10,6 +10,9 @@
 #include <stdbool.h>
 // #include "../includes/macros.h"
 
+# define MAX(a, b) ((a) > (b) ? (a) : (b))
+# define MIN(a, b) ((a) < (b) ? (a) : (b))
+
 # define PI                 3.14159265358979323846
 
 # define SCREEN_WIDTH       800
@@ -240,63 +243,6 @@ void free_map(char **map)
     free(map);
 }
 
-// int read_map(t_data *data, char *map_path)
-// {
-//     int     i;
-//     int     fd;
-//     char    *line;
-//     char    **lines;
-
-//     fd = open(map_path, O_RDONLY);
-//     if (fd == -1)
-//         return (printf("FILE: %s, LINE: %d\n", __FILE__, __LINE__), perror(map_path), 0);
-    
-//     i = 0;
-//     line = get_next_line(fd);
-//     if (!line)
-//         return (close(fd), 0);
-    
-//     data->map.map_width = ft_strlen(line) - 1;
-//     while (line)
-//     {
-//         ++i;
-//         printf("%s", line);  // For debug
-//         free(line);
-//         line = get_next_line(fd);
-//     }
-//     data->map.map_height = i;
-//     close(fd);
-
-//     fd = open(map_path, O_RDONLY);
-//     if (fd == -1)
-//         return (0);
-    
-//     lines = (char **)malloc(sizeof(char *) * (data->map.map_height + 1));
-//     if (!lines)
-//         return (close(fd), 0);
-    
-//     // Read and store each line
-//     i = 0;
-//     while (i < data->map.map_height)
-//     {
-//         lines[i] = get_next_line(fd);
-//         if (!lines[i])
-//         {
-//             while (--i >= 0)
-//                 free(lines[i]);
-//             free(lines);
-//             return (close(fd), 0);
-//         }
-//         i++;
-//     }
-//     lines[i] = NULL;
-    
-//     close(fd);
-//     data->map.map = lines;
-//     return (1);
-// }
-
-
 int read_map(t_data *data, char *map_path)
 {
     int     i;
@@ -402,27 +348,64 @@ int init_player_direction(t_data *data)
 }
 
 // t_texture *load_texture(t_data *data, t_texture *texture, char *path)
+// int load_texture(t_data *data, t_texture *texture, char *path)
+// {
+//     if (!texture || !path || !data->mlx_ptr)
+//         return (0);
+
+//     path = "../textures/texture.xpm";
+//     texture->img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, path, &texture->width, &texture->height);
+//     if (!texture->img_ptr)
+//     {
+//         printf("Error: mlx_xpm_file_to_image: fail\n");
+//         return (0);
+//     }
+
+//     texture->data = (int *)mlx_get_data_addr(texture->img_ptr, &texture->bits_per_pixel, &texture->size_line, &texture->endian);
+//     if (!texture->data)
+//     {
+//         mlx_destroy_image(data->mlx_ptr, texture->img_ptr);
+//         return (0);
+//     }
+
+//     if (texture->width != TEXTURE_WIDTH || texture->height != TEXTURE_HEIGHT)
+//     {
+//         mlx_destroy_image(data->mlx_ptr, texture->img_ptr);
+//         return (0);
+//     }
+
+//     return (1);
+// }
+
 int load_texture(t_data *data, t_texture *texture, char *path)
 {
+    printf("path: %s\n", path);
+    
     if (!texture || !path || !data->mlx_ptr)
+    {
+        printf("Error: Invalid parameters for texture loading\n");
         return (0);
+    }
 
     texture->img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, path, &texture->width, &texture->height);
     if (!texture->img_ptr)
     {
-        printf("Error: mlx_xpm_file_to_image: fail\n");
+        printf("Error: Failed to load texture: %s\n", path);
         return (0);
     }
 
     texture->data = (int *)mlx_get_data_addr(texture->img_ptr, &texture->bits_per_pixel, &texture->size_line, &texture->endian);
     if (!texture->data)
     {
+        printf("Error: Failed to get texture data: %s\n", path);
         mlx_destroy_image(data->mlx_ptr, texture->img_ptr);
         return (0);
     }
 
     if (texture->width != TEXTURE_WIDTH || texture->height != TEXTURE_HEIGHT)
     {
+        printf("Error: Invalid texture dimensions for %s (expected %dx%d, got %dx%d)\n",
+               path, TEXTURE_WIDTH, TEXTURE_HEIGHT, texture->width, texture->height);
         mlx_destroy_image(data->mlx_ptr, texture->img_ptr);
         return (0);
     }
@@ -453,13 +436,13 @@ int init_textures(t_data *data)
     int i = -1;
     while (++i < NUM_TEXTURES)
         data->textures[i] = NULL;
-
-    char *texture_paths[NUM_TEXTURES] = {
-        data->no_texture_path,  // North
-        data->so_texture_path,  // South
-        data->we_texture_path,  // West
-        data->ea_texture_path   // East
-    };
+    
+    char *texture_paths[NUM_TEXTURES];
+    
+    texture_paths[0] = "./texture.xpm";
+    texture_paths[1] = "./texture.xpm";
+    texture_paths[2] = "./texture.xpm";
+    texture_paths[3] = "./texture.xpm";
 
     i = -1;
     while (++i < NUM_TEXTURES)
@@ -512,18 +495,11 @@ int init_game(t_data *data, char *map_path)
     if (!data->image)
         return (1);
 
-    // if (!init_textures(data))
-    //     return (1);
+    if (!init_textures(data))
+        return (1);
 
     return (0);
 }
-
-// void safe_free(void *ptr)
-// {
-//     if (ptr)
-//         free(ptr);
-    // ptr = NULL;
-// }
 
 void clean_up(t_data *data)
 {
@@ -715,173 +691,99 @@ void calculate_side_dist_x_y(t_data *data)
     }
 }
 
+static int get_texture_number(t_data *data)
+{
+    if (data->side == 0)
+        return (data->ray_dir_x < 0) ? 2 : 3; // West or East
+    return (data->ray_dir_y < 0) ? 0 : 1;     // North or South
+}
+
+// Calculate wall texture coordinates
+static void calculate_wall_texture(t_data *data)
+{
+    // Calculate wall X coordinate (where the ray hit the wall)
+    if (data->side == 0)
+        data->wall_x = data->player_y + data->perp_wall_dist * data->ray_dir_y;
+    else
+        data->wall_x = data->player_x + data->perp_wall_dist * data->ray_dir_x;
+    data->wall_x -= floor(data->wall_x);
+
+    // Calculate X coordinate on texture
+    data->tex_x = (int)(data->wall_x * TEXTURE_WIDTH);
+    if (data->side == 0 && data->ray_dir_x > 0)
+        data->tex_x = TEXTURE_WIDTH - data->tex_x - 1;
+    if (data->side == 1 && data->ray_dir_y < 0)
+        data->tex_x = TEXTURE_WIDTH - data->tex_x - 1;
+}
+
+// Draw a vertical textured wall stripe
+static void draw_wall_stripe(t_data *data, int x, int tex_num)
+{
+    double step = 1.0 * TEXTURE_HEIGHT / data->line_height;
+    double tex_pos = (data->draw_start - SCREEN_HEIGHT / 2 + data->line_height / 2) * step;
+
+    for (int y = data->draw_start; y < data->draw_end; y++)
+    {
+        data->tex_y = (int)tex_pos & (TEXTURE_HEIGHT - 1);
+        tex_pos += step;
+
+        int color = data->textures[tex_num]->data[TEXTURE_HEIGHT * data->tex_y + data->tex_x];
+        
+        // Make color darker for y-sides (east-west walls)
+        if (data->side == 1)
+            color = (color >> 1) & 8355711;
+
+        put_pixel_in_img(data->image, x, y, color);
+    }
+}
+
 void raycasting(t_data *data)
 {
-    int x;
-    
-    x = -1;
-    while (++x < SCREEN_WIDTH)
+    for (int x = 0; x < SCREEN_WIDTH; x++)
     {
+        // Calculate ray position and direction
         data->camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
         data->ray_dir_x = data->dir_x + data->plane_x * data->camera_x;
         data->ray_dir_y = data->dir_y + data->plane_y * data->camera_x;
 
-        // Calculate the current map square the ray is in
+        // Initialize map position
         data->map_x = (int)data->player_x;
         data->map_y = (int)data->player_y;
 
-        // Calculate delta_dist based on ray direction
+        // Calculate distance between rays
         data->delta_dist_x = fabs(1 / data->ray_dir_x);
         data->delta_dist_y = fabs(1 / data->ray_dir_y);
 
-        // Calculate step and initial side_dist
-        // calculate_side_dist_x_y(data);
-        if (data->ray_dir_x < 0)
-        {
-            data->step_x = -1;
-            data->side_dist_x = (data->player_x - data->map_x) * data->delta_dist_x;
-        }
-        else
-        {
-            data->step_x = 1;
-            data->side_dist_x = (data->map_x + 1.0 - data->player_x) * data->delta_dist_x;
-        }
-        
-        if (data->ray_dir_y < 0)
-        {
-            data->step_y = -1;
-            data->side_dist_y = (data->player_y - data->map_y) * data->delta_dist_y;
-        }
-        else
-        {
-            data->step_y = 1;
-            data->side_dist_y = (data->map_y + 1.0 - data->player_y) * data->delta_dist_y;
-        }
+        // Calculate step and initial side distance
+        calculate_side_dist_x_y(data);
 
-        // Perform DDA algorithm
+        // Perform DDA to find wall hit
         dda_algorithm(data);
 
-        // Draw the vertical wall strips
-        // draw_vert_cols(data, x);
-        int color = 0xFFFFFF;
+        // Calculate perpendicular wall distance to prevent fisheye effect
+        data->perp_wall_dist = (data->side == 0) 
+            ? data->side_dist_x - data->delta_dist_x
+            : data->side_dist_y - data->delta_dist_y;
 
-        if (data->side == 0)
-            data->perp_wall_dist = data->side_dist_x - data->delta_dist_x;
-        else
-            data->perp_wall_dist = data->side_dist_y - data->delta_dist_y;
-
-        color = (data->side == 0) ? CLR_EAW : CLR_SAN;
-
+        // Calculate wall height and drawing boundaries
         data->line_height = (int)(SCREEN_HEIGHT / data->perp_wall_dist);
-        data->draw_start = -data->line_height / 2 + SCREEN_HEIGHT / 2;
-        data->draw_start = (data->draw_start < 0) ? 0 : data->draw_start;
+        data->draw_start = MAX(0, -data->line_height / 2 + SCREEN_HEIGHT / 2);
+        data->draw_end = MIN(SCREEN_HEIGHT - 1, data->line_height / 2 + SCREEN_HEIGHT / 2);
 
-        data->draw_end = data->line_height / 2 + SCREEN_HEIGHT / 2;
-        data->draw_end = (data->draw_end >= SCREEN_HEIGHT) ? SCREEN_HEIGHT - 1 : data->draw_end;
+        // Calculate texture coordinates
+        calculate_wall_texture(data);
 
+        // Draw ceiling
         draw_vert_line(data->image, x, 0, data->draw_start, CLR_SKY);
-        draw_vert_line(data->image, x, data->draw_start, data->draw_end, color);
+
+        // Draw textured wall
+        int tex_num = get_texture_number(data);
+        draw_wall_stripe(data, x, tex_num);
+
+        // Draw floor
         draw_vert_line(data->image, x, data->draw_end, SCREEN_HEIGHT, CLR_FLR);
     }
 }
-
-
-// static int get_texture_number(t_data *data)
-// {
-//     if (data->side == 0)
-//         return (data->ray_dir_x < 0) ? 2 : 3; // West or East
-//     return (data->ray_dir_y < 0) ? 0 : 1;     // North or South
-// }
-
-// // Calculate wall texture coordinates
-// static void calculate_wall_texture(t_data *data)
-// {
-//     // Calculate wall X coordinate (where the ray hit the wall)
-//     if (data->side == 0)
-//         data->wall_x = data->player_y + data->perp_wall_dist * data->ray_dir_y;
-//     else
-//         data->wall_x = data->player_x + data->perp_wall_dist * data->ray_dir_x;
-//     data->wall_x -= floor(data->wall_x);
-
-//     // Calculate X coordinate on texture
-//     data->tex_x = (int)(data->wall_x * TEXTURE_WIDTH);
-//     if (data->side == 0 && data->ray_dir_x > 0)
-//         data->tex_x = TEXTURE_WIDTH - data->tex_x - 1;
-//     if (data->side == 1 && data->ray_dir_y < 0)
-//         data->tex_x = TEXTURE_WIDTH - data->tex_x - 1;
-// }
-
-// // Draw a vertical textured wall stripe
-// static void draw_wall_stripe(t_data *data, int x, int tex_num)
-// {
-//     double step = 1.0 * TEXTURE_HEIGHT / data->line_height;
-//     double tex_pos = (data->draw_start - SCREEN_HEIGHT / 2 + data->line_height / 2) * step;
-
-//     for (int y = data->draw_start; y < data->draw_end; y++)
-//     {
-//         data->tex_y = (int)tex_pos & (TEXTURE_HEIGHT - 1);
-//         tex_pos += step;
-
-//         int color = data->textures[tex_num]->data[TEXTURE_HEIGHT * data->tex_y + data->tex_x];
-        
-//         // Make color darker for y-sides (east-west walls)
-//         if (data->side == 1)
-//             color = (color >> 1) & 8355711;
-
-//         put_pixel_in_img(data->image, x, y, color);
-//     }
-// }
-
-// #define MAX(a, b) ((a) > (b) ? (a) : (b))
-// #define MIN(a, b) ((a) < (b) ? (a) : (b))
-
-// void raycasting(t_data *data)
-// {
-//     for (int x = 0; x < SCREEN_WIDTH; x++)
-//     {
-//         // Calculate ray position and direction
-//         data->camera_x = 2 * x / (double)SCREEN_WIDTH - 1;
-//         data->ray_dir_x = data->dir_x + data->plane_x * data->camera_x;
-//         data->ray_dir_y = data->dir_y + data->plane_y * data->camera_x;
-
-//         // Initialize map position
-//         data->map_x = (int)data->player_x;
-//         data->map_y = (int)data->player_y;
-
-//         // Calculate distance between rays
-//         data->delta_dist_x = fabs(1 / data->ray_dir_x);
-//         data->delta_dist_y = fabs(1 / data->ray_dir_y);
-
-//         // Calculate step and initial side distance
-//         calculate_side_dist_x_y(data);
-
-//         // Perform DDA to find wall hit
-//         dda_algorithm(data);
-
-//         // Calculate perpendicular wall distance to prevent fisheye effect
-//         data->perp_wall_dist = (data->side == 0) 
-//             ? data->side_dist_x - data->delta_dist_x
-//             : data->side_dist_y - data->delta_dist_y;
-
-//         // Calculate wall height and drawing boundaries
-//         data->line_height = (int)(SCREEN_HEIGHT / data->perp_wall_dist);
-//         data->draw_start = MAX(0, -data->line_height / 2 + SCREEN_HEIGHT / 2);
-//         data->draw_end = MIN(SCREEN_HEIGHT - 1, data->line_height / 2 + SCREEN_HEIGHT / 2);
-
-//         // Calculate texture coordinates
-//         calculate_wall_texture(data);
-
-//         // Draw ceiling
-//         draw_vert_line(data->image, x, 0, data->draw_start, CLR_SKY);
-
-//         // Draw textured wall
-//         int tex_num = get_texture_number(data);
-//         draw_wall_stripe(data, x, tex_num);
-
-//         // Draw floor
-//         draw_vert_line(data->image, x, data->draw_end, SCREEN_HEIGHT, CLR_FLR);
-//     }
-// }
 
 void rotate_player(t_data *data, double rot_speed)
 {
@@ -1083,21 +985,6 @@ void draw_minimap(t_data *data)
     // draw_minimap_border(data->image);
 }
 
-void render_sprites(t_data *data)
-{
-    int height[2];
-    int width[2];
-    void *img[2];
-
-    img[0] = mlx_xpm_file_to_image(data->mlx_ptr, "../textures/sprites/w0_a.xpm", &width[0], &height[0]);
-    if (!img[0])
-        exit (111);
-    // img[1] = mlx_xpm_file_to_image(data->mlx_ptr, "../textures/sprites/w0_b.xpm", &width[1], &height[1]);
-    // if (!img[1])
-    //     exit (111);
-    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img[0], 0, 0);
-}
-
 int game_loop(t_data *data)
 {
     // Clear the image
@@ -1108,8 +995,6 @@ int game_loop(t_data *data)
 
     // Perform raycasting
     raycasting(data);
-
-    render_sprites(data);
 
     // Draw minimap
     draw_minimap(data);
@@ -1206,40 +1091,3 @@ int main(int ac, char **av)
 
     return (0);
 }
-
-// int main(int ac, char **av)
-// {
-//     t_data data;
-//     (void)ac;
-//     (void)av;
-
-//     // if (!parse_map(ac, av))
-//     //     return (1);
-
-//     memset(&data, 0, sizeof(t_data));
-
-//     data.mlx_ptr = mlx_init();
-//     if (!data.mlx_ptr)
-//         return (1);
-
-//     data.win_ptr = mlx_new_window(data.mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT, "Raycaster");
-//     if (!data.win_ptr)
-//     {
-//         clean_up(&data);
-//         return (1);
-//     }
-
-//     if (init_game(&data, av[1]) != 0)
-//     {
-//         clean_up(&data);
-//         return (1);
-//     }
-
-//     mlx_hook(data.win_ptr, 2, 1L<<0, key_press, &data);
-//     mlx_hook(data.win_ptr, 3, 1L<<1, key_release, &data);
-//     mlx_hook(data.win_ptr, 4, 1L<<2, mouse_events, &data);
-//     mlx_loop_hook(data.mlx_ptr, game_loop, &data);
-//     mlx_loop(data.mlx_ptr);
-
-//     return (0);
-// }
