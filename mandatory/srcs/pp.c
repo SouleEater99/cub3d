@@ -420,8 +420,8 @@ void free_textures(t_data *data, int up_to)
     {
         if (data->textures[i])
         {
-            if (data->textures[i]->img_ptr)
-                mlx_destroy_image(data->mlx_ptr, data->textures[i]->img_ptr);
+            // if (data->textures[i]->img_ptr)
+            //     mlx_destroy_image(data->mlx_ptr, data->textures[i]->img_ptr);
             free(data->textures[i]);
             data->textures[i] = NULL;
         }
@@ -439,10 +439,14 @@ int init_textures(t_data *data)
     
     char *texture_paths[NUM_TEXTURES] =
     {
-        data->no_texture_path,
-        data->so_texture_path,
-        data->we_texture_path,
-        data->ea_texture_path,
+        // data->no_texture_path,
+        // data->so_texture_path,
+        // data->we_texture_path,
+        // data->ea_texture_path,
+        "./textures/thecry.xpm",
+        "./textures/starynight.xpm",
+        "./textures/thecry.xpm",
+        "./textures/starynight.xpm",
     };
 
     i = -1;
@@ -478,13 +482,13 @@ int init_game(t_data *data, char *map_path)
     data->minimap_x_center  =   MINIMAP_MID_X;
     data->minimap_y_center  =   MINIMAP_MID_Y;
 
-    data->no_texture_path   =   ft_strdup("./textures/north_wall.xpm");
-    data->so_texture_path   =   ft_strdup("./textures/south_wall.xpm");
-    data->ea_texture_path   =   ft_strdup("./textures/east_wall.xpm");
-    data->we_texture_path   =   ft_strdup("./textures/west_wall.xpm");
+    // data->no_texture_path   =   ft_strdup("./textures/north_wall.xpm");
+    // data->so_texture_path   =   ft_strdup("./textures/south_wall.xpm");
+    // data->ea_texture_path   =   ft_strdup("./textures/east_wall.xpm");
+    // data->we_texture_path   =   ft_strdup("./textures/west_wall.xpm");
 
-    data->player_x          =    2.0;
-    data->player_y          =    2.0;
+    data->player_x          =    4.0;
+    data->player_y          =    18.0;
 
     if (init_player_direction(data))
         return (1);
@@ -635,7 +639,7 @@ void dda_algorithm(t_data *data)
             data->side = 1;
         }
         
-        if (data->map_x < 0 || data->map_x >= data->map.map_width || 
+        if (data->map_x < 0 || (size_t)data->map_x >= ft_strlen(data->map.map[data->map_y]) || //data->map.map_width || 
             data->map_y < 0 || data->map_y >= data->map.map_height)
             break;
             

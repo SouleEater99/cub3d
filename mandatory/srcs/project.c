@@ -1115,7 +1115,7 @@ int game_loop(t_data *data)
     // Put image to window
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr, 0, 0);
 
-    render_sprites(data);
+    // render_sprites(data);
 
     return (0);
 }
