@@ -1089,7 +1089,7 @@ void render_sprites(t_data *data)
     int width[2];
     void *img[2];
 
-    img[0] = mlx_xpm_file_to_image(data->mlx_ptr, "../textures/sprites/w0_a.xpm", &width[0], &height[0]);
+    img[0] = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/w0_a.xpm", &width[0], &height[0]);
     if (!img[0])
         exit (111);
     // img[1] = mlx_xpm_file_to_image(data->mlx_ptr, "../textures/sprites/w0_b.xpm", &width[1], &height[1]);
@@ -1109,13 +1109,13 @@ int game_loop(t_data *data)
     // Perform raycasting
     raycasting(data);
 
-    render_sprites(data);
-
     // Draw minimap
     draw_minimap(data);
 
     // Put image to window
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr, 0, 0);
+
+    render_sprites(data);
 
     return (0);
 }

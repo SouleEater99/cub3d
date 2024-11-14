@@ -437,12 +437,13 @@ int init_textures(t_data *data)
     while (++i < NUM_TEXTURES)
         data->textures[i] = NULL;
     
-    char *texture_paths[NUM_TEXTURES];
-    
-    texture_paths[0] = "./texture.xpm";
-    texture_paths[1] = "./texture.xpm";
-    texture_paths[2] = "./texture.xpm";
-    texture_paths[3] = "./texture.xpm";
+    char *texture_paths[NUM_TEXTURES] =
+    {
+        data->no_texture_path,
+        data->so_texture_path,
+        data->we_texture_path,
+        data->ea_texture_path,
+    };
 
     i = -1;
     while (++i < NUM_TEXTURES)
@@ -477,10 +478,10 @@ int init_game(t_data *data, char *map_path)
     data->minimap_x_center  =   MINIMAP_MID_X;
     data->minimap_y_center  =   MINIMAP_MID_Y;
 
-    // data->no_texture_path   =   ft_strdup("../textures/north_wall.xpm");
-    // data->so_texture_path   =   ft_strdup("../textures/south_wall.xpm");
-    // data->ea_texture_path   =   ft_strdup("../textures/east_wall.xpm");
-    // data->we_texture_path   =   ft_strdup("../textures/west_wall.xpm");
+    data->no_texture_path   =   ft_strdup("./textures/north_wall.xpm");
+    data->so_texture_path   =   ft_strdup("./textures/south_wall.xpm");
+    data->ea_texture_path   =   ft_strdup("./textures/east_wall.xpm");
+    data->we_texture_path   =   ft_strdup("./textures/west_wall.xpm");
 
     data->player_x          =    2.0;
     data->player_y          =    2.0;
