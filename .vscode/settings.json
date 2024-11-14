@@ -4,5 +4,6 @@
         "libft.h": "c",
         "macros.h": "c",
         "stdbool.h": "c"
-    }
+    },
+    "CodeGPT.apiKey": "CodeGPT Plus Beta"
 }
