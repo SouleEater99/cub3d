@@ -79,8 +79,8 @@
     // # define MOVE_SPEED     0.08    // player speed
     // # define ROT_SPEED      0.06    // Rotation speed (in radians)
 
-    # define MOVE_SPEED     0.02    // player speed
-    # define ROT_SPEED      0.01    // Rotation speed (in radians)
+    # define MOVE_SPEED     0.006    // player speed
+    # define ROT_SPEED      0.004    // Rotation speed (in radians)
 
 # else
     #error "Unsupported platform"
@@ -439,14 +439,15 @@ int init_textures(t_data *data)
     
     char *texture_paths[NUM_TEXTURES] =
     {
-        // data->no_texture_path,
-        // data->so_texture_path,
-        // data->we_texture_path,
-        // data->ea_texture_path,
-        "./textures/thecry.xpm",
-        "./textures/starynight.xpm",
-        "./textures/thecry.xpm",
-        "./textures/starynight.xpm",
+        data->no_texture_path,
+        data->so_texture_path,
+        data->we_texture_path,
+        data->ea_texture_path,
+
+        // "./textures/thecry.xpm",
+        // "./textures/starynight.xpm",
+        // "./textures/gokhg.xpm",
+        // "./textures/colors.xpm",
     };
 
     i = -1;
@@ -482,10 +483,10 @@ int init_game(t_data *data, char *map_path)
     data->minimap_x_center  =   MINIMAP_MID_X;
     data->minimap_y_center  =   MINIMAP_MID_Y;
 
-    // data->no_texture_path   =   ft_strdup("./textures/north_wall.xpm");
-    // data->so_texture_path   =   ft_strdup("./textures/south_wall.xpm");
-    // data->ea_texture_path   =   ft_strdup("./textures/east_wall.xpm");
-    // data->we_texture_path   =   ft_strdup("./textures/west_wall.xpm");
+    data->no_texture_path   =   ft_strdup("./textures/thecry.xpm");
+    data->so_texture_path   =   ft_strdup("./textures/starynight.xpm");
+    data->ea_texture_path   =   ft_strdup("./textures/gokhg.xpm");
+    data->we_texture_path   =   ft_strdup("./textures/colors.xpm");
 
     data->player_x          =    4.0;
     data->player_y          =    18.0;
