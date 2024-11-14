@@ -24,6 +24,7 @@
 
 #define	TEXTURE_SIZE 64
 #define CUB_SIZE 64
+#define	TEXTURE_IMG_SIZE 64
 #define PLAYER_SIZE 4
 #define WALL_STRIP 1
 #define WHITE	0x00FFFFFF
@@ -54,6 +55,7 @@ typedef struct s_ray
 	double	WallHitY;
 	double	RayAngle;
 	double	distance;
+	double	CorrectDistance;
 	double	WallSliceHigh;
 	int	IsHitVirt;
 }t_ray;
@@ -62,6 +64,10 @@ typedef struct s_data
 {
 	int		i;
     t_image	*img;
+	t_image	*texture_img;
+	char	*texture_data;
+	int		texture_img_width;
+	int		texture_img_high;
 	void	*mlx;
 	void	*mlx_win;
 	char	**map;
@@ -110,5 +116,6 @@ double		ft_calc_distance(t_data *data, double x, double y);
 void	ft_get_wall_hit(t_data *data, t_ray *ray);
 void	ft_render_projection(t_data *data, t_ray *ray);
 void	ft_setup_texture(u_int32_t *texture);
+int	ft_get_pixel_color(t_data *data, int x, int y);
 
 #endif

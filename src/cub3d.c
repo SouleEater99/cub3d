@@ -12,6 +12,18 @@
 
 #include "../include/cub3d.h"
 
+int	ft_get_pixel_color(t_data *data, int x, int y)
+{
+	int offset_pixel;
+	int color;
+
+	// printf("============== {bit : %d | line : %d | endian  : %d} ==============\n",data->texture_img->bits_per_pixel, data->texture_img->line_length, data->texture_img->endian);
+	offset_pixel = (y * data->texture_img->line_length) + (x * (data->texture_img->bits_per_pixel / 8));
+	// printf("============== {x : %d | y : %d | offset  : %d} ==============\n", x, y, offset_pixel);
+	color = *(int *)(data->texture_data + offset_pixel);
+	return (color);
+}
+
 void	ft_render_projection(t_data *data, t_ray *ray)
 {
 	int j = 0;
@@ -22,26 +34,33 @@ void	ft_render_projection(t_data *data, t_ray *ray)
 	unsigned int		texture_offset_x;
 	unsigned int		texture_offset_y;
 
-
 	while (i < data->num_rays)
 	{
+		int wallhigh = (int)ray->WallSliceHigh;
 		start = (data->high / 2) - (ray->WallSliceHigh / 2);
+		if (start < 0)
+			start = 0;
 		end = (data->high / 2) + (ray->WallSliceHigh / 2);
+		if (end > data->high)
+			end = data->high;
 		if (ray->IsHitVirt)
-			texture_offset_x = (int)ray->WallHitY % TEXTURE_SIZE;
+			texture_offset_x = (int)ray->WallHitY % data->texture_img_high;
 		else
-			texture_offset_x = (int)ray->WallHitX % TEXTURE_SIZE;
+			texture_offset_x = (int)ray->WallHitX % data->texture_img_width;
 		j = 0;
 		while (j < start)
 			my_mlx_pixel_put(data, i * WALL_STRIP, j++, 0x0000FFFF);
-		j = 0;
-		while (j < (ray->WallSliceHigh))
+		j = start;
+		while (j < end)
 		{
-			texture_offset_y = (j * TEXTURE_SIZE) / ray->WallSliceHigh;
-			if (texture_offset_x < TEXTURE_SIZE && texture_offset_y < TEXTURE_SIZE)
-				color = data->texture[(texture_offset_y * TEXTURE_SIZE) + texture_offset_x];
-			// color = 0xFFFFFFFF;
-			my_mlx_pixel_put(data,i * WALL_STRIP, start + j++,color);
+			texture_offset_y = (j - start) * data->texture_img_high / wallhigh;
+			// printf("============== {WallHittX : %d | WallHitY : %d} ===============\n", (int)ray->WallHitX % TEXTURE_SIZE, (int)ray->WallHitY % TEXTURE_SIZE);
+			// printf("============== {OffsetX : %d | OffsetY : %d| IsHitVirt : %d} ===============\n", (int)texture_offset_x, (int)texture_offset_y, ray->IsHitVirt);
+			if ( (int) texture_offset_x < data->texture_img_width && (int)texture_offset_y < data->texture_img_high)
+				color = ft_get_pixel_color(data, texture_offset_x , texture_offset_y);
+				// color /= data->texture[(texture_offset_y * TEXTURE_SIZE) + texture_offset_x];
+			// // color = 0xFFFFFFFF;
+			my_mlx_pixel_put(data,i * WALL_STRIP, j++, color);
 		}
 		j = end;
 		while (j < data->high)
@@ -50,6 +69,7 @@ void	ft_render_projection(t_data *data, t_ray *ray)
 		ray++;
 	}
 }
+
 
 void	ft_update_img(t_data *data)
 {

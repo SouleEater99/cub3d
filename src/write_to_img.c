@@ -9,7 +9,7 @@ void my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	img = data->img;
 	if ((x > 0 && x < data->width) && (y > 0 && y < data->high))
 	{
-		dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+		dst = img->addr + ((y * img->line_length) + (x * (img->bits_per_pixel / 8)));
 		*(unsigned int *)dst = color;
 	}
 }
@@ -182,7 +182,8 @@ void	ft_get_wall_hit(t_data *data, t_ray *ray)
 	if (ft_calc_distance(data, HorzHitX, HorzHitY) < ft_calc_distance(data, VirtHitX, VirtHitY))
 	{
 		ray->distance = ft_calc_distance(data, HorzHitX, HorzHitY);
-		ray->WallSliceHigh = ((double)CUB_SIZE / ray->distance) * (double)data->plan_distance;
+		ray->CorrectDistance = ray->distance * cos(ray->RayAngle - data->rotation_angle);
+		ray->WallSliceHigh = ((double)CUB_SIZE / ray->CorrectDistance) * (double)data->plan_distance;
 		ray->WallHitX = HorzHitX;
 		ray->WallHitY = HorzHitY;
 		ray->IsHitVirt = 0;
@@ -190,7 +191,8 @@ void	ft_get_wall_hit(t_data *data, t_ray *ray)
 	else
 	{
 		ray->distance = ft_calc_distance(data, VirtHitX, VirtHitY);
-		ray->WallSliceHigh = ((double)CUB_SIZE / ray->distance) * (double)data->plan_distance;
+		ray->CorrectDistance = ray->distance * cos(ray->RayAngle - data->rotation_angle);
+		ray->WallSliceHigh = ((double)CUB_SIZE / ray->CorrectDistance) * (double)data->plan_distance;
 		ray->WallHitX = VirtHitX;
 		ray->WallHitY = VirtHitY;
 		ray->IsHitVirt = 1;
