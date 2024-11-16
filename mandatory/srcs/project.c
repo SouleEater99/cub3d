@@ -90,14 +90,18 @@ typedef struct s_image
     int     bits_per_pixel;
     int     size_line;
     int     endian;
+    int     width;
+    int     height;
 }   t_image;
 
 typedef struct s_player
 {
-    double  dir_x;
-    double  dir_y;
-    double  player_x;
-    double  player_y;
+    double      dir_x;
+    double      dir_y;
+    double      player_x;
+    double      player_y;
+    void        *current_img;
+    t_image     *frames[2];
 }   t_player;
 
 typedef struct s_map
@@ -191,6 +195,8 @@ typedef struct s_data {
     int         tex_y;         // Y coordinate on the texture
     double      step;          // How much to increase the texture coordinate per screen pixel
     double      tex_pos;       // Starting texture coordinate
+
+    t_player player;
 } t_data;
 
 void    put_pixel_in_img(t_image *image, int x, int y, int color)
@@ -494,6 +500,12 @@ int init_game(t_data *data, char *map_path)
     data->minimap_x_center  =   MINIMAP_MID_X;
     data->minimap_y_center  =   MINIMAP_MID_Y;
 
+    data->player.frames[0] = create_image(data);
+    data->player.frames[1] = create_image(data);
+
+    data->player.frames[0]->img_ptr = mlx_new_image(data->mlx_ptr, data->player.frames[0]->width, data->player.frames[0]->height);
+    data->player.frames[1]->img_ptr = mlx_new_image(data->mlx_ptr, data->player.frames[1]->width, data->player.frames[1]->height);
+
     // data->no_texture_path   =   ft_strdup("../textures/north_wall.xpm");
     // data->so_texture_path   =   ft_strdup("../textures/south_wall.xpm");
     // data->ea_texture_path   =   ft_strdup("../textures/east_wall.xpm");
@@ -545,6 +557,11 @@ void clean_up(t_data *data)
             mlx_destroy_image(data->mlx_ptr, data->image->img_ptr);
         free(data->image);
     }
+
+    // mlx_destroy_image(data->mlx_ptr, data->player.frames[0]->img_ptr);
+    // free(data->player.frames[0]);
+    // mlx_destroy_image(data->mlx_ptr, data->player.frames[1]->img_ptr);
+    // free(data->player.frames[1]);
     
     if (data->win_ptr && data->mlx_ptr)
         mlx_destroy_window(data->mlx_ptr, data->win_ptr);
@@ -1085,17 +1102,7 @@ void draw_minimap(t_data *data)
 
 void render_sprites(t_data *data)
 {
-    int height[2];
-    int width[2];
-    void *img[2];
-
-    img[0] = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/w0_a.xpm", &width[0], &height[0]);
-    if (!img[0])
-        exit (111);
-    // img[1] = mlx_xpm_file_to_image(data->mlx_ptr, "../textures/sprites/w0_b.xpm", &width[1], &height[1]);
-    // if (!img[1])
-    //     exit (111);
-    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img[0], 0, 0);
+    (void) data;
 }
 
 int game_loop(t_data *data)
@@ -1115,7 +1122,7 @@ int game_loop(t_data *data)
     // Put image to window
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr, 0, 0);
 
-    // render_sprites(data);
+    render_sprites(data);
 
     return (0);
 }
