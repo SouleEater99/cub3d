@@ -22,16 +22,43 @@
 #include "./minilibx/minilibx-linux/mlx.h"
 #include "./minilibx/minilibx-linux/mlx_int.h"
 
-#define WHITE	0x00FFFFFF
-#define RED    0x00FF0000
-#define YELLOW 0x00FFFF00
-#define BLUE   0x000000FF
-#define GREEN  0x0000FF00
+
+#define BLACK   0x00000000
+#define WHITE   0x00FFFFFF
+#define RED     0x00FF0000
+#define YELLOW  0x00FFFF00
+#define BLUE    0x000000FF
+#define GREEN   0x0000FF00
+
 
 #ifndef PI
-#define PI 3.14
+#define PI      3.14
 #endif
 
 
+typedef struct  s_img
+{
+    void    *ImgAddr;
+    char    *Data;
+    int     Lenght;
+    int     N_Bytes;
+    int     Endian;
+    int     Width;
+    int     High;
+}   t_img;
+
+typedef struct  s_data
+{
+    unsigned short  Width;
+    unsigned short  High;
+    unsigned short  Row;
+    unsigned short  Col;
+
+    void            *Mlx;
+    void            *Mlx_Win;
+    
+    char            **Map;
+
+}   t_data;
 
 #endif
