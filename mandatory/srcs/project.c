@@ -8,6 +8,10 @@
 #include "../libraries/libft/libft.h"
 #include <fcntl.h>
 #include <stdbool.h>
+
+#ifdef __linux__
+    #include "../includes/keycodes_linux.h"
+#endif
 // #include "../includes/macros.h"
 
 # define PI                 3.14159265358979323846
@@ -67,11 +71,11 @@
 
 # elif __linux__
     // Linux (X11) keycodes
-    # define ESC_KEY        65307
-    # define U_KEY          65362
-    # define D_KEY          65364
-    # define R_KEY          65363
-    # define L_KEY          65361
+    // # define ESC_KEY     65307
+    // # define UP_KEY      65362
+    // # define DOWN_KEY    65364
+    // # define RIGHT_KEY   65363
+    // # define LEFT_KEY    65361
     
     // # define MOVE_SPEED     0.08    // player speed
     // # define ROT_SPEED      0.06    // Rotation speed (in radians)
@@ -197,7 +201,9 @@ typedef struct s_data {
     double      step;          // How much to increase the texture coordinate per screen pixel
     double      tex_pos;       // Starting texture coordinate
 
-    t_player player;
+    t_player    player;
+
+    int         shoot;
 } t_data;
 
 void    put_pixel_in_img(t_image *image, int x, int y, int color)
@@ -493,12 +499,35 @@ int init_textures(t_data *data)
 
 void init_player_sprites(t_data *data)
 {
-    data->player.frames = malloc(sizeof(t_image) * 2);
+    data->player.frames = malloc(sizeof(t_image) * 22);
     
-    data->player.frames[0].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/w0_a.xpm", &data->player.frames[0].width, &data->player.frames[0].height);
-    data->player.frames[0].img_data = mlx_get_data_addr(data->player.frames[0].img_ptr, &data->player.frames[0].bits_per_pixel, &data->player.frames[0].size_line, &data->player.frames[0].endian);
-    data->player.frames[1].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/w0_b.xpm", &data->player.frames[1].width, &data->player.frames[1].height);
-    data->player.frames[1].img_data = mlx_get_data_addr(data->player.frames[1].img_ptr, &data->player.frames[1].bits_per_pixel, &data->player.frames[1].size_line, &data->player.frames[1].endian);
+    // data->player.frames[0].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/w0_a.xpm", &data->player.frames[0].width, &data->player.frames[0].height);
+    // data->player.frames[0].img_data = mlx_get_data_addr(data->player.frames[0].img_ptr, &data->player.frames[0].bits_per_pixel, &data->player.frames[0].size_line, &data->player.frames[0].endian);
+    // data->player.frames[1].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/w0_b.xpm", &data->player.frames[1].width, &data->player.frames[1].height);
+    // data->player.frames[1].img_data = mlx_get_data_addr(data->player.frames[1].img_ptr, &data->player.frames[1].bits_per_pixel, &data->player.frames[1].size_line, &data->player.frames[1].endian);
+    int i = -1;
+    while(++i < 22)
+    {
+        char *sprite_index = ft_itoa(i);
+        char *extension = ft_strdup(".xpm");
+        char *str = ft_strjoin(sprite_index, extension);
+        char *sprite_path = ft_strjoin(ft_strdup("./textures/sprites/LOgTFqa/"), str);
+
+        printf("%s\n", sprite_path);
+        free(str);
+        free(extension);
+        data->player.frames[i].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, sprite_path, &data->player.frames[i].width, &data->player.frames[i].height);
+        data->player.frames[i].img_data = mlx_get_data_addr(data->player.frames[i].img_ptr, &data->player.frames[i].bits_per_pixel, &data->player.frames[i].size_line, &data->player.frames[i].endian);    
+    }
+    
+    // data->player.frames[1].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/LOgTFqa/1.xpm", &data->player.frames[1].width, &data->player.frames[1].height);
+    // data->player.frames[1].img_data = mlx_get_data_addr(data->player.frames[1].img_ptr, &data->player.frames[1].bits_per_pixel, &data->player.frames[1].size_line, &data->player.frames[1].endian);
+
+    // data->player.frames[2].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/LOgTFqa/2.xpm", &data->player.frames[2].width, &data->player.frames[2].height);
+    // data->player.frames[2].img_data = mlx_get_data_addr(data->player.frames[2].img_ptr, &data->player.frames[2].bits_per_pixel, &data->player.frames[2].size_line, &data->player.frames[2].endian);
+    
+    // data->player.frames[3].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/LOgTFqa/3.xpm", &data->player.frames[3].width, &data->player.frames[3].height);
+    // data->player.frames[3].img_data = mlx_get_data_addr(data->player.frames[3].img_ptr, &data->player.frames[3].bits_per_pixel, &data->player.frames[3].size_line, &data->player.frames[3].endian);
 }
 
 int init_game(t_data *data, char *map_path)
@@ -592,31 +621,35 @@ void clean_up(t_data *data)
 
 int key_press(int keycode, t_data *data)
 {
+    printf("keycode: %d\n", keycode);
+
     if (keycode == ESC_KEY)
     {
         clean_up(data);
         exit(0);
     }
-    else if (keycode == 'w' || keycode == U_KEY)
+    else if (keycode == 'w' || keycode == UP_KEY)
         data->move_forward = 1;
-    else if (keycode == 's' || keycode == D_KEY)
+    else if (keycode == 's' || keycode == DOWN_KEY)
         data->move_backward = 1;
-    else if (keycode == 'a' || keycode == L_KEY)
+    else if (keycode == 'a' || keycode == LEFT_KEY)
         data->rotate_left = 1;
-    else if (keycode == 'd' || keycode == R_KEY)
+    else if (keycode == 'd' || keycode == RIGHT_KEY)
         data->rotate_right = 1;
+    else if (keycode == SPACE_KEY)
+        data->shoot = 1;
     return (0);
 }
 
 int key_release(int keycode, t_data *data)
 {
-    if (keycode == 'w' || keycode == U_KEY)
+    if (keycode == 'w' || keycode == UP_KEY)
         data->move_forward = 0;
-    else if (keycode == 's' || keycode == D_KEY)
+    else if (keycode == 's' || keycode == DOWN_KEY)
         data->move_backward = 0;
-    else if (keycode == 'a' || keycode == L_KEY)
+    else if (keycode == 'a' || keycode == LEFT_KEY)
         data->rotate_left = 0;
-    else if (keycode == 'd' || keycode == R_KEY)
+    else if (keycode == 'd' || keycode == RIGHT_KEY)
         data->rotate_right = 0;
     return (0);
 }
@@ -637,10 +670,10 @@ int mouse_events(int button, int x, int y, t_data *data)
         if (data->clicks % 2 != 0)
         {
             data->scale = SCALE * 2;
-            data->rot_speed = ROT_SPEED * 8;
-            data->move_speed = MOVE_SPEED * 8;
+            data->rot_speed = ROT_SPEED * 2;
+            data->move_speed = MOVE_SPEED * 2;
             data->player_radius = PLAYER_RADIUS;
-            data->minimap_radius = MINIMAP_RADIUS * 10;
+            data->minimap_radius = MINIMAP_RADIUS * 4;
             data->minimap_x_center = MAP_MID_X;
             data->minimap_y_center = MAP_MID_Y;
         }
@@ -1110,40 +1143,20 @@ void draw_minimap(t_data *data)
     // draw_minimap_border(data->image);
 }
 
-// void render_sprites(t_data *data)
-// {
-//     if (!data || !data->mlx_ptr || !data->win_ptr || !data->image)
-//         return;
-    
-//     t_image sprite_image;
-
-//     sprite_image = data->player.frames[0];
-
-//     if (data->move_forward)
-//         sprite_image = data->player.frames[1];
-
-//     int x = SCREEN_WIDTH / 2 - sprite_image.width / 2;
-//     int y = SCREEN_HEIGHT - sprite_image.height;
-
-//     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, sprite_image.img_ptr, x, y);
-// }
-
-void render_sprites_to_image(t_data *data, t_image *sprite_image, int x, int y)
+void render_sprites_to_image(t_image *image, t_image *sprite_image, int x, int y)
 {
-    if (!data || !sprite_image || !data->image || !data->image->img_data || !sprite_image->img_data)
-    {
-        fprintf(stderr, "Null pointer in render_sprites_to_image\n");
+    if (!image || !sprite_image || !image->img_data || !sprite_image->img_data)
         return;
-    }
 
-    for (int sy = 0; sy < sprite_image->height; sy++)
+    int sy = -1;
+    while (++sy < sprite_image->height)
     {
-        for (int sx = 0; sx < sprite_image->width; sx++)
+        int sx = -1;
+        while (++sx < sprite_image->width)
         {
             if (sx < 0 || sx >= SCREEN_WIDTH || sy < 0 || sy >= SCREEN_HEIGHT)
-            continue;
+                continue;
 
-            // int sprite_pixel = ((int *)sprite_image->img_data)[sy * sprite_image->width + sx];            
             int sprite_pixel = ((int *)sprite_image->img_data)[sy * sprite_image->width + sx];
 
             // Handle transparency (assuming 0xFF000000 is fully transparent)
@@ -1155,9 +1168,7 @@ void render_sprites_to_image(t_data *data, t_image *sprite_image, int x, int y)
 
             // Ensure we don't draw outside the main image bounds
             if (dx >= 0 && dx < SCREEN_WIDTH && dy >= 0 && dy < SCREEN_HEIGHT)
-            {
-                ((int *)data->image->img_data)[dy * SCREEN_WIDTH + dx] = sprite_pixel;
-            }
+                ((int *)image->img_data)[dy * SCREEN_WIDTH + dx] = sprite_pixel;
         }
     }
 }
@@ -1167,16 +1178,36 @@ void render_sprites(t_data *data)
     if (!data || !data->mlx_ptr || !data->win_ptr || !data->image)
         return;
 
-    t_image sprite_image = data->player.frames[0];
+    t_image *img = data->image;
+    t_image sprite_image = data->player.frames[0]; // Default sprite for rendering
 
-    if (data->move_forward || data->move_backward)
-        sprite_image = data->player.frames[1];
+    if (data->shoot)
+    {
+        // Loop for sprite animation during shooting
+        int i = 10;
+        // while (++i < 10)
+        {
+            sprite_image = data->player.frames[i];
+            int x = SCREEN_WIDTH / 2 - sprite_image.width / 2;
+            int y = SCREEN_HEIGHT - sprite_image.height;
 
-    int x = SCREEN_WIDTH / 2 - sprite_image.width / 2;
-    int y = SCREEN_HEIGHT - sprite_image.height;
+            // Render sprite onto the image buffer (but don’t display yet)
+            render_sprites_to_image(img, &sprite_image, x, y);
+            mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->img_ptr, 0, 0);
+        }
+        data->shoot = 0;
+    }
+    else
+    {
+        // Render the default sprite (non-shooting state)
+        int x = SCREEN_WIDTH / 2 - sprite_image.width / 2;
+        int y = SCREEN_HEIGHT - sprite_image.height;
 
-    // Draw the sprite onto the main image
-    render_sprites_to_image(data, &sprite_image, x, y);
+        render_sprites_to_image(img, &sprite_image, x, y);
+    }
+    
+    // Call mlx_put_image_to_window only once after rendering everything
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->img_ptr, 0, 0);
 }
 
 int game_loop(t_data *data)
@@ -1187,15 +1218,17 @@ int game_loop(t_data *data)
     // Update player position based on movement
     move_player(data);
 
-    // Perform raycasting
-    raycasting(data);
-
+    // Perform raycasting and render sprites
+    if (!(data->clicks % 2))
+    {
+        raycasting(data);
+        render_sprites(data);
+    }
+    
     // Draw minimap
     draw_minimap(data);
 
-    render_sprites(data);
-
-    // Put image to window
+    // Put image to window (only once after all rendering tasks)
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr, 0, 0);
 
     return (0);
