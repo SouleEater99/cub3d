@@ -87,8 +87,6 @@ void    Ft_Write_Player(t_data *Data)
 {
     int i;
     int j;
-    // int Offset_X;
-    // int Offset_Y;
     int Color;
 
     Data->Start_Player_X = (Data->X_Player - CUBE_TILE) * Data->Factor_Scale_Map;
@@ -108,12 +106,22 @@ void    Ft_Write_Player(t_data *Data)
         {
             Color = Ft_Get_Color(&Data->Map_Img, i + Data->Start_Player_X, j + Data->Start_Player_Y);
             my_mlx_pixel_put(&Data->Player_Img, i, j, Color);
-            // printf(" ============ { color : %d| start-x : %d | start_y :%d} ============== \n",Color, Start_X, Start_Y);
-            // printf(" ============ { width : %d | high : %d} ============== \n",Data->Player_Img.Width, Data->Player_Img.High);
             j++;
         }
         i++;
-    }    
+    }
+    i = 0;
+    while (i < PLAYER_TILE)
+    {
+        j = 0;
+        while (j < PLAYER_TILE)
+        {
+            my_mlx_pixel_put(&Data->Player_Img, Data->X_Player + i, Data->Y_Player + j, RED);
+            j++;
+        }
+        i++;
+    }
+
 }
 
 void    Ft_Create_Image(t_data *Data)

@@ -23,6 +23,7 @@
 #include "./minilibx/minilibx-linux/mlx_int.h"
 
 #define CUBE_TILE   64
+#define PLAYER_TILE 10
 #define BLACK       0x00000000
 #define WHITE       0x00FFFFFF
 #define RED         0x00FF0000
