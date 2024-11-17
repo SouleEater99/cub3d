@@ -204,6 +204,7 @@ typedef struct s_data {
     t_player    player;
 
     int         shoot;
+    int         switch_gun;
 } t_data;
 
 void    put_pixel_in_img(t_image *image, int x, int y, int color)
@@ -639,7 +640,9 @@ int key_press(int keycode, t_data *data)
         data->rotate_left = 1;
     else if (keycode == 'd' || keycode == RIGHT_KEY)
         data->rotate_right = 1;
-    else if (keycode == SPACE_KEY)
+    else if (keycode == SHIFT_KEY)
+        data->switch_gun = 1;
+    else if (keycode == CTRL_KEY) // SPACE_KEY
         data->shoot = 1;
     return (0);
 }
@@ -654,7 +657,9 @@ int key_release(int keycode, t_data *data)
         data->rotate_left = 0;
     else if (keycode == 'd' || keycode == RIGHT_KEY)
         data->rotate_right = 0;
-    else if (keycode == SPACE_KEY)
+    else if (keycode == SHIFT_KEY)
+        data->switch_gun = 1;
+    else if (keycode == CTRL_KEY) // SPACE_KEY
         data->shoot = 0;
     return (0);
 }
