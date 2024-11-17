@@ -12,41 +12,12 @@
 
 #include "../include/cub3d.h"
 
-void    Ft_Free_All(char *Msg, t_data *Data, int Exit_Status)
+void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
 {
-    if (Data)
-    {
-        if (Data->Mlx_Win)
-            mlx_destroy_window(Data->Mlx , Data->Mlx_Win);
-        if (Data->Mlx)
-            mlx_destroy_display(Data->Mlx);
-        
-    }
-    if (Msg)
-        write(2, Msg, strlen(Msg));
-    exit(Exit_Status);
-}
+	char	*dst;
 
-t_data  *Init_Data()
-{
-    t_data *Data;
-
-    Data = (t_data *)malloc(sizeof(t_data));
-    if (!Data)
-        return (NULL);
-    Data = memset(Data, 0, sizeof(t_data));
-
-}
-
-void    Init_Mlx(t_data *Data)
-{
-    Data->Mlx = mlx_init();
-    if (!Data->Mlx)
-        Ft_Free_All("Mlx Fail\n", Data, 1);
-    Data->Mlx_Win = mlx_new_window(Data->Mlx, Data->Width, Data->High, "First Game 3D");
-    if (!Data->Mlx_Win)
-        Ft_Free_All("Mlx_Win Fail\n", Data, 1);
-    
+	dst = img->Data + (y * img->Lenght + x * (img->N_Bytes / 8));
+	*(unsigned int*)dst = color;
 }
 
 int main()
@@ -63,7 +34,14 @@ int main()
         "100000001000000001",
         "111111111111111111",
     };
-
+    printf("=========== We Are In Debug Mode ============\n");
     Data = Init_Data();
+    Data->Map = Map;
     Init_Mlx(Data);
+    Ft_Create_Image(Data);
+    mlx_hook(Data->Mlx_Win, 2, (1L<<0) ,Ft_Key_Hook, Data);
+    mlx_hook(Data->Mlx_Win, 17, (0L) ,Ft_Key_Destroy, Data);
+    mlx_loop_hook(Data->Mlx, Ft_Loop_Hook, Data);
+    mlx_loop(Data->Mlx);
+    Ft_Free_All(NULL, Data, 0);
 }

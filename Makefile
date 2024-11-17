@@ -9,6 +9,8 @@ MLX_LIB =	./include/minilibx/minilibx-linux/libmlx.a \
 SRC = ./src/cub3d.c\
 		./src/init.c\
 		./src/write_to_img.c\
+		./src/ft_mlx_hook.c\
+		./src/clean.c\
 
 OBJ = $(SRC:.c=.o)
 
