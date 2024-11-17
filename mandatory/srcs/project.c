@@ -101,7 +101,8 @@ typedef struct s_player
     double      player_x;
     double      player_y;
     void        *current_img;
-    t_image     *frames[2];
+    // t_image     *frames[2];
+    t_image     *frames;
 }   t_player;
 
 typedef struct s_map
@@ -500,11 +501,13 @@ int init_game(t_data *data, char *map_path)
     data->minimap_x_center  =   MINIMAP_MID_X;
     data->minimap_y_center  =   MINIMAP_MID_Y;
 
-    data->player.frames[0] = create_image(data);
-    data->player.frames[1] = create_image(data);
+    // data->player.frames[0] = create_image(data);
+    // data->player.frames[1] = create_image(data);
 
-    data->player.frames[0]->img_ptr = mlx_new_image(data->mlx_ptr, data->player.frames[0]->width, data->player.frames[0]->height);
-    data->player.frames[1]->img_ptr = mlx_new_image(data->mlx_ptr, data->player.frames[1]->width, data->player.frames[1]->height);
+    data->player.frames = malloc(sizeof(t_image) * 2);
+    
+    data->player.frames[0].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/w0_a.xpm", &data->player.frames[0].width, &data->player.frames[0].height);
+    data->player.frames[1].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/w0_b.xpm", &data->player.frames[1].width, &data->player.frames[1].height);
 
     // data->no_texture_path   =   ft_strdup("../textures/north_wall.xpm");
     // data->so_texture_path   =   ft_strdup("../textures/south_wall.xpm");
@@ -1102,7 +1105,20 @@ void draw_minimap(t_data *data)
 
 void render_sprites(t_data *data)
 {
-    (void) data;
+    if (!data || !data->mlx_ptr || !data->win_ptr || !data->image)
+        return;
+    
+    t_image sprite_image;
+
+    sprite_image = data->player.frames[0];
+
+    if (data->move_forward)
+        sprite_image = data->player.frames[1];
+
+    int x = SCREEN_WIDTH / 2 - sprite_image.width / 2;
+    int y = SCREEN_HEIGHT - sprite_image.height;
+
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, sprite_image.img_ptr, x, y);
 }
 
 int game_loop(t_data *data)
