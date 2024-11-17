@@ -654,6 +654,8 @@ int key_release(int keycode, t_data *data)
         data->rotate_left = 0;
     else if (keycode == 'd' || keycode == RIGHT_KEY)
         data->rotate_right = 0;
+    else if (keycode == SPACE_KEY)
+        data->shoot = 0;
     return (0);
 }
 
