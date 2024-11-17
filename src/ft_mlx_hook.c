@@ -2,40 +2,50 @@
 #include "../include/cub3d.h"
 
 
-int Ft_Key_Hook(int key, void *Param)
+
+int Ft_Key_Press(int key, void *Param)
 {
     t_data *Data;
 
     Data = (t_data *)Param;
     (void) Data;
     if (key == XK_Up || key == XK_w)
-    {
-        Data->Walk_direction = 1;
-        // check play is inside wall
-        Data->X_Player += cos(Data->Player_Angle) * Data->Move_Speed * Data->Walk_direction;
-        Data->Y_Player += sin(Data->Player_Angle) * Data->Move_Speed * Data->Walk_direction;
-    }
+        Data->Walk_Direction = 1;
     else if (key == XK_Down || key == XK_s)
-    {
-        Data->Walk_direction = -1;
-        // check play is inside wall
-        Data->X_Player += cos(Data->Player_Angle) * Data->Move_Speed * Data->Walk_direction;
-        Data->Y_Player += sin(Data->Player_Angle) * Data->Move_Speed * Data->Walk_direction;
-
-    }
-    else if (key == XK_Left)
-    {
-
-    }
+       Data->Walk_Direction = -1;
     else if (key == XK_Right)
+        Data->Turn_Direction = 1;
+    else if (key == XK_Left)
+        Data->Turn_Direction = -1;
+    else if (key == XK_m)
     {
-
+        if (Data->Factor_Scale_Map == 1)
+            Data->Factor_Scale_Map = 0.2;
+        else
+            Data->Factor_Scale_Map = 1;
+        mlx_clear_window(Data->Mlx, Data->Mlx_Win);
     }
     else if (key == XK_Escape)
         Ft_Free_All(NULL, Data, 0);
     return (0);
 }
 
+int Ft_Key_Release(int key, void *Param)
+{
+    t_data *Data;
+
+    Data = (t_data *)Param;
+    (void) Data;
+    if (key == XK_Up || key == XK_w)
+        Data->Walk_Direction = 0;
+    else if (key == XK_Down || key == XK_s)
+       Data->Walk_Direction = 0;
+    else if (key == XK_Right)
+        Data->Turn_Direction = 0;
+    else if (key == XK_Left)
+        Data->Turn_Direction = 0;
+    return (0);
+}
 
 int Ft_Key_Destroy(void *Param)
 {
@@ -43,22 +53,16 @@ int Ft_Key_Destroy(void *Param)
     return (0);
 }
 
+
+
 int Ft_Loop_Hook(void *Param)
 {
     t_data *Data;
-    static unsigned int i;
 
     Data = (t_data *)Param;
     (void ) Data;
-    // if (i % 3000 == 0)
-    // {
-    //    printf("==================\n");
-        Ft_Write_Player(Data);
-        mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Projection_Img.Img, 0, 0);
-        mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Map_Img.Img, 0, 0);
-        mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Player_Img.Img, Data->Start_Player_X, Data->Start_Player_Y);
-        mlx_destroy_image(Data->Mlx, Data->Player_Img.Img);
-    // }
-    i++;
+    Ft_Updata_Data(Data);
+    Ft_Update_Image(Data);
+
     return (0);
 }

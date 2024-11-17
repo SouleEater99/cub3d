@@ -11,6 +11,8 @@ SRC = ./src/cub3d.c\
 		./src/write_to_img.c\
 		./src/ft_mlx_hook.c\
 		./src/clean.c\
+		./src/mlx_utils.c\
+		./src/update_image.c\
 
 OBJ = $(SRC:.c=.o)
 

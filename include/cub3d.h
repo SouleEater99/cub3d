@@ -49,6 +49,8 @@ typedef struct  s_image
 
 typedef struct  s_data
 {
+    int             i;
+
     unsigned short  Width;
     unsigned short  High;
     unsigned short  Row;
@@ -60,12 +62,14 @@ typedef struct  s_data
     char            **Map;
 
     double          Player_Angle;
-    int             X_Player;
-    int             Y_Player;
-    short           Turn_Direction;
-    short           Walk_direction;
+    double          X_Player;
+    double          Y_Player;
+    int             Turn_Direction;
+    int             Walk_Direction;
     double          Turn_Speed;
     double          Move_Speed;
+    double          Move_Step;
+    double          Step;
 
     double          Factor_Scale_Map;
 
@@ -83,7 +87,6 @@ typedef struct  s_data
 t_data  *Init_Data();
 void    Init_Mlx(t_data *Data);
 void    Ft_Free_All(char *Msg, t_data *Data, int Exit_Status);
-int     Ft_Key_Hook(int key, void *Param);
 int     Ft_Key_Destroy(void *Param);
 int     Ft_Loop_Hook(void *Param);
 void    Ft_Write_Cub(t_data *Data, int x, int y, int Color);
@@ -91,8 +94,20 @@ void    Ft_Write_Player(t_data *Data);
 void    Ft_Write_Map_Img(t_data *Data);
 void    Ft_Write_Projection_Img(t_data *Data);
 void    Ft_Create_Images(t_data *Data);
-void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
+void	My_Mlx_Pixel_Put(t_image *img, int x, int y, int color);
 int     Ft_Get_Color(t_image *Img, int x, int y);
 void    Ft_Clone_Map_To_Player_Img(t_data *Data);
+void    Ft_Write_Line(t_data *Data, int dx, int dy, int color);
+int     Ft_Is_Angle_Facing_Down(double angle);
+int     Ft_Is_Angle_Facing_Right(double angle);
+int     Ft_Board_Protect_Map(t_data *Data, double x, double  y);
+int     Ft_Is_A_Wall(t_data *Data, int x, int y);
+int     Ft_Is_Player_Inside_Wall(t_data *Data);
+double	Ft_Normalize_Angle(double angle);
+int     Ft_Key_Press(int key, void *Param);
+int     Ft_Key_Release(int key, void *Param);
+void    Ft_Updata_Data(t_data *Data);
+void    Ft_Update_Image(t_data *Data);
+
 
 #endif
