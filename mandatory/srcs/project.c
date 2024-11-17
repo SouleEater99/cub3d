@@ -76,8 +76,8 @@
     // # define MOVE_SPEED     0.08    // player speed
     // # define ROT_SPEED      0.06    // Rotation speed (in radians)
 
-    # define MOVE_SPEED     0.02    // player speed
-    # define ROT_SPEED      0.01    // Rotation speed (in radians)
+    # define MOVE_SPEED     0.008    // player speed
+    # define ROT_SPEED      0.004    // Rotation speed (in radians)
 
 # else
     #error "Unsupported platform"
@@ -491,6 +491,16 @@ int init_textures(t_data *data)
     return (1);
 }
 
+void init_player_sprites(t_data *data)
+{
+    data->player.frames = malloc(sizeof(t_image) * 2);
+    
+    data->player.frames[0].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/w0_a.xpm", &data->player.frames[0].width, &data->player.frames[0].height);
+    data->player.frames[0].img_data = mlx_get_data_addr(data->player.frames[0].img_ptr, &data->player.frames[0].bits_per_pixel, &data->player.frames[0].size_line, &data->player.frames[0].endian);
+    data->player.frames[1].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/w0_b.xpm", &data->player.frames[1].width, &data->player.frames[1].height);
+    data->player.frames[1].img_data = mlx_get_data_addr(data->player.frames[1].img_ptr, &data->player.frames[1].bits_per_pixel, &data->player.frames[1].size_line, &data->player.frames[1].endian);
+}
+
 int init_game(t_data *data, char *map_path)
 {
     data->scale             =   SCALE;
@@ -503,11 +513,6 @@ int init_game(t_data *data, char *map_path)
 
     // data->player.frames[0] = create_image(data);
     // data->player.frames[1] = create_image(data);
-
-    data->player.frames = malloc(sizeof(t_image) * 2);
-    
-    data->player.frames[0].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/w0_a.xpm", &data->player.frames[0].width, &data->player.frames[0].height);
-    data->player.frames[1].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/w0_b.xpm", &data->player.frames[1].width, &data->player.frames[1].height);
 
     // data->no_texture_path   =   ft_strdup("../textures/north_wall.xpm");
     // data->so_texture_path   =   ft_strdup("../textures/south_wall.xpm");
@@ -526,6 +531,8 @@ int init_game(t_data *data, char *map_path)
     data->image = create_image(data);
     if (!data->image)
         return (1);
+    
+    init_player_sprites(data);
 
     // if (!init_textures(data))
     //     return (1);
@@ -1103,22 +1110,73 @@ void draw_minimap(t_data *data)
     // draw_minimap_border(data->image);
 }
 
+// void render_sprites(t_data *data)
+// {
+//     if (!data || !data->mlx_ptr || !data->win_ptr || !data->image)
+//         return;
+    
+//     t_image sprite_image;
+
+//     sprite_image = data->player.frames[0];
+
+//     if (data->move_forward)
+//         sprite_image = data->player.frames[1];
+
+//     int x = SCREEN_WIDTH / 2 - sprite_image.width / 2;
+//     int y = SCREEN_HEIGHT - sprite_image.height;
+
+//     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, sprite_image.img_ptr, x, y);
+// }
+
+void render_sprites_to_image(t_data *data, t_image *sprite_image, int x, int y)
+{
+    if (!data || !sprite_image || !data->image || !data->image->img_data || !sprite_image->img_data)
+    {
+        fprintf(stderr, "Null pointer in render_sprites_to_image\n");
+        return;
+    }
+
+    for (int sy = 0; sy < sprite_image->height; sy++)
+    {
+        for (int sx = 0; sx < sprite_image->width; sx++)
+        {
+            if (sx < 0 || sx >= SCREEN_WIDTH || sy < 0 || sy >= SCREEN_HEIGHT)
+            continue;
+
+            // int sprite_pixel = ((int *)sprite_image->img_data)[sy * sprite_image->width + sx];            
+            int sprite_pixel = ((int *)sprite_image->img_data)[sy * sprite_image->width + sx];
+
+            // Handle transparency (assuming 0xFF000000 is fully transparent)
+            if ((sprite_pixel & 0xFF000000) == 0xFF000000)
+                continue;
+
+            int dx = x + sx;
+            int dy = y + sy;
+
+            // Ensure we don't draw outside the main image bounds
+            if (dx >= 0 && dx < SCREEN_WIDTH && dy >= 0 && dy < SCREEN_HEIGHT)
+            {
+                ((int *)data->image->img_data)[dy * SCREEN_WIDTH + dx] = sprite_pixel;
+            }
+        }
+    }
+}
+
 void render_sprites(t_data *data)
 {
     if (!data || !data->mlx_ptr || !data->win_ptr || !data->image)
         return;
-    
-    t_image sprite_image;
 
-    sprite_image = data->player.frames[0];
+    t_image sprite_image = data->player.frames[0];
 
-    if (data->move_forward)
+    if (data->move_forward || data->move_backward)
         sprite_image = data->player.frames[1];
 
     int x = SCREEN_WIDTH / 2 - sprite_image.width / 2;
     int y = SCREEN_HEIGHT - sprite_image.height;
 
-    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, sprite_image.img_ptr, x, y);
+    // Draw the sprite onto the main image
+    render_sprites_to_image(data, &sprite_image, x, y);
 }
 
 int game_loop(t_data *data)
@@ -1135,10 +1193,10 @@ int game_loop(t_data *data)
     // Draw minimap
     draw_minimap(data);
 
+    render_sprites(data);
+
     // Put image to window
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr, 0, 0);
-
-    render_sprites(data);
 
     return (0);
 }
