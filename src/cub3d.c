@@ -12,12 +12,15 @@
 
 #include "../include/cub3d.h"
 
-void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
+void    Ft_Create_Images(t_data *Data)
 {
-	char	*dst;
+    Ft_Write_Projection_Img(Data);
+    Ft_Write_Map_Img(Data);
+    // Ft_Write_Player(Data);
+    mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Projection_Img.Img, 0, 0);
+    mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Map_Img.Img, 0, 0);
+    // mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Player_Img.Img, Data->Start_Player_X, Data->Start_Player_Y);
 
-	dst = img->Data + (y * img->Lenght + x * (img->N_Bytes / 8));
-	*(unsigned int*)dst = color;
 }
 
 int main()
@@ -38,7 +41,7 @@ int main()
     Data = Init_Data();
     Data->Map = Map;
     Init_Mlx(Data);
-    Ft_Create_Image(Data);
+    Ft_Create_Images(Data);
     mlx_hook(Data->Mlx_Win, 2, (1L<<0) ,Ft_Key_Hook, Data);
     mlx_hook(Data->Mlx_Win, 17, (0L) ,Ft_Key_Destroy, Data);
     mlx_loop_hook(Data->Mlx, Ft_Loop_Hook, Data);

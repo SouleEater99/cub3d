@@ -83,22 +83,13 @@ int     Ft_Get_Color(t_image *Img, int x, int y)
     return (Color);
 }
 
-void    Ft_Write_Player(t_data *Data)
+void    Ft_Clone_Map_To_Player_Img(t_data *Data)
 {
     int i;
     int j;
     int Color;
 
-    Data->Start_Player_X = (Data->X_Player - CUBE_TILE) * Data->Factor_Scale_Map;
-    Data->Start_Player_Y = (Data->Y_Player - CUBE_TILE) * Data->Factor_Scale_Map;
-
     i = 0;
-    Data->Player_Img.Img = mlx_new_image(Data->Mlx, Data->Player_Img.Width, Data->Player_Img.High);
-    if (!Data->Player_Img.Img)
-        Ft_Free_All("Image Player Image Fail\n", Data, 1);
-    Data->Player_Img.Data = mlx_get_data_addr(Data->Player_Img.Img, &Data->Player_Img.N_Bytes, &Data->Player_Img.Lenght, &Data->Player_Img.Endian);
-    if (!Data->Player_Img.Data)
-        Ft_Free_All("Player Data Addres Fail\n", Data, 1);
     while (i < Data->Player_Img.Width)
     {
         j = 0;
@@ -110,27 +101,33 @@ void    Ft_Write_Player(t_data *Data)
         }
         i++;
     }
+}
+
+void    Ft_Write_Player(t_data *Data)
+{
+    int i;
+    int j;
+
     i = 0;
+    Data->Start_Player_X = (Data->X_Player - CUBE_TILE) * Data->Factor_Scale_Map;
+    Data->Start_Player_Y = (Data->Y_Player - CUBE_TILE) * Data->Factor_Scale_Map;
+    Data->Player_Img.Img = mlx_new_image(Data->Mlx, Data->Player_Img.Width, Data->Player_Img.High);
+    if (!Data->Player_Img.Img)
+        Ft_Free_All("Image Player Image Fail\n", Data, 1);
+    Data->Player_Img.Data = mlx_get_data_addr(Data->Player_Img.Img, &Data->Player_Img.N_Bytes, &Data->Player_Img.Lenght, &Data->Player_Img.Endian);
+    if (!Data->Player_Img.Data)
+        Ft_Free_All("Player Data Addres Fail\n", Data, 1);
+    Ft_Clone_Map_To_Player_Img(Data);
     while (i < PLAYER_TILE)
     {
         j = 0;
         while (j < PLAYER_TILE)
         {
-            my_mlx_pixel_put(&Data->Player_Img, Data->X_Player + i, Data->Y_Player + j, RED);
+            my_mlx_pixel_put(&Data->Player_Img, (Data->Player_Offset + i) * Data->Factor_Scale_Map, (Data->Player_Offset + j) * Data->Factor_Scale_Map, RED);
             j++;
         }
         i++;
     }
-
+    
 }
 
-void    Ft_Create_Image(t_data *Data)
-{
-    Ft_Write_Projection_Img(Data);
-    Ft_Write_Map_Img(Data);
-    Ft_Write_Player(Data);
-    mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Projection_Img.Img, 0, 0);
-    mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Map_Img.Img, 0, 0);
-    mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Player_Img.Img, Data->Start_Player_X, Data->Start_Player_Y);
-
-}

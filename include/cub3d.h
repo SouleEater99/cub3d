@@ -74,6 +74,7 @@ typedef struct  s_data
     t_image         Player_Img;
     int             Start_Player_X;
     int             Start_Player_Y;
+    int             Player_Offset;
     t_image         Texture_Img;
 
 }   t_data;
@@ -89,8 +90,9 @@ void    Ft_Write_Cub(t_data *Data, int x, int y, int Color);
 void    Ft_Write_Player(t_data *Data);
 void    Ft_Write_Map_Img(t_data *Data);
 void    Ft_Write_Projection_Img(t_data *Data);
-void    Ft_Create_Image(t_data *Data);
+void    Ft_Create_Images(t_data *Data);
 void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
 int     Ft_Get_Color(t_image *Img, int x, int y);
+void    Ft_Clone_Map_To_Player_Img(t_data *Data);
 
 #endif

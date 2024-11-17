@@ -50,10 +50,15 @@ int Ft_Loop_Hook(void *Param)
 
     Data = (t_data *)Param;
     (void ) Data;
-    if (i % 3000 == 0)
-    {
+    // if (i % 3000 == 0)
+    // {
     //    printf("==================\n");
-    }
+        Ft_Write_Player(Data);
+        mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Projection_Img.Img, 0, 0);
+        mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Map_Img.Img, 0, 0);
+        mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Player_Img.Img, Data->Start_Player_X, Data->Start_Player_Y);
+        mlx_destroy_image(Data->Mlx, Data->Player_Img.Img);
+    // }
     i++;
     return (0);
 }

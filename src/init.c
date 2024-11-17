@@ -17,11 +17,14 @@ t_data  *Init_Data()
     Data->Y_Player = 3 * CUBE_TILE + (CUBE_TILE / 2);
     Data->Player_Angle = PI / 2;
     Data->Turn_Speed = 0.2;
-    Data->Move_Speed = 2;
+    Data->Move_Speed = 4;
     Data->Factor_Scale_Map  = 0.2;
     Data->Player_Img.Width = 2 * CUBE_TILE * Data->Factor_Scale_Map;
     Data->Player_Img.High = 2 * CUBE_TILE * Data->Factor_Scale_Map;
-
+    if (CUBE_TILE > PLAYER_TILE)
+        Data->Player_Offset = CUBE_TILE - PLAYER_TILE;
+    else
+        Data->Player_Offset = CUBE_TILE;
     return (Data);
 }
 
