@@ -514,10 +514,13 @@ void init_player_sprites(t_data *data)
         char *sprite_path = ft_strjoin(ft_strdup("./textures/sprites/LOgTFqa/"), str);
 
         printf("%s\n", sprite_path);
-        free(str);
-        free(extension);
+        
         data->player.frames[i].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, sprite_path, &data->player.frames[i].width, &data->player.frames[i].height);
         data->player.frames[i].img_data = mlx_get_data_addr(data->player.frames[i].img_ptr, &data->player.frames[i].bits_per_pixel, &data->player.frames[i].size_line, &data->player.frames[i].endian);    
+        
+        free(str);
+        free(extension);
+        free(sprite_path);
     }
     
     // data->player.frames[1].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/sprites/LOgTFqa/1.xpm", &data->player.frames[1].width, &data->player.frames[1].height);
@@ -1178,35 +1181,41 @@ void render_sprites(t_data *data)
     if (!data || !data->mlx_ptr || !data->win_ptr || !data->image)
         return;
 
+    static int frame = 0;
+    static int shoot = 0;
+    static int frame_counter = 0;
+    int frame_delay = 30;
+
     t_image *img = data->image;
-    t_image sprite_image = data->player.frames[0]; // Default sprite for rendering
+    t_image sprite_image = data->player.frames[0];
 
     if (data->shoot)
     {
-        // Loop for sprite animation during shooting
-        int i = 10;
-        // while (++i < 10)
-        {
-            sprite_image = data->player.frames[i];
-            int x = SCREEN_WIDTH / 2 - sprite_image.width / 2;
-            int y = SCREEN_HEIGHT - sprite_image.height;
-
-            // Render sprite onto the image buffer (but don’t display yet)
-            render_sprites_to_image(img, &sprite_image, x, y);
-            mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->img_ptr, 0, 0);
-        }
+        shoot = 1;
         data->shoot = 0;
     }
-    else
-    {
-        // Render the default sprite (non-shooting state)
-        int x = SCREEN_WIDTH / 2 - sprite_image.width / 2;
-        int y = SCREEN_HEIGHT - sprite_image.height;
 
-        render_sprites_to_image(img, &sprite_image, x, y);
+    if (shoot)
+    {
+        frame_counter++;
+        if (frame_counter >= frame_delay)
+        {
+            frame++;
+            frame_counter = 0;  // this is for reset frame counter.
+
+            if (frame >= 22)    // to reset animation.
+            {
+                frame = 0;
+                shoot = 0;
+            }
+        }
+        sprite_image = data->player.frames[frame];
     }
-    
-    // Call mlx_put_image_to_window only once after rendering everything
+
+    int x = SCREEN_WIDTH / 2 - sprite_image.width / 2;
+    int y = SCREEN_HEIGHT - sprite_image.height;
+
+    render_sprites_to_image(img, &sprite_image, x, y);
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->img_ptr, 0, 0);
 }
 
