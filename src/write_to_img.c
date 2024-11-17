@@ -23,71 +23,58 @@ void    Ft_Write_Cub(t_data *Data, int x, int y, int Color)
 
 }
 
-void    Ft_Write_Map_Img(t_data *Data)
-{
-    int x;
-    int y;
+// void    Ft_Write_Map_Img(t_data *Data)
+// {
+//     int x;
+//     int y;
 
-    y = 0;
-    Data->Map_Img.Width = Data->Width * Data->Factor_Scale_Map;
-    Data->Map_Img.High= Data->High * Data->Factor_Scale_Map;
-    Data->Map_Img.Img = mlx_new_image(Data->Mlx, Data->Map_Img.Width, Data->Map_Img.High);
-    if (!Data->Map_Img.Img)
-        Ft_Free_All("Image Map Fail\n", Data, 1);
-    Data->Map_Img.Data = mlx_get_data_addr(Data->Map_Img.Img, &Data->Map_Img.N_Bytes, &Data->Map_Img.Lenght, &Data->Map_Img.Endian);
-    if (!Data->Map_Img.Data)
-        Ft_Free_All("Map Data Addres Fail\n", Data, 1);
-    while (y < Data->Col)
-    {
-        x = 0;
-        while (x < Data->Row)
-        {
-            if (Data->Map[y][x] == '1')
-                Ft_Write_Cub(Data, x * CUBE_TILE * Data->Factor_Scale_Map, y * CUBE_TILE * Data->Factor_Scale_Map, WHITE);
-            else
-                Ft_Write_Cub(Data, x * CUBE_TILE * Data->Factor_Scale_Map, y * CUBE_TILE * Data->Factor_Scale_Map, BLACK);
-            x++;
-        }
-        y++;
-    }
-    x = 0;
-    while (x < PLAYER_TILE)
-    {
-        y = 0;
-        while (y < PLAYER_TILE)
-        {
-            // printf("======== x : %d | y : %d | player_x :%d | player_y : %d ======\n",x,y,Data->X_Player, Data->Y_Player);
-            My_Mlx_Pixel_Put(&Data->Map_Img, (Data->X_Player + x) * Data->Factor_Scale_Map, (Data->Y_Player + y) * Data->Factor_Scale_Map, RED);
-            y++;
-        }
-        x++;
-    }
-    Ft_Write_Line(Data, cos(Data->Player_Angle) * 30, sin(Data->Player_Angle) * 30, BLUE);
+//     Data->Map_Img.Width = Data->Width * Data->Factor_Scale_Map;
+//     Data->Map_Img.High= Data->High * Data->Factor_Scale_Map;
+//     Data->Map_Img.Img = mlx_new_image(Data->Mlx, Data->Map_Img.Width, Data->Map_Img.High);
+//     if (!Data->Map_Img.Img)
+//         Ft_Free_All("Image Map Fail\n", Data, 1);
+//     Data->Map_Img.Data = mlx_get_data_addr(Data->Map_Img.Img, &Data->Map_Img.N_Bytes, &Data->Map_Img.Lenght, &Data->Map_Img.Endian);
+//     if (!Data->Map_Img.Data)
+//         Ft_Free_All("Map Data Addres Fail\n", Data, 1);
+
+//     y = 0;
+//     while (y < Data->Col)
+//     {
+//         x = 0;
+//         while (x < Data->Row)
+//         {
+//             if (Data->Map[y][x] == '1')
+//                 Ft_Write_Cub(Data, x * CUBE_TILE * Data->Factor_Scale_Map, y * CUBE_TILE * Data->Factor_Scale_Map, WHITE);
+//             else
+//                 Ft_Write_Cub(Data, x * CUBE_TILE * Data->Factor_Scale_Map, y * CUBE_TILE * Data->Factor_Scale_Map, BLACK);
+//             x++;
+//         }
+//         y++;
+//     }
+//     x = 0;
+//     while (x < PLAYER_TILE)
+//     {
+//         y = 0;
+//         while (y < PLAYER_TILE)
+//         {
+//             // printf("======== x : %d | y : %d | player_x :%d | player_y : %d ======\n",x,y,Data->X_Player, Data->Y_Player);
+//             My_Mlx_Pixel_Put(&Data->Map_Img, ((Data->X_Player - (PLAYER_TILE / 2) ) + x) * Data->Factor_Scale_Map, ((Data->Y_Player - (PLAYER_TILE / 2)) + y) * Data->Factor_Scale_Map, RED);
+//             y++;
+//         }
+//         x++;
+//     }
+//     Ft_Write_Line(Data, cos(Data->Player_Angle) * 30, sin(Data->Player_Angle) * 30, BLUE);
     
-}
+// }
 
 void    Ft_Write_Projection_Img(t_data *Data)
 {
-    int x;
-    int y;
-
-    y = 0;
     Data->Projection_Img.Img = mlx_new_image(Data->Mlx, Data->Width, Data->High);
     if (!Data->Projection_Img.Img)
         Ft_Free_All("Image Projection Image Fail\n", Data, 1);
     Data->Projection_Img.Data = mlx_get_data_addr(Data->Projection_Img.Img, &Data->Projection_Img.N_Bytes, &Data->Projection_Img.Lenght, &Data->Projection_Img.Endian);
     if (!Data->Projection_Img.Data)
         Ft_Free_All("Projection Data Addres Fail\n", Data, 1);
-    while (y < Data->High)
-    {
-        x = 0;
-        while (x < Data->Width)
-        {
-            My_Mlx_Pixel_Put(&Data->Projection_Img,  x, y, WHITE);
-            x++;
-        }
-        y++;
-    }
 
 }
 
@@ -119,60 +106,62 @@ void    Ft_Clone_Map_To_Player_Img(t_data *Data)
     }
 }
 
-// void    Ft_Write_Map_Img(t_data *Data)
-// {
-//     int x;
-//     int y;
+void    Ft_Write_Map_Img(t_data *Data)
+{
+    int x;
+    int y;
 
-//     y = 0;
-//     Data->Map_Img.Img = mlx_new_image(Data->Mlx, (Data->Width * Data->Factor_Scale_Map), (Data->High * Data->Factor_Scale_Map));
-//     if (!Data->Map_Img.Img)
-//         Ft_Free_All("Image Map Fail\n", Data, 1);
-//     Data->Map_Img.Data = mlx_get_data_addr(Data->Map_Img.Img, &Data->Map_Img.N_Bytes, &Data->Map_Img.Lenght, &Data->Map_Img.Endian);
-//     if (!Data->Map_Img.Data)
-//         Ft_Free_All("Map Data Addres Fail\n", Data, 1);
-//     while (y < Data->Col)
-//     {
-//         x = 0;
-//         while (x < Data->Row)
-//         {
-//             if (Data->Map[y][x] == '1')
-//                 Ft_Write_Cub(Data, x * CUBE_TILE * Data->Factor_Scale_Map, y * CUBE_TILE * Data->Factor_Scale_Map, WHITE);
-//             else
-//                 Ft_Write_Cub(Data, x * CUBE_TILE * Data->Factor_Scale_Map, y * CUBE_TILE * Data->Factor_Scale_Map, BLACK);
-//             x++;
-//         }
-//         y++;
-//     }
-// }
+    y = 0;
+    Data->Map_Img.Width = Data->Width * Data->Factor_Scale_Map;
+    Data->Map_Img.High= Data->High * Data->Factor_Scale_Map;
+    Data->Map_Img.Img = mlx_new_image(Data->Mlx, Data->Map_Img.Width, Data->Map_Img.High);
+    if (!Data->Map_Img.Img)
+        Ft_Free_All("Image Map Fail\n", Data, 1);
+    Data->Map_Img.Data = mlx_get_data_addr(Data->Map_Img.Img, &Data->Map_Img.N_Bytes, &Data->Map_Img.Lenght, &Data->Map_Img.Endian);
+    if (!Data->Map_Img.Data)
+        Ft_Free_All("Map Data Addres Fail\n", Data, 1);
+    while (y < Data->Col)
+    {
+        x = 0;
+        while (x < Data->Row)
+        {
+            if (Data->Map[y][x] == '1')
+                Ft_Write_Cub(Data, x * CUBE_TILE * Data->Factor_Scale_Map, y * CUBE_TILE * Data->Factor_Scale_Map, WHITE);
+            else
+                Ft_Write_Cub(Data, x * CUBE_TILE * Data->Factor_Scale_Map, y * CUBE_TILE * Data->Factor_Scale_Map, BLACK);
+            x++;
+        }
+        y++;
+    }
+}
 
 
 
-// void    Ft_Write_Player(t_data *Data)
-// {
-//     int i;
-//     int j;
+void    Ft_Write_Player(t_data *Data)
+{
+    int i;
+    int j;
 
-//     i = 0;
-//     Data->Start_Player_X = (Data->X_Player - CUBE_TILE) * Data->Factor_Scale_Map;
-//     Data->Start_Player_Y = (Data->Y_Player - CUBE_TILE) * Data->Factor_Scale_Map;
-//     Data->Player_Img.Img = mlx_new_image(Data->Mlx, Data->Player_Img.Width, Data->Player_Img.High);
-//     if (!Data->Player_Img.Img)
-//         Ft_Free_All("Image Player Image Fail\n", Data, 1);
-//     Data->Player_Img.Data = mlx_get_data_addr(Data->Player_Img.Img, &Data->Player_Img.N_Bytes, &Data->Player_Img.Lenght, &Data->Player_Img.Endian);
-//     if (!Data->Player_Img.Data)
-//         Ft_Free_All("Player Data Addres Fail\n", Data, 1);
-//     Ft_Clone_Map_To_Player_Img(Data);
-//     while (i < PLAYER_TILE)
-//     {
-//         j = 0;
-//         while (j < PLAYER_TILE)
-//         {
-//             my_mlx_pixel_put(&Data->Player_Img, (Data->Player_Offset + i) * Data->Factor_Scale_Map, (Data->Player_Offset + j) * Data->Factor_Scale_Map, RED);
-//             j++;
-//         }
-//         i++;
-//     }
+    i = 0;
+    Data->Start_Player_X = (Data->X_Player - CUBE_TILE) * Data->Factor_Scale_Map;
+    Data->Start_Player_Y = (Data->Y_Player - CUBE_TILE) * Data->Factor_Scale_Map;
+    Data->Player_Img.Img = mlx_new_image(Data->Mlx, Data->Player_Img.Width, Data->Player_Img.High);
+    if (!Data->Player_Img.Img)
+        Ft_Free_All("Image Player Image Fail\n", Data, 1);
+    Data->Player_Img.Data = mlx_get_data_addr(Data->Player_Img.Img, &Data->Player_Img.N_Bytes, &Data->Player_Img.Lenght, &Data->Player_Img.Endian);
+    if (!Data->Player_Img.Data)
+        Ft_Free_All("Player Data Addres Fail\n", Data, 1);
+    Ft_Clone_Map_To_Player_Img(Data);
+    while (i < PLAYER_TILE)
+    {
+        j = 0;
+        while (j < PLAYER_TILE)
+        {
+            My_Mlx_Pixel_Put(&Data->Player_Img, (Data->Player_Offset + i) * Data->Factor_Scale_Map, (Data->Player_Offset + j) * Data->Factor_Scale_Map, RED);
+            j++;
+        }
+        i++;
+    }
     
-// }
+}
 

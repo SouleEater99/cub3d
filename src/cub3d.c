@@ -14,12 +14,10 @@
 
 void    Ft_Create_Images(t_data *Data)
 {
-    (void)Data;
-    // Ft_Write_Projection_Img(Data);
-    // Ft_Write_Player(Data);
+    (void) Data;
+    Ft_Write_Map_Img(Data);
     // mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Projection_Img.Img, 0, 0);
     // mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Player_Img.Img, Data->Start_Player_X, Data->Start_Player_Y);
-    // Ft_Write_Map_Img(Data);
     // mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Map_Img.Img, 0, 0);
 
 }
@@ -42,7 +40,7 @@ int main()
     Data = Init_Data();
     Data->Map = Map;
     Init_Mlx(Data);
-    // Ft_Create_Images(Data);
+    Ft_Create_Images(Data);
     mlx_hook(Data->Mlx_Win, 2, (1L<<0) ,Ft_Key_Press, Data);
     mlx_hook(Data->Mlx_Win, 3, (1L<<1) ,Ft_Key_Release, Data);
     mlx_hook(Data->Mlx_Win, 17, (0L) ,Ft_Key_Destroy, Data);

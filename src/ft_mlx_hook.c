@@ -54,7 +54,6 @@ int Ft_Key_Destroy(void *Param)
 }
 
 
-
 int Ft_Loop_Hook(void *Param)
 {
     t_data *Data;

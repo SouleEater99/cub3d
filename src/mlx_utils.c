@@ -23,16 +23,17 @@ int Ft_Is_Angle_Facing_Right(double angle)
 	return (0);
 }
 
-int Ft_Board_Protect_Map(t_data *Data, double x, double  y)
+int Ft_Board_Protect(int Width, int High, double x, double  y)
 {
-	if ((x > 0 && x < Data->Map_Img.Width) && (y > 0 && y < Data->Map_Img.High))
+	if ((x > 0 && x < Width) && (y > 0 && y < High))
 		return (1);
 	return (0);
 }
 
+
 int Ft_Is_A_Wall(t_data *Data, int x, int y)
 {
-	if (Ft_Board_Protect_Map(Data, x, y) == 1)
+	if (Ft_Board_Protect(Data->Width, Data->High, x, y) == 1)
 		if (Data->Map[y / CUBE_TILE][x / CUBE_TILE] == '1')
 			return (1);
 	return (0);
@@ -43,8 +44,8 @@ int	Ft_Is_Player_Inside_Wall(t_data *Data)
 	double	x;
 	double	y;
 
-	x = Data->X_Player + cos(Data->Player_Angle) * Data->Move_Step;
-	y = Data->Y_Player + sin(Data->Player_Angle) * Data->Move_Step;
+	x = Data->X_Player + (cos(Data->Player_Angle) * Data->Move_Step);
+	y = Data->Y_Player + (sin(Data->Player_Angle) * Data->Move_Step);
 	if (Data->Map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == '1')
 		return (0);
 	Data->X_Player = x;
@@ -61,7 +62,7 @@ double	Ft_Normalize_Angle(double angle)
 	return (angle);
 }
 
-void Ft_Write_Line(t_data *Data, int dx, int dy, int color)
+void Ft_Write_Line_Map(t_data *Data, int dx, int dy, int color)
 {
 	double x;
 	double y;
@@ -79,10 +80,42 @@ void Ft_Write_Line(t_data *Data, int dx, int dy, int color)
 	Data->i = 0;
 	while (Data->i <= Data->Step)
 	{
-		if (Ft_Board_Protect_Map(Data, x, y))
+		if (Ft_Board_Protect(Data->Width, Data->High, x, y))
 			My_Mlx_Pixel_Put(&Data->Map_Img, x, y, color);
 		x += x_increment;
 		y += y_increment;
 		Data->i++;
 	}
+}
+
+void Ft_Write_Line_Player(t_data *Data, int dx, int dy, int color)
+{
+	double x;
+	double y;
+	double x_increment;
+	double y_increment;
+
+	if (abs(dx) >= abs(dy))
+		Data->Step = abs(dx);
+	else
+		Data->Step = abs(dy);
+	x_increment = dx / Data->Step;
+	y_increment = dy / Data->Step;
+	x = (unsigned int)CUBE_TILE * Data->Factor_Scale_Map; 
+	y = (unsigned int)CUBE_TILE * Data->Factor_Scale_Map;
+	Data->i = 0;
+	while (Data->i <= Data->Step)
+	{
+		if (Ft_Board_Protect(Data->Player_Img.Width, Data->Player_Img.High, x, y))
+			My_Mlx_Pixel_Put(&Data->Player_Img, x, y, color);
+		x += x_increment;
+		y += y_increment;
+		Data->i++;
+	}
+}
+double Ft_Calc_Distance(t_data *Data, double x, double y)
+{
+    double dx = Data->X_Player - x;
+    double dy = Data->Y_Player - y;
+    return sqrt(dx * dx + dy * dy); // Euclidean distance
 }
