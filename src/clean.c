@@ -20,7 +20,10 @@ void    Ft_Free_All(char *Msg, t_data *Data, int Exit_Status)
         if (Data->Mlx_Win)
             mlx_destroy_window(Data->Mlx , Data->Mlx_Win);
         if (Data->Mlx)
+        {
             mlx_destroy_display(Data->Mlx);
+            free(Data->Mlx);
+        }
         /// free All IMages
         free(Data);
     }
