@@ -1,9 +1,13 @@
 {
     "files.associations": {
+<<<<<<< HEAD
+        "cub3d.h": "c"
+=======
         "cub3d.h": "c",
         "unistd.h": "c",
         "mlx.h": "c",
         "math.h": "c",
         "mlx_int.h": "c"
+>>>>>>> abdelali
     }
 }
