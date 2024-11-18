@@ -14,7 +14,7 @@
 
 void    Ft_Create_Images(t_data *Data)
 {
-    (void) Data;
+    // (void) Data;
     Ft_Write_Map_Img(Data);
     // mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Projection_Img.Img, 0, 0);
     // mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Player_Img.Img, Data->Start_Player_X, Data->Start_Player_Y);

@@ -2,12 +2,12 @@
 
 void    Ft_Updata_Data(t_data *Data)
 {
-    if (Data->Walk_Direction != 0)
+    if (Data->Walk_Direction != 0 && Data->Factor_Scale_Map != 1)
     {
-        Data->Move_Step = Data->Move_Speed * Data->Walk_Direction * Data->Factor_Scale_Map;
+        Data->Move_Step = Data->Move_Speed * Data->Walk_Direction; //* Data->Factor_Scale_Map;
         Ft_Is_Player_Inside_Wall(Data);
     }
-    if (Data->Turn_Direction != 0)
+    if (Data->Turn_Direction != 0 && Data->Factor_Scale_Map != 1)
     {
         Data->Player_Angle += Data->Turn_Direction * Data->Turn_Speed;
 		Data->Player_Angle = Ft_Normalize_Angle(Data->Player_Angle);

@@ -139,10 +139,12 @@ void    Ft_Write_Map_Img(t_data *Data)
 
 void    Ft_Write_Player(t_data *Data)
 {
-    int i;
-    int j;
-
-    i = 0;
+    Data->Player_Img.Width = 2 * CUBE_TILE * Data->Factor_Scale_Map;
+    Data->Player_Img.High = 2 * CUBE_TILE * Data->Factor_Scale_Map;
+    if (CUBE_TILE > PLAYER_TILE)
+        Data->Player_Offset = CUBE_TILE - PLAYER_TILE;
+    else
+        Data->Player_Offset = CUBE_TILE;
     Data->Start_Player_X = (Data->X_Player - CUBE_TILE) * Data->Factor_Scale_Map;
     Data->Start_Player_Y = (Data->Y_Player - CUBE_TILE) * Data->Factor_Scale_Map;
     Data->Player_Img.Img = mlx_new_image(Data->Mlx, Data->Player_Img.Width, Data->Player_Img.High);
@@ -152,16 +154,5 @@ void    Ft_Write_Player(t_data *Data)
     if (!Data->Player_Img.Data)
         Ft_Free_All("Player Data Addres Fail\n", Data, 1);
     Ft_Clone_Map_To_Player_Img(Data);
-    while (i < PLAYER_TILE)
-    {
-        j = 0;
-        while (j < PLAYER_TILE)
-        {
-            My_Mlx_Pixel_Put(&Data->Player_Img, (Data->Player_Offset + i) * Data->Factor_Scale_Map, (Data->Player_Offset + j) * Data->Factor_Scale_Map, RED);
-            j++;
-        }
-        i++;
-    }
-    
 }
 
