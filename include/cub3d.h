@@ -93,10 +93,10 @@ typedef struct  s_data
     t_image         Map_Img;
     t_image         Projection_Img;
     t_image         Player_Img;
+    t_image         Texture_Img;
     int             Start_Player_X;
     int             Start_Player_Y;
     int             Player_Offset;
-    t_image         Texture_Img;
 
 }   t_data;
 
@@ -132,6 +132,7 @@ void	Ft_Get_Wall_Hit(t_data *Data, double Angle);
 void    Ft_Get_Horz_Hit(t_data *Data, double Angle, double *x, double *y);
 void    Ft_Get_Virt_Hit(t_data *Data, double Angle, double *x, double *y);
 void	Ft_Write_Projection(t_data *Data, int i);
+void    Ft_Write_Texture_Img(t_data *Data);
 
 
 #endif

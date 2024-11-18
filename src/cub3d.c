@@ -12,13 +12,20 @@
 
 #include "../include/cub3d.h"
 
+void    Ft_Write_Texture_Img(t_data *Data)
+{
+    Data->Texture_Img.Img = mlx_xpm_file_to_image(Data->Mlx, "./wall_1.xpm", &Data->Texture_Img.Width, &Data->Texture_Img.High);
+    if (!Data->Texture_Img.Img)
+        Ft_Free_All("Texture Image Load Fail\n", Data, 1);
+    Data->Texture_Img.Data = mlx_get_data_addr(Data->Texture_Img.Img, &Data->Texture_Img.N_Bytes, &Data->Texture_Img.Lenght, &Data->Texture_Img.Endian);
+    if (!Data->Texture_Img.Data)
+        Ft_Free_All("Texture Data Load Fail\n", Data, 1);
+}
+
 void    Ft_Create_Images(t_data *Data)
 {
-    // (void) Data;
     Ft_Write_Map_Img(Data);
-    // mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Projection_Img.Img, 0, 0);
-    // mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Player_Img.Img, Data->Start_Player_X, Data->Start_Player_Y);
-    // mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Map_Img.Img, 0, 0);
+    Ft_Write_Texture_Img(Data);
 
 }
 
@@ -26,15 +33,17 @@ int main()
 {
     t_data  *Data;
     char *Map[] = {
-        "111111111111111111",
-        "100000001000000001",
-        "100000000000110001",
-        "100000001000110001",
-        "100011011110110001",
-        "100000001000000001",
-        "100000000000000001",
-        "100000001000000001",
-        "111111111111111111",
+        "11111111111111111111111",
+        "10000000100000000000001",
+        "10000000000011000000001",
+        "10000000100011000000001",
+        "10001101111011000000001",
+        "10000000100000000000001",
+        "10000000100000000000001",
+        "10000000100000000000001",
+        "10000000100000000000001",
+        "10000000100000000000001",
+        "11111111111111111111111",
     };
     printf("=========== We Are In Debug Mode ============\n");
     Data = Init_Data();

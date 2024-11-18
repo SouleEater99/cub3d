@@ -9,15 +9,15 @@ t_data  *Init_Data()
     if (!Data)
         return (NULL);
     Data = memset(Data, 0, sizeof(t_data));
-    Data->Row = 18;
-    Data->Col = 9;
+    Data->Row = 23;
+    Data->Col = 11;
     Data->Width = Data->Row * CUBE_TILE;
     Data->High = Data->Col * CUBE_TILE;
     Data->X_Player = 5 * CUBE_TILE + (CUBE_TILE / 2);
     Data->Y_Player = 3 * CUBE_TILE + (CUBE_TILE / 2);
     Data->Player_Angle = PI;
-    Data->Turn_Speed = 0.05;
-    Data->Move_Speed = 2;
+    Data->Turn_Speed = 0.2;
+    Data->Move_Speed = 8;
     Data->Factor_Scale_Map  = 0.2;
     Data->Num_Rays = Data->Width / WALL_STRIP;
     Data->Plan_Distanced = (Data->Width / 2) / tan(FOV / 2);

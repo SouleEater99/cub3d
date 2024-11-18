@@ -97,8 +97,8 @@ void	Ft_Write_Projection(t_data *Data, int i)
 {
 	int j = 0;
 	u_int32_t color;
-	// unsigned int		texture_offset_x;
-	// unsigned int		texture_offset_y;
+	unsigned int		texture_offset_x;
+	unsigned int		texture_offset_y;
 
 	Data->Start = (Data->High / 2) - (Data->WallSliceHigh / 2);
 	if (Data->Start < 0)
@@ -106,25 +106,21 @@ void	Ft_Write_Projection(t_data *Data, int i)
 	Data->End = (Data->High / 2) + (Data->WallSliceHigh / 2);
 	if (Data->End > Data->High)
 		Data->End = Data->High;
-	// if (Data->IsHitVirt)
-	// 	texture_offset_x = (int)Data->WallHitY % TEXTURE_TILE;
-	// 	texture_offset_x = (int)Data->WallHitY % Data->texture_img_high;
-	// else
-	// 	texture_offset_x = (int)Data->WallHitX % TEXTURE_TILE;
-	// 	texture_offset_x = (int)Data->WallHitX % Data->texture_img_width;
+	if (Data->IsHitVirt)
+		texture_offset_x = (int)Data->WallHitY % Data->Texture_Img.High;
+	else
+		texture_offset_x = (int)Data->WallHitX % Data->Texture_Img.Width;
 	j = 0;
 	while (j < Data->Start)
 		My_Mlx_Pixel_Put(&Data->Projection_Img, i * WALL_STRIP, j++, 0x0000FFFF);
 	j = Data->Start;
 	while (j < Data->End)
 	{
-		// texture_offset_y = (j - Data->Start) * Data->texture_img_high / wallhigh;
-		// printf("============== {WallHittX : %d | WallHitY : %d} ===============\n", (int)Data->WallHitX % TEXTURE_TILE, (int)Data->WallHitY % TEXTURE_TILE);
-		// printf("============== {OffsetX : %d | OffsetY : %d| IsHitVirt : %d} ===============\n", (int)texture_offset_x, (int)texture_offset_y, Data->IsHitVirt);
-		// if ( (int) texture_offset_x < Data->texture_img_width && (int)texture_offset_y < Data->texture_img_high)
-			// color = ft_get_pixel_color(Data, texture_offset_x , texture_offset_y);
-			// color /= Data->texture[(texture_offset_y * TEXTURE_TILE) + texture_offset_x];
-		color = 0xFFFFFFFF;
+		int	DistanceFromTop = j + (Data->WallSliceHigh / 2) - (Data->High / 2);
+		texture_offset_y = DistanceFromTop * ((double)Data->Texture_Img.High / Data->WallSliceHigh);
+		if ( (int) texture_offset_x < Data->Texture_Img.Width && (int)texture_offset_y < Data->Texture_Img.High)
+			color = Ft_Get_Color(&Data->Texture_Img ,texture_offset_x , texture_offset_y);
+		// color = WHITE;
 		My_Mlx_Pixel_Put(&Data->Projection_Img,i * WALL_STRIP, j++, color);
 	}
 	j = Data->End;
