@@ -14,11 +14,32 @@
 
 void    Ft_Write_Texture_Img(t_data *Data)
 {
-    Data->Texture_Img.Img = mlx_xpm_file_to_image(Data->Mlx, "./wall_1.xpm", &Data->Texture_Img.Width, &Data->Texture_Img.High);
-    if (!Data->Texture_Img.Img)
+    Data->Texture_Img_1.Img = mlx_xpm_file_to_image(Data->Mlx, "./wall_1.xpm", &Data->Texture_Img_1.Width, &Data->Texture_Img_1.High);
+    if (!Data->Texture_Img_1.Img)
         Ft_Free_All("Texture Image Load Fail\n", Data, 1);
-    Data->Texture_Img.Data = mlx_get_data_addr(Data->Texture_Img.Img, &Data->Texture_Img.N_Bytes, &Data->Texture_Img.Lenght, &Data->Texture_Img.Endian);
-    if (!Data->Texture_Img.Data)
+    Data->Texture_Img_1.Data = mlx_get_data_addr(Data->Texture_Img_1.Img, &Data->Texture_Img_1.N_Bytes, &Data->Texture_Img_1.Lenght, &Data->Texture_Img_1.Endian);
+    if (!Data->Texture_Img_1.Data)
+        Ft_Free_All("Texture Data Load Fail\n", Data, 1);
+
+    Data->Texture_Img_2.Img = mlx_xpm_file_to_image(Data->Mlx, "./wall_2.xpm", &Data->Texture_Img_2.Width, &Data->Texture_Img_2.High);
+    if (!Data->Texture_Img_2.Img)
+        Ft_Free_All("Texture Image Load Fail\n", Data, 1);
+    Data->Texture_Img_2.Data = mlx_get_data_addr(Data->Texture_Img_2.Img, &Data->Texture_Img_2.N_Bytes, &Data->Texture_Img_2.Lenght, &Data->Texture_Img_2.Endian);
+    if (!Data->Texture_Img_2.Data)
+        Ft_Free_All("Texture Data Load Fail\n", Data, 1);
+
+    Data->Texture_Img_3.Img = mlx_xpm_file_to_image(Data->Mlx, "./wall_3.xpm", &Data->Texture_Img_3.Width, &Data->Texture_Img_3.High);
+    if (!Data->Texture_Img_3.Img)
+        Ft_Free_All("Texture Image Load Fail\n", Data, 1);
+    Data->Texture_Img_3.Data = mlx_get_data_addr(Data->Texture_Img_3.Img, &Data->Texture_Img_3.N_Bytes, &Data->Texture_Img_3.Lenght, &Data->Texture_Img_3.Endian);
+    if (!Data->Texture_Img_3.Data)
+        Ft_Free_All("Texture Data Load Fail\n", Data, 1);
+
+    Data->Texture_Img_4.Img = mlx_xpm_file_to_image(Data->Mlx, "./wall_4.xpm", &Data->Texture_Img_4.Width, &Data->Texture_Img_4.High);
+    if (!Data->Texture_Img_4.Img)
+        Ft_Free_All("Texture Image Load Fail\n", Data, 1);
+    Data->Texture_Img_4.Data = mlx_get_data_addr(Data->Texture_Img_4.Img, &Data->Texture_Img_4.N_Bytes, &Data->Texture_Img_4.Lenght, &Data->Texture_Img_4.Endian);
+    if (!Data->Texture_Img_4.Data)
         Ft_Free_All("Texture Data Load Fail\n", Data, 1);
 }
 

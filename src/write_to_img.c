@@ -82,7 +82,8 @@ int     Ft_Get_Color(t_image *Img, int x, int y)
 {
     int Color;
 
-    Color = *(int *)(Img->Data + (y * Img->Lenght) + x  * (Img->N_Bytes / 8));
+    // if (Ft_Board_Protect(Img->Width, Img->High, x, y))
+        Color = *(int *)(Img->Data + (y * Img->Lenght) + x  * (Img->N_Bytes / 8));
     return (Color);
 }
 

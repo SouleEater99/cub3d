@@ -22,9 +22,11 @@
 #include "./minilibx/minilibx-linux/mlx.h"
 #include "./minilibx/minilibx-linux/mlx_int.h"
 
+#define WIDTH           800
+#define HIGH            600
 #define CUBE_TILE       64
-#define PLAYER_TILE     10
 #define TEXTURE_TILE    64
+#define PLAYER_TILE     10
 #define FOV             (66 * (PI / 180))
 #define WALL_STRIP      1
 #define BLACK           0x00000000
@@ -93,7 +95,10 @@ typedef struct  s_data
     t_image         Map_Img;
     t_image         Projection_Img;
     t_image         Player_Img;
-    t_image         Texture_Img;
+    t_image         Texture_Img_1;
+    t_image         Texture_Img_2;
+    t_image         Texture_Img_3;
+    t_image         Texture_Img_4;
     int             Start_Player_X;
     int             Start_Player_Y;
     int             Player_Offset;
