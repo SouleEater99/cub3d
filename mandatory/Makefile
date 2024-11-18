@@ -1,72 +1,43 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/10/08 12:57:30 by aelkheta          #+#    #+#              #
-#    Updated: 2024/10/25 11:08:53 by aelkheta         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME = cub3d
+RM = rm -rf
+CC = cc  
+CFLAG = -Wall -Wextra -Werror -fsanitize=address -g3
+MLX_FLAG = -lX11 -lm -lz -lXext
+LIBFT = include/lib_ft/libft.a
+MLX_LIB =	./include/minilibx/minilibx-linux/libmlx.a \
+			./include/minilibx/minilibx-linux/libmlx_Linux.a
+SRC = ./src/cub3d.c\
+		./src/init.c\
+		./src/write_to_img.c\
+		./src/ft_mlx_hook.c\
+		./src/clean.c\
+		./src/mlx_utils.c\
+		./src/update_image.c\
+		./src/ray_casting.c\
 
-CC := cc
-GCCFLAGS := -Wall -Wextra -Werror
-DEBUGFLAGS := -g3 # -fsanitize=address
-LIBFT := libraries/libft/libft.a
-INCLUDES := -I includes
-# MAP := maps/valid_map1.cub
-MAP ?= maps/valid_map1.cub
-
-# MLXLFLAGS = -lmlx -lXext -lX11 -lm
-
-# OS detection
-UNAME := $(shell uname)
-
-ifeq ($(UNAME),Darwin)
-    # macOS flags
-    MLXLFLAGS := ./libraries/minilibx_opengl_20191021/libmlx.a -framework OpenGL -framework AppKit
-else
-    # Linux flags
-    MLXLFLAGS := ./libraries/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
-endif
-
-SRC_DIR := ./srcs
-NAME := cub3d
-SRCS := $(SRC_DIR)/cub3d.c $(SRC_DIR)/images.c $(SRC_DIR)/raycasting.c $(SRC_DIR)/init_utiles.c $(SRC_DIR)/key_events.c $(SRC_DIR)/release_res.c $(SRC_DIR)/parsing.c $(SRC_DIR)/errors.c $(SRC_DIR)/minimap.c
-OBJS := $(SRCS:%.c=%.o)
-
-all: $(NAME)
-
-run: all clean
-	@./$(NAME) ${MAP}
-	@rm -f $(NAME)
-
-valg: all clean
-	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) ${MAP}
-	@rm -f $(NAME)
-
-$(NAME): $(OBJS)
-	@echo "Building..."
-	@$(CC) $(GCCFLAGS) $(OBJS) $(MLXLFLAGS) $(DEBUGFLAGS) $(INCLUDES) $(LIBFT) -o $(NAME)
-	@echo "Building done"
+OBJ = $(SRC:.c=.o)
 
 %.o: %.c
-	@echo "Compiling object files..."
-	@$(CC) $(GCCFLAGS) $(INCLUDES) $(DEBUGFLAGS) -c -o $@ $<
-	@echo "Compiling object files done"
+	$(CC) $(CFLAG) -c $< -o $@
 
-clean:
-	@echo "Removing object files..."
-	@rm -rf $(OBJS)
-	@echo "Removing object files done"
+all : $(NAME)
 
-fclean: clean
-	@echo "Removing program name..."
-	@rm -f $(NAME)
-	@echo "Removing program name done"
+$(NAME) : $(OBJ) $(MLX_LIB) $(LIBFT)
+	$(CC) $(CFLAG) $(OBJ) $(LIBFT) $(MLX_LIB) $(MLX_FLAG) -o $(NAME)
 
-re: fclean all
+$(LIBFT):
+	@make -sC ./include/lib_ft all
 
-.PHONY: all clean fclean re
-.SECONDARY:
+$(MLX_LIB):
+	@make -sC ./include/minilibx/minilibx-linux
+
+clean :
+	$(RM) $(OBJ)
+	@make -sC ./include/lib_ft clean
+	@make -sC ./include/minilibx/minilibx-linux clean
+
+fclean : clean
+	$(RM) $(NAME)
+	@make -sC ./include/lib_ft fclean
+
+re : fclean all
