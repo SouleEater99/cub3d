@@ -133,7 +133,7 @@ void	Ft_Write_Projection(t_data *Data, int i)
 	}
 	j = Data->End;
 	while (j < Data->High)
-		My_Mlx_Pixel_Put(&Data->Projection_Img, i * WALL_STRIP, j++, 0xFF0F0F00);
+		My_Mlx_Pixel_Put(&Data->Projection_Img, i * WALL_STRIP, j++, 0xFFFF00);
 }
 
 void Ft_Cast_All_Rays(t_data *Data)
