@@ -65,7 +65,7 @@ typedef struct  s_data
     void            *Mlx_Win;
     
     char            **Map;
-
+    unsigned int    color;
 	int             IsFaceDown;
 	int             IsFaceRight;
     double          Distance;
@@ -75,6 +75,7 @@ typedef struct  s_data
     double          WallHitY;
     int             IsHitVirt;
     int             Num_Rays;
+
     
     double          Plan_Distanced;
     int             Start;

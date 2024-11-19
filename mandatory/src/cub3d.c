@@ -28,11 +28,8 @@ void    Ft_Write_Texture_Img(t_data *Data)
     if (!Data->Texture_Img_2.Data)
         Ft_Free_All("Texture Data Load Fail\n", Data, 1);
 
-<<<<<<< HEAD:src/cub3d.c
     Data->Texture_Img_3.Img = mlx_xpm_file_to_image(Data->Mlx, "./wall_5.xpm", &Data->Texture_Img_3.Width, &Data->Texture_Img_3.High);
-=======
     Data->Texture_Img_3.Img = mlx_xpm_file_to_image(Data->Mlx, "./textures/wall_3.xpm", &Data->Texture_Img_3.Width, &Data->Texture_Img_3.High);
->>>>>>> 824f36c61ec9267e284f4489b123aa97e61a00a9:mandatory/src/cub3d.c
     if (!Data->Texture_Img_3.Img)
         Ft_Free_All("Texture Image Load Fail\n", Data, 1);
     Data->Texture_Img_3.Data = mlx_get_data_addr(Data->Texture_Img_3.Img, &Data->Texture_Img_3.N_Bytes, &Data->Texture_Img_3.Lenght, &Data->Texture_Img_3.Endian);

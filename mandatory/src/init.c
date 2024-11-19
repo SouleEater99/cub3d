@@ -17,7 +17,7 @@ t_data  *Init_Data()
     Data->Y_Player = 3 * CUBE_TILE + (CUBE_TILE / 2);
     Data->Player_Angle = PI;
     Data->Turn_Speed = 0.04;
-    Data->Move_Speed = 4;
+    Data->Move_Speed = 5;
     Data->Factor_Scale_Map  = 0.2;
     Data->Num_Rays = Data->Width / WALL_STRIP;
     Data->Plan_Distanced = (Data->Width / 2) / tan(FOV / 2);
