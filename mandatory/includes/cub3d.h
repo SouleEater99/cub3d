@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/19 13:01:31 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/19 17:29:08 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ typedef struct {
 
     int         shoot;
     int         switch_gun;
+    int         frames_num;
 } t_data;
 
 // functions signature
@@ -245,7 +246,7 @@ void        clean_up(t_data *data);
 
 t_texture   *load_texture(void *mlx, char *filename);
 
-void        init_player_sprites(t_data *data);
+void init_player_sprites(t_data *data, char *dir_path, int frames_num);
 void        render_sprites(t_data *data);
 void        render_sprites_to_image(t_image *image, t_image *sprite_image, int x, int y);
 

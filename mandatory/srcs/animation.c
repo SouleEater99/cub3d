@@ -6,23 +6,23 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 11:59:35 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/19 12:58:58 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/19 17:32:25 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include <cub3d.h>
 
-void init_player_sprites(t_data *data)
+void init_player_sprites(t_data *data, char *dir_path, int frames_num)
 {
-    data->player.frames = malloc(sizeof(t_image) * 22);
+    data->player.frames = malloc(sizeof(t_image) * frames_num);
     
     int i = -1;
-    while(++i < 22)
+    while(++i < frames_num)
     {
         char *sprite_index = ft_itoa(i);
         char *extension = ft_strdup(".xpm");
         char *str = ft_strjoin(sprite_index, extension);
-        char *sprite_path = ft_strjoin(ft_strdup("./textures/sprites/LOgTFqa/"), str);
+        char *sprite_path = ft_strjoin(ft_strdup(dir_path), str);
 
         printf("%s\n", sprite_path);
         
@@ -33,6 +33,7 @@ void init_player_sprites(t_data *data)
         free(extension);
         free(sprite_path);
     }
+    data->frames_num = frames_num;
 }
 
 void render_sprites_to_image(t_image *image, t_image *sprite_image, int x, int y)
@@ -76,7 +77,7 @@ void render_sprites(t_data *data)
     static int frame = 0;
     static int shoot = 0;
     static int frame_counter = 0;
-    int frame_delay = 15;
+    int frame_delay = 12;
 
     t_image *img = data->image;
     t_image sprite_image = data->player.frames[0];
@@ -95,7 +96,7 @@ void render_sprites(t_data *data)
             frame++;
             frame_counter = 0;  // this is for reset frame counter.
 
-            if (frame >= 22)    // to reset animation.
+            if (frame >= data->frames_num)    // to reset animation.
             {
                 frame = 0;
                 shoot = 0;

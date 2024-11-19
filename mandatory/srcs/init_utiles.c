@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 09:05:54 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/19 12:56:42 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/19 17:29:35 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	init_game(t_data *data)
 
 	data->image = create_image(data);
 
-	init_player_sprites(data);
+	init_player_sprites(data, "./textures/sprites/gun_sprite_2/", 48);
 
 	data->plane_x = -data->dir_y * fov_width;
 	data->plane_y = data->dir_x * fov_width;

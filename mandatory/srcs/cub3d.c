@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:07:23 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/19 14:58:19 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/19 17:26:01 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ int main(int ac, char **av)
 
     memset(&data, 0, sizeof(t_data));
     
-
     data.mlx_ptr = mlx_init();
 	if (!data.mlx_ptr)
 		return (1);
