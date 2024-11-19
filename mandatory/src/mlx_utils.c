@@ -3,11 +3,9 @@
 void	My_Mlx_Pixel_Put(t_image *img, int x, int y, int color)
 {
 	char	*dst;
-	if (Ft_Board_Protect(img->Width, img->High, x, y))
-	{
-		dst = img->Data + (y * img->Lenght + x * (img->N_Bytes / 8));
-		*(unsigned int*)dst = color;
-	}
+
+	dst = img->Data + (y * img->Lenght + x * (img->N_Bytes / 8));
+	*(unsigned int*)dst = color;
 }
 
 
