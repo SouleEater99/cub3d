@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 10:27:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/19 13:22:39 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:12:39 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@
 # define SCROLL_DOWN        5
 
 # define NUM_TEXTURES       4
+
+# define TABLE_SIZE         3
 
 # define PLAYER_DIR         "NSEW"
 # define SUPPORTED_CHARS    "NSEW01\t\n "
