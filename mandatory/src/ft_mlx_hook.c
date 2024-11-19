@@ -23,12 +23,6 @@ int Ft_Key_Press(int key, void *Param)
             Data->Factor_Scale_Map = 0.2;
         else
             Data->Factor_Scale_Map = 1;
-        if (Data->Map_Img.Img)
-        {
-            mlx_destroy_image(Data->Mlx, Data->Map_Img.Img);
-            Data->Map_Img.Img = NULL;
-        }
-        Ft_Write_Map_Img(Data);
         mlx_clear_window(Data->Mlx, Data->Mlx_Win);
     }
     else if (key == XK_Escape)

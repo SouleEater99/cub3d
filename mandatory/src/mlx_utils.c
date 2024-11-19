@@ -62,7 +62,7 @@ double	Ft_Normalize_Angle(double angle)
 	return (angle);
 }
 
-void Ft_Write_Line_Map(t_data *Data, int dx, int dy, int color)
+void Ft_Write_Line(t_data *Data, int dx, int dy, int color)
 {
 	double x;
 	double y;
@@ -81,38 +81,14 @@ void Ft_Write_Line_Map(t_data *Data, int dx, int dy, int color)
 	while (Data->i <= Data->Step)
 	{
 		if (Ft_Board_Protect(Data->Width, Data->High, x, y))
-			My_Mlx_Pixel_Put(&Data->Map_Img, x, y, color);
+			My_Mlx_Pixel_Put(&Data->Projection_Img, x, y, color);
 		x += x_increment;
 		y += y_increment;
 		Data->i++;
 	}
 }
 
-void Ft_Write_Line_Player(t_data *Data, int dx, int dy, int color)
-{
-	double x;
-	double y;
-	double x_increment;
-	double y_increment;
 
-	if (abs(dx) >= abs(dy))
-		Data->Step = abs(dx);
-	else
-		Data->Step = abs(dy);
-	x_increment = dx / Data->Step;
-	y_increment = dy / Data->Step;
-	x = (unsigned int)CUBE_TILE * Data->Factor_Scale_Map; 
-	y = (unsigned int)CUBE_TILE * Data->Factor_Scale_Map;
-	Data->i = 0;
-	while (Data->i <= Data->Step)
-	{
-		if (Ft_Board_Protect(Data->Player_Img.Width, Data->Player_Img.High, x, y))
-			My_Mlx_Pixel_Put(&Data->Player_Img, x, y, color);
-		x += x_increment;
-		y += y_increment;
-		Data->i++;
-	}
-}
 double Ft_Calc_Distance(t_data *Data, double x, double y)
 {
     double dx = Data->X_Player - x;

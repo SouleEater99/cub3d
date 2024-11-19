@@ -44,13 +44,6 @@ void    Ft_Write_Texture_Img(t_data *Data)
         Ft_Free_All("Texture Data Load Fail\n", Data, 1);
 }
 
-void    Ft_Create_Images(t_data *Data)
-{
-    Ft_Write_Map_Img(Data);
-    Ft_Write_Texture_Img(Data);
-
-}
-
 int main()
 {
     t_data  *Data;
@@ -71,7 +64,6 @@ int main()
     Data = Init_Data();
     Data->Map = Map;
     Init_Mlx(Data);
-    Ft_Create_Images(Data);
     mlx_hook(Data->Mlx_Win, 2, (1L<<0) ,Ft_Key_Press, Data);
     mlx_hook(Data->Mlx_Win, 3, (1L<<1) ,Ft_Key_Release, Data);
     mlx_hook(Data->Mlx_Win, 17, (0L) ,Ft_Key_Destroy, Data);

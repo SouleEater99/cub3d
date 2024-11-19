@@ -93,9 +93,7 @@ typedef struct  s_data
 
     double          Factor_Scale_Map;
 
-    t_image         Map_Img;
     t_image         Projection_Img;
-    t_image         Player_Img;
     t_image         Texture_Img_1;
     t_image         Texture_Img_2;
     t_image         Texture_Img_3;
@@ -113,15 +111,10 @@ void    Ft_Free_All(char *Msg, t_data *Data, int Exit_Status);
 int     Ft_Key_Destroy(void *Param);
 int     Ft_Loop_Hook(void *Param);
 void    Ft_Write_Cub(t_data *Data, int x, int y, int Color);
-void    Ft_Write_Player(t_data *Data);
-void    Ft_Write_Map_Img(t_data *Data);
-void    Ft_Write_Projection_Img(t_data *Data);
-void    Ft_Create_Images(t_data *Data);
+void    Ft_Create_Projection_Img(t_data *Data);
 void	My_Mlx_Pixel_Put(t_image *img, int x, int y, int color);
 int     Ft_Get_Color(t_image *Img, int x, int y);
-void    Ft_Clone_Map_To_Player_Img(t_data *Data);
-void    Ft_Write_Line_Player(t_data *Data, int dx, int dy, int color);
-void    Ft_Write_Line_Map(t_data *Data, int dx, int dy, int color);
+void    Ft_Write_Line(t_data *Data, int dx, int dy, int color);
 int     Ft_Is_Angle_Facing_Down(double angle);
 int     Ft_Is_Angle_Facing_Right(double angle);
 int     Ft_Board_Protect(int Width, int High, double x, double  y);
@@ -139,6 +132,9 @@ void    Ft_Get_Horz_Hit(t_data *Data, double Angle, double *x, double *y);
 void    Ft_Get_Virt_Hit(t_data *Data, double Angle, double *x, double *y);
 void	Ft_Write_Projection(t_data *Data, int i);
 void    Ft_Write_Texture_Img(t_data *Data);
+void	ft_Write_mini_map(t_data *Data);
+void	ft_write_player(t_data *Data);
+void	ft_write_player_view(t_data *Data);
 
 
 #endif

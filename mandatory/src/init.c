@@ -21,6 +21,7 @@ t_data  *Init_Data()
     Data->Factor_Scale_Map  = 0.2;
     Data->Num_Rays = Data->Width / WALL_STRIP;
     Data->Plan_Distanced = (Data->Width / 2) / tan(FOV / 2);
+    Ft_Write_Texture_Img(Data);
    
     return (Data);
 }

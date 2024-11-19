@@ -152,10 +152,73 @@ void Ft_Cast_All_Rays(t_data *Data)
 	    Data->IsFaceRight = Ft_Is_Angle_Facing_Right(Angle);
 		Ft_Get_Wall_Hit(Data, Angle);
 		Ft_Write_Projection(Data, i);
-        Ft_Write_Line_Player(Data, cos(Angle) * 40, sin(Angle) * 40, RED);
         // Ft_Write_Line(Data, (Data->WallHitX - Data->X_Player) * Data->Factor_Scale_Map, (Data->WallHitY - Data->Y_Player) * Data->Factor_Scale_Map, RED);
 		Angle = Angle + ((double)FOV / (double)Data->Num_Rays);
 		i++;
 	}
+}
+
+
+void	ft_write_player_view(t_data *Data)
+{
+	int		x;
+	double	Angle;
+
+	x = 0;
+	Angle = Data->Player_Angle - (FOV / 2);
+	while (x < Data->Num_Rays)
+	{
+		if (Angle > 2 * PI)
+   			Angle -= 2 * PI;
+		else if (Angle < 0)
+    		Angle += 2 * PI;
+ 		Ft_Write_Line(Data, cos(Angle) * 30, sin(Angle) * 30, BLUE);
+		Angle = Angle + ((double)FOV / (double)Data->Num_Rays);
+		x++;
+	}
+
+}
+
+void	ft_write_player(t_data *Data)
+{
+	int		x;
+	int		y;
+
+	x= 0;
+    while (x < PLAYER_TILE)
+    {
+        y = 0;
+        while (y < PLAYER_TILE)
+        {
+            My_Mlx_Pixel_Put(&Data->Projection_Img, ((Data->X_Player - (PLAYER_TILE / 2) ) + x) * Data->Factor_Scale_Map, ((Data->Y_Player - (PLAYER_TILE / 2)) + y) * Data->Factor_Scale_Map, RED);
+            y++;
+        }
+        x++;
+    }
+	
+}
+
+void	ft_Write_mini_map(t_data *Data)
+{
+
+	int		x;
+	int		y;
+
+ 	y = 0;
+    while (y < Data->Col)
+    {
+        x = 0;
+        while (x < Data->Row)
+        {
+            if (Data->Map[y][x] == '1')
+                Ft_Write_Cub(Data, x * CUBE_TILE * Data->Factor_Scale_Map, y * CUBE_TILE * Data->Factor_Scale_Map, BLACK);
+            else
+                Ft_Write_Cub(Data, x * CUBE_TILE * Data->Factor_Scale_Map, y * CUBE_TILE * Data->Factor_Scale_Map, WHITE);
+            x++;
+        }
+        y++;
+    }
+	ft_write_player(Data);
+	ft_write_player_view(Data);
 
 }
