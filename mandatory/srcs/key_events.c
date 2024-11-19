@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:17:16 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/13 11:44:02 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:05:17 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,35 +19,45 @@ int	key_press(int keycode, t_data *data)
 		clean_up(data);
 		exit(0);
 	}
-	else if (keycode == 'w' || keycode == U_KEY) // || keycode == U_KEY)
+	else if (keycode == 'w' || keycode == UP_KEY) // || keycode == U_KEY)
 		data->move_forward = 1;
-	else if (keycode == 's' || keycode == D_KEY) // || keycode == D_KEY)
+	else if (keycode == 's' || keycode == DOWN_KEY) // || keycode == D_KEY)
 		data->move_backward = 1;
     else if (keycode == 'a')
         data->move_left = 1;
     else if (keycode == 'd')
         data->move_right = 1;
-	else if (keycode == L_KEY) // keycode == 'a' || 
+	else if (keycode == LEFT_KEY) // keycode == 'a' || 
 		data->rotate_left = 1;
-	else if (keycode == R_KEY) // keycode == 'd' || 
+	else if (keycode == RIGHT_KEY) // keycode == 'd' || 
 		data->rotate_right = 1;
+    else if (keycode == CTRL_KEY)
+    {
+        data->shoot = 1;
+    }
+
 	return (0);
 }
 
 int	key_release(int keycode, t_data *data)
 {
-	if (keycode == 'w' || keycode == U_KEY) // || keycode == U_KEY
+	if (keycode == 'w' || keycode == UP_KEY)
 		data->move_forward = 0;
-	else if (keycode == 's' || keycode == D_KEY) // || keycode == D_KEY
+	else if (keycode == 's' || keycode == DOWN_KEY)
 		data->move_backward = 0;
     else if (keycode == 'a')
         data->move_left = 0;
     else if (keycode == 'd')
         data->move_right = 0;
-	else if (keycode == L_KEY) // keycode == 'a' || 
+	else if (keycode == LEFT_KEY)
 		data->rotate_left = 0;
-	else if (keycode == R_KEY) // keycode == 'd' || 
+	else if (keycode == RIGHT_KEY)
 		data->rotate_right = 0;
+    else if(keycode == CTRL_KEY)
+    {
+        data->shoot = 0;
+    }
+    
 	return (0);
 }
 
@@ -130,8 +140,28 @@ int mouse_events(int button, int x, int y, t_data *data)
 int	game_loop(t_data *data)
 {
 	// mouse_positions(data);
+
+	// update_player(data);
+	// start_game(data);
+
+    memset(data->image->img_data, 0, SCREEN_WIDTH * SCREEN_HEIGHT * (data->image->bits_per_pixel / 8));
+
+    // Update player position based on movement
 	update_player(data);
-	start_game(data);
+
+    // Perform raycasting and render sprites
+    if (!(data->clicks % 2))
+    {
+        raycasting(data);
+        render_sprites(data);
+    }
+    
+    // Draw minimap
+    draw_minimap(data);
+
+    // Put image to window (only once after all rendering tasks)
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr, 0, 0);
+    
 	return (0);
 }
 

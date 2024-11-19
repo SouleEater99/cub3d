@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:07:23 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/12 17:32:23 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/19 14:58:19 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,11 @@ int main(int ac, char **av)
 
     memset(&data, 0, sizeof(t_data));
     
+
+    data.mlx_ptr = mlx_init();
+	if (!data.mlx_ptr)
+		return (1);
+
 	if (!parse_map(&data, ac, av))
 	{
 		printf("\nInvalid map try again later ❌\n\n");
@@ -108,10 +113,6 @@ int main(int ac, char **av)
         return (1);
 	}
 	printf(BGRN"\nValid map ✅\n\n"COLOR_RESET);
-
-    data.mlx_ptr = mlx_init();
-	if (!data.mlx_ptr)
-		return (1);
 
     data.win_ptr = mlx_new_window(data.mlx_ptr, SCREEN_WIDTH, SCREEN_HEIGHT, "cub3D");
 	if (!data.win_ptr)

@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 10:27:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/12 16:49:36 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:22:39 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@
 # define SCROLL_UP          4
 # define SCROLL_DOWN        5
 
+# define NUM_TEXTURES       4
+
 # define PLAYER_DIR         "NSEW"
 # define SUPPORTED_CHARS    "NSEW01\t\n "
 
@@ -68,14 +70,15 @@
 
 #elif __linux__
     // Linux (X11) keycodes
-    # define ESC_KEY        65307
-    # define U_KEY          65362
-    # define D_KEY          65364
-    # define R_KEY          65363
-    # define L_KEY          65361
+    // # define ESC_KEY        65307
+    // # define U_KEY          65362
+    // # define D_KEY          65364
+    // # define R_KEY          65363
+    // # define L_KEY          65361
     
-    # define MOVE_SPEED     0.04    // player speed
-    # define ROT_SPEED      0.02    // Rotation speed (in radians)
+
+    # define MOVE_SPEED     0.01    // player speed
+    # define ROT_SPEED      0.01    // Rotation speed (in radians)
 
     // # define MOVE_SPEED     0.2    // player speed
     // # define ROT_SPEED      0.08    // Rotation speed (in radians)

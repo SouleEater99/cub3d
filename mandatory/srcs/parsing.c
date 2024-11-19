@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/13 13:40:26 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/19 14:50:22 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,16 @@ void print_error (char *error_str, char *file, int line)
 }
 
 /// @brief check the map file extension (.cub).
-/// @param map_path the file path.
+/// @param file_path the file path.
 /// @return 0 if the extension not valid otherwise 1.
-int check_map_extension(const char *map_path)
+int check_extension(const char *file_path, const char *extension)
 {
     int fd;
 
-    if ((fd = open(map_path, O_RDONLY)) == -1)
+    if (!file_path || !extension)
+        return (0);
+
+    if ((fd = open(file_path, O_RDONLY)) == -1)
     {
         print_error("Error: File does not exist!\n", __FILE__, __LINE__);
         return (0);
@@ -68,7 +71,9 @@ int check_map_extension(const char *map_path)
     else
         close(fd);
 
-    if (!ft_strnstr(&map_path[ft_strlen(map_path) - 4], ".cub", 4))
+    int extension_len = ft_strlen(extension);
+
+    if (!ft_strnstr(&file_path[ft_strlen(file_path) - extension_len], extension, extension_len))
     {
         print_error("Error, bad file extension [example.cub]!\n", __FILE__, __LINE__);
 		return (0);
@@ -94,6 +99,15 @@ bool is_empty_line(const char *line)
     return (!line[i]);
 }
 
+/// @brief check the color format (0,0,0).
+/// @return true if the format is correct.
+int check_color_format(const char *str_color)
+{
+    if (!str_color || !ft_isdigit(str_color[0]) || !ft_isdigit(str_color[ft_strlen(str_color) - 1]))
+        return (0);
+    return (1);
+}
+
 /// @brief Takes a string color (255,255,0) and convert it to inteager.
 /// @param str_color string color to be converted to inteager.
 /// @return inteager color
@@ -104,6 +118,9 @@ int64_t parse_color(const char *str_color)
     char    **colors;
 
     color = -1;
+    if (!check_color_format(str_color))
+        return (color);
+
     colors = ft_split(str_color, ',');
     if (!colors || arr_len(colors) != 3)
     {
@@ -179,18 +196,36 @@ char **read_map_lines(const char *map_path, int *height)
 
 t_texture *load_texture(void *mlx, char *filename)
 {
+    if (!mlx || !filename)
+    {
+        if (!mlx)
+            printf("\n\nWTF\n\n\n");
+        return (NULL);
+    }
+
     t_texture *texture = malloc(sizeof(t_texture));
     if (!texture)
-        return NULL;
+        return (NULL);
 
+    printf("\n%s\n\n", filename);
     texture->image = mlx_xpm_file_to_image(mlx, filename, &texture->width, &texture->height);
     if (!texture->image)
     {
         free(texture);
-        return NULL;
+        return (NULL);
     }
     texture->data = mlx_get_data_addr(texture->image, &texture->bits_per_pixel, &texture->line_length, &texture->endian);
     return texture;
+}
+
+/// @brief 
+/// @param texture_path 
+/// @return 
+char *parse_texture(char *texture_path)
+{
+    if (!check_extension(texture_path, ".xpm"))
+        return (NULL);
+    return (texture_path);
 }
 
 /// @brief parse map metadata (01NSEW).
@@ -237,8 +272,20 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
 
             if (texture_ptr)
             {
-                *texture_ptr = ft_strdup(parts[1]);
+                *texture_ptr = parse_texture(parts[1]);//ft_strdup(parts[1]);
+                if (!*texture_ptr)
+                {
+                    free(trimmed);
+                    free_array(parts);
+                    return (0);
+                }
                 data->textures[textures_found] = load_texture(data->mlx_ptr, *texture_ptr);
+                if (!data->textures[textures_found])
+                {
+                    free(trimmed);
+                    free_array(parts);
+                    return (false);
+                }
                 textures_found++;
             }
         }
@@ -419,7 +466,6 @@ int validate_map_borders(t_data *data, char **map, int height)
         j = -1;
         while(++j < data->map_line_len[i] && ft_isspace(map[i][j]))
             ;
-        printf("\n\n>>> [%d] [%d] <<<\n\n", map[i][j], map[i][data->map_line_len[i] - 1]);
         if (map[i][j] != '1' || map[i][data->map_line_len[i] - 1] != '1')
         {
             print_error("Error: invalid map border!\n", __FILE__, __LINE__);
@@ -461,7 +507,7 @@ int parse_map(t_data *data, int ac, char **av)
         return (0);
     }
 
-    if (!check_map_extension(av[1]))
+    if (!check_extension(av[1], ".cub"))
         return (0);
 
     int height = 0;

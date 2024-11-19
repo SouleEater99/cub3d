@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 09:02:40 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/13 10:20:26 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/19 14:59:20 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,18 @@ void clean_up(t_data *data)
 	if (data->map_line_len)
 		free(data->map_line_len);
 		
-	if (data->no_texture_path)
-		free(data->no_texture_path);
-	if (data->so_texture_path)
-		free(data->so_texture_path);
-	if (data->we_texture_path)
-		free(data->we_texture_path);
-	if (data->ea_texture_path)
-		free(data->ea_texture_path);
+	// if (data->no_texture_path)
+	// 	free(data->no_texture_path);
+	// if (data->so_texture_path)
+	// 	free(data->so_texture_path);
+	// if (data->we_texture_path)
+	// 	free(data->we_texture_path);
+	// if (data->ea_texture_path)
+	// 	free(data->ea_texture_path);
 	
+	// if (data->image)
+	// 	mlx_destroy_image(data->mlx_ptr, data->image);
+
 	if (data->win_ptr)
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 	
@@ -60,10 +63,9 @@ void clean_up(t_data *data)
 
 	# endif
 
-	if (data->image)
-		mlx_destroy_image(data->mlx_ptr, data->image);
 	// if (data->map)
 	// 	free_array(data->map);
+	
 	if (data->mlx_ptr)
 		free(data->mlx_ptr);
 }

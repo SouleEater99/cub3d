@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 14:31:22 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/23 19:07:37 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/19 12:48:16 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,7 +330,7 @@ void draw_map(t_data *data, t_image *image)
     }
 }
 
-void draw_mini_map(t_data *data)
+void draw_minimap(t_data *data)
 {
     // draw black background for our minimap
 	draw_background(data, data->image);

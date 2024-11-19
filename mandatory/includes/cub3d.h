@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/13 09:10:34 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:01:31 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,18 @@
 # define CUB3D_H
 
 // # include "../libraries/minilibx-linux/mlx.h"
-# include <mlx.h>
 # include <stdlib.h>
 # include <math.h>
 # include <stdio.h>             // just for debugging
 # include <string.h>
 # include <sys/time.h>
-# include <../libraries/libft/libft.h>
 # include <fcntl.h>              //  for open syscall
 # include <stdbool.h>
-# include <macros.h>
 
+# include <mlx.h>
+# include <macros.h>
+# include <keycodes_linux.h>
+# include <../libraries/libft/libft.h>
 // uint16_t lala;
 // int64_t tata;
 // uint_least64_t fafa;
@@ -34,6 +35,15 @@
 #define BGRN "\e[1;32m"
 #define COLOR_RESET "\e[0m"
 
+// typedef struct s_image
+// {
+//     void    *img_ptr;
+//     void    *img_data;
+//     int     bits_per_pixel;
+//     int     size_line;
+//     int     endian;
+// }   t_image;
+
 typedef struct s_image
 {
     void    *img_ptr;
@@ -41,16 +51,30 @@ typedef struct s_image
     int     bits_per_pixel;
     int     size_line;
     int     endian;
+    int     width;
+    int     height;
 }   t_image;
+
 
 typedef struct s_player
 {
-    double  dir_x;   // player direction x position
-    double  dir_y;   // player direction y position
-    
-    double  player_x;
-    double  player_y;
+    double      dir_x;
+    double      dir_y;
+    double      player_x;
+    double      player_y;
+    void        *current_img;
+    t_image     *frames;
 }   t_player;
+
+
+// typedef struct s_player
+// {
+//     double  dir_x;   // player direction x position
+//     double  dir_y;   // player direction y position
+    
+//     double  player_x;
+//     double  player_y;
+// }   t_player;
 
 typedef struct s_ray
 {
@@ -84,6 +108,7 @@ typedef struct s_texture
     int     line_length;
     int     endian;
 }   t_texture;
+
 typedef struct s_mlx
 {
     void        *mlx_ptr;
@@ -148,7 +173,7 @@ typedef struct {
     char        *we_texture_path;
     char        *ea_texture_path;
 
-    t_texture   *textures[4];
+    // t_texture   *textures[4];
 
     int         map_start;
     // uint32_t    floor_color;
@@ -166,6 +191,12 @@ typedef struct {
     int         clicks;
     int         player_radius;
 
+
+    t_texture   *textures[NUM_TEXTURES];
+    t_player    player;
+
+    int         shoot;
+    int         switch_gun;
 } t_data;
 
 // functions signature
@@ -201,7 +232,7 @@ int         destroy_notify(t_data *data);
 void	    start_game(t_data *data);
 void        update_player(t_data *data);
 
-void        draw_mini_map(t_data *data);
+void        draw_minimap(t_data *data);
 
 int         mouse_events(int button, int x, int y, t_data *data);
 
@@ -213,6 +244,10 @@ void        free_map(char **map);
 void        clean_up(t_data *data);
 
 t_texture   *load_texture(void *mlx, char *filename);
+
+void        init_player_sprites(t_data *data);
+void        render_sprites(t_data *data);
+void        render_sprites_to_image(t_image *image, t_image *sprite_image, int x, int y);
 
 // void        std_error(char *error);
 

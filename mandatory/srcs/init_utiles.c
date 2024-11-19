@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_utiles.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 09:05:54 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/30 14:04:00 by aziz             ###   ########.fr       */
+/*   Updated: 2024/11/19 12:56:42 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,10 @@ void	init_game(t_data *data)
 		// data->plane_x = 0;
 		// data->plane_y = -0.66;
 	}
+
+	data->image = create_image(data);
+
+	init_player_sprites(data);
 
 	data->plane_x = -data->dir_y * fov_width;
 	data->plane_y = data->dir_x * fov_width;
