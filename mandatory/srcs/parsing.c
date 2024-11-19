@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/19 14:50:22 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:50:14 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,17 +197,12 @@ char **read_map_lines(const char *map_path, int *height)
 t_texture *load_texture(void *mlx, char *filename)
 {
     if (!mlx || !filename)
-    {
-        if (!mlx)
-            printf("\n\nWTF\n\n\n");
         return (NULL);
-    }
 
     t_texture *texture = malloc(sizeof(t_texture));
     if (!texture)
         return (NULL);
 
-    printf("\n%s\n\n", filename);
     texture->image = mlx_xpm_file_to_image(mlx, filename, &texture->width, &texture->height);
     if (!texture->image)
     {
@@ -253,6 +248,11 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
         {
             free(trimmed);
             free_array(parts);
+            while(--textures_found >= 0)
+            {
+                mlx_destroy_image(data->mlx_ptr, data->textures[textures_found]->image);
+                free(data->textures[textures_found]);
+            }
             print_error("Error: bad texture or color arguments!\n", __FILE__, __LINE__);
             return (false);
         }
@@ -284,6 +284,11 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
                 {
                     free(trimmed);
                     free_array(parts);
+                    while(--textures_found >= 0)
+                    {
+                        mlx_destroy_image(data->mlx_ptr, data->textures[textures_found]->image);
+                        free(data->textures[textures_found]);
+                    }
                     return (false);
                 }
                 textures_found++;
@@ -303,6 +308,11 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
             {
                 print_error("Error: bad texture or color arguments!\n", __FILE__, __LINE__);
                 printf(BRED"%d: %s\n"COLOR_RESET, *current_line, trimmed);
+                while(--textures_found >= 0)
+                {
+                    mlx_destroy_image(data->mlx_ptr, data->textures[textures_found]->image);
+                    free(data->textures[textures_found]);
+                }
                 free(trimmed);
                 free_array(parts);
                 return (0);
@@ -315,6 +325,11 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
                 {
                     print_error("Error: bad color!\n", __FILE__, __LINE__);
                     printf(BRED"%d: %s\n"COLOR_RESET, *current_line, trimmed);
+                    while(--textures_found >= 0)
+                    {
+                        mlx_destroy_image(data->mlx_ptr, data->textures[textures_found]->image);
+                        free(data->textures[textures_found]);
+                    }
                     free(trimmed);
                     free_array(parts);
                     return (0);
