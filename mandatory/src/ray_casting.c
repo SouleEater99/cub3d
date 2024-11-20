@@ -229,7 +229,7 @@ void	ft_Write_mini_map(t_data *Data)
 
 	int		x;
 	int		y;
-	int		ratio;
+	double	ratio;
 
 	ratio = (double)CUBE_TILE * Data->Factor_Scale_Map;
  	y = 0;
