@@ -3,14 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/20 09:49:41 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/20 08:34:11 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include <cub3d.h>
+
+// DFS (Depth-First Search) function.
+bool dfs(t_map *map, int **visited, int x, int y)
+{
+    if (x < 0 || y < 0 || x >= map->map_line_len[y] || y >= map->map_height)
+        return false;
+
+    if (visited[y][x] || map->map[y][x] == '1')
+        return true;
+
+    if (x == 0 || y == 0 || x == map->map_line_len[y] - 1 || y == map->map_height - 1)
+        return false;
+
+    visited[y][x] = 1; // mark it as visited
+
+    bool up = dfs(map, visited, x, y - 1);
+    bool down = dfs(map, visited, x, y + 1);
+    bool left = dfs(map, visited, x - 1, y);
+    bool right = dfs(map, visited, x + 1, y);
+
+    return (up && down && left && right);
+}
 
 /// @brief claculate the lenght of an array of strings.
 /// @param array the array to calculate its lenght.
@@ -505,6 +527,26 @@ int validate_map_borders(t_data *data, char **map, int height)
             j++;
         }
     }
+
+    
+    int **visited = malloc(sizeof(int *) * data->map_.map_height);
+    if (!visited)
+        exit (1); // changes
+    
+    i = -1;
+    while (++i < data->map_.map_height)
+    {
+        visited[i] = ft_calloc(data->map_.map_line_len[i], sizeof(int));
+        if (!visited[i])
+            exit (1);
+    }
+
+    if (!dfs(&data->map_, visited, data->player_x, data->player_y))
+    {
+        print_error("Error: map is not surrounded by walls!\n", __FILE__, __LINE__);
+        exit (1);
+    }
+
     return (1);
 }
 
