@@ -18,7 +18,7 @@ void    Ft_Update_Image(t_data *Data)
 {
     Ft_Create_Projection_Img(Data);
     Ft_Cast_All_Rays(Data);
-    ft_Write_mini_map(Data);
+    // ft_Write_mini_map(Data);
     mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Projection_Img.Img, 0, 0);
     mlx_destroy_image(Data->Mlx, Data->Projection_Img.Img);
 }

@@ -99,7 +99,7 @@ void	ft_write_floor(t_data *Data, int i)
 
 	j = Data->End;
 	while (j < HIGH)
-		My_Mlx_Pixel_Put(&Data->Projection_Img, i * WALL_STRIP, j++, BLACK);
+		My_Mlx_Pixel_Put(&Data->Projection_Img, i * WALL_STRIP, j++, RED);
 }
 
 void	ft_write_ceiling(t_data *Data, int i)
