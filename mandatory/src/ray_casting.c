@@ -19,7 +19,7 @@ void Ft_Get_Virt_Hit(t_data *Data, double Angle, double *x, double *y)
 
 	if (!Data->IsFaceRight)
 		*x -= 1;
-	while ((*x > 0 && *x < WIDTH) && (*y < HIGH && *y > 0))
+	while ((*x > 0 && *x < Data->img_Width) && (*y < Data->img_High && *y > 0))
 	{
 		if (Ft_Is_A_Wall(Data, *x, *y))
 			break;
@@ -46,7 +46,7 @@ void Ft_Get_Horz_Hit(t_data *Data, double Angle, double *x, double *y)
 		xstep *= -1;
 	if (!Data->IsFaceDown)
 		*y -= 1;
-	while ((*x > 0 && *x < WIDTH) && (*y < HIGH && *y > 0))
+	while ((*x > 0 && *x < Data->img_Width) && (*y < Data->img_High && *y > 0))
 	{
 		if (Ft_Is_A_Wall(Data, *x, *y))
 			break;
@@ -198,7 +198,7 @@ void	ft_write_player_view(t_data *Data)
    			Angle -= 2 * PI;
 		else if (Angle < 0)
     		Angle += 2 * PI;
- 		Ft_Write_Line(Data, cos(Angle) * 30, sin(Angle) * 30, BLUE);
+ 		Ft_Write_Line(Data, cos(Angle) * 60 * Data->Factor_Scale_Map, sin(Angle) * 60 * Data->Factor_Scale_Map, BLUE);
 		Angle = Angle + ((double)FOV / (double)Data->Num_Rays);
 		x++;
 	}
@@ -229,17 +229,20 @@ void	ft_Write_mini_map(t_data *Data)
 
 	int		x;
 	int		y;
+	int		ratio;
 
+	ratio = CUBE_TILE * Data->Factor_Scale_Map;
  	y = 0;
-    while (y < Data->Col)
+    while (y < Data->Col && y * ratio < HIGH)
     {
         x = 0;
-        while (x < Data->Row)
+        while (x < Data->Row && x  * ratio < WIDTH)
         {
+			// printf("+=+++++++{x : %d | y : %d | ratio : %d}+++++++\n", x ,y, ratio);
             if (Data->Map[y][x] == '1')
-                Ft_Write_Cub(Data, x * CUBE_TILE * Data->Factor_Scale_Map, y * CUBE_TILE * Data->Factor_Scale_Map, BLACK);
+                Ft_Write_Cub(Data, x * ratio, y * ratio, WHITE);
             else
-                Ft_Write_Cub(Data, x * CUBE_TILE * Data->Factor_Scale_Map, y * CUBE_TILE * Data->Factor_Scale_Map, WHITE);
+                Ft_Write_Cub(Data, x * ratio, y * ratio, BLACK);
             x++;
         }
         y++;

@@ -28,7 +28,6 @@ void    Ft_Write_Texture_Img(t_data *Data)
     if (!Data->Texture_Img_2.Data)
         Ft_Free_All("Texture Data Load Fail\n", Data, 1);
 
-    Data->Texture_Img_3.Img = mlx_xpm_file_to_image(Data->Mlx, "./wall_5.xpm", &Data->Texture_Img_3.Width, &Data->Texture_Img_3.High);
     Data->Texture_Img_3.Img = mlx_xpm_file_to_image(Data->Mlx, "./textures/wall_3.xpm", &Data->Texture_Img_3.Width, &Data->Texture_Img_3.High);
     if (!Data->Texture_Img_3.Img)
         Ft_Free_All("Texture Image Load Fail\n", Data, 1);

@@ -58,8 +58,8 @@ typedef struct  s_data
 {
     int             i;
 
-    // unsigned short  img_Width;
-    // unsigned short  img_High;
+    unsigned short  img_Width;
+    unsigned short  img_High;
     unsigned short  Row;
     unsigned short  Col;
 

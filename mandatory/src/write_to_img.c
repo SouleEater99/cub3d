@@ -12,6 +12,8 @@ void    Ft_Write_Cub(t_data *Data, int x, int y, int Color)
         j = 0;
         while (j < (int)(CUBE_TILE * Data->Factor_Scale_Map))
         {
+
+			// printf("========+{x : %d | y : %d }=======\n", x + i ,y + j);
             My_Mlx_Pixel_Put(&Data->Projection_Img, i + x, j + y, Color);
             j++;
         }
