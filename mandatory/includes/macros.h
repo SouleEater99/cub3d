@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 10:27:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/19 18:12:39 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/20 09:19:00 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # define MAP_WIDTH          30      // just an example
 # define MAP_HEIGHT         30      // just an example
 
-# define CLR_SKY            0x69c9fa
-# define CLR_FLR            0xc28951
+// # define CLR_SKY            0x69c9fa
+// # define CLR_FLR            0xc28951
 
 # define CLR_EAW            0xcacaca
 # define CLR_SAN            0xf5f5f5

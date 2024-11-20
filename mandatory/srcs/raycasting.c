@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:56:36 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/19 12:49:49 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/20 09:15:20 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ void	draw_vert_cols(t_data *data, int x)
 	data->draw_end = data->line_height / 2 + SCREEN_HEIGHT / 2;
 	if (data->draw_end >= SCREEN_HEIGHT)
 		data->draw_end = SCREEN_HEIGHT - 1;
-	draw_vert_line(data->image, x, 0, data->draw_start, CLR_SKY);
+	draw_vert_line(data->image, x, 0, data->draw_start, data->ceiling_color); //CLR_SKY
 	draw_vert_line(data->image, x, data->draw_start, data->draw_end, color);
-	draw_vert_line(data->image, x, data->draw_end, SCREEN_HEIGHT, CLR_FLR);
+	draw_vert_line(data->image, x, data->draw_end, SCREEN_HEIGHT, data->floor_color); //CLR_FLR
 }
 
 void	calculate_side_dist_x_y(t_data *data)
