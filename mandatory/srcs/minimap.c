@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 14:31:22 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/19 12:48:16 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/20 09:49:54 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,16 +314,16 @@ void draw_map(t_data *data, t_image *image)
             // Check if the tile is within map bounds
             // if (map_x >= 0 && map_x < data->map_width && map_y >= 0 && map_y < data->map_height)
             if (map_x >= 0 && //map_x < data->map_width && 
-                map_y >= 0 && map_y < data->map_height && 
-                data->map[map_y] != NULL &&  // Check if row exists
-                map_x < data->map_line_len[map_y])
+                map_y >= 0 && map_y < data->map_.map_height && 
+                data->map_.map[map_y] != NULL &&  // Check if row exists
+                map_x < data->map_.map_line_len[map_y])
             {
                 double tile_x = map_x * TILE_SIZE * data->scale;
                 double tile_y = map_y * TILE_SIZE * data->scale;
                 
-                if (data->map[map_y][map_x] == '1')
+                if (data->map_.map[map_y][map_x] == '1')
                     draw_tile(data, image, tile_x, tile_y, 0x000000);
-                else if (data->map[map_y][map_x] == '0')
+                else if (data->map_.map[map_y][map_x] == '0')
                     draw_tile(data, image, tile_x, tile_y, 0xAAAAAA);
             }
         }

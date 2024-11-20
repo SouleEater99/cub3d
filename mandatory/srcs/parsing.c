@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/19 15:50:14 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/20 09:49:41 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,12 +297,12 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
         
         else if (colors_found < 2)
         {
-            int64_t *color_ptr = NULL;
+            int *color_ptr = NULL;
             
             if (!ft_strcmp("F", parts[0]))
-                color_ptr = &data->floor_color;
+                color_ptr = &data->map_.floor_color;
             else if (!ft_strcmp("C", parts[0]))
-                color_ptr = &data->ceiling_color;
+                color_ptr = &data->map_.ceiling_color;
             
             else
             {
@@ -354,22 +354,22 @@ bool validate_map(t_data *data)
     int i = -1;
     bool is_player_found = false;
 
-    while (++i < data->map_height)
+    while (++i < data->map_.map_height)
     {
-        data->map_line_len[i] = ft_strlen(data->map[i]);
-        if (i + 1 < data->map_height)
-            data->map_line_len[i] -= 1;
+        data->map_.map_line_len[i] = ft_strlen(data->map_.map[i]);
+        if (i + 1 < data->map_.map_height)
+            data->map_.map_line_len[i] -= 1;
         
         int j = -1;
-        while (++j < data->map_line_len[i])
+        while (++j < data->map_.map_line_len[i])
         {
-            if (!ft_strchr(SUPPORTED_CHARS, data->map[i][j]))
+            if (!ft_strchr(SUPPORTED_CHARS, data->map_.map[i][j]))
             {
                 print_error("Error: unsupported metadata (characters)!\n", __FILE__, __LINE__);
                 return (false);
             }
             
-            if (ft_strchr(PLAYER_DIR, data->map[i][j]))
+            if (ft_strchr(PLAYER_DIR, data->map_.map[i][j]))
             {
                 if (is_player_found)
                 {
@@ -378,9 +378,9 @@ bool validate_map(t_data *data)
                 }
                 data->player_x = j + 0.5; // in the center of the tile.
                 data->player_y = i + 0.5; // in the center of the tile.
-                data->player_dir = data->map[i][j];
+                data->player_dir = data->map_.map[i][j];
                 is_player_found = true;
-                data->map[i][j] = '0';
+                data->map_.map[i][j] = '0';
             }
         }
     }
@@ -470,7 +470,7 @@ int validate_map_borders(t_data *data, char **map, int height)
     int i = 0;
     int j = -1;
 
-    if (!check_first_last(data, map, data->map_start, data->map_height))
+    if (!check_first_last(data, map, data->map_.map_start, data->map_.map_height))
         return (0);
 
     // start from the second line to the line befor the last.
@@ -479,27 +479,27 @@ int validate_map_borders(t_data *data, char **map, int height)
         if (is_empty_line(map[i]))
             continue;
         j = -1;
-        while(++j < data->map_line_len[i] && ft_isspace(map[i][j]))
+        while(++j < data->map_.map_line_len[i] && ft_isspace(map[i][j]))
             ;
-        if (map[i][j] != '1' || map[i][data->map_line_len[i] - 1] != '1')
+        if (map[i][j] != '1' || map[i][data->map_.map_line_len[i] - 1] != '1')
         {
             print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-            ft_panic(i + data->map_start + 1, j + 1, map[i], clean_up, data);            
+            ft_panic(i + data->map_.map_start + 1, j + 1, map[i], clean_up, data);            
             return (0);
         }
         
-        while(j + 1 < data->map_line_len[i])
+        while(j + 1 < data->map_.map_line_len[i])
         {
             if ((map[i][j] == '0' && map[i][j + 1] == ' ') || (map[i][j] == ' ' && map[i][j + 1] == '0'))
             {
                 print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-                ft_panic(i + data->map_start + 1, j + 1, map[i], clean_up, data);                
+                ft_panic(i + data->map_.map_start + 1, j + 1, map[i], clean_up, data);                
                 return (0);
             }
-            if ((i + 1 < height && map[i][j] == '0' && j < data->map_line_len[i + 1] && map[i + 1][j] == ' ') || (map[i][j] == ' ' && i + 1 < height && map[i + 1][j] == '0'))
+            if ((i + 1 < height && map[i][j] == '0' && j < data->map_.map_line_len[i + 1] && map[i + 1][j] == ' ') || (map[i][j] == ' ' && i + 1 < height && map[i + 1][j] == '0'))
             {
                 print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-                ft_panic(i + data->map_start + 1, j + 1, map[i], clean_up, data);                
+                ft_panic(i + data->map_.map_start + 1, j + 1, map[i], clean_up, data);                
                 return (0);
             }
             j++;
@@ -540,12 +540,16 @@ int parse_map(t_data *data, int ac, char **av)
     while(current_line < height && is_empty_line(lines[current_line]))
         current_line++;
     
-    data->map_start = current_line;
-    data->map_height = height - current_line;
-    data->map = &lines[current_line];
+    // data->map_start = current_line;
+    // data->map_height = height - current_line;
+    // data->map = &lines[current_line];
+    
+    data->map_.map_start = current_line;
+    data->map_.map_height = height - current_line;
+    data->map_.map = &lines[current_line];
 
-    data->map_line_len = malloc(sizeof(int) * data->map_height);
-    if (!data->map_line_len)
+    data->map_.map_line_len = malloc(sizeof(int) * data->map_.map_height);
+    if (!data->map_.map_line_len)
     {
         free_array(lines);
         return (0);
@@ -558,7 +562,7 @@ int parse_map(t_data *data, int ac, char **av)
         return (0);
     }
 
-    if (!validate_map_borders(data, data->map, data->map_height))
+    if (!validate_map_borders(data, data->map_.map, data->map_.map_height))
     {
         free_array(lines);
         return (0);

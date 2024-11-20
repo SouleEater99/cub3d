@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:17:16 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/19 13:05:17 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/20 09:32:10 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ int mouse_events(int button, int x, int y, t_data *data)
             if (data->clicks % 2 != 0)
             {
                 data->scale = SCALE * 2;
-                data->rot_speed = ROT_SPEED * 2;
-                data->move_speed = MOVE_SPEED * 2;
+                data->rot_speed = ROT_SPEED * 5;
+                data->move_speed = MOVE_SPEED * 5;
                 data->player_radius = PLAYER_RADIUS;
                 data->minimap_radius = MINIMAP_RADIUS * 3.8;
                 data->minimap_x_center = MAP_MID_X;

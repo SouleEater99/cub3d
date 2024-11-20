@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:07:23 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/19 18:03:41 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/20 09:48:42 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ void go_left_right(t_data *data, int16_t mov_dir)
 	new_x = data->player_x + data->dir_y * data->move_speed * mov_dir;
     new_y = data->player_y - data->dir_x * data->move_speed * mov_dir;
 
-    printf("player at: [%lf][%lf] = [%c]\n", data->player_y, data->player_x, data->map[(int)data->player_y][(int)data->player_x]);
+    printf("player at: [%lf][%lf] = [%c]\n", data->player_y, data->player_x, data->map_.map[(int)data->player_y][(int)data->player_x]);
 
-    if (data->map[(int)data->player_y][(int)new_x] == '0')
+    if (data->map_.map[(int)data->player_y][(int)new_x] == '0')
         data->player_x = new_x;
 
-    if (data->map[(int)new_y][(int)data->player_x] == '0')
+    if (data->map_.map[(int)new_y][(int)data->player_x] == '0')
         data->player_y = new_y;
 }
 
@@ -62,15 +62,15 @@ void	go_up_down(t_data *data, int16_t mov_dir)
 	new_y = data->player_y + data->dir_y * data->move_speed * mov_dir;
 
 	// check each one separately for sliding/gliding effect.
-	printf("player at: [%lf][%lf] = [%c]\n", data->player_y, data->player_x, data->map[(int)data->player_y][(int)data->player_x]);
+	printf("player at: [%lf][%lf] = [%c]\n", data->player_y, data->player_x, data->map_.map[(int)data->player_y][(int)data->player_x]);
     
-    if (data->map[(int)data->player_y][(int)new_x] == '0')
+    if (data->map_.map[(int)data->player_y][(int)new_x] == '0')
         data->player_x = new_x;
 		
-    if (data->map[(int)new_y][(int)data->player_x] == '0')
+    if (data->map_.map[(int)new_y][(int)data->player_x] == '0')
 		data->player_y = new_y;
 	
-	printf("player will be at: [%lf][%lf] = [%c]\n", new_y, new_x, data->map[(int)new_y][(int)new_x]);
+	printf("player will be at: [%lf][%lf] = [%c]\n", new_y, new_x, data->map_.map[(int)new_y][(int)new_x]);
 	
 	// if (data->map[(int)new_y][(int)new_x] == '0')
 	// {

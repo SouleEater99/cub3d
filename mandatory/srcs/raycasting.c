@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:56:36 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/20 09:15:20 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/20 09:48:56 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ void	dda_algorithm(t_data *data)
 			data->map_y += data->step_y;
 			data->side = 1;
 		}
-		if (data->map_x < 0 || data->map_x >= data->map_line_len[data->map_y] || data->map_y < 0 // data->map_x >= data->map_width
-			|| data->map_y >= data->map_height)
+		if (data->map_x < 0 || data->map_x >= data->map_.map_line_len[data->map_y] || data->map_y < 0 // data->map_x >= data->map_width
+			|| data->map_y >= data->map_.map_height)
 			break ; // we hit the border walls.
-		if (data->map[data->map_y][data->map_x] == '1')
+		if (data->map_.map[data->map_y][data->map_x] == '1')
 			hit = 1; // break ; we hit a wall;
 	}
 }
@@ -74,9 +74,9 @@ void	draw_vert_cols(t_data *data, int x)
 	data->draw_end = data->line_height / 2 + SCREEN_HEIGHT / 2;
 	if (data->draw_end >= SCREEN_HEIGHT)
 		data->draw_end = SCREEN_HEIGHT - 1;
-	draw_vert_line(data->image, x, 0, data->draw_start, data->ceiling_color); //CLR_SKY
+	draw_vert_line(data->image, x, 0, data->draw_start, data->map_.ceiling_color); //CLR_SKY
 	draw_vert_line(data->image, x, data->draw_start, data->draw_end, color);
-	draw_vert_line(data->image, x, data->draw_end, SCREEN_HEIGHT, data->floor_color); //CLR_FLR
+	draw_vert_line(data->image, x, data->draw_end, SCREEN_HEIGHT, data->map_.floor_color); //CLR_FLR
 }
 
 void	calculate_side_dist_x_y(t_data *data)

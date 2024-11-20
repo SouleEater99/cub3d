@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 09:02:40 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/19 14:59:20 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/20 09:49:17 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void free_map(char **map)
 
 void clean_up(t_data *data)
 {
-	if (data->map_line_len)
-		free(data->map_line_len);
+	if (data->map_.map_line_len)
+		free(data->map_.map_line_len);
 		
 	// if (data->no_texture_path)
 	// 	free(data->no_texture_path);

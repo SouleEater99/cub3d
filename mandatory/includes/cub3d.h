@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/19 18:29:14 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/20 09:51:26 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct s_map
     int     map_height;
     int     map_width;
     int     map_start;
+    int     *map_line_len;
     
     char    *no_texture_path;
     char    *so_texture_path;
@@ -132,10 +133,6 @@ typedef struct {
     void        *win_ptr;
 
     t_map       map_;
-    char        **map;
-    int         map_height;
-    int         map_width;
-    int         *map_line_len;
 
     double      dir_x;   // player direction x position
     double      dir_y;   // player direction y position
@@ -184,16 +181,7 @@ typedef struct {
     char        *so_texture_path;
     char        *we_texture_path;
     char        *ea_texture_path;
-
-    // t_texture   *textures[4];
-
-    int         map_start;
-    // uint32_t    floor_color;
-    // uint32_t    ceiling_color;
-    int64_t     floor_color;
-    int64_t     ceiling_color;
-    // int         sky_color;
-
+    
     double      scale;
     int         minimap_radius;
     int         minimap_x_center;
@@ -210,6 +198,20 @@ typedef struct {
     int         shoot;
     int         switch_gun;
     int         frames_num;
+
+    // char        **map;
+    // int         map_height;
+    // int         map_width;
+    // int         *map_line_len;
+    // t_texture   *textures[4];
+
+    // int         map_start;
+    // int64_t     floor_color;
+    // int64_t     ceiling_color;
+    
+    // uint32_t    floor_color;
+    // uint32_t    ceiling_color;
+    // int         sky_color;
 } t_data;
 
 // functions signature
