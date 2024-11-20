@@ -45,6 +45,7 @@ void    Ft_Write_Texture_Img(t_data *Data)
 
 int main()
 {
+    
     t_data  *Data;
     char *Map[] = {
         "111111111111111111111111111111111111111111111",
