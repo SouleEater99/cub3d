@@ -22,8 +22,8 @@
 #include "./minilibx/minilibx-linux/mlx.h"
 #include "./minilibx/minilibx-linux/mlx_int.h"
 
-#define WIDTH           1800
-#define HIGH            1000
+#define WIDTH           800
+#define HIGH            600
 #define CUBE_TILE       64
 #define TEXTURE_TILE    64
 #define PLAYER_TILE     10
