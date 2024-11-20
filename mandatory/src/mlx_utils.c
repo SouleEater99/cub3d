@@ -23,9 +23,9 @@ int Ft_Is_Angle_Facing_Right(double angle)
 	return (0);
 }
 
-int Ft_Board_Protect(int Width, int High, double x, double  y)
+int Ft_Board_Protect(int Width, int High, int x, int  y)
 {
-	if ((x > 0 && x < Width) && (y > 0 && y < High))
+	if ((x >= 0 && x < Width) && (y >= 0 && y < High))
 		return (1);
 	return (0);
 }
@@ -33,7 +33,8 @@ int Ft_Board_Protect(int Width, int High, double x, double  y)
 
 int Ft_Is_A_Wall(t_data *Data, int x, int y)
 {
-	if (Ft_Board_Protect(Data->Width, Data->High, x, y) == 1)
+	// printf("x : %d | y : %d\n", x, y);
+	if (Ft_Board_Protect(Data->Row, Data->Col, x / CUBE_TILE, y / CUBE_TILE) == 1)
 		if (Data->Map[y / CUBE_TILE][x / CUBE_TILE] == '1')
 			return (1);
 	return (0);
@@ -80,7 +81,7 @@ void Ft_Write_Line(t_data *Data, int dx, int dy, int color)
 	Data->i = 0;
 	while (Data->i <= Data->Step)
 	{
-		if (Ft_Board_Protect(Data->Width, Data->High, x, y))
+		if (Ft_Board_Protect(WIDTH, HIGH, x, y))
 			My_Mlx_Pixel_Put(&Data->Projection_Img, x, y, color);
 		x += x_increment;
 		y += y_increment;

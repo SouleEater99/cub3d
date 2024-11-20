@@ -22,8 +22,8 @@
 #include "./minilibx/minilibx-linux/mlx.h"
 #include "./minilibx/minilibx-linux/mlx_int.h"
 
-#define WIDTH           800
-#define HIGH            600
+#define WIDTH           1800
+#define HIGH            1000
 #define CUBE_TILE       64
 #define TEXTURE_TILE    64
 #define PLAYER_TILE     10
@@ -56,8 +56,8 @@ typedef struct  s_data
 {
     int             i;
 
-    unsigned short  Width;
-    unsigned short  High;
+    // unsigned short  img_Width;
+    // unsigned short  img_High;
     unsigned short  Row;
     unsigned short  Col;
 
@@ -117,7 +117,7 @@ int     Ft_Get_Color(t_image *Img, int x, int y);
 void    Ft_Write_Line(t_data *Data, int dx, int dy, int color);
 int     Ft_Is_Angle_Facing_Down(double angle);
 int     Ft_Is_Angle_Facing_Right(double angle);
-int     Ft_Board_Protect(int Width, int High, double x, double  y);
+int     Ft_Board_Protect(int Width, int High, int x, int  y);
 int     Ft_Is_A_Wall(t_data *Data, int x, int y);
 int     Ft_Is_Player_Inside_Wall(t_data *Data);
 double	Ft_Normalize_Angle(double angle);

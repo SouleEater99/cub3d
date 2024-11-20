@@ -23,7 +23,7 @@ void    Ft_Write_Cub(t_data *Data, int x, int y, int Color)
 
 void    Ft_Create_Projection_Img(t_data *Data)
 {
-    Data->Projection_Img.Img = mlx_new_image(Data->Mlx, Data->Width, Data->High);
+    Data->Projection_Img.Img = mlx_new_image(Data->Mlx, WIDTH, HIGH);
     if (!Data->Projection_Img.Img)
         Ft_Free_All("Image Projection Image Fail\n", Data, 1);
     Data->Projection_Img.Data = mlx_get_data_addr(Data->Projection_Img.Img, &Data->Projection_Img.N_Bytes, &Data->Projection_Img.Lenght, &Data->Projection_Img.Endian);

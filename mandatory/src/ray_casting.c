@@ -19,7 +19,7 @@ void Ft_Get_Virt_Hit(t_data *Data, double Angle, double *x, double *y)
 
 	if (!Data->IsFaceRight)
 		*x -= 1;
-	while ((*x > 0 && *x < Data->Width) && (*y < Data->High && *y > 0))
+	while ((*x > 0 && *x < WIDTH) && (*y < HIGH && *y > 0))
 	{
 		if (Ft_Is_A_Wall(Data, *x, *y))
 			break;
@@ -46,7 +46,7 @@ void Ft_Get_Horz_Hit(t_data *Data, double Angle, double *x, double *y)
 		xstep *= -1;
 	if (!Data->IsFaceDown)
 		*y -= 1;
-	while ((*x > 0 && *x < Data->Width) && (*y < Data->High && *y > 0))
+	while ((*x > 0 && *x < WIDTH) && (*y < HIGH && *y > 0))
 	{
 		if (Ft_Is_A_Wall(Data, *x, *y))
 			break;
@@ -99,12 +99,12 @@ void	Ft_Write_Projection(t_data *Data, int i)
 	int		texture_offset_x;
 	int		texture_offset_y;
 
-	Data->Start = (Data->High / 2) - (Data->WallSliceHigh / 2);
+	Data->Start = (HIGH / 2) - (Data->WallSliceHigh / 2);
 	if (Data->Start < 0)
 		Data->Start = 0;
-	Data->End = (Data->High / 2) + (Data->WallSliceHigh / 2);
-	if (Data->End > Data->High)
-		Data->End = Data->High;
+	Data->End = (HIGH / 2) + (Data->WallSliceHigh / 2);
+	if (Data->End > HIGH)
+		Data->End = HIGH;
 	if (Data->IsHitVirt)
 		texture_offset_x = (int)Data->WallHitY % TEXTURE_TILE;
 	else
@@ -115,7 +115,7 @@ void	Ft_Write_Projection(t_data *Data, int i)
 	j = Data->Start;
 	while (j < Data->End)
 	{
-		int	DistanceFromTop = j + (Data->WallSliceHigh / 2) - (Data->High / 2);
+		int	DistanceFromTop = j + (Data->WallSliceHigh / 2) - (HIGH / 2);
 		texture_offset_y = DistanceFromTop * ((double)TEXTURE_TILE / Data->WallSliceHigh);
 		if ((texture_offset_x >= 0 && texture_offset_x < TEXTURE_TILE - 1) && (texture_offset_y >= 0 && texture_offset_y < TEXTURE_TILE - 1))
 		{
@@ -131,7 +131,7 @@ void	Ft_Write_Projection(t_data *Data, int i)
 		My_Mlx_Pixel_Put(&Data->Projection_Img,i * WALL_STRIP, j++, Data->color);
 	}
 	j = Data->End;
-	while (j < Data->High)
+	while (j < HIGH)
 		My_Mlx_Pixel_Put(&Data->Projection_Img, i * WALL_STRIP, j++, 0xFFFF00);
 }
 
