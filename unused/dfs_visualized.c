@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 08:46:41 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/20 09:55:00 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/20 10:02:19 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <stdio.h>
 
-#define CELL_SIZE   40
+#define CELL_SIZE   15
 #define WIN_WIDTH   800
 #define WIN_HEIGHT  600
 
@@ -87,9 +88,6 @@ int close_func(int keycode, t_visual *vis)
 int main() {
     t_visual vis;
 
-    vis.mlx = mlx_init();
-    vis.win = mlx_new_window(vis.mlx, WIN_WIDTH, WIN_HEIGHT, "DFS Visualization");
-
     vis.map = (char *[]) {
         "1111111111111",
         "1001000100101",
@@ -107,15 +105,23 @@ int main() {
     vis.map_width = 14;
     vis.map_height = 11;
 
+    vis.mlx = mlx_init();
+    // vis.win = mlx_new_window(vis.mlx, WIN_WIDTH, WIN_HEIGHT, "DFS Visualization");
+    vis.win = mlx_new_window(vis.mlx, vis.map_width * CELL_SIZE, vis.map_height * CELL_SIZE, "DFS Visualization");    
+
     vis.visited = malloc(vis.map_height * sizeof(int *));
     for (int i = 0; i < vis.map_height; i++)
     {
         vis.visited[i] = calloc(vis.map_width, sizeof(int));
     }
 
-    dfs(&vis, 5, 4);
+    if (dfs(&vis, 5, 4))
+        printf("valid map.\n");
+    else
+        printf("invalid map.\n");
 
-    for (int i = 0; i < vis.map_height; i++) {
+    for (int i = 0; i < vis.map_height; i++)
+    {
         free(vis.visited[i]);
     }
 
