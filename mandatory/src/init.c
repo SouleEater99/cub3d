@@ -12,8 +12,8 @@ t_data  *Init_Data()
     Data->Row = 45;
     Data->Col = 27;
     Data->Factor_Scale_Map  = 0.2;
-    Data->img_Width = Data->Row * (int)CUBE_TILE * Data->Factor_Scale_Map;
-    Data->img_High = Data->Col * (int)CUBE_TILE * Data->Factor_Scale_Map;
+    Data->img_Width = Data->Row * (int)CUBE_TILE;
+    Data->img_High = Data->Col * (int)CUBE_TILE;
     Data->X_Player = 5 * CUBE_TILE + (CUBE_TILE / 2);
     Data->Y_Player = 3 * CUBE_TILE + (CUBE_TILE / 2);
     Data->Player_Angle = PI;
