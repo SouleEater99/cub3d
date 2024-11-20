@@ -93,46 +93,72 @@ void	Ft_Get_Wall_Hit(t_data *Data, double Angle)
 	// printf("x_player : %f | y_player : %f\n", Data->X_Player, Data->Y_Player);
 }
 
-void	Ft_Write_Projection(t_data *Data, int i)
+void	ft_write_floor(t_data *Data, int i)
 {
-	int j = 0;
+	int	j;
+
+	j = Data->End;
+	while (j < HIGH)
+		My_Mlx_Pixel_Put(&Data->Projection_Img, i * WALL_STRIP, j++, BLACK);
+}
+
+void	ft_write_ceiling(t_data *Data, int i)
+{
+	int	j;
+
+	j = 0;
+	while (j < Data->Start)
+		My_Mlx_Pixel_Put(&Data->Projection_Img, i * WALL_STRIP, j++, WHITE);
+}
+
+void	ft_get_texture_color(t_data *Data, int j)
+{
 	int		texture_offset_x;
 	int		texture_offset_y;
 
+	if (Data->IsHitVirt)
+		texture_offset_x = (int)Data->WallHitY % TEXTURE_TILE;
+	else
+		texture_offset_x = (int)Data->WallHitX % TEXTURE_TILE;
+	int	DistanceFromTop = j + (Data->WallSliceHigh / 2) - (HIGH / 2);
+	texture_offset_y = DistanceFromTop * ((double)TEXTURE_TILE / Data->WallSliceHigh);
+	if ((texture_offset_x >= 0 && texture_offset_x < TEXTURE_TILE - 1) && (texture_offset_y >= 0 && texture_offset_y < TEXTURE_TILE - 1))
+	{
+		if (Data->IsHitVirt && Data->IsFaceRight)
+			Data->color = Ft_Get_Color(&Data->Texture_Img_1 ,texture_offset_x , texture_offset_y);
+		else if (Data->IsHitVirt && !Data->IsFaceRight)
+			Data->color = Ft_Get_Color(&Data->Texture_Img_2 ,texture_offset_x , texture_offset_y);
+		else if (!Data->IsHitVirt && Data->IsFaceDown)
+			Data->color = Ft_Get_Color(&Data->Texture_Img_3 ,texture_offset_x , texture_offset_y);
+		else if (!Data->IsHitVirt && !Data->IsFaceDown)
+			Data->color = Ft_Get_Color(&Data->Texture_Img_4 ,texture_offset_x , texture_offset_y);
+	}
+}
+
+void	ft_write_wall(t_data *Data, int i)
+{
+	int		j;
+
+	j = Data->Start;
+	while (j < Data->End)
+	{
+		ft_get_texture_color(Data, j);
+		// Data->color = CEILING;
+		My_Mlx_Pixel_Put(&Data->Projection_Img,i * WALL_STRIP, j++, Data->color);
+	}
+}
+
+void	Ft_Write_Projection(t_data *Data, int i)
+{
 	Data->Start = (HIGH / 2) - (Data->WallSliceHigh / 2);
 	if (Data->Start < 0)
 		Data->Start = 0;
 	Data->End = (HIGH / 2) + (Data->WallSliceHigh / 2);
 	if (Data->End > HIGH)
 		Data->End = HIGH;
-	if (Data->IsHitVirt)
-		texture_offset_x = (int)Data->WallHitY % TEXTURE_TILE;
-	else
-		texture_offset_x = (int)Data->WallHitX % TEXTURE_TILE;
-	j = 0;
-	while (j < Data->Start)
-		My_Mlx_Pixel_Put(&Data->Projection_Img, i * WALL_STRIP, j++, 0x0000FFFF);
-	j = Data->Start;
-	while (j < Data->End)
-	{
-		int	DistanceFromTop = j + (Data->WallSliceHigh / 2) - (HIGH / 2);
-		texture_offset_y = DistanceFromTop * ((double)TEXTURE_TILE / Data->WallSliceHigh);
-		if ((texture_offset_x >= 0 && texture_offset_x < TEXTURE_TILE - 1) && (texture_offset_y >= 0 && texture_offset_y < TEXTURE_TILE - 1))
-		{
-			if (Data->IsHitVirt && Data->IsFaceRight)
-				Data->color = Ft_Get_Color(&Data->Texture_Img_1 ,texture_offset_x , texture_offset_y);
-			else if (Data->IsHitVirt && !Data->IsFaceRight)
-				Data->color = Ft_Get_Color(&Data->Texture_Img_2 ,texture_offset_x , texture_offset_y);
-			else if (!Data->IsHitVirt && Data->IsFaceDown)
-				Data->color = Ft_Get_Color(&Data->Texture_Img_3 ,texture_offset_x , texture_offset_y);
-			else if (!Data->IsHitVirt && !Data->IsFaceDown)
-				Data->color = Ft_Get_Color(&Data->Texture_Img_4 ,texture_offset_x , texture_offset_y);
-		}
-		My_Mlx_Pixel_Put(&Data->Projection_Img,i * WALL_STRIP, j++, Data->color);
-	}
-	j = Data->End;
-	while (j < HIGH)
-		My_Mlx_Pixel_Put(&Data->Projection_Img, i * WALL_STRIP, j++, 0xFFFF00);
+	ft_write_ceiling(Data, i);
+	ft_write_wall(Data, i);	
+	ft_write_floor(Data, i);
 }
 
 void Ft_Cast_All_Rays(t_data *Data)

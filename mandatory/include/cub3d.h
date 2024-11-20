@@ -35,6 +35,8 @@
 #define YELLOW          0x00FFFF00
 #define BLUE            0x000000FF
 #define GREEN           0x0000FF00
+#define CEILING         0x00E11E1E
+#define FLOOR           0x00DC6400
 
 #ifndef PI
 #define PI              3.14
@@ -135,6 +137,10 @@ void    Ft_Write_Texture_Img(t_data *Data);
 void	ft_Write_mini_map(t_data *Data);
 void	ft_write_player(t_data *Data);
 void	ft_write_player_view(t_data *Data);
+void	ft_write_wall(t_data *Data, int i);
+void	ft_write_ceiling(t_data *Data, int i);
+void	ft_write_floor(t_data *Data, int i);
+void	ft_get_texture_color(t_data *Data, int j);
 
 
 #endif
