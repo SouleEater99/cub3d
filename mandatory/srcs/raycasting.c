@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:56:36 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/20 09:48:56 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:28:14 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ void	draw_vert_cols(t_data *data, int x)
 	// printf("%lf\n", data->perp_wall_dist);
 	
 	data->line_height = (int)(SCREEN_HEIGHT / data->perp_wall_dist);
-	data->draw_start = -data->line_height / 2 + SCREEN_HEIGHT / 2;
+	data->draw_start = -data->line_height / 2 + SCREEN_HEIGHT / 2 + data->mouse_y - SCREEN_HEIGHT / 2;
 	if (data->draw_start < 0)
 		data->draw_start = 0;
-	data->draw_end = data->line_height / 2 + SCREEN_HEIGHT / 2;
+	data->draw_end = data->line_height / 2 + SCREEN_HEIGHT / 2 + data->mouse_y - SCREEN_HEIGHT / 2;
 	if (data->draw_end >= SCREEN_HEIGHT)
 		data->draw_end = SCREEN_HEIGHT - 1;
 	draw_vert_line(data->image, x, 0, data->draw_start, data->map_.ceiling_color); //CLR_SKY
