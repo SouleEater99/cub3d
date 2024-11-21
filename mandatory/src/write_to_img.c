@@ -109,7 +109,7 @@ void	ft_Write_mini_map(t_data *Data)
     }
 	ft_write_player(Data);
     // ft_write_player_wall_hit(Data);
-	// ft_write_player_view(Data);
+	ft_write_player_view(Data);
 
 }
 
