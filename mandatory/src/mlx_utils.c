@@ -35,8 +35,13 @@ int Ft_Is_A_Wall(t_data *Data, int x, int y)
 {
 	// printf("x : %d | y : %d\n", x, y);
 	if (Ft_Board_Protect(Data->Row, Data->Col, x / CUBE_TILE, y / CUBE_TILE) == 1)
+	{
 		if (Data->Map[y / CUBE_TILE][x / CUBE_TILE] == '1')
 			return (1);
+		else if (Data->Map[y / CUBE_TILE][x / CUBE_TILE] == 'D' && !Data->door.is_open)
+			return (1);
+
+	} 
 	return (0);
 }
 
@@ -47,7 +52,7 @@ int	Ft_Is_Player_Inside_Wall(t_data *Data)
 
 	x = Data->X_Player + (cos(Data->Player_Angle) * Data->Move_Step);
 	y = Data->Y_Player + (sin(Data->Player_Angle) * Data->Move_Step);
-	if (Data->Map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == '1')
+	if (Data->Map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == '1' || Data->Map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == 'D')
 		return (0);
 	Data->X_Player = x;
 	Data->Y_Player = y;

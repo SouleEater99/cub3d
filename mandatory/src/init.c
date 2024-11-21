@@ -9,8 +9,8 @@ t_data  *Init_Data()
     if (!Data)
         return (NULL);
     Data = memset(Data, 0, sizeof(t_data));
-    Data->Row = 45;
-    Data->Col = 27;
+    Data->Row = 22;
+    Data->Col = 10;
     Data->Factor_Scale_Map  = 0.2;
     Data->img_Width = Data->Row * (int)CUBE_TILE;
     Data->img_High = Data->Col * (int)CUBE_TILE;

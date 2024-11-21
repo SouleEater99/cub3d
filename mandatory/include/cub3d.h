@@ -22,8 +22,8 @@
 #include "./minilibx/minilibx-linux/mlx.h"
 #include "./minilibx/minilibx-linux/mlx_int.h"
 
-#define WIDTH           800
-#define HIGH            600
+#define WIDTH           1800
+#define HIGH            800
 #define CUBE_TILE       64
 #define TEXTURE_TILE    64
 #define PLAYER_TILE     10
@@ -41,6 +41,13 @@
 #ifndef PI
 #define PI              3.14
 #endif
+
+typedef struct s_door
+{
+    int x;
+    int y;
+    int is_open;
+}t_door;
 
 
 typedef struct  s_image
@@ -83,7 +90,8 @@ typedef struct  s_data
     int             Start;
     int             End;
 
-    double          Player_Angle;
+    t_door          door;
+
     double          X_Player;
     double          Y_Player;
     int             Turn_Direction;
@@ -92,6 +100,11 @@ typedef struct  s_data
     double          Move_Speed;
     double          Move_Step;
     double          Step;
+    double          Player_Angle;
+    double          player_distance;
+    double          player_wallhit_x;
+    double          player_wallhit_y;
+    
 
     double          Factor_Scale_Map;
 
