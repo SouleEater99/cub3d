@@ -40,7 +40,8 @@ int Ft_Is_A_Wall(t_data *Data, int x, int y)
 			return (1);
 		else if (Data->Map[y / CUBE_TILE][x / CUBE_TILE] == 'D' && !Data->door.is_open)
 			return (1);
-
+		else if (Data->flag == 1 && Data->Map[y / CUBE_TILE][x / CUBE_TILE] == 'D' && Data->door.is_open)
+			return (1);
 	} 
 	return (0);
 }
@@ -52,7 +53,7 @@ int	Ft_Is_Player_Inside_Wall(t_data *Data)
 
 	x = Data->X_Player + (cos(Data->Player_Angle) * Data->Move_Step);
 	y = Data->Y_Player + (sin(Data->Player_Angle) * Data->Move_Step);
-	if (Data->Map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == '1' || Data->Map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == 'D')
+	if (Data->Map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == '1' || (Data->Map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == 'D' && !Data->door.is_open))
 		return (0);
 	Data->X_Player = x;
 	Data->Y_Player = y;

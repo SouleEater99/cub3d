@@ -108,6 +108,27 @@ void	ft_Write_mini_map(t_data *Data)
         y++;
     }
 	ft_write_player(Data);
-	ft_write_player_view(Data);
+    // ft_write_player_wall_hit(Data);
+	// ft_write_player_view(Data);
 
+}
+
+void    ft_write_player_wall_hit(t_data  *Data)
+{
+	Data->IsFaceDown = Ft_Is_Angle_Facing_Down(Data->Player_Angle);
+	Data->IsFaceRight = Ft_Is_Angle_Facing_Right(Data->Player_Angle);
+	Ft_Get_Wall_Hit(Data, Data->Player_Angle);
+	if (Ft_Board_Protect(Data->Row, Data->Col, Data->WallHitX / CUBE_TILE, Data->WallHitY / CUBE_TILE) == 1)
+    {
+        if (Data->Map[(int)Data->WallHitY / CUBE_TILE][(int)Data->WallHitX / CUBE_TILE] == 'D' && !Data->door.is_open)
+            Data->door.is_open = 1;
+        else  if (Data->Map[(int)Data->WallHitY / CUBE_TILE][(int)Data->WallHitX / CUBE_TILE] == 'D' && Data->door.is_open)
+        {
+            Data->door.is_open = 0;
+        }
+            // printf("===========\n");
+        printf("========== { index:  %c | is_open : %d } ==========\n",Data->Map[(int)Data->WallHitY / CUBE_TILE][(int)Data->WallHitX / CUBE_TILE], Data->door.is_open);
+ 		// Ft_Write_Line(Data,(Data->WallHitX -  Data->X_Player) * Data->Factor_Scale_Map , (Data->WallHitY - Data->Y_Player)* Data->Factor_Scale_Map, BLUE);
+    }
+        
 }

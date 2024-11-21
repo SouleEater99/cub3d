@@ -176,6 +176,7 @@ void Ft_Cast_All_Rays(t_data *Data)
     		Angle += 2 * PI;
 	    Data->IsFaceDown = Ft_Is_Angle_Facing_Down(Angle);
 	    Data->IsFaceRight = Ft_Is_Angle_Facing_Right(Angle);
+		Data->flag = 0;
 		Ft_Get_Wall_Hit(Data, Angle);
 		Ft_Write_Projection(Data, i);
         // Ft_Write_Line(Data, (Data->WallHitX - Data->X_Player) * Data->Factor_Scale_Map, (Data->WallHitY - Data->Y_Player) * Data->Factor_Scale_Map, RED);
@@ -183,7 +184,3 @@ void Ft_Cast_All_Rays(t_data *Data)
 		i++;
 	}
 }
-
-
-
-

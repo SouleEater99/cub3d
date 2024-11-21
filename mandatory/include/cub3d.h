@@ -91,6 +91,7 @@ typedef struct  s_data
     int             End;
 
     t_door          door;
+    int             flag;
 
     double          X_Player;
     double          Y_Player;
@@ -154,6 +155,7 @@ void	ft_write_wall(t_data *Data, int i);
 void	ft_write_ceiling(t_data *Data, int i);
 void	ft_write_floor(t_data *Data, int i);
 void	ft_get_texture_color(t_data *Data, int j);
+void    ft_write_player_wall_hit(t_data  *Data);
 
 
 #endif
