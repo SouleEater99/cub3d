@@ -25,6 +25,11 @@ int Ft_Key_Press(int key, void *Param)
             Data->Factor_Scale_Map = 1;
         mlx_clear_window(Data->Mlx, Data->Mlx_Win);
     }
+    else  if (key == XK_e)
+    {
+        Data->flag = 1;
+        ft_write_player_wall_hit(Data);
+    }
     else if (key == XK_Escape)
         Ft_Free_All(NULL, Data, 0);
     return (0);

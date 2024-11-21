@@ -42,6 +42,13 @@
 #define PI              3.14159265358979323846
 #endif
 
+typedef struct s_door
+{
+    int x;
+    int y;
+    int is_open;
+}t_door;
+
 
 typedef struct  s_image
 {
@@ -83,7 +90,9 @@ typedef struct  s_data
     int             Start;
     int             End;
 
-    double          Player_Angle;
+    t_door          door;
+    int             flag;
+
     double          X_Player;
     double          Y_Player;
     int             Turn_Direction;
@@ -92,6 +101,11 @@ typedef struct  s_data
     double          Move_Speed;
     double          Move_Step;
     double          Step;
+    double          Player_Angle;
+    double          player_distance;
+    double          player_wallhit_x;
+    double          player_wallhit_y;
+    
 
     double          Factor_Scale_Map;
 
@@ -141,6 +155,7 @@ void	ft_write_wall(t_data *Data, int i);
 void	ft_write_ceiling(t_data *Data, int i);
 void	ft_write_floor(t_data *Data, int i);
 void	ft_get_texture_color(t_data *Data, int j);
+void    ft_write_player_wall_hit(t_data  *Data);
 
 
 #endif
