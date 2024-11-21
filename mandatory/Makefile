@@ -6,7 +6,7 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 12:57:30 by aelkheta          #+#    #+#              #
-#    Updated: 2024/11/19 12:50:35 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/11/21 09:59:33 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ endif
 
 SRC_DIR := ./srcs
 NAME := cub3d
-SRCS := $(SRC_DIR)/cub3d.c $(SRC_DIR)/images.c $(SRC_DIR)/raycasting.c $(SRC_DIR)/init_utiles.c $(SRC_DIR)/key_events.c $(SRC_DIR)/release_res.c $(SRC_DIR)/parsing.c $(SRC_DIR)/errors.c $(SRC_DIR)/minimap.c $(SRC_DIR)/animation.c
+SRCS := $(SRC_DIR)/cub3d.c $(SRC_DIR)/images.c $(SRC_DIR)/raycasting.c $(SRC_DIR)/init_utiles.c $(SRC_DIR)/key_events.c $(SRC_DIR)/release_res.c $(SRC_DIR)/parsing.c $(SRC_DIR)/errors.c $(SRC_DIR)/minimap.c $(SRC_DIR)/animation.c $(SRC_DIR)/mouse_hook.c
 OBJS := $(SRCS:%.c=%.o)
 
 all: $(NAME)

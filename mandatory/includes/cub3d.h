@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/20 06:44:44 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/21 10:27:51 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,12 @@ typedef struct {
     int         switch_gun;
     int         frames_num;
 
+    int         mouse_x;
+    int         mouse_y;
+	double      sensitivity;
+    double      rot_angle;
+    int16_t     rot_dir;
+
     // char        **map;
     // int         map_height;
     // int         map_width;
@@ -236,7 +242,7 @@ t_image     *create_image(t_data *data);
 void        raycasting(t_data *data);
 
 void        init_game(t_data *data);
-int         init_map(t_data *data);
+// int         init_map(t_data *data);
 
 void        free_array(char **arr);
 int         key_press(int keycode, t_data *data);
@@ -266,5 +272,7 @@ void        render_sprites(t_data *data);
 void        render_sprites_to_image(t_image *image, t_image *sprite_image, int x, int y);
 
 // void        std_error(char *error);
+
+void        mouse_hooks(t_data *data);
 
 # endif // CUB3D_H

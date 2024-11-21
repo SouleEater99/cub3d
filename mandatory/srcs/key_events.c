@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:17:16 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/20 09:32:10 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/21 10:06:10 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,8 @@ int	game_loop(t_data *data)
     // Put image to window (only once after all rendering tasks)
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->image->img_ptr, 0, 0);
     
+    mouse_hooks(data);
+
 	return (0);
 }
 

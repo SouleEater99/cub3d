@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:07:23 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/20 09:48:42 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/21 10:27:18 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,17 @@ void rotate_left_right(t_data *data, int16_t rot_dir)
 	double	old_dir_x;
 	double	old_plane_x;
 
+	data->rot_dir = rot_dir;
+
+	data->rot_angle = data->rot_speed * rot_dir;// + (data->mouse_x + data->sensitivity * 100);
+
 	old_dir_x = data->dir_x;
-	data->dir_x = data->dir_x * cos(data->rot_speed * rot_dir) - data->dir_y
-		* sin(data->rot_speed * rot_dir);
-	data->dir_y = old_dir_x * sin(data->rot_speed * rot_dir) + data->dir_y
-		* cos(data->rot_speed * rot_dir);
+	data->dir_x = data->dir_x * cos(data->rot_angle) - data->dir_y * sin(data->rot_angle);
+	data->dir_y = old_dir_x * sin(data->rot_angle) + data->dir_y * cos(data->rot_angle);
+	
 	old_plane_x = data->plane_x;
-	data->plane_x = data->plane_x * cos(data->rot_speed * rot_dir) - data->plane_y
-		* sin(data->rot_speed * rot_dir);
-	data->plane_y = old_plane_x * sin(data->rot_speed * rot_dir) + data->plane_y
-		* cos(data->rot_speed * rot_dir);
+	data->plane_x = data->plane_x * cos(data->rot_angle) - data->plane_y * sin(data->rot_angle);
+	data->plane_y = old_plane_x * sin(data->rot_angle) + data->plane_y * cos(data->rot_angle);
 }
 
 void	go_up_down(t_data *data, int16_t mov_dir)

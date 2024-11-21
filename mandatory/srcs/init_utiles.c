@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 09:05:54 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/20 09:49:06 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/21 10:23:24 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,8 @@ void	init_game(t_data *data)
 	data->minimap_radius = MINIMAP_RADIUS;
 	data->minimap_x_center = MINIMAP_MID_X;
 	data->minimap_y_center = MINIMAP_MID_Y;
+
+	data->sensitivity = 0.2;
 
 	// data->map_width = MAP_WIDTH;
 	// data->map_height = MAP_HEIGHT;

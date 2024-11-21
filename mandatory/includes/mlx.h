@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 09:12:56 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/25 11:43:36 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/21 10:08:46 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,7 +328,7 @@ int		mlx_mouse_move(void *win_ptr, int x, int y);
 ** @param	int  *y			the pointer to write the y location to;
 ** @return	int				has no return value (bc).
 */
-int		mlx_mouse_get_pos(void *win_ptr, int *x, int *y);
+int		mlx_mouse_get_pos(void *mlx_ptr, void *win_ptr, int *x, int *y);
 
 
 
