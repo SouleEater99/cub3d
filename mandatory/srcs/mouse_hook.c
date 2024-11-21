@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 09:59:05 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/21 10:43:30 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:43:21 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void mouse_hooks(t_data *data)
 
     if (x != data->mouse_x)
     {
-        data->sensitivity = 0.006;
+        data->sensitivity = 0.0025;
         
         // if (data->mouse_x - x < 0)
             // delta_x = -delta_x;

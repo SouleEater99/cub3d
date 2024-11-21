@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 11:59:35 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/19 18:29:48 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:43:33 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void render_sprites(t_data *data)
     static int frame = 0;
     static int shoot = 0;
     static int frame_counter = 0;
-    int frame_delay = 2;
+    int frame_delay = 12;
 
     t_image *img = data->image;
     t_image sprite_image = data->player.frames[0];
