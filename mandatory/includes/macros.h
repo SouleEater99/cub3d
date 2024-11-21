@@ -79,8 +79,8 @@
     // # define L_KEY          65361
     
 
-    # define MOVE_SPEED     0.01    // player speed
-    # define ROT_SPEED      0.01    // Rotation speed (in radians)
+    # define MOVE_SPEED     0.08    // player speed
+    # define ROT_SPEED      0.06    // Rotation speed (in radians)
 
     // # define MOVE_SPEED     0.2    // player speed
     // # define ROT_SPEED      0.08    // Rotation speed (in radians)

@@ -77,7 +77,7 @@ void render_sprites(t_data *data)
     static int frame = 0;
     static int shoot = 0;
     static int frame_counter = 0;
-    int frame_delay = 12;
+    int frame_delay = 2;
 
     t_image *img = data->image;
     t_image sprite_image = data->player.frames[0];
