@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/20 08:34:11 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/21 09:04:54 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -446,8 +446,8 @@ void ft_panic(int line_num, int col_num, const char *line, void (*clean_func)(t_
     
     if (clean_func)
         clean_func(data);
+    exit(EXIT_FAILURE);
     // print_str("▲", col_num);
-    // exit(EXIT_FAILURE);
 }
 
 /// @brief check the first line and the last one if all ones
@@ -546,6 +546,11 @@ int validate_map_borders(t_data *data, char **map, int height)
         print_error("Error: map is not surrounded by walls!\n", __FILE__, __LINE__);
         exit (1);
     }
+
+    i = -1;
+    while(++i < data->map_.map_height)
+        free(visited[i]);
+    free(visited);
 
     return (1);
 }
