@@ -15,6 +15,8 @@ void    Ft_Free_All(char *Msg, t_data *Data, int Exit_Status)
             mlx_destroy_image(Data->Mlx, Data->Texture_Img_3.Img);
         if (Data->Texture_Img_4.Img)
             mlx_destroy_image(Data->Mlx, Data->Texture_Img_4.Img);
+        if (Data->Texture_Img_5.Img)
+            mlx_destroy_image(Data->Mlx, Data->Texture_Img_5.Img);
         if (Data->Mlx_Win)
             mlx_destroy_window(Data->Mlx , Data->Mlx_Win);
         if (Data->Mlx)

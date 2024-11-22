@@ -116,6 +116,7 @@ typedef struct  s_data
     t_image         Texture_Img_2;
     t_image         Texture_Img_3;
     t_image         Texture_Img_4;
+    t_image         Texture_Img_5;
     int             Start_Player_X;
     int             Start_Player_Y;
     int             Player_Offset;

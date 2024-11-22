@@ -124,7 +124,9 @@ void	ft_get_texture_color(t_data *Data, int j)
 	texture_offset_y = DistanceFromTop * ((double)TEXTURE_TILE / Data->WallSliceHigh);
 	if ((texture_offset_x >= 0 && texture_offset_x < TEXTURE_TILE - 1) && (texture_offset_y >= 0 && texture_offset_y < TEXTURE_TILE - 1))
 	{
-		if (Data->IsHitVirt && Data->IsFaceRight)
+		if (Data->Map[(int)Data->WallHitY / CUBE_TILE][(int)Data->WallHitX / CUBE_TILE] == 'D')
+			Data->color = Ft_Get_Color(&Data->Texture_Img_5 ,texture_offset_x , texture_offset_y);
+		else if (Data->IsHitVirt && Data->IsFaceRight)
 			Data->color = Ft_Get_Color(&Data->Texture_Img_1 ,texture_offset_x , texture_offset_y);
 		else if (Data->IsHitVirt && !Data->IsFaceRight)
 			Data->color = Ft_Get_Color(&Data->Texture_Img_2 ,texture_offset_x , texture_offset_y);

@@ -41,6 +41,12 @@ void    Ft_Write_Texture_Img(t_data *Data)
     Data->Texture_Img_4.Data = mlx_get_data_addr(Data->Texture_Img_4.Img, &Data->Texture_Img_4.N_Bytes, &Data->Texture_Img_4.Lenght, &Data->Texture_Img_4.Endian);
     if (!Data->Texture_Img_4.Data)
         Ft_Free_All("Texture Data Load Fail\n", Data, 1);
+    Data->Texture_Img_5.Img = mlx_xpm_file_to_image(Data->Mlx, "./textures/1.xpm", &Data->Texture_Img_5.Width, &Data->Texture_Img_5.High);
+    if (!Data->Texture_Img_5.Img)
+        Ft_Free_All("Texture Image Load Fail\n", Data, 1);
+    Data->Texture_Img_5.Data = mlx_get_data_addr(Data->Texture_Img_5.Img, &Data->Texture_Img_5.N_Bytes, &Data->Texture_Img_5.Lenght, &Data->Texture_Img_5.Endian);
+    if (!Data->Texture_Img_5.Data)
+        Ft_Free_All("Texture Data Load Fail\n", Data, 1);
 }
 
 int main()
