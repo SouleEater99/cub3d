@@ -51,6 +51,20 @@ void	dda_algorithm(t_data *data)
 	}
 }
 
+int apply_shadow(int color, int shadow_factor)
+{
+	int r = color >> 16 & 0xFF;
+	int g = color >> 8 & 0xFF;
+	int b = color & 0xFF;
+
+
+	r = (int)(r * shadow_factor);
+	g = (int)(g * shadow_factor);
+	b = (int)(b * shadow_factor);
+
+	return (r << 16 | (g << 8) | b);
+}
+
 void	draw_vert_cols(t_data *data, int x)
 {
 	int	color;
@@ -65,6 +79,9 @@ void	draw_vert_cols(t_data *data, int x)
 	else
 		color = CLR_SAN;
 
+	double shadow_factor = fmax(0.1, 1.0 / (data->perp_wall_dist + 1.0)); // Calculate shadow factor
+
+	color = apply_shadow(color, shadow_factor);
 	// printf("%lf\n", data->perp_wall_dist);
 	
 	data->line_height = (int)(SCREEN_HEIGHT / data->perp_wall_dist);
