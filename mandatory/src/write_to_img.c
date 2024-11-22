@@ -134,7 +134,7 @@ void    ft_write_player_wall_hit(t_data  *Data)
 	Ft_Get_Wall_Hit(Data, Data->Player_Angle);
 	if (Ft_Board_Protect(Data->Row, Data->Col, Data->WallHitX / CUBE_TILE, Data->WallHitY / CUBE_TILE) == 1)
     {
-        if (Data->Map[(int)Data->WallHitY / CUBE_TILE][(int)Data->WallHitX / CUBE_TILE] == 'D')
+        if (Data->Map[(int)Data->WallHitY / CUBE_TILE][(int)Data->WallHitX / CUBE_TILE] == 'D' && Data->Distance < WALL_DISTANCE)
         {
             Data->door_index = ft_get_door_index(Data, Data->WallHitX / CUBE_TILE, Data->WallHitY / CUBE_TILE);
             if (Data->door_index < 0)
