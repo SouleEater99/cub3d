@@ -109,8 +109,22 @@ void	ft_Write_mini_map(t_data *Data)
     }
 	ft_write_player(Data);
     // ft_write_player_wall_hit(Data);
-	// ft_write_player_view(Data);
+	ft_write_player_view(Data);
 
+}
+
+int     ft_get_door_index(t_data *Data, int x, int y)
+{
+    int i;
+
+    i = 0;
+    while (i < Data->n_door)
+    {
+        if (Data->door[i].x == x && Data->door[i].y == y)
+            return (i);
+        i++;
+    }
+    return (0);
 }
 
 void    ft_write_player_wall_hit(t_data  *Data)
@@ -120,14 +134,18 @@ void    ft_write_player_wall_hit(t_data  *Data)
 	Ft_Get_Wall_Hit(Data, Data->Player_Angle);
 	if (Ft_Board_Protect(Data->Row, Data->Col, Data->WallHitX / CUBE_TILE, Data->WallHitY / CUBE_TILE) == 1)
     {
-        if (Data->Map[(int)Data->WallHitY / CUBE_TILE][(int)Data->WallHitX / CUBE_TILE] == 'D' && !Data->door.is_open)
-            Data->door.is_open = 1;
-        else  if (Data->Map[(int)Data->WallHitY / CUBE_TILE][(int)Data->WallHitX / CUBE_TILE] == 'D' && Data->door.is_open)
+        if (Data->Map[(int)Data->WallHitY / CUBE_TILE][(int)Data->WallHitX / CUBE_TILE] == 'D')
         {
-            Data->door.is_open = 0;
+            Data->door_index = ft_get_door_index(Data, Data->WallHitX / CUBE_TILE, Data->WallHitY / CUBE_TILE);
+            if (Data->door_index < 0)
+                Ft_Free_All("Door_index Fail \n", Data, 1);
+            if (!Data->door[Data->door_index].is_open)
+                Data->door[Data->door_index].is_open = 1;
+            else if (Data->door[Data->door_index].is_open)
+                Data->door[Data->door_index].is_open = 0;
+            printf("========== { index:  %c | is_open : %d } ==========\n",Data->Map[(int)Data->WallHitY / CUBE_TILE][(int)Data->WallHitX / CUBE_TILE], Data->door[Data->door_index].is_open);
         }
             // printf("===========\n");
-        printf("========== { index:  %c | is_open : %d } ==========\n",Data->Map[(int)Data->WallHitY / CUBE_TILE][(int)Data->WallHitX / CUBE_TILE], Data->door.is_open);
  		// Ft_Write_Line(Data,(Data->WallHitX -  Data->X_Player) * Data->Factor_Scale_Map , (Data->WallHitY - Data->Y_Player)* Data->Factor_Scale_Map, BLUE);
     }
         

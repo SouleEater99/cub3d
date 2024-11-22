@@ -1,6 +1,19 @@
 
 #include "../include/cub3d.h"
 
+void    ft_init_door(t_data *Data)
+{
+    Data->n_door = 3;
+    Data->door = (t_door *)malloc(sizeof(t_door) * Data->n_door);
+    Data->door   = memset(Data->door, 0, sizeof(t_door) * Data->n_door);
+    Data->door[0].x = 8;
+    Data->door[0].y = 1;
+    Data->door[1].x = 16;
+    Data->door[1].y = 4;
+    Data->door[2].x = 8;
+    Data->door[2].y = 5;
+}
+
 t_data  *Init_Data()
 {
     t_data *Data;

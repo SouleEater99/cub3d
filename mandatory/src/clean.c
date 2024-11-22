@@ -5,6 +5,8 @@ void    Ft_Free_All(char *Msg, t_data *Data, int Exit_Status)
 {
     if (Data)
     {
+        if (Data->door)
+            free(Data->door);
         if (Data->Texture_Img_1.Img)
             mlx_destroy_image(Data->Mlx, Data->Texture_Img_1.Img);
         if (Data->Texture_Img_2.Img)
