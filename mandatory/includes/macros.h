@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 10:27:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/21 19:41:50 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/23 15:44:53 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@
     // # define L_KEY          65361
     
 
-    # define MOVE_SPEED     0.04    // player speed
+    # define MOVE_SPEED     0.015    // player speed
     # define ROT_SPEED      0.02    // Rotation speed (in radians)
 
     // # define MOVE_SPEED     0.2    // player speed

@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 13:04:03 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/21 10:27:51 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/23 14:04:33 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 // uint16_t lala;
 // int64_t tata;
 // uint_least64_t fafa;
-// # define and &&
 
 #define BRED "\e[1;31m"
 #define BGRN "\e[1;32m"

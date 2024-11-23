@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 09:59:05 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/21 19:43:21 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/23 15:43:25 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ void mouse_hooks(t_data *data)
     int delta_x = data->mouse_x - x;
 
     printf("%d\n", data->mouse_x - x);
+
+    // if (x < 0 || x > SCREEN_WIDTH)
+    //     return ;
 
     if (x != data->mouse_x)
     {
