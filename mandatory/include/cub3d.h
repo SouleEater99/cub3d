@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/23 11:57:08 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/23 12:57:03 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 #define PLAYER_TILE     10
 #define FOV             (66 * (PI / 180))
 #define WALL_STRIP      1
+#define WALL_DISTANCE   300
 #define BLACK           0x00000000
 #define WHITE           0x00FFFFFF
 #define RED             0x00FF0000
@@ -90,7 +91,9 @@ typedef struct  s_data
     int             start;
     int             end;
 
-    t_door          door;
+    t_door          *door;
+    int             n_door;
+    int             door_index;
     int             flag;
 
     double          x_player;
@@ -114,10 +117,10 @@ typedef struct  s_data
     t_image         texture_img_2;
     t_image         texture_img_3;
     t_image         texture_img_4;
+    t_image         texture_img_5;
     int             start_player_x;
     int             start_player_y;
     int             player_offset;
-
 }   t_data;
 
 
@@ -156,6 +159,7 @@ void	ft_write_ceiling(t_data *data, int i);
 void	ft_write_floor(t_data *data, int i);
 void	ft_get_texture_color(t_data *data, int j);
 void    ft_write_player_wall_hit(t_data  *data);
-
+void    ft_init_door(t_data *data);
+int     ft_get_door_index(t_data *data, int x, int y);
 
 #endif

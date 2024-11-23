@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:00 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/23 11:56:40 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/23 12:14:45 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,17 @@ void    ft_write_texture_img(t_data *data)
     if (!data->texture_img_3.img_data)
         ft_free_all("Texture data Load Fail\n", data, 1);
 
-    data->texture_img_4.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/4.xpm", &data->texture_img_4.width, &data->texture_img_4.height);
+    data->texture_img_4.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/wall_4.xpm", &data->texture_img_4.width, &data->texture_img_4.height);
     if (!data->texture_img_4.img_ptr)
         ft_free_all("Texture Image Load Fail\n", data, 1);
     data->texture_img_4.img_data = mlx_get_data_addr(data->texture_img_4.img_ptr, &data->texture_img_4.bits_per_pixel, &data->texture_img_4.size_line, &data->texture_img_4.endian);
     if (!data->texture_img_4.img_data)
+        ft_free_all("Texture data Load Fail\n", data, 1);
+    data->texture_img_5.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/1.xpm", &data->texture_img_5.width, &data->texture_img_5.height);
+    if (!data->texture_img_5.img_ptr)
+        ft_free_all("Texture Image Load Fail\n", data, 1);
+    data->texture_img_5.img_data = mlx_get_data_addr(data->texture_img_5.img_ptr, &data->texture_img_5.bits_per_pixel, &data->texture_img_5.size_line, &data->texture_img_5.endian);
+    if (!data->texture_img_5.img_data)
         ft_free_all("Texture data Load Fail\n", data, 1);
 }
 
@@ -79,23 +85,22 @@ int main()
 
     char *map[] = {
         "1111111111111111111111",
-        "1000000010000000000001",
+        "10000000D0000000010001",
+        "1000000011111111010001",
+        "1000000000000001010001",
+        "1000000000000001D10001",
+        "10000001D1111000000001",
         "1000000000000000000001",
-        "1000000010000000000001",
-        "100011D111100000000001",
-        "1000000010000000000001",
-        "1000000010000000000001",
         "1000000000000000000001",
         "1000000000000000000001",
         "1111111111111111111111",
     };
     printf("=========== We Are In Debug Mode ============\n");
+
     data = init_data();
     data->map = map;
-    data->door.x = 6;
-    data->door.y = 4;
-    data->door.is_open = 0;
     init_mlx(data);
+    ft_init_door(data);
     ft_write_texture_img(data);
     mlx_hook(data->win_ptr, 2, (1L<<0) ,ft_key_press, data);
     mlx_hook(data->win_ptr, 3, (1L<<1) ,ft_key_release, data);
@@ -103,4 +108,5 @@ int main()
     mlx_loop_hook(data->mlx_ptr, ft_loop_hook, data);
     mlx_loop(data->mlx_ptr);
     ft_free_all(NULL, data, 0);
+
 }

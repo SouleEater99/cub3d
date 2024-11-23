@@ -113,6 +113,28 @@ void	ft_write_mini_map(t_data *data)
 
 }
 
+// void    ft_write_player_wall_hit(t_data  *data)
+// {
+// 	ft_write_player(data);
+//     // ft_write_player_wall_hit(data);
+// 	ft_write_player_view(data);
+
+// }
+
+int     ft_get_door_index(t_data *data, int x, int y)
+{
+    int i;
+
+    i = 0;
+    while (i < data->n_door)
+    {
+        if (data->door[i].x == x && data->door[i].y == y)
+            return (i);
+        i++;
+    }
+    return (0);
+}
+
 void    ft_write_player_wall_hit(t_data  *data)
 {
 	data->is_face_down = ft_is_angle_facing_down(data->player_angle);
@@ -120,15 +142,19 @@ void    ft_write_player_wall_hit(t_data  *data)
 	ft_get_wall_hit(data, data->player_angle);
 	if (ft_board_protect(data->row, data->col, data->wall_hit_x / CUBE_TILE, data->wall_hit_y / CUBE_TILE) == 1)
     {
-        if (data->map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE] == 'D' && !data->door.is_open)
-            data->door.is_open = 1;
-        else  if (data->map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE] == 'D' && data->door.is_open)
+        if (data->map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE] == 'D' && data->distance < WALL_DISTANCE)
         {
-            data->door.is_open = 0;
+            data->door_index = ft_get_door_index(data, data->wall_hit_x / CUBE_TILE, data->wall_hit_y / CUBE_TILE);
+            if (data->door_index < 0)
+                ft_free_all("Door_index Fail \n", data, 1);
+            if (!data->door[data->door_index].is_open)
+                data->door[data->door_index].is_open = 1;
+            else if (data->door[data->door_index].is_open)
+                data->door[data->door_index].is_open = 0;
+            printf("========== { index:  %c | is_open : %d } ==========\n",data->map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE], data->door[data->door_index].is_open);
         }
             // printf("===========\n");
-        printf("========== { index:  %c | is_open : %d } ==========\n",data->map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE], data->door.is_open);
- 		// ft_write_line(data,(data->wall_hit_x -  data->x_player) * data->factor_scale_map , (data->wall_hit_y - data->y_player)* data->factor_scale_map, BLUE);
+ 		// Ft_Write_Line(data,(data->wall_hit_x -  data->X_Player) * data->Factor_Scale_Map , (data->wall_hit_y - data->Y_Player)* data->Factor_Scale_Map, BLUE);
     }
         
 }

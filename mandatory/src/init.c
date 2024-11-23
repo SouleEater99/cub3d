@@ -1,28 +1,41 @@
 
 #include "../include/cub3d.h"
 
+void    ft_init_door(t_data *data)
+{
+    data->n_door = 3;
+    data->door = (t_door *)malloc(sizeof(t_door) * data->n_door);
+    data->door   = memset(data->door, 0, sizeof(t_door) * data->n_door);
+    data->door[0].x = 8;
+    data->door[0].y = 1;
+    data->door[1].x = 16;
+    data->door[1].y = 4;
+    data->door[2].x = 8;
+    data->door[2].y = 5;
+}
+
 t_data  *init_data()
 {
-    t_data *Data;
+    t_data *data;
 
-    Data = (t_data *)malloc(sizeof(t_data));
-    if (!Data)
+    data = (t_data *)malloc(sizeof(t_data));
+    if (!data)
         return (NULL);
-    Data = memset(Data, 0, sizeof(t_data));
-    Data->row = 22;
-    Data->col = 10;
-    Data->factor_scale_map  = 0.2;
-    Data->img_width = Data->row * (int)CUBE_TILE;
-    Data->img_height = Data->col * (int)CUBE_TILE;
-    Data->x_player = 5 * CUBE_TILE + (CUBE_TILE / 2);
-    Data->y_player = 3 * CUBE_TILE + (CUBE_TILE / 2);
-    Data->player_angle = PI;
-    Data->turn_speed = 0.02;
-    Data->move_speed = 1.5;
-    Data->num_rays = WIDTH / WALL_STRIP;
-    Data->plan_distanced = (WIDTH / 2) / tan(FOV / 2);
+    data = memset(data, 0, sizeof(t_data));
+    data->row = 22;
+    data->col = 10;
+    data->factor_scale_map  = 0.2;
+    data->img_width = data->row * (int)CUBE_TILE;
+    data->img_height = data->col * (int)CUBE_TILE;
+    data->x_player = 5 * CUBE_TILE + (CUBE_TILE / 2);
+    data->y_player = 3 * CUBE_TILE + (CUBE_TILE / 2);
+    data->player_angle = PI;
+    data->turn_speed = 0.02;
+    data->move_speed = 1.5;
+    data->num_rays = WIDTH / WALL_STRIP;
+    data->plan_distanced = (WIDTH / 2) / tan(FOV / 2);
    
-    return (Data);
+    return (data);
 }
 
 void    init_mlx(t_data *data)

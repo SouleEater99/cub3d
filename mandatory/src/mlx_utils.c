@@ -38,10 +38,16 @@ int ft_is_a_wall(t_data *data, int x, int y)
 	{
 		if (data->map[y / CUBE_TILE][x / CUBE_TILE] == '1')
 			return (1);
-		else if (data->map[y / CUBE_TILE][x / CUBE_TILE] == 'D' && !data->door.is_open)
-			return (1);
-		else if (data->flag == 1 && data->map[y / CUBE_TILE][x / CUBE_TILE] == 'D' && data->door.is_open)
-			return (1);
+		else if (data->map[y / CUBE_TILE][x / CUBE_TILE] == 'D')
+		{
+        	data->door_index = ft_get_door_index(data, x / CUBE_TILE, y / CUBE_TILE);
+        	if (data->door_index < 0)
+        	    ft_free_all("Door_index Fail \n", data, 1);
+			if (!data->door[data->door_index].is_open)
+				return (1);
+			else if (data->flag == 1 && data->door[data->door_index].is_open)
+				return (1);
+		}
 	} 
 	return (0);
 }
@@ -53,8 +59,16 @@ int	ft_is_player_inside_wall(t_data *data)
 
 	x = data->x_player + (cos(data->player_angle) * data->move_step);
 	y = data->y_player + (sin(data->player_angle) * data->move_step);
-	if (data->map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == '1' || (data->map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == 'D' && !data->door.is_open))
+	if (data->map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == '1')
 		return (0);
+	if (data->map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == 'D')
+	{
+		data->door_index = ft_get_door_index(data, x / CUBE_TILE, y / CUBE_TILE);
+        if (data->door_index < 0)
+            ft_free_all("Door_index Fail \n", data, 1);
+		if (!data->door[data->door_index].is_open)
+			return (0);
+	}
 	data->x_player = x;
 	data->y_player = y;
 	return (1);
