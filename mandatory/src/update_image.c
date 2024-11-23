@@ -1,24 +1,24 @@
 #include "../include/cub3d.h"
 
-void    Ft_Updata_Data(t_data *Data)
+void    ft_update_data(t_data *data)
 {
-    if (Data->Walk_Direction != 0)// && Data->Factor_Scale_Map != 1)
+    if (data->walk_direction != 0)// && data->Factor_Scale_Map != 1)
     {
-        Data->Move_Step = Data->Move_Speed * Data->Walk_Direction;
-        Ft_Is_Player_Inside_Wall(Data);
+        data->move_step = data->move_speed * data->walk_direction;
+        ft_is_player_inside_wall(data);
     }
-    if (Data->Turn_Direction != 0) //&& Data->Factor_Scale_Map != 1)
+    if (data->turn_direction != 0) //&& data->Factor_Scale_Map != 1)
     {
-        Data->Player_Angle += Data->Turn_Direction * Data->Turn_Speed;
-		Data->Player_Angle = Ft_Normalize_Angle(Data->Player_Angle);
+        data->player_angle += data->turn_direction * data->turn_speed;
+		data->player_angle = ft_normalize_angle(data->player_angle);
     }
 }
 
-void    Ft_Update_Image(t_data *Data)
+void    ft_update_image(t_data *data)
 {
-    Ft_Create_Projection_Img(Data);
-    Ft_Cast_All_Rays(Data);
-    // ft_Write_mini_map(Data);
-    mlx_put_image_to_window(Data->Mlx, Data->Mlx_Win, Data->Projection_Img.Img, 0, 0);
-    mlx_destroy_image(Data->Mlx, Data->Projection_Img.Img);
+    ft_create_pojection_img(data);
+    ft_cast_all_rays(data);
+    // ft_write_mini_map(data);
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->projection_img.img_ptr, 0, 0);
+    mlx_destroy_image(data->mlx_ptr, data->projection_img.img_ptr);
 }

@@ -1,61 +1,61 @@
 #include "../include/cub3d.h"
 
-void Ft_Get_Virt_Hit(t_data *Data, double Angle, double *x, double *y)
+void ft_get_virt_hit(t_data *data, double angle, double *x, double *y)
 {
 	double ystep;
 	double xstep;
 
-	if (Data->IsFaceRight)
-		*x = (long)(Data->X_Player / CUBE_TILE) * CUBE_TILE + CUBE_TILE;
+	if (data->is_face_right)
+		*x = (long)(data->x_player / CUBE_TILE) * CUBE_TILE + CUBE_TILE;
 	else
-		*x = (long)(Data->X_Player / CUBE_TILE) * CUBE_TILE;
-	*y = ((*x - Data->X_Player) * tan(Angle)) + Data->Y_Player;
+		*x = (long)(data->x_player / CUBE_TILE) * CUBE_TILE;
+	*y = ((*x - data->x_player) * tan(angle)) + data->y_player;
 	xstep = CUBE_TILE;
-	if (!Data->IsFaceRight)
+	if (!data->is_face_right)
 		xstep *= -1;
-	ystep = xstep * tan(Angle);
-	if (!Data->IsFaceDown && ystep > 0)
+	ystep = xstep * tan(angle);
+	if (!data->is_face_down && ystep > 0)
 		ystep *= -1;
 
-	if (!Data->IsFaceRight)
+	if (!data->is_face_right)
 		*x -= 1;
-	while ((*x > 0 && *x < Data->img_Width) && (*y < Data->img_High && *y > 0))
+	while ((*x > 0 && *x < data->img_width) && (*y < data->img_height && *y > 0))
 	{
-		if (Ft_Is_A_Wall(Data, *x, *y))
+		if (ft_is_a_wall(data, *x, *y))
 			break;
 		*y += ystep;
 		*x += xstep;
 	}
 }
 
-void Ft_Get_Horz_Hit(t_data *Data, double Angle, double *x, double *y)
+void ft_get_horz_hit(t_data *data, double angle, double *x, double *y)
 {
 	double ystep;
 	double xstep;
 
-	if (Data->IsFaceDown)
-		*y = (long)(Data->Y_Player / CUBE_TILE) * CUBE_TILE + CUBE_TILE;
+	if (data->is_face_down)
+		*y = (long)(data->y_player / CUBE_TILE) * CUBE_TILE + CUBE_TILE;
 	else
-		*y = (long)(Data->Y_Player / CUBE_TILE) * CUBE_TILE;
-	*x = ((*y - Data->Y_Player) / tan(Angle)) + Data->X_Player;
+		*y = (long)(data->y_player / CUBE_TILE) * CUBE_TILE;
+	*x = ((*y - data->y_player) / tan(angle)) + data->x_player;
 	ystep = CUBE_TILE;
-	if (!Data->IsFaceDown)
+	if (!data->is_face_down)
 		ystep *= -1;
-	xstep = ystep / tan(Angle);
-	if (!Data->IsFaceRight && xstep > 0)
+	xstep = ystep / tan(angle);
+	if (!data->is_face_right && xstep > 0)
 		xstep *= -1;
-	if (!Data->IsFaceDown)
+	if (!data->is_face_down)
 		*y -= 1;
-	while ((*x > 0 && *x < Data->img_Width) && (*y < Data->img_High && *y > 0))
+	while ((*x > 0 && *x < data->img_width) && (*y < data->img_height && *y > 0))
 	{
-		if (Ft_Is_A_Wall(Data, *x, *y))
+		if (ft_is_a_wall(data, *x, *y))
 			break;
 		*y += ystep;
 		*x += xstep;
 	}
 }
 
-void	Ft_Get_Wall_Hit(t_data *Data, double Angle)
+void	ft_get_wall_hit(t_data *data, double angle)
 {
 	double	VirtHitX;
 	double	VirtHitY;
@@ -66,121 +66,121 @@ void	Ft_Get_Wall_Hit(t_data *Data, double Angle)
 	HorzHitY = 0;
 	VirtHitX = 0;
 	VirtHitY = 0;
-	// if (Data->DataAngle != PI / 2 && Data->DataAngle !=  3 * (PI / 2))
-	Ft_Get_Virt_Hit(Data, Angle, &VirtHitX, &VirtHitY);
-	// if (Data->DataAngle != PI / 2 && Data->DataAngle != (3 * PI) / 2)
-	Ft_Get_Horz_Hit(Data, Angle, &HorzHitX, &HorzHitY);
-	if (Ft_Calc_Distance(Data, HorzHitX, HorzHitY) < Ft_Calc_Distance(Data, VirtHitX, VirtHitY))
+	// if (data->dataangle != PI / 2 && data->dataangle !=  3 * (PI / 2))
+	ft_get_virt_hit(data, angle, &VirtHitX, &VirtHitY);
+	// if (data->dataangle != PI / 2 && data->dataangle != (3 * PI) / 2)
+	ft_get_horz_hit(data, angle, &HorzHitX, &HorzHitY);
+	if (ft_calc_distance(data, HorzHitX, HorzHitY) < ft_calc_distance(data, VirtHitX, VirtHitY))
 	{
-		Data->Distance = Ft_Calc_Distance(Data, HorzHitX, HorzHitY);
-		Data->CorrectDistance = Data->Distance * cos(Angle - Data->Player_Angle);
-		Data->WallSliceHigh = ((double)CUBE_TILE / Data->CorrectDistance) * (double)Data->Plan_Distanced;
-		Data->WallHitX = HorzHitX;
-		Data->WallHitY = HorzHitY;
-		Data->IsHitVirt = 0;
+		data->distance = ft_calc_distance(data, HorzHitX, HorzHitY);
+		data->correct_distance = data->distance * cos(angle - data->player_angle);
+		data->wall_slice_high = ((double)CUBE_TILE / data->correct_distance) * (double)data->plan_distanced;
+		data->wall_hit_x = HorzHitX;
+		data->wall_hit_y = HorzHitY;
+		data->is_hit_virt = 0;
 	}
 	else
 	{
-		Data->Distance = Ft_Calc_Distance(Data, VirtHitX, VirtHitY);
-		Data->CorrectDistance = Data->Distance * cos(Angle - Data->Player_Angle);
-		Data->WallSliceHigh = ((double)CUBE_TILE / Data->CorrectDistance) * (double)Data->Plan_Distanced;
-		Data->WallHitX = VirtHitX;
-		Data->WallHitY = VirtHitY;
-		Data->IsHitVirt = 1;
+		data->distance = ft_calc_distance(data, VirtHitX, VirtHitY);
+		data->correct_distance = data->distance * cos(angle - data->player_angle);
+		data->wall_slice_high = ((double)CUBE_TILE / data->correct_distance) * (double)data->plan_distanced;
+		data->wall_hit_x = VirtHitX;
+		data->wall_hit_y = VirtHitY;
+		data->is_hit_virt = 1;
 	}
-	// printf("======{distance_horz : %f | x = %f | y = %f}======\n", Ft_Calc_Distance(Data, HorzHitX, HorzHitY),HorzHitX, HorzHitY);
-	// printf("======{distance_virt : %f | x : %f | y : %f}======\n", Ft_Calc_Distance(Data, VirtHitX, VirtHitY), VirtHitX, VirtHitY);
-	// printf("x_player : %f | y_player : %f\n", Data->X_Player, Data->Y_Player);
+	// printf("======{distance_horz : %f | x = %f | y = %f}======\n", ft_calc_distance(data, HorzHitX, HorzHitY),HorzHitX, HorzHitY);
+	// printf("======{distance_virt : %f | x : %f | y : %f}======\n", ft_calc_distance(data, VirtHitX, VirtHitY), VirtHitX, VirtHitY);
+	// printf("x_player : %f | y_player : %f\n", data->x_player, data->y_player);
 }
 
-void	ft_write_floor(t_data *Data, int i)
+void	ft_write_floor(t_data *data, int i)
 {
 	int	j;
 
-	j = Data->End;
+	j = data->end;
 	while (j < HIGH)
-		My_Mlx_Pixel_Put(&Data->Projection_Img, i * WALL_STRIP, j++, RED);
+		my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++, RED);
 }
 
-void	ft_write_ceiling(t_data *Data, int i)
+void	ft_write_ceiling(t_data *data, int i)
 {
 	int	j;
 
 	j = 0;
-	while (j < Data->Start)
-		My_Mlx_Pixel_Put(&Data->Projection_Img, i * WALL_STRIP, j++, WHITE);
+	while (j < data->start)
+		my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++, WHITE);
 }
 
-void	ft_get_texture_color(t_data *Data, int j)
+void	ft_get_texture_color(t_data *data, int j)
 {
 	int		texture_offset_x;
 	int		texture_offset_y;
 
-	if (Data->IsHitVirt)
-		texture_offset_x = (int)Data->WallHitY % TEXTURE_TILE;
+	if (data->is_hit_virt)
+		texture_offset_x = (int)data->wall_hit_y % TEXTURE_TILE;
 	else
-		texture_offset_x = (int)Data->WallHitX % TEXTURE_TILE;
-	int	DistanceFromTop = j + (Data->WallSliceHigh / 2) - (HIGH / 2);
-	texture_offset_y = DistanceFromTop * ((double)TEXTURE_TILE / Data->WallSliceHigh);
+		texture_offset_x = (int)data->wall_hit_x % TEXTURE_TILE;
+	int	DistanceFromTop = j + (data->wall_slice_high / 2) - (HIGH / 2);
+	texture_offset_y = DistanceFromTop * ((double)TEXTURE_TILE / data->wall_slice_high);
 	if ((texture_offset_x >= 0 && texture_offset_x < TEXTURE_TILE - 1) && (texture_offset_y >= 0 && texture_offset_y < TEXTURE_TILE - 1))
 	{
-		if (Data->IsHitVirt && Data->IsFaceRight)
-			Data->color = Ft_Get_Color(&Data->Texture_Img_1 ,texture_offset_x , texture_offset_y);
-		else if (Data->IsHitVirt && !Data->IsFaceRight)
-			Data->color = Ft_Get_Color(&Data->Texture_Img_2 ,texture_offset_x , texture_offset_y);
-		else if (!Data->IsHitVirt && Data->IsFaceDown)
-			Data->color = Ft_Get_Color(&Data->Texture_Img_3 ,texture_offset_x , texture_offset_y);
-		else if (!Data->IsHitVirt && !Data->IsFaceDown)
-			Data->color = Ft_Get_Color(&Data->Texture_Img_4 ,texture_offset_x , texture_offset_y);
+		if (data->is_hit_virt && data->is_face_right)
+			data->color = ft_get_color(&data->texture_img_1 ,texture_offset_x , texture_offset_y);
+		else if (data->is_hit_virt && !data->is_face_right)
+			data->color = ft_get_color(&data->texture_img_2 ,texture_offset_x , texture_offset_y);
+		else if (!data->is_hit_virt && data->is_face_down)
+			data->color = ft_get_color(&data->texture_img_3 ,texture_offset_x , texture_offset_y);
+		else if (!data->is_hit_virt && !data->is_face_down)
+			data->color = ft_get_color(&data->texture_img_4 ,texture_offset_x , texture_offset_y);
 	}
 }
 
-void	ft_write_wall(t_data *Data, int i)
+void	ft_write_wall(t_data *data, int i)
 {
 	int		j;
 
-	j = Data->Start;
-	while (j < Data->End)
+	j = data->start;
+	while (j < data->end)
 	{
-		ft_get_texture_color(Data, j);
-		// Data->color = CEILING;
-		My_Mlx_Pixel_Put(&Data->Projection_Img,i * WALL_STRIP, j++, Data->color);
+		ft_get_texture_color(data, j);
+		// data->color = CEILING;
+		my_mlx_pixel_put(&data->projection_img,i * WALL_STRIP, j++, data->color);
 	}
 }
 
-void	Ft_Write_Projection(t_data *Data, int i)
+void	ft_write_projection(t_data *data, int i)
 {
-	Data->Start = (HIGH / 2) - (Data->WallSliceHigh / 2);
-	if (Data->Start < 0)
-		Data->Start = 0;
-	Data->End = (HIGH / 2) + (Data->WallSliceHigh / 2);
-	if (Data->End > HIGH)
-		Data->End = HIGH;
-	ft_write_ceiling(Data, i);
-	ft_write_wall(Data, i);	
-	ft_write_floor(Data, i);
+	data->start = (HIGH / 2) - (data->wall_slice_high / 2);
+	if (data->start < 0)
+		data->start = 0;
+	data->end = (HIGH / 2) + (data->wall_slice_high / 2);
+	if (data->end > HIGH)
+		data->end = HIGH;
+	ft_write_ceiling(data, i);
+	ft_write_wall(data, i);	
+	ft_write_floor(data, i);
 }
 
-void Ft_Cast_All_Rays(t_data *Data)
+void ft_cast_all_rays(t_data *data)
 {
 	int		i;
-	double	Angle;
+	double	angle;
 
 	i = 0;
-	Angle = Data->Player_Angle - (FOV / 2);
-	while (i < Data->Num_Rays)
+	angle = data->player_angle - (FOV / 2);
+	while (i < data->num_rays)
 	{
-		if (Angle > 2 * PI)
-   			Angle -= 2 * PI;
-		else if (Angle < 0)
-    		Angle += 2 * PI;
-	    Data->IsFaceDown = Ft_Is_Angle_Facing_Down(Angle);
-	    Data->IsFaceRight = Ft_Is_Angle_Facing_Right(Angle);
-		Data->flag = 0;
-		Ft_Get_Wall_Hit(Data, Angle);
-		Ft_Write_Projection(Data, i);
-        // Ft_Write_Line(Data, (Data->WallHitX - Data->X_Player) * Data->Factor_Scale_Map, (Data->WallHitY - Data->Y_Player) * Data->Factor_Scale_Map, RED);
-		Angle = Angle + ((double)FOV / (double)Data->Num_Rays);
+		if (angle > 2 * PI)
+   			angle -= 2 * PI;
+		else if (angle < 0)
+    		angle += 2 * PI;
+	    data->is_face_down = ft_is_angle_facing_down(angle);
+	    data->is_face_right = ft_is_angle_facing_right(angle);
+		data->flag = 0;
+		ft_get_wall_hit(data, angle);
+		ft_write_projection(data, i);
+        // ft_write_line(data, (data->wall_hit_x - data->x_player) * data->Factor_Scale_Map, (data->wall_hit_y - data->y_player) * data->Factor_Scale_Map, RED);
+		angle = angle + ((double)FOV / (double)data->num_rays);
 		i++;
 	}
 }

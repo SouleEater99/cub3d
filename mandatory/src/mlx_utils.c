@@ -1,29 +1,29 @@
 #include "../include/cub3d.h"
 
-void	My_Mlx_Pixel_Put(t_image *img, int x, int y, int color)
+void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = img->Data + (y * img->Lenght + x * (img->N_Bytes / 8));
+	dst = img->img_data + (y * img->size_line + x * (img->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }
 
 
-int Ft_Is_Angle_Facing_Down(double angle)
+int ft_is_angle_facing_down(double angle)
 {
 	if (angle > 0 && angle < PI)
 		return (1);
 	return (0);
 }
 
-int Ft_Is_Angle_Facing_Right(double angle)
+int ft_is_angle_facing_right(double angle)
 {
 	if ((angle < PI / 2 && angle >= 0) || (angle > (3 * PI) / 2))
 		return (1);
 	return (0);
 }
 
-int Ft_Board_Protect(int Width, int High, int x, int  y)
+int ft_board_protect(int Width, int High, int x, int  y)
 {
 	if ((x >= 0 && x < Width) && (y >= 0 && y < High))
 		return (1);
@@ -31,36 +31,36 @@ int Ft_Board_Protect(int Width, int High, int x, int  y)
 }
 
 
-int Ft_Is_A_Wall(t_data *Data, int x, int y)
+int ft_is_a_wall(t_data *data, int x, int y)
 {
 	// printf("x : %d | y : %d\n", x, y);
-	if (Ft_Board_Protect(Data->Row, Data->Col, x / CUBE_TILE, y / CUBE_TILE) == 1)
+	if (ft_board_protect(data->row, data->col, x / CUBE_TILE, y / CUBE_TILE) == 1)
 	{
-		if (Data->Map[y / CUBE_TILE][x / CUBE_TILE] == '1')
+		if (data->map[y / CUBE_TILE][x / CUBE_TILE] == '1')
 			return (1);
-		else if (Data->Map[y / CUBE_TILE][x / CUBE_TILE] == 'D' && !Data->door.is_open)
+		else if (data->map[y / CUBE_TILE][x / CUBE_TILE] == 'D' && !data->door.is_open)
 			return (1);
-		else if (Data->flag == 1 && Data->Map[y / CUBE_TILE][x / CUBE_TILE] == 'D' && Data->door.is_open)
+		else if (data->flag == 1 && data->map[y / CUBE_TILE][x / CUBE_TILE] == 'D' && data->door.is_open)
 			return (1);
 	} 
 	return (0);
 }
 
-int	Ft_Is_Player_Inside_Wall(t_data *Data)
+int	ft_is_player_inside_wall(t_data *data)
 {
 	double	x;
 	double	y;
 
-	x = Data->X_Player + (cos(Data->Player_Angle) * Data->Move_Step);
-	y = Data->Y_Player + (sin(Data->Player_Angle) * Data->Move_Step);
-	if (Data->Map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == '1' || (Data->Map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == 'D' && !Data->door.is_open))
+	x = data->x_player + (cos(data->player_angle) * data->move_step);
+	y = data->y_player + (sin(data->player_angle) * data->move_step);
+	if (data->map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == '1' || (data->map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == 'D' && !data->door.is_open))
 		return (0);
-	Data->X_Player = x;
-	Data->Y_Player = y;
+	data->x_player = x;
+	data->y_player = y;
 	return (1);
 }
 
-double	Ft_Normalize_Angle(double angle)
+double	ft_normalize_angle(double angle)
 {
 	if (angle > 2 * PI)
  	   angle -= 2 * PI;
@@ -69,7 +69,7 @@ double	Ft_Normalize_Angle(double angle)
 	return (angle);
 }
 
-void Ft_Write_Line(t_data *Data, int dx, int dy, int color)
+void ft_write_line(t_data *data, int dx, int dy, int color)
 {
 	double x;
 	double y;
@@ -77,28 +77,28 @@ void Ft_Write_Line(t_data *Data, int dx, int dy, int color)
 	double y_increment;
 
 	if (abs(dx) >= abs(dy))
-		Data->Step = abs(dx);
+		data->step = abs(dx);
 	else
-		Data->Step = abs(dy);
-	x_increment = dx / Data->Step;
-	y_increment = dy / Data->Step;
-	x = (unsigned int)Data->X_Player * Data->Factor_Scale_Map; 
-	y = (unsigned int)Data->Y_Player * Data->Factor_Scale_Map;
-	Data->i = 0;
-	while (Data->i <= Data->Step)
+		data->step = abs(dy);
+	x_increment = dx / data->step;
+	y_increment = dy / data->step;
+	x = (unsigned int)data->x_player * data->factor_scale_map; 
+	y = (unsigned int)data->y_player * data->factor_scale_map;
+	data->i = 0;
+	while (data->i <= data->step)
 	{
-		if (Ft_Board_Protect(WIDTH, HIGH, x, y))
-			My_Mlx_Pixel_Put(&Data->Projection_Img, x, y, color);
+		if (ft_board_protect(WIDTH, HIGH, x, y))
+			my_mlx_pixel_put(&data->projection_img, x, y, color);
 		x += x_increment;
 		y += y_increment;
-		Data->i++;
+		data->i++;
 	}
 }
 
 
-double Ft_Calc_Distance(t_data *Data, double x, double y)
+double ft_calc_distance(t_data *data, double x, double y)
 {
-    double dx = Data->X_Player - x;
-    double dy = Data->Y_Player - y;
+    double dx = data->x_player - x;
+    double dy = data->y_player - y;
     return sqrt(dx * dx + dy * dy); // Euclidean distance
 }

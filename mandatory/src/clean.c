@@ -1,28 +1,28 @@
 
 #include "../include/cub3d.h"
 
-void    Ft_Free_All(char *Msg, t_data *Data, int Exit_Status)
+void    ft_free_all(char *msg, t_data *data, int exit_status)
 {
-    if (Data)
+    if (data)
     {
-        if (Data->Texture_Img_1.Img)
-            mlx_destroy_image(Data->Mlx, Data->Texture_Img_1.Img);
-        if (Data->Texture_Img_2.Img)
-            mlx_destroy_image(Data->Mlx, Data->Texture_Img_2.Img);
-        if (Data->Texture_Img_3.Img)
-            mlx_destroy_image(Data->Mlx, Data->Texture_Img_3.Img);
-        if (Data->Texture_Img_4.Img)
-            mlx_destroy_image(Data->Mlx, Data->Texture_Img_4.Img);
-        if (Data->Mlx_Win)
-            mlx_destroy_window(Data->Mlx , Data->Mlx_Win);
-        if (Data->Mlx)
+        if (data->texture_img_1.img_ptr)
+            mlx_destroy_image(data->mlx_ptr, data->texture_img_1.img_ptr);
+        if (data->texture_img_2.img_ptr)
+            mlx_destroy_image(data->mlx_ptr, data->texture_img_2.img_ptr);
+        if (data->texture_img_3.img_ptr)
+            mlx_destroy_image(data->mlx_ptr, data->texture_img_3.img_ptr);
+        if (data->texture_img_4.img_ptr)
+            mlx_destroy_image(data->mlx_ptr, data->texture_img_4.img_ptr);
+        if (data->win_ptr)
+            mlx_destroy_window(data->mlx_ptr , data->win_ptr);
+        if (data->mlx_ptr)
         {
-            mlx_destroy_display(Data->Mlx);
-            free(Data->Mlx);
+            mlx_destroy_display(data->mlx_ptr);
+            free(data->mlx_ptr);
         }
-        free(Data);
+        free(data);
     }
-    if (Msg)
-        write(2, Msg, strlen(Msg));
-    exit(Exit_Status);
+    if (msg)
+        write(2, msg, strlen(msg));
+    exit(exit_status);
 }

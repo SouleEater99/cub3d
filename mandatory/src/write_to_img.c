@@ -1,20 +1,20 @@
 
 #include "../include/cub3d.h"
 
-void    Ft_Write_Cub(t_data *Data, int x, int y, int Color)
+void    ft_write_cub(t_data *data, int x, int y, int color)
 {
     int i;
     int j;
 
     i = 0;
-    while (i < (int)(CUBE_TILE * Data->Factor_Scale_Map))
+    while (i < (int)(CUBE_TILE * data->factor_scale_map))
     {
         j = 0;
-        while (j < (int)(CUBE_TILE * Data->Factor_Scale_Map))
+        while (j < (int)(CUBE_TILE * data->factor_scale_map))
         {
 
 			// printf("========+{x : %d | y : %d }=======\n", x + i ,y + j);
-            My_Mlx_Pixel_Put(&Data->Projection_Img, i + x, j + y, Color);
+            my_mlx_pixel_put(&data->projection_img, i + x, j + y, color);
             j++;
         }
         i++;
@@ -23,47 +23,47 @@ void    Ft_Write_Cub(t_data *Data, int x, int y, int Color)
 }
 
 
-void    Ft_Create_Projection_Img(t_data *Data)
+void   ft_create_pojection_img(t_data *data)
 {
-    Data->Projection_Img.Img = mlx_new_image(Data->Mlx, WIDTH, HIGH);
-    if (!Data->Projection_Img.Img)
-        Ft_Free_All("Image Projection Image Fail\n", Data, 1);
-    Data->Projection_Img.Data = mlx_get_data_addr(Data->Projection_Img.Img, &Data->Projection_Img.N_Bytes, &Data->Projection_Img.Lenght, &Data->Projection_Img.Endian);
-    if (!Data->Projection_Img.Data)
-        Ft_Free_All("Projection Data Addres Fail\n", Data, 1);
+    data->projection_img.img_ptr = mlx_new_image(data->mlx_ptr, WIDTH, HIGH);
+    if (!data->projection_img.img_ptr)
+        ft_free_all("Image Projection Image Fail\n", data, 1);
+    data->projection_img.img_data = mlx_get_data_addr(data->projection_img.img_ptr, &data->projection_img.bits_per_pixel, &data->projection_img.size_line, &data->projection_img.endian);
+    if (!data->projection_img.img_data)
+        ft_free_all("Projection data Addres Fail\n", data, 1);
 
 }
 
-int     Ft_Get_Color(t_image *Img, int x, int y)
+int     ft_get_color(t_image *img, int x, int y)
 {
     int Color;
 
-    // if (Ft_Board_Protect(Img->Width, Img->High, x, y))
-        Color = *(int *)(Img->Data + (y * Img->Lenght) + x  * (Img->N_Bytes / 8));
+    // if (ft_board_protect(Img->Width, Img->High, x, y))
+        Color = *(int *)(img->img_data + (y * img->size_line) + x  * (img->bits_per_pixel / 8));
     return (Color);
 }
 
-void	ft_write_player_view(t_data *Data)
+void	ft_write_player_view(t_data *data)
 {
 	int		x;
-	double	Angle;
+	double	angle;
 
 	x = 0;
-	Angle = Data->Player_Angle - (FOV / 2);
-	while (x < Data->Num_Rays)
+	angle = data->player_angle - (FOV / 2);
+	while (x < data->num_rays)
 	{
-		if (Angle > 2 * PI)
-   			Angle -= 2 * PI;
-		else if (Angle < 0)
-    		Angle += 2 * PI;
- 		Ft_Write_Line(Data, cos(Angle) * 60 * Data->Factor_Scale_Map, sin(Angle) * 60 * Data->Factor_Scale_Map, BLUE);
-		Angle = Angle + ((double)FOV / (double)Data->Num_Rays);
+		if (angle > 2 * PI)
+   			angle -= 2 * PI;
+		else if (angle < 0)
+    		angle += 2 * PI;
+ 		ft_write_line(data, cos(angle) * 60 * data->factor_scale_map, sin(angle) * 60 * data->factor_scale_map, BLUE);
+		angle = angle + ((double)FOV / (double)data->num_rays);
 		x++;
 	}
 
 }
 
-void	ft_write_player(t_data *Data)
+void	ft_write_player(t_data *data)
 {
 	int		x;
 	int		y;
@@ -74,7 +74,7 @@ void	ft_write_player(t_data *Data)
         y = 0;
         while (y < PLAYER_TILE)
         {
-            My_Mlx_Pixel_Put(&Data->Projection_Img, ((Data->X_Player - (PLAYER_TILE / 2) ) + x) * Data->Factor_Scale_Map, ((Data->Y_Player - (PLAYER_TILE / 2)) + y) * Data->Factor_Scale_Map, RED);
+            my_mlx_pixel_put(&data->projection_img, ((data->x_player - (PLAYER_TILE / 2) ) + x) * data->factor_scale_map, ((data->y_player - (PLAYER_TILE / 2)) + y) * data->factor_scale_map, RED);
             y++;
         }
         x++;
@@ -82,53 +82,53 @@ void	ft_write_player(t_data *Data)
 	
 }
 
-void	ft_Write_mini_map(t_data *Data)
+void	ft_write_mini_map(t_data *data)
 {
 
 	int		x;
 	int		y;
 	double	ratio;
 
-	ratio = (double)CUBE_TILE * Data->Factor_Scale_Map;
+	ratio = (double)CUBE_TILE * data->factor_scale_map;
  	y = 0;
-    while (y < Data->Col && y * ratio < HIGH)
+    while (y < data->col && y * ratio < HIGH)
     {
         x = 0;
-        while (x < Data->Row && x  * ratio < WIDTH)
+        while (x < data->row && x  * ratio < WIDTH)
         {
 			// printf("+=+++++++{x : %d | y : %d | ratio : %d}+++++++\n", x ,y, ratio);
-            if (Data->Map[y][x] == '1')
-                Ft_Write_Cub(Data, x * ratio, y * ratio, WHITE);
-            else if (Data->Map[y][x] == 'D')
-                Ft_Write_Cub(Data, x * ratio, y * ratio, YELLOW);
+            if (data->map[y][x] == '1')
+                ft_write_cub(data, x * ratio, y * ratio, WHITE);
+            else if (data->map[y][x] == 'D')
+                ft_write_cub(data, x * ratio, y * ratio, YELLOW);
             else
-                Ft_Write_Cub(Data, x * ratio, y * ratio, BLACK);
+                ft_write_cub(data, x * ratio, y * ratio, BLACK);
             x++;
         }
         y++;
     }
-	ft_write_player(Data);
-    // ft_write_player_wall_hit(Data);
-	ft_write_player_view(Data);
+	ft_write_player(data);
+    // ft_write_player_wall_hit(data);
+	ft_write_player_view(data);
 
 }
 
-void    ft_write_player_wall_hit(t_data  *Data)
+void    ft_write_player_wall_hit(t_data  *data)
 {
-	Data->IsFaceDown = Ft_Is_Angle_Facing_Down(Data->Player_Angle);
-	Data->IsFaceRight = Ft_Is_Angle_Facing_Right(Data->Player_Angle);
-	Ft_Get_Wall_Hit(Data, Data->Player_Angle);
-	if (Ft_Board_Protect(Data->Row, Data->Col, Data->WallHitX / CUBE_TILE, Data->WallHitY / CUBE_TILE) == 1)
+	data->is_face_down = ft_is_angle_facing_down(data->player_angle);
+	data->is_face_right = ft_is_angle_facing_right(data->player_angle);
+	ft_get_wall_hit(data, data->player_angle);
+	if (ft_board_protect(data->row, data->col, data->wall_hit_x / CUBE_TILE, data->wall_hit_y / CUBE_TILE) == 1)
     {
-        if (Data->Map[(int)Data->WallHitY / CUBE_TILE][(int)Data->WallHitX / CUBE_TILE] == 'D' && !Data->door.is_open)
-            Data->door.is_open = 1;
-        else  if (Data->Map[(int)Data->WallHitY / CUBE_TILE][(int)Data->WallHitX / CUBE_TILE] == 'D' && Data->door.is_open)
+        if (data->map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE] == 'D' && !data->door.is_open)
+            data->door.is_open = 1;
+        else  if (data->map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE] == 'D' && data->door.is_open)
         {
-            Data->door.is_open = 0;
+            data->door.is_open = 0;
         }
             // printf("===========\n");
-        printf("========== { index:  %c | is_open : %d } ==========\n",Data->Map[(int)Data->WallHitY / CUBE_TILE][(int)Data->WallHitX / CUBE_TILE], Data->door.is_open);
- 		// Ft_Write_Line(Data,(Data->WallHitX -  Data->X_Player) * Data->Factor_Scale_Map , (Data->WallHitY - Data->Y_Player)* Data->Factor_Scale_Map, BLUE);
+        printf("========== { index:  %c | is_open : %d } ==========\n",data->map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE], data->door.is_open);
+ 		// ft_write_line(data,(data->wall_hit_x -  data->x_player) * data->factor_scale_map , (data->wall_hit_y - data->y_player)* data->factor_scale_map, BLUE);
     }
         
 }

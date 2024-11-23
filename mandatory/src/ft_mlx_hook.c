@@ -1,72 +1,70 @@
 
 #include "../include/cub3d.h"
 
-
-
-int Ft_Key_Press(int key, void *Param)
+int ft_key_press(int key, void *param)
 {
-    t_data *Data;
+    t_data *data;
 
-    Data = (t_data *)Param;
-    (void) Data;
+    data = (t_data *)param;
+    (void) data;
     if (key == XK_Up || key == XK_w)
-        Data->Walk_Direction = 1;
+        data->walk_direction = 1;
     else if (key == XK_Down || key == XK_s)
-       Data->Walk_Direction = -1;
+       data->walk_direction = -1;
     else if (key == XK_Right)
-        Data->Turn_Direction = 1;
+        data->turn_direction = 1;
     else if (key == XK_Left)
-        Data->Turn_Direction = -1;
+        data->turn_direction = -1;
     else if (key == XK_m)
     {
-        if (Data->Factor_Scale_Map == 1)
-            Data->Factor_Scale_Map = 0.2;
+        if (data->factor_scale_map == 1)
+            data->factor_scale_map = 0.2;
         else
-            Data->Factor_Scale_Map = 1;
-        mlx_clear_window(Data->Mlx, Data->Mlx_Win);
+            data->factor_scale_map = 1;
+        mlx_clear_window(data->mlx_ptr, data->win_ptr);
     }
     else  if (key == XK_e)
     {
-        Data->flag = 1;
-        ft_write_player_wall_hit(Data);
+        data->flag = 1;
+        ft_write_player_wall_hit(data);
     }
     else if (key == XK_Escape)
-        Ft_Free_All(NULL, Data, 0);
+        ft_free_all(NULL, data, 0);
     return (0);
 }
 
-int Ft_Key_Release(int key, void *Param)
+int ft_key_release(int key, void *param)
 {
-    t_data *Data;
+    t_data *data;
 
-    Data = (t_data *)Param;
-    (void) Data;
+    data = (t_data *)param;
+    (void) data;
     if (key == XK_Up || key == XK_w)
-        Data->Walk_Direction = 0;
+        data->walk_direction = 0;
     else if (key == XK_Down || key == XK_s)
-       Data->Walk_Direction = 0;
+       data->walk_direction = 0;
     else if (key == XK_Right)
-        Data->Turn_Direction = 0;
+        data->turn_direction = 0;
     else if (key == XK_Left)
-        Data->Turn_Direction = 0;
+        data->turn_direction = 0;
     return (0);
 }
 
-int Ft_Key_Destroy(void *Param)
+int ft_key_destroy(void *param)
 {
-    Ft_Free_All(NULL, (t_data *)Param, 0);
+    ft_free_all(NULL, (t_data *)param, 0);
     return (0);
 }
 
 
-int Ft_Loop_Hook(void *Param)
+int ft_loop_hook(void *param)
 {
-    t_data *Data;
+    t_data *data;
 
-    Data = (t_data *)Param;
-    (void ) Data;
-    Ft_Updata_Data(Data);
-    Ft_Update_Image(Data);
+    data = (t_data *)param;
+    (void ) data;
+    ft_update_data(data);
+    ft_update_image(data);
 
     return (0);
 }

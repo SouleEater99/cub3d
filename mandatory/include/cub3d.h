@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/20 08:41:16 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/23 11:57:08 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,110 +52,110 @@ typedef struct s_door
 
 typedef struct  s_image
 {
-    void    *Img;
-    char    *Data;
-    int     Lenght;
-    int     N_Bytes;
-    int     Endian;
-    int     Width;
-    int     High;
+    void    *img_ptr;
+    void    *img_data;
+    int     bits_per_pixel;
+    int     size_line;
+    int     endian;
+    int     width;
+    int     height;
 }   t_image;
 
 typedef struct  s_data
 {
     int             i;
 
-    unsigned short  img_Width;
-    unsigned short  img_High;
-    unsigned short  Row;
-    unsigned short  Col;
+    unsigned short  img_width;
+    unsigned short  img_height;
+    unsigned short  row;
+    unsigned short  col;
 
-    void            *Mlx;
-    void            *Mlx_Win;
+    void            *mlx_ptr;
+    void            *win_ptr;
     
-    char            **Map;
+    char            **map;
     unsigned int    color;
-	int             IsFaceDown;
-	int             IsFaceRight;
-    double          Distance;
-    double          CorrectDistance;
-    double          WallSliceHigh;
-    double          WallHitX;
-    double          WallHitY;
-    int             IsHitVirt;
-    int             Num_Rays;
+	int             is_face_down;
+	int             is_face_right;
+    double          distance;
+    double          correct_distance;
+    double          wall_slice_high;
+    double          wall_hit_x;
+    double          wall_hit_y;
+    int             is_hit_virt;
+    int             num_rays;
 
     
-    double          Plan_Distanced;
-    int             Start;
-    int             End;
+    double          plan_distanced;
+    int             start;
+    int             end;
 
     t_door          door;
     int             flag;
 
-    double          X_Player;
-    double          Y_Player;
-    int             Turn_Direction;
-    int             Walk_Direction;
-    double          Turn_Speed;
-    double          Move_Speed;
-    double          Move_Step;
-    double          Step;
-    double          Player_Angle;
+    double          x_player;
+    double          y_player;
+    int             turn_direction;
+    int             walk_direction;
+    double          turn_speed;
+    double          move_speed;
+    double          move_step;
+    double          step;
+    double          player_angle;
     double          player_distance;
     double          player_wallhit_x;
     double          player_wallhit_y;
     
 
-    double          Factor_Scale_Map;
+    double          factor_scale_map;
 
-    t_image         Projection_Img;
-    t_image         Texture_Img_1;
-    t_image         Texture_Img_2;
-    t_image         Texture_Img_3;
-    t_image         Texture_Img_4;
-    int             Start_Player_X;
-    int             Start_Player_Y;
-    int             Player_Offset;
+    t_image         projection_img;
+    t_image         texture_img_1;
+    t_image         texture_img_2;
+    t_image         texture_img_3;
+    t_image         texture_img_4;
+    int             start_player_x;
+    int             start_player_y;
+    int             player_offset;
 
 }   t_data;
 
 
-t_data  *Init_Data();
-void    Init_Mlx(t_data *Data);
-void    Ft_Free_All(char *Msg, t_data *Data, int Exit_Status);
-int     Ft_Key_Destroy(void *Param);
-int     Ft_Loop_Hook(void *Param);
-void    Ft_Write_Cub(t_data *Data, int x, int y, int Color);
-void    Ft_Create_Projection_Img(t_data *Data);
-void	My_Mlx_Pixel_Put(t_image *img, int x, int y, int color);
-int     Ft_Get_Color(t_image *Img, int x, int y);
-void    Ft_Write_Line(t_data *Data, int dx, int dy, int color);
-int     Ft_Is_Angle_Facing_Down(double angle);
-int     Ft_Is_Angle_Facing_Right(double angle);
-int     Ft_Board_Protect(int Width, int High, int x, int  y);
-int     Ft_Is_A_Wall(t_data *Data, int x, int y);
-int     Ft_Is_Player_Inside_Wall(t_data *Data);
-double	Ft_Normalize_Angle(double angle);
-int     Ft_Key_Press(int key, void *Param);
-int     Ft_Key_Release(int key, void *Param);
-void    Ft_Updata_Data(t_data *Data);
-void    Ft_Update_Image(t_data *Data);
-double  Ft_Calc_Distance(t_data *Data, double x, double y);
-void    Ft_Cast_All_Rays(t_data *Data);
-void	Ft_Get_Wall_Hit(t_data *Data, double Angle);
-void    Ft_Get_Horz_Hit(t_data *Data, double Angle, double *x, double *y);
-void    Ft_Get_Virt_Hit(t_data *Data, double Angle, double *x, double *y);
-void	Ft_Write_Projection(t_data *Data, int i);
-void    Ft_Write_Texture_Img(t_data *Data);
-void	ft_Write_mini_map(t_data *Data);
-void	ft_write_player(t_data *Data);
-void	ft_write_player_view(t_data *Data);
-void	ft_write_wall(t_data *Data, int i);
-void	ft_write_ceiling(t_data *Data, int i);
-void	ft_write_floor(t_data *Data, int i);
-void	ft_get_texture_color(t_data *Data, int j);
-void    ft_write_player_wall_hit(t_data  *Data);
+t_data  *init_data();
+void    init_mlx(t_data *data);
+void    ft_free_all(char *Msg, t_data *data, int Exit_Status);
+int     ft_key_destroy(void *Param);
+int     ft_loop_hook(void *Param);
+void    ft_write_cub(t_data *data, int x, int y, int Color);
+void    ft_create_pojection_img(t_data *data);
+void	my_mlx_pixel_put(t_image *img, int x, int y, int color);
+int     ft_get_color(t_image *Img, int x, int y);
+void    ft_write_line(t_data *data, int dx, int dy, int color);
+int     ft_is_angle_facing_down(double angle);
+int     ft_is_angle_facing_right(double angle);
+int     ft_board_protect(int Width, int High, int x, int  y);
+int     ft_is_a_wall(t_data *data, int x, int y);
+int     ft_is_player_inside_wall(t_data *data);
+double	ft_normalize_angle(double angle);
+int     ft_key_press(int key, void *Param);
+int     ft_key_release(int key, void *Param);
+void    ft_update_data(t_data *data);
+void    ft_update_image(t_data *data);
+double  ft_calc_distance(t_data *data, double x, double y);
+void    ft_cast_all_rays(t_data *data);
+void	ft_get_wall_hit(t_data *data, double Angle);
+void    ft_get_horz_hit(t_data *data, double Angle, double *x, double *y);
+void    ft_get_virt_hit(t_data *data, double Angle, double *x, double *y);
+void	ft_write_projection(t_data *data, int i);
+void    ft_write_texture_img(t_data *data);
+void	ft_write_mini_map(t_data *data);
+void	ft_write_player(t_data *data);
+void	ft_write_player_view(t_data *data);
+void	ft_write_wall(t_data *data, int i);
+void	ft_write_ceiling(t_data *data, int i);
+void	ft_write_floor(t_data *data, int i);
+void	ft_get_texture_color(t_data *data, int j);
+void    ft_write_player_wall_hit(t_data  *data);
 
 
 #endif

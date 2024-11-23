@@ -1,7 +1,7 @@
 
 #include "../include/cub3d.h"
 
-t_data  *Init_Data()
+t_data  *init_data()
 {
     t_data *Data;
 
@@ -9,29 +9,29 @@ t_data  *Init_Data()
     if (!Data)
         return (NULL);
     Data = memset(Data, 0, sizeof(t_data));
-    Data->Row = 22;
-    Data->Col = 10;
-    Data->Factor_Scale_Map  = 0.2;
-    Data->img_Width = Data->Row * (int)CUBE_TILE;
-    Data->img_High = Data->Col * (int)CUBE_TILE;
-    Data->X_Player = 5 * CUBE_TILE + (CUBE_TILE / 2);
-    Data->Y_Player = 3 * CUBE_TILE + (CUBE_TILE / 2);
-    Data->Player_Angle = PI;
-    Data->Turn_Speed = 0.02;
-    Data->Move_Speed = 1.5;
-    Data->Num_Rays = WIDTH / WALL_STRIP;
-    Data->Plan_Distanced = (WIDTH / 2) / tan(FOV / 2);
+    Data->row = 22;
+    Data->col = 10;
+    Data->factor_scale_map  = 0.2;
+    Data->img_width = Data->row * (int)CUBE_TILE;
+    Data->img_height = Data->col * (int)CUBE_TILE;
+    Data->x_player = 5 * CUBE_TILE + (CUBE_TILE / 2);
+    Data->y_player = 3 * CUBE_TILE + (CUBE_TILE / 2);
+    Data->player_angle = PI;
+    Data->turn_speed = 0.02;
+    Data->move_speed = 1.5;
+    Data->num_rays = WIDTH / WALL_STRIP;
+    Data->plan_distanced = (WIDTH / 2) / tan(FOV / 2);
    
     return (Data);
 }
 
-void    Init_Mlx(t_data *Data)
+void    init_mlx(t_data *data)
 {
-    Data->Mlx = mlx_init();
-    if (!Data->Mlx)
-        Ft_Free_All("Mlx Fail\n", Data, 1);
-    Data->Mlx_Win = mlx_new_window(Data->Mlx, WIDTH, HIGH, "First Game 3D");
-    if (!Data->Mlx_Win)
-        Ft_Free_All("Mlx_Win Fail\n", Data, 1);
+    data->mlx_ptr = mlx_init();
+    if (!data->mlx_ptr)
+        ft_free_all("mlx Fail\n", data, 1);
+    data->win_ptr = mlx_new_window(data->mlx_ptr, WIDTH, HIGH, "First Game 3D");
+    if (!data->win_ptr)
+        ft_free_all("win_ptr Fail\n", data, 1);
     
 }
