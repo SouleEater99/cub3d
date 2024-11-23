@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/23 12:57:03 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/23 15:06:35 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,59 @@
 #ifndef PI
 #define PI              3.14159265358979323846
 #endif
+
+// ========================= //
+
+#define BRED "\e[1;31m"
+#define BGRN "\e[1;32m"
+#define COLOR_RESET "\e[0m"
+
+# define PLAYER_DIR         "NSEW"
+# define SUPPORTED_CHARS    "NSEW01\t\n "
+
+# define NUM_TEXTURES       4
+
+# define PLAYER_RADIUS      6
+# define MINIMAP_RADIUS     80
+# define TILE_SIZE          64
+
+# define SCALE              0.25
+
+# define SCREEN_WIDTH       WIDTH
+# define SCREEN_HEIGHT      HIGH
+
+# define MAP_MID_X          (SCREEN_WIDTH / 2)
+# define MAP_MID_Y          (SCREEN_HEIGHT / 2)
+
+# define MINIMAP_MID_X      (SCREEN_WIDTH - MINIMAP_RADIUS - 20)
+# define MINIMAP_MID_Y      (MINIMAP_RADIUS + 20)
+
+# define LEFT_CLICK         1
+# define MIDDLE_CLICK       2
+# define RIGHT_CLICK        3
+# define SCROLL_UP          4
+# define SCROLL_DOWN        5
+
+// ========================= //
+
+typedef struct s_map
+{
+    char    **map;
+    int     map_height;
+    int     map_width;
+    int     map_start;
+    int     *map_line_len;
+    
+    char    *no_texture_path;
+    char    *so_texture_path;
+    char    *we_texture_path;
+    char    *ea_texture_path;
+
+    int     floor_color;
+    int     ceiling_color;
+}   t_map;
+
+// ======================== //
 
 typedef struct s_door
 {
@@ -121,6 +174,27 @@ typedef struct  s_data
     int             start_player_x;
     int             start_player_y;
     int             player_offset;
+
+    // ================== //
+
+    t_map       map_;
+    double      scale;
+    int         minimap_radius;
+    int         minimap_x_center;
+    int         minimap_y_center;
+    int         clicks;
+    int         player_radius;
+    double      player_x;
+    double      player_y;
+    int16_t     player_dir;
+
+    char        *no_texture_path;
+    char        *so_texture_path;
+    char        *we_texture_path;
+    char        *ea_texture_path;
+    
+    // t_image     *textures[NUM_TEXTURES];    
+    
 }   t_data;
 
 
@@ -161,5 +235,8 @@ void	ft_get_texture_color(t_data *data, int j);
 void    ft_write_player_wall_hit(t_data  *data);
 void    ft_init_door(t_data *data);
 int     ft_get_door_index(t_data *data, int x, int y);
+
+
+void    draw_minimap(t_data *data);
 
 #endif

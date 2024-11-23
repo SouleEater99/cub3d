@@ -34,7 +34,22 @@ t_data  *init_data()
     data->move_speed = 1.5;
     data->num_rays = WIDTH / WALL_STRIP;
     data->plan_distanced = (WIDTH / 2) / tan(FOV / 2);
-   
+    
+
+
+// =================================== //
+
+    data->scale = SCALE;
+    data->map_.map = data->map;
+    data->map_.map_height = data->col;
+    data->map_.map_width = data->row;
+	data->player_radius = PLAYER_RADIUS;
+	data->minimap_radius = MINIMAP_RADIUS;
+	data->minimap_x_center = MINIMAP_MID_X;
+	data->minimap_y_center = MINIMAP_MID_Y;
+    
+// =================================== //
+
     return (data);
 }
 
@@ -46,5 +61,4 @@ void    init_mlx(t_data *data)
     data->win_ptr = mlx_new_window(data->mlx_ptr, WIDTH, HIGH, "First Game 3D");
     if (!data->win_ptr)
         ft_free_all("win_ptr Fail\n", data, 1);
-    
 }

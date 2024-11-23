@@ -19,6 +19,7 @@ void    ft_update_image(t_data *data)
     ft_create_pojection_img(data);
     ft_cast_all_rays(data);
     // ft_write_mini_map(data);
+    draw_minimap(data);
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->projection_img.img_ptr, 0, 0);
     mlx_destroy_image(data->mlx_ptr, data->projection_img.img_ptr);
 }

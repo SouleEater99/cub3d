@@ -14,6 +14,7 @@ SRC = ./src/cub3d.c\
 		./src/mlx_utils.c\
 		./src/update_image.c\
 		./src/ray_casting.c\
+		./src/aziz/minimap.c\
 
 OBJ = $(SRC:.c=.o)
 

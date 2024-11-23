@@ -6,11 +6,11 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 14:31:22 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/22 19:00:51 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/23 15:16:42 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <cub3d.h>
+# include "../../include/cub3d.h"
 
 // # define MINIMAP_RADIUS 80
 // # define MINIMAP_POS_X (SCREEN_WIDTH - MINIMAP_RADIUS - 20)
@@ -201,7 +201,7 @@ void draw_background(t_data *data, t_image *image)
             {
                 int screen_x = data->minimap_x_center + x;
                 int screen_y = data->minimap_y_center + y;
-                put_pixel_in_img(image, screen_x, screen_y, 0x222222);
+                my_mlx_pixel_put(image, screen_x, screen_y, 0x222222);
             }
         }
     }
@@ -227,7 +227,7 @@ void draw_tile(t_data *data, t_image *image, double x, double y, int color)
             distance = sqrt(pow(screen_x + di - data->minimap_x_center, 2)
                 + pow(screen_y + dj - data->minimap_y_center, 2));
             if (distance <= data->minimap_radius)
-                put_pixel_in_img(image, screen_x + di, screen_y + dj, color);
+                my_mlx_pixel_put(image, screen_x + di, screen_y + dj, color);
         }
     }
 }
@@ -246,7 +246,7 @@ void draw_player(t_data *data, t_image *image)
         {
             dist = sqrt(x * x + y * y);
             if (dist <= data->player_radius)
-                put_pixel_in_img(image, data->minimap_x_center + x,  data->minimap_y_center + y, 0xFFFF00);
+                my_mlx_pixel_put(image, data->minimap_x_center + x,  data->minimap_y_center + y, 0xFFFF00);
         }
     }
 }
@@ -254,12 +254,13 @@ void draw_player(t_data *data, t_image *image)
 void draw_player_direction(t_data *data, t_image *image)
 {
     // Draw direction indicator
-    double angle = atan2(data->dir_y, data->dir_x);
+    // double angle = atan2(data->dir_y, data->dir_x);
+    
     double fov = 60 * PI / 180.0; // 60 degrees FOV
     int i = -30 - 1;
     while (++i <= 30)
     {
-        double ray_angle = angle + (i * fov / 60);
+        double ray_angle = data->player_angle + (i * fov / 60);
         double ray_length = MINIMAP_RADIUS * 0.3;
 
         double end_x = data->minimap_x_center + cos(ray_angle) * ray_length;
@@ -285,7 +286,7 @@ void draw_player_direction(t_data *data, t_image *image)
             double dist_y = y - data->minimap_y_center;
 
             if (sqrt(dist_x * dist_x + dist_y * dist_y) <= MINIMAP_RADIUS)
-                put_pixel_in_img(image, round(x), round(y), 0xFF0000);
+                my_mlx_pixel_put(image, round(x), round(y), 0xFF0000);
             
             x += x_increment;
             y += y_increment;
@@ -315,8 +316,8 @@ void draw_map(t_data *data, t_image *image)
             // if (map_x >= 0 && map_x < data->map_width && map_y >= 0 && map_y < data->map_height)
             if (map_x >= 0 && //map_x < data->map_width && 
                 map_y >= 0 && map_y < data->map_.map_height && 
-                data->map_.map[map_y] != NULL &&  // Check if row exists
-                map_x < data->map_.map_line_len[map_y])
+                data->map_.map[map_y] != NULL) //&&  // Check if row exists
+                // map_x < data->map_.map_line_len[map_y])
             {
                 double tile_x = map_x * TILE_SIZE * data->scale;
                 double tile_y = map_y * TILE_SIZE * data->scale;
@@ -333,16 +334,16 @@ void draw_map(t_data *data, t_image *image)
 void draw_minimap(t_data *data)
 {
     // draw black background for our minimap
-	draw_background(data, data->image);
+	draw_background(data, &data->projection_img);
     
     // draw the map (floor and walls)
-    draw_map(data, data->image);
+    draw_map(data, &data->projection_img);
     
     // Draw the player's vield od view
-    draw_player_direction(data, data->image);
+    draw_player_direction(data, &data->projection_img);
     
     // Draw the player dot (or just the player)	// TODO
-    draw_player(data, data->image);
+    draw_player(data, &data->projection_img);
     
     // Draw the minimap border	// TODO
     // draw_minimap_border(data->image);
