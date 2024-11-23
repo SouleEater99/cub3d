@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 14:31:22 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/23 15:16:42 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/23 15:32:19 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,9 +300,17 @@ void draw_map(t_data *data, t_image *image)
     
     int visible_range = (int)(data->minimap_radius / (TILE_SIZE * data->scale)) + 1;
     
-    int player_map_x = (int)data->player_x;
-    int player_map_y = (int)data->player_y;
+    // int player_map_x = (int)data->player_x;
+    // int player_map_y = (int)data->player_y;
+
+    data->player_x = data->x_player / (CUBE_TILE + (CUBE_TILE / 2));
+    data->player_y = data->y_player / (CUBE_TILE + (CUBE_TILE / 2));
+
+    int player_map_x = data->player_x;
+    int player_map_y = data->player_y;
     
+    printf("%d %d\n", player_map_x, player_map_x);
+
     int dy = -visible_range - 1;
     while (++dy <= visible_range)
     {
@@ -311,6 +319,12 @@ void draw_map(t_data *data, t_image *image)
         {
             int map_x = player_map_x + dx;
             int map_y = player_map_y + dy;
+
+            if (!data->map_.map)
+            {
+                data->map_.map = data->map;
+                // exit (10);
+            }
 
             // Check if the tile is within map bounds
             // if (map_x >= 0 && map_x < data->map_width && map_y >= 0 && map_y < data->map_height)

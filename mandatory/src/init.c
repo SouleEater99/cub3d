@@ -39,6 +39,8 @@ t_data  *init_data()
 
 // =================================== //
 
+    data->player_x = data->x_player / (CUBE_TILE + (CUBE_TILE / 2));
+    data->player_y = data->y_player / (CUBE_TILE + (CUBE_TILE / 2));
     data->scale = SCALE;
     data->map_.map = data->map;
     data->map_.map_height = data->col;
