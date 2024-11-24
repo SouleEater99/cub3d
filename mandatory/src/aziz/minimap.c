@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 14:31:22 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/23 15:32:19 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/24 10:08:28 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,13 +303,13 @@ void draw_map(t_data *data, t_image *image)
     // int player_map_x = (int)data->player_x;
     // int player_map_y = (int)data->player_y;
 
-    data->player_x = data->x_player / (CUBE_TILE + (CUBE_TILE / 2));
-    data->player_y = data->y_player / (CUBE_TILE + (CUBE_TILE / 2));
+    data->player_x = data->x_player / CUBE_TILE;
+    data->player_y = data->y_player / CUBE_TILE;
 
-    int player_map_x = data->player_x;
-    int player_map_y = data->player_y;
+    int player_map_x = (int)data->player_x;
+    int player_map_y = (int)data->player_y;
     
-    printf("%d %d\n", player_map_x, player_map_x);
+    printf("%d %d\n", player_map_x, player_map_y);
 
     int dy = -visible_range - 1;
     while (++dy <= visible_range)
@@ -328,7 +328,7 @@ void draw_map(t_data *data, t_image *image)
 
             // Check if the tile is within map bounds
             // if (map_x >= 0 && map_x < data->map_width && map_y >= 0 && map_y < data->map_height)
-            if (map_x >= 0 && //map_x < data->map_width && 
+            if (map_x >= 0 && map_x < data->map_.map_width && 
                 map_y >= 0 && map_y < data->map_.map_height && 
                 data->map_.map[map_y] != NULL) //&&  // Check if row exists
                 // map_x < data->map_.map_line_len[map_y])

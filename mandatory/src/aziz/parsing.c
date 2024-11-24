@@ -6,23 +6,23 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/22 18:59:34 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/24 10:24:50 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <cub3d.h>
+# include "../../include/cub3d.h"
 
 // DFS (Depth-First Search) function.
 bool dfs(t_map *map, int **visited, int x, int y)
 {
     if (x < 0 || y < 0 || x >= map->map_line_len[y] || y >= map->map_height)
-        return false;
+        return (false);
 
     if (visited[y][x] || map->map[y][x] == '1')
         return true;
 
     if (x == 0 || y == 0 || x == map->map_line_len[y] - 1 || y == map->map_height - 1)
-        return false;
+        return (false);
 
     visited[y][x] = 1; // mark it as visited
 
@@ -130,6 +130,20 @@ int check_color_format(const char *str_color)
     return (1);
 }
 
+/// @brief 
+/// @param arr 
+void	free_array(char **arr)
+{
+	int	i;
+
+	if (!arr)
+		return ;
+	i = -1;
+	while (arr && arr[++i])
+		free(arr[i]);
+	free(arr);
+}
+
 /// @brief Takes a string color (255,255,0) and convert it to inteager.
 /// @param str_color string color to be converted to inteager.
 /// @return inteager color
@@ -216,22 +230,22 @@ char **read_map_lines(const char *map_path, int *height)
     return (lines);
 }
 
-t_texture *load_texture(void *mlx, char *filename)
+t_image *load_texture(void *mlx, char *filename)
 {
     if (!mlx || !filename)
         return (NULL);
 
-    t_texture *texture = malloc(sizeof(t_texture));
+    t_image *texture = malloc(sizeof(t_image));
     if (!texture)
         return (NULL);
 
-    texture->image = mlx_xpm_file_to_image(mlx, filename, &texture->width, &texture->height);
-    if (!texture->image)
+    texture->img_ptr = mlx_xpm_file_to_image(mlx, filename, &texture->width, &texture->height);
+    if (!texture->img_ptr)
     {
         free(texture);
         return (NULL);
     }
-    texture->data = mlx_get_data_addr(texture->image, &texture->bits_per_pixel, &texture->line_length, &texture->endian);
+    texture->img_data = mlx_get_data_addr(texture->img_ptr, &texture->bits_per_pixel, &texture->size_line, &texture->endian);
     return texture;
 }
 
@@ -272,7 +286,7 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
             free_array(parts);
             while(--textures_found >= 0)
             {
-                mlx_destroy_image(data->mlx_ptr, data->textures[textures_found]->image);
+                mlx_destroy_image(data->mlx_ptr, data->textures[textures_found]->img_ptr);
                 free(data->textures[textures_found]);
             }
             print_error("Error: bad texture or color arguments!\n", __FILE__, __LINE__);
@@ -308,7 +322,7 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
                     free_array(parts);
                     while(--textures_found >= 0)
                     {
-                        mlx_destroy_image(data->mlx_ptr, data->textures[textures_found]->image);
+                        mlx_destroy_image(data->mlx_ptr, data->textures[textures_found]->img_ptr);
                         free(data->textures[textures_found]);
                     }
                     return (false);
@@ -332,7 +346,7 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
                 printf(BRED"%d: %s\n"COLOR_RESET, *current_line, trimmed);
                 while(--textures_found >= 0)
                 {
-                    mlx_destroy_image(data->mlx_ptr, data->textures[textures_found]->image);
+                    mlx_destroy_image(data->mlx_ptr, data->textures[textures_found]->img_ptr);
                     free(data->textures[textures_found]);
                 }
                 free(trimmed);
@@ -349,7 +363,7 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
                     printf(BRED"%d: %s\n"COLOR_RESET, *current_line, trimmed);
                     while(--textures_found >= 0)
                     {
-                        mlx_destroy_image(data->mlx_ptr, data->textures[textures_found]->image);
+                        mlx_destroy_image(data->mlx_ptr, data->textures[textures_found]->img_ptr);
                         free(data->textures[textures_found]);
                     }
                     free(trimmed);
@@ -448,6 +462,40 @@ void ft_panic(int line_num, int col_num, const char *line, void (*clean_func)(t_
         clean_func(data);
     exit(EXIT_FAILURE);
     // print_str("▲", col_num);
+}
+
+void clean_up(t_data *data)
+{
+	if (data->map_.map_line_len)
+		free(data->map_.map_line_len);
+		
+	// if (data->no_texture_path)
+	// 	free(data->no_texture_path);
+	// if (data->so_texture_path)
+	// 	free(data->so_texture_path);
+	// if (data->we_texture_path)
+	// 	free(data->we_texture_path);
+	// if (data->ea_texture_path)
+	// 	free(data->ea_texture_path);
+	
+	// if (data->image)
+	// 	mlx_destroy_image(data->mlx_ptr, data->image);
+
+	if (data->win_ptr)
+		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+	
+	#ifdef __linux__
+	
+	if (data->mlx_ptr)
+		mlx_destroy_display(data->mlx_ptr);
+
+	# endif
+
+	// if (data->map)
+	// 	free_array(data->map);
+	
+	if (data->mlx_ptr)
+		free(data->mlx_ptr);
 }
 
 /// @brief check the first line and the last one if all ones

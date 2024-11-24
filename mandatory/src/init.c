@@ -14,17 +14,23 @@ void    ft_init_door(t_data *data)
     data->door[2].y = 5;
 }
 
-t_data  *init_data()
+t_data  *init_data(int ac, char **av)
 {
     t_data *data;
+
 
     data = (t_data *)malloc(sizeof(t_data));
     if (!data)
         return (NULL);
     data = memset(data, 0, sizeof(t_data));
-    data->row = 22;
-    data->col = 10;
-    data->factor_scale_map  = 0.2;
+    
+    if (!parse_map(data, ac, av))
+        exit (10);
+    
+    data->row = data->map_.map_width;//22;
+    data->col = data->map_.map_height;//10;
+    data->map = data->map_.map;
+    // data->factor_scale_map  = 0.2;
     data->img_width = data->row * (int)CUBE_TILE;
     data->img_height = data->col * (int)CUBE_TILE;
     data->x_player = 5 * CUBE_TILE + (CUBE_TILE / 2);
@@ -34,8 +40,6 @@ t_data  *init_data()
     data->move_speed = 1.5;
     data->num_rays = WIDTH / WALL_STRIP;
     data->plan_distanced = (WIDTH / 2) / tan(FOV / 2);
-    
-
 
 // =================================== //
 

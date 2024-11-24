@@ -6,19 +6,21 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/23 15:06:35 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/24 10:24:02 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 #define CUB3D_H
 
+#include <math.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include <fcntl.h>
 #include <stdlib.h>
-#include <math.h>
+#include <stdbool.h>
+#include "./libft/libft.h"
 #include "./minilibx/minilibx-linux/mlx.h"
 #include "./minilibx/minilibx-linux/mlx_int.h"
 
@@ -193,12 +195,12 @@ typedef struct  s_data
     char        *we_texture_path;
     char        *ea_texture_path;
     
-    // t_image     *textures[NUM_TEXTURES];    
+    t_image     *textures[NUM_TEXTURES];    
     
 }   t_data;
 
 
-t_data  *init_data();
+t_data  *init_data(int ac, char **av);
 void    init_mlx(t_data *data);
 void    ft_free_all(char *Msg, t_data *data, int Exit_Status);
 int     ft_key_destroy(void *Param);
@@ -238,5 +240,6 @@ int     ft_get_door_index(t_data *data, int x, int y);
 
 
 void    draw_minimap(t_data *data);
+int     parse_map(t_data *data, int ac, char **av);
 
 #endif
