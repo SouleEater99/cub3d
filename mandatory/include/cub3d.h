@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/24 10:33:02 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/24 12:41:52 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,5 +241,6 @@ int     ft_get_door_index(t_data *data, int x, int y);
 
 void    draw_minimap(t_data *data);
 int     parse_map(t_data *data, int ac, char **av);
+int     shade_walls(int color ,double distance);
 
 #endif

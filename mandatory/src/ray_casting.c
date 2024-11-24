@@ -146,6 +146,8 @@ void	ft_write_wall(t_data *data, int i)
 	{
 		ft_get_texture_color(data, j);
 		// data->color = CEILING;
+
+		data->color = shade_walls(data->color, data->correct_distance);
 		my_mlx_pixel_put(&data->projection_img,i * WALL_STRIP, j++, data->color);
 	}
 }

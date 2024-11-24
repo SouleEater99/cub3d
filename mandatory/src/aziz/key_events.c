@@ -6,11 +6,11 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:17:16 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/22 19:01:22 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/24 12:42:03 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3d.h>
+# include "../../include/cub3d.h"
 
 int	key_press(int keycode, t_data *data)
 {
