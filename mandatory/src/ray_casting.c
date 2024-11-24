@@ -93,22 +93,22 @@ void	ft_get_wall_hit(t_data *data, double angle)
 	// printf("x_player : %f | y_player : %f\n", data->x_player, data->y_player);
 }
 
-void	ft_write_floor(t_data *data, int i)
+void	ft_write_floor(t_data *data, int i, int color)
 {
 	int	j;
 
 	j = data->end;
 	while (j < HIGH)
-		my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++, RED);
+		my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++, color);
 }
 
-void	ft_write_ceiling(t_data *data, int i)
+void	ft_write_ceiling(t_data *data, int i, int color)
 {
 	int	j;
 
 	j = 0;
 	while (j < data->start)
-		my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++, WHITE);
+		my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++, color);
 }
 
 void	ft_get_texture_color(t_data *data, int j)
@@ -160,9 +160,9 @@ void	ft_write_projection(t_data *data, int i)
 	data->end = (HIGH / 2) + (data->wall_slice_high / 2);
 	if (data->end > HIGH)
 		data->end = HIGH;
-	ft_write_ceiling(data, i);
+	ft_write_ceiling(data, i, data->map_.ceiling_color);
 	ft_write_wall(data, i);	
-	ft_write_floor(data, i);
+	ft_write_floor(data, i, data->map_.floor_color);
 }
 
 void ft_cast_all_rays(t_data *data)

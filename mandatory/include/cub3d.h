@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/24 12:41:52 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/24 14:27:57 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,8 +231,8 @@ void	ft_write_mini_map(t_data *data);
 void	ft_write_player(t_data *data);
 void	ft_write_player_view(t_data *data);
 void	ft_write_wall(t_data *data, int i);
-void	ft_write_ceiling(t_data *data, int i);
-void	ft_write_floor(t_data *data, int i);
+void	ft_write_ceiling(t_data *data, int i, int color);
+void	ft_write_floor(t_data *data, int i, int color);
 void	ft_get_texture_color(t_data *data, int j);
 void    ft_write_player_wall_hit(t_data  *data);
 void    ft_init_door(t_data *data);
@@ -241,6 +241,7 @@ int     ft_get_door_index(t_data *data, int x, int y);
 
 void    draw_minimap(t_data *data);
 int     parse_map(t_data *data, int ac, char **av);
+int     shade_walls(int color ,double distance);
 int     shade_walls(int color ,double distance);
 
 #endif

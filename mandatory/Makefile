@@ -22,15 +22,16 @@ SRC = ./src/cub3d.c\
 		./src/ray_casting.c\
 		./src/aziz/parsing.c\
 		./src/aziz/minimap.c\
+		./src/aziz/shadow.c\
 
 OBJ = $(SRC:.c=.o)
 
 %.o: %.c
 	$(CC) $(CFLAG) -c $< -o $@
 
-all : $(NAME)
+all : $(NAME) clean
 
-$(NAME) : $(OBJ) $(MLX_LIB) $(LIBFT)
+$(NAME) : $(OBJ) #  $(MLX_LIB) $(LIBFT)
 	$(CC) $(CFLAG) $(OBJ) $(LIBFT) $(MLX_LIB) $(MLX_FLAG) -o $(NAME)
 
 $(LIBFT):
@@ -41,11 +42,11 @@ $(MLX_LIB):
 
 clean :
 	$(RM) $(OBJ)
-	@make -sC ./include/libft clean
-	@make -sC ./include/minilibx/minilibx-linux clean
+	# @make -sC ./include/libft clean
+	# @make -sC ./include/minilibx/minilibx-linux clean
 
 fclean : clean
 	$(RM) $(NAME)
-	@make -sC ./include/libft fclean
+	# @make -sC ./include/libft fclean
 
-re : fclean all
+re : fclean all clean

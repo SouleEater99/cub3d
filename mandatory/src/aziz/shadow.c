@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   shadow.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 12:40:59 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/24 12:41:19 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/24 14:24:58 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// # include "../../include/cub3d.h"
+# include "../../include/cub3d.h"
 
 int apply_shadow(int color, double shadow_factor)
 {
