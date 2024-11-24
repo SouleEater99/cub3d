@@ -6,7 +6,7 @@
 /*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 12:40:59 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/24 19:18:36 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/24 23:26:03 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int apply_shadow(int color, double shadow_factor)
 
 int shade_walls(int color ,double distance)
 {
-	double ambient_light = 0.1;
+	double ambient_light = 0.01;
 	double shadow_factor = fmax(ambient_light, 1.0 / (distance + 1.0));
 
 	// printf("Distance: %lf, Shadow Factor: %lf\n", distance, shadow_factor);

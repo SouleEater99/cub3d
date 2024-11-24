@@ -19,8 +19,8 @@ void ft_get_virt_hit(t_data *data, double angle, double *x, double *y)
 
 	if (!data->is_face_right)
 		*x -= 1;
-	// while ((*x > 0 && *x < data->img_width) && (*y < data->img_height && *y > 0))
-	while (*y > 0 && *y < data->img_height && *x > 0 && *x < data->map_.map_line_len[(int)*y / CUBE_TILE])
+	// while (*y > 0 && *y < data->img_height && *x > 0 && *x < data->map_.map_line_len[(int)*y / CUBE_TILE])
+	while ((*x > 0 && *x < data->img_width) && (*y < data->img_height && *y > 0))
 	{
 		if (ft_is_a_wall(data, *x, *y))
 			break;
