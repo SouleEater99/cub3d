@@ -1,11 +1,22 @@
 #include "../include/cub3d.h"
 
-void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
-{
-	char	*dst;
+// void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
+// {
+// 	char	*dst;
 
-	dst = img->img_data + (y * img->size_line + x * (img->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+// 	dst = img->img_data + (y * img->size_line + x * (img->bits_per_pixel / 8));
+// 	*(unsigned int*)dst = color;
+// }
+
+void    my_mlx_pixel_put(t_image *image, int x, int y, int color)
+{
+    int pixel_index;
+
+    if (x < 0 || x >= SCREEN_WIDTH || y < 0 || y >= SCREEN_HEIGHT)
+        return;
+
+    pixel_index = (y * image->size_line) + (x * (image->bits_per_pixel / 8));
+    *(int *)(image->img_data + pixel_index) = color;
 }
 
 

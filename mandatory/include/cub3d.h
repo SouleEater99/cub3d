@@ -6,7 +6,7 @@
 /*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/24 14:27:57 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/24 19:24:21 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "./keycodes.h"
 #include "./libft/libft.h"
 #include "./minilibx/minilibx-linux/mlx.h"
 #include "./minilibx/minilibx-linux/mlx_int.h"
@@ -77,6 +78,9 @@
 # define SCROLL_UP          4
 # define SCROLL_DOWN        5
 
+# define ROT_SPEED          0.1
+# define MOVE_SPEED         4
+
 // ========================= //
 
 typedef struct s_map
@@ -116,6 +120,17 @@ typedef struct  s_image
     int     width;
     int     height;
 }   t_image;
+
+typedef struct s_player
+{
+    double      dir_x;
+    double      dir_y;
+    double      player_x;
+    double      player_y;
+    void        *current_img;
+    // t_image     *frames[2];
+    t_image     *frames;
+}   t_player;
 
 typedef struct  s_data
 {
@@ -195,8 +210,14 @@ typedef struct  s_data
     char        *we_texture_path;
     char        *ea_texture_path;
     
-    t_image     *textures[NUM_TEXTURES];    
-    
+    t_image     *textures[NUM_TEXTURES];
+    t_player    player;
+    int         shoot;
+    int         frames_num;
+
+    int         mouse_x;
+    int         mouse_y;
+	double      sensitivity;
 }   t_data;
 
 
@@ -243,5 +264,10 @@ void    draw_minimap(t_data *data);
 int     parse_map(t_data *data, int ac, char **av);
 int     shade_walls(int color ,double distance);
 int     shade_walls(int color ,double distance);
+void    render_sprites(t_data *data);
+void    init_player_sprites(t_data *data, char *dir_path, int frames_num);
+void    print_error (char *error_str, char *file, int line);
+int     mouse_events(int button, int x, int y, t_data *data);
+void    mouse_hooks(t_data *data);
 
 #endif

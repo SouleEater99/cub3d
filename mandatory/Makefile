@@ -1,8 +1,10 @@
+CC = cc  
+
 NAME = cub3d
 
-RM = rm -rf
+MAP ?= ./maps/map1.cub
 
-CC = cc  
+RM = rm -rf
 
 CFLAG = -Wall -Wextra -Werror -fsanitize=address -g3
 
@@ -23,6 +25,8 @@ SRC = ./src/cub3d.c\
 		./src/aziz/parsing.c\
 		./src/aziz/minimap.c\
 		./src/aziz/shadow.c\
+		./src/aziz/animation.c\
+		./src/aziz/mouse_events.c\
 
 OBJ = $(SRC:.c=.o)
 
@@ -30,6 +34,9 @@ OBJ = $(SRC:.c=.o)
 	$(CC) $(CFLAG) -c $< -o $@
 
 all : $(NAME) clean
+
+run: all
+	./cub3d $(MAP)
 
 $(NAME) : $(OBJ) #  $(MLX_LIB) $(LIBFT)
 	$(CC) $(CFLAG) $(OBJ) $(LIBFT) $(MLX_LIB) $(MLX_FLAG) -o $(NAME)

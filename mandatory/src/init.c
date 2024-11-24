@@ -32,8 +32,8 @@ int init_data(t_data *data, int ac, char **av)
     data->x_player = 5 * CUBE_TILE; // + (CUBE_TILE / 2);
     data->y_player = 1 * CUBE_TILE; // + (CUBE_TILE / 2);
     data->player_angle = PI;
-    data->turn_speed = 0.04;
-    data->move_speed = 2;
+    data->turn_speed = ROT_SPEED; // 0.2;
+    data->move_speed = MOVE_SPEED; // 8;
     data->num_rays = WIDTH / WALL_STRIP;
     data->plan_distanced = (WIDTH / 2) / tan(FOV / 2);
 
@@ -49,6 +49,8 @@ int init_data(t_data *data, int ac, char **av)
 	data->minimap_radius = MINIMAP_RADIUS;
 	data->minimap_x_center = MINIMAP_MID_X;
 	data->minimap_y_center = MINIMAP_MID_Y;
+
+	init_player_sprites(data, "./textures/sprites/gun_sprite_0/", 22);
     
 // =================================== //
 

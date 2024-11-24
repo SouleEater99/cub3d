@@ -30,6 +30,9 @@ int ft_key_press(int key, void *param)
     }
     else if (key == XK_Escape)
         ft_free_all(NULL, data, 0);
+    
+    else if(key == CTRL_KEY)
+        data->shoot = 1;
     return (0);
 }
 
@@ -47,6 +50,8 @@ int ft_key_release(int key, void *param)
         data->turn_direction = 0;
     else if (key == XK_Left)
         data->turn_direction = 0;
+    else if(key == CTRL_KEY)
+        data->shoot = 0;
     return (0);
 }
 
@@ -65,6 +70,7 @@ int ft_loop_hook(void *param)
     (void ) data;
     ft_update_data(data);
     ft_update_image(data);
+    mouse_hooks(data);
 
     return (0);
 }

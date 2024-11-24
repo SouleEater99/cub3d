@@ -88,18 +88,50 @@ void	ft_get_wall_hit(t_data *data, double angle)
 		data->wall_hit_y = VirtHitY;
 		data->is_hit_virt = 1;
 	}
+
+	// double shadow_factor = fmax(0.2, (1.0 / (data->distance / CUBE_TILE + 1.0))); // Calculate shadow factor
+
+	// printf("Distance: %lf, Shadow Factor: %lf\n", data->distance, shadow_factor);
+	
 	// printf("======{distance_horz : %f | x = %f | y = %f}======\n", ft_calc_distance(data, HorzHitX, HorzHitY),HorzHitX, HorzHitY);
 	// printf("======{distance_virt : %f | x : %f | y : %f}======\n", ft_calc_distance(data, VirtHitX, VirtHitY), VirtHitX, VirtHitY);
 	// printf("x_player : %f | y_player : %f\n", data->x_player, data->y_player);
 }
 
-void	ft_write_floor(t_data *data, int i, int color)
-{
-	int	j;
 
-	j = data->end;
-	while (j < HIGH)
-		my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++, color);
+// void	ft_write_floor(t_data *data, int i, int color)
+// {
+// 	int	j;
+
+// 	double distance = SCREEN_HEIGHT - data->end;
+
+// 	color = shade_walls(color, distance);
+
+// 	j = data->end;
+// 	while (j < HIGH)
+// 	{
+//         double distance = (HIGH/2 - j) / (double)(HIGH/2);
+//         distance = 1 / (distance);
+//         int shaded_color = shade_walls(color, distance);
+
+// 		my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++, shaded_color);
+// 	}
+// }
+
+void ft_write_floor(t_data *data, int i, int color)
+{
+    int j;
+    double distance;
+    
+    j = data->end;
+    while (j < HIGH)
+    {
+        distance = (j - HIGH / 2) / (double)(HIGH / 2);
+		distance = 1 / distance;
+        
+        int shaded_color = shade_walls(color, distance);
+        my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++, shaded_color);
+    }
 }
 
 void	ft_write_ceiling(t_data *data, int i, int color)
@@ -107,8 +139,29 @@ void	ft_write_ceiling(t_data *data, int i, int color)
 	int	j;
 
 	j = 0;
+
 	while (j < data->start)
-		my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++, color);
+	{
+        double distance = (HIGH / 2 - j) / (double)(HIGH / 2);
+        distance = 1 / (distance);
+        int shaded_color = shade_walls(color, distance);
+
+		my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++, shaded_color);
+	}
+}
+
+void	ft_write_wall(t_data *data, int i)
+{
+	int		j;
+
+	j = data->start;
+	while (j < data->end)
+	{
+		ft_get_texture_color(data, j);
+
+		data->color = shade_walls(data->color, (data->distance / CUBE_TILE));
+		my_mlx_pixel_put(&data->projection_img,i * WALL_STRIP, j++, data->color);
+	}
 }
 
 void	ft_get_texture_color(t_data *data, int j)
@@ -134,21 +187,6 @@ void	ft_get_texture_color(t_data *data, int j)
 			data->color = ft_get_color(&data->texture_img_3 ,texture_offset_x , texture_offset_y);
 		else if (!data->is_hit_virt && !data->is_face_down)
 			data->color = ft_get_color(&data->texture_img_4 ,texture_offset_x , texture_offset_y);
-	}
-}
-
-void	ft_write_wall(t_data *data, int i)
-{
-	int		j;
-
-	j = data->start;
-	while (j < data->end)
-	{
-		ft_get_texture_color(data, j);
-		// data->color = CEILING;
-
-		data->color = shade_walls(data->color, data->correct_distance);
-		my_mlx_pixel_put(&data->projection_img,i * WALL_STRIP, j++, data->color);
 	}
 }
 
@@ -187,4 +225,6 @@ void ft_cast_all_rays(t_data *data)
 		angle = angle + ((double)FOV / (double)data->num_rays);
 		i++;
 	}
+
+	render_sprites(data);
 }

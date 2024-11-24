@@ -22,7 +22,6 @@ void    ft_write_cub(t_data *data, int x, int y, int color)
 
 }
 
-
 void   ft_create_pojection_img(t_data *data)
 {
     data->projection_img.img_ptr = mlx_new_image(data->mlx_ptr, WIDTH, HIGH);
@@ -78,7 +77,6 @@ void	ft_write_player(t_data *data)
         }
         x++;
     }
-	
 }
 
 void	ft_write_mini_map(t_data *data)
