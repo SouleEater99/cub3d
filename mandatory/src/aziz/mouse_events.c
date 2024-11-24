@@ -6,7 +6,7 @@
 /*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 19:03:55 by heisenberg        #+#    #+#             */
-/*   Updated: 2024/11/24 19:41:39 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/24 21:12:02 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void mouse_hooks(t_data *data)
     data->mouse_x = x;
     data->mouse_y = y;
 
-    mlx_mouse_move(data->mlx_ptr, data->win_ptr, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+    // mlx_mouse_move(data->mlx_ptr, data->win_ptr, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 }
 
 int check_click_space(t_data *data, int x, int y)

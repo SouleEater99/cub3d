@@ -71,6 +71,7 @@ int ft_loop_hook(void *param)
     ft_update_data(data);
     ft_update_image(data);
     mouse_hooks(data);
+	// render_sprites(data);
 
     return (0);
 }

@@ -19,7 +19,8 @@ void ft_get_virt_hit(t_data *data, double angle, double *x, double *y)
 
 	if (!data->is_face_right)
 		*x -= 1;
-	while ((*x > 0 && *x < data->img_width) && (*y < data->img_height && *y > 0))
+	// while ((*x > 0 && *x < data->img_width) && (*y < data->img_height && *y > 0))
+	while (*y > 0 && *y < data->img_height && *x > 0 && *x < data->map_.map_line_len[(int)*y / CUBE_TILE])
 	{
 		if (ft_is_a_wall(data, *x, *y))
 			break;
@@ -192,10 +193,12 @@ void	ft_get_texture_color(t_data *data, int j)
 
 void	ft_write_projection(t_data *data, int i)
 {
-	data->start = (HIGH / 2) - (data->wall_slice_high / 2);
+	// int mouse_factor = data->mouse_y - SCREEN_HEIGHT / 2;
+
+	data->start = (HIGH / 2) - (data->wall_slice_high / 2); // + mouse_factor;
 	if (data->start < 0)
 		data->start = 0;
-	data->end = (HIGH / 2) + (data->wall_slice_high / 2);
+	data->end = (HIGH / 2) + (data->wall_slice_high / 2); // + mouse_factor;
 	if (data->end > HIGH)
 		data->end = HIGH;
 	ft_write_ceiling(data, i, data->map_.ceiling_color);
