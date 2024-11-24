@@ -54,23 +54,29 @@ int ft_is_a_wall(t_data *data, int x, int y)
 
 int	ft_is_player_inside_wall(t_data *data)
 {
-	double	x;
-	double	y;
+	double	new_x;
+	double	new_y;
 
-	x = data->x_player + (cos(data->player_angle) * data->move_step);
-	y = data->y_player + (sin(data->player_angle) * data->move_step);
-	if (data->map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == '1')
-		return (0);
-	if (data->map[(int)y / CUBE_TILE][(int) x / CUBE_TILE] == 'D')
+	new_x = data->x_player + (cos(data->player_angle) * data->move_step);
+	new_y = data->y_player + (sin(data->player_angle) * data->move_step);
+	
+	// if (data->map[(int)new_y / CUBE_TILE][(int) new_x / CUBE_TILE] == '1')
+	// 	return (0);
+
+	// this is for glissing.
+	if (data->map[(int) data->y_player / CUBE_TILE][(int) new_x / CUBE_TILE] == '0')
+		data->x_player = new_x;
+	if (data->map[(int) new_y / CUBE_TILE][(int) data->x_player / CUBE_TILE] == '0')
+		data->y_player = new_y;
+
+	if (data->map[(int)new_y / CUBE_TILE][(int) new_x / CUBE_TILE] == 'D')
 	{
-		data->door_index = ft_get_door_index(data, x / CUBE_TILE, y / CUBE_TILE);
+		data->door_index = ft_get_door_index(data, new_x / CUBE_TILE, new_y / CUBE_TILE);
         if (data->door_index < 0)
             ft_free_all("Door_index Fail \n", data, 1);
 		if (!data->door[data->door_index].is_open)
 			return (0);
 	}
-	data->x_player = x;
-	data->y_player = y;
 	return (1);
 }
 

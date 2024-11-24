@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:00 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/24 10:18:21 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/24 10:33:11 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void    ft_write_texture_img(t_data *data)
 int main(int ac, char **av)
 {
     
-    t_data  *data;
+    t_data  data;
 
     // char *map[] = {
     //     "1111111111111111111111",
@@ -68,16 +68,17 @@ int main(int ac, char **av)
     // };
     printf("=========== We Are In Debug Mode ============\n");
 
-    data = init_data(ac, av);
+    memset(&data, 0, sizeof(t_data));
+
+    init_data(&data, ac, av);
     // data->map = map;
-    init_mlx(data);
-    ft_init_door(data);
-    ft_write_texture_img(data);
-    mlx_hook(data->win_ptr, 2, (1L<<0) ,ft_key_press, data);
-    mlx_hook(data->win_ptr, 3, (1L<<1) ,ft_key_release, data);
-    mlx_hook(data->win_ptr, 17, (0L) ,ft_key_destroy, data);
-    mlx_loop_hook(data->mlx_ptr, ft_loop_hook, data);
-    mlx_loop(data->mlx_ptr);
-    ft_free_all(NULL, data, 0);
+    ft_init_door(&data);
+    ft_write_texture_img(&data);
+    mlx_hook(data.win_ptr, 2, (1L<<0) ,ft_key_press, &data);
+    mlx_hook(data.win_ptr, 3, (1L<<1) ,ft_key_release, &data);
+    mlx_hook(data.win_ptr, 17, (0L) ,ft_key_destroy, &data);
+    mlx_loop_hook(data.mlx_ptr, ft_loop_hook, &data);
+    mlx_loop(data.mlx_ptr);
+    ft_free_all(NULL, &data, 0);
 
 }

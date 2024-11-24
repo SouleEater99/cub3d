@@ -31,7 +31,6 @@ void   ft_create_pojection_img(t_data *data)
     data->projection_img.img_data = mlx_get_data_addr(data->projection_img.img_ptr, &data->projection_img.bits_per_pixel, &data->projection_img.size_line, &data->projection_img.endian);
     if (!data->projection_img.img_data)
         ft_free_all("Projection data Addres Fail\n", data, 1);
-
 }
 
 int     ft_get_color(t_image *img, int x, int y)

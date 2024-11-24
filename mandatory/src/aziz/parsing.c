@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/24 10:24:50 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/24 10:48:05 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,9 @@ void print_error (char *error_str, char *file, int line)
     ft_putstr_fd(error_str, 2);
     ft_putstr_fd("File: ------> ", 2);
     ft_putstr_fd(file, 2);
-    ft_putstr_fd("\n", 2);
-    ft_putstr_fd("Line: ------> ", 2);
+    ft_putstr_fd(":", 2);
+    // ft_putstr_fd("\n", 2);
+    // ft_putstr_fd("Line: ------> ", 2);
     ft_putnbr_fd(line, 2);
     ft_putstr_fd("\n\n", 2);
 }
@@ -85,6 +86,7 @@ int check_extension(const char *file_path, const char *extension)
     if (!file_path || !extension)
         return (0);
 
+    printf("%s\n", file_path);
     if ((fd = open(file_path, O_RDONLY)) == -1)
     {
         print_error("Error: File does not exist!\n", __FILE__, __LINE__);
@@ -642,6 +644,7 @@ int parse_map(t_data *data, int ac, char **av)
     data->map_.map_start = current_line;
     data->map_.map_height = height - current_line;
     data->map_.map = &lines[current_line];
+    data->map_.map_width = ft_strlen(data->map_.map[0]);
 
     data->map_.map_line_len = malloc(sizeof(int) * data->map_.map_height);
     if (!data->map_.map_line_len)

@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/24 10:24:02 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/24 10:33:02 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ typedef struct  s_data
 }   t_data;
 
 
-t_data  *init_data(int ac, char **av);
+int     init_data(t_data *data, int ac, char **av);
 void    init_mlx(t_data *data);
 void    ft_free_all(char *Msg, t_data *data, int Exit_Status);
 int     ft_key_destroy(void *Param);

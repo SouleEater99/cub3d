@@ -14,30 +14,26 @@ void    ft_init_door(t_data *data)
     data->door[2].y = 5;
 }
 
-t_data  *init_data(int ac, char **av)
-{
-    t_data *data;
+int init_data(t_data *data, int ac, char **av)
+{    
+    init_mlx(data);
 
-
-    data = (t_data *)malloc(sizeof(t_data));
-    if (!data)
-        return (NULL);
-    data = memset(data, 0, sizeof(t_data));
-    
     if (!parse_map(data, ac, av))
         exit (10);
     
     data->row = data->map_.map_width;//22;
     data->col = data->map_.map_height;//10;
     data->map = data->map_.map;
+
+    printf("%d %d\n", data->map_.map_height, data->map_.map_width);
     // data->factor_scale_map  = 0.2;
     data->img_width = data->row * (int)CUBE_TILE;
     data->img_height = data->col * (int)CUBE_TILE;
-    data->x_player = 5 * CUBE_TILE + (CUBE_TILE / 2);
-    data->y_player = 3 * CUBE_TILE + (CUBE_TILE / 2);
+    data->x_player = 5 * CUBE_TILE; // + (CUBE_TILE / 2);
+    data->y_player = 1 * CUBE_TILE; // + (CUBE_TILE / 2);
     data->player_angle = PI;
-    data->turn_speed = 0.02;
-    data->move_speed = 1.5;
+    data->turn_speed = 0.04;
+    data->move_speed = 2;
     data->num_rays = WIDTH / WALL_STRIP;
     data->plan_distanced = (WIDTH / 2) / tan(FOV / 2);
 
@@ -46,9 +42,9 @@ t_data  *init_data(int ac, char **av)
     data->player_x = data->x_player / (CUBE_TILE + (CUBE_TILE / 2));
     data->player_y = data->y_player / (CUBE_TILE + (CUBE_TILE / 2));
     data->scale = SCALE;
-    data->map_.map = data->map;
-    data->map_.map_height = data->col;
-    data->map_.map_width = data->row;
+    // data->map_.map = data->map;
+    // data->map_.map_height = data->col;
+    // data->map_.map_width = data->row;
 	data->player_radius = PLAYER_RADIUS;
 	data->minimap_radius = MINIMAP_RADIUS;
 	data->minimap_x_center = MINIMAP_MID_X;
@@ -56,7 +52,7 @@ t_data  *init_data(int ac, char **av)
     
 // =================================== //
 
-    return (data);
+    return (0);
 }
 
 void    init_mlx(t_data *data)
