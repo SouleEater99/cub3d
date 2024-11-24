@@ -14,8 +14,8 @@
 
 # define PI                 3.14159265358979323846
 
-# define SCREEN_WIDTH       800
-# define SCREEN_HEIGHT      600
+# define SCREEN_WIDTH       1000
+# define SCREEN_HEIGHT      800
 
 # define RAY_LENGHT         500
 

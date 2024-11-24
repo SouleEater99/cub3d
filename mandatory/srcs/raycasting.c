@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 08:56:36 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/22 18:58:23 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/24 12:31:54 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,24 @@ void	dda_algorithm(t_data *data)
 	}
 }
 
+int apply_shadow(int color, double shadow_factor)
+{
+	int r = color >> 16 & 0xFF;
+	int g = color >> 8 & 0xFF;
+	int b = color & 0xFF;
+
+
+	r = (int)(r * shadow_factor);
+	g = (int)(g * shadow_factor);
+	b = (int)(b * shadow_factor);
+
+	r = r > 255 ? 255 : r;
+    g = g > 255 ? 255 : g;
+    b = b > 255 ? 255 : b;
+
+	return (r << 16 | (g << 8) | b);
+}
+
 void	draw_vert_cols(t_data *data, int x)
 {
 	int	color;
@@ -66,6 +84,13 @@ void	draw_vert_cols(t_data *data, int x)
 		color = CLR_SAN;
 
 	int mouse_factor = data->mouse_y - SCREEN_HEIGHT / 2;
+	double ambient_light = 0.1;
+	double shadow_factor = fmax(ambient_light, 1.0 / (data->perp_wall_dist + 1.0)); // Calculate shadow factor
+	// double shadow_factor = fmin(1.0, fmax(0.3, 1.0 / (data->perp_wall_dist + 0.5)));
+
+	color = apply_shadow(color, shadow_factor);
+	
+	printf("Distance: %lf, Shadow Factor: %lf\n", data->perp_wall_dist, shadow_factor);
 	
 	data->line_height = (int)(SCREEN_HEIGHT / data->perp_wall_dist);
 	data->draw_start = -data->line_height / 2 + SCREEN_HEIGHT / 2 + mouse_factor;

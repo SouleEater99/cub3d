@@ -115,7 +115,7 @@ void	init_game(t_data *data)
 	// 	"./textures/sprites/gun_sprite_2/" 48
 	// };
 	
-	init_player_sprites(data, "./textures/sprites/gun_sprite_1/", 27);
+	init_player_sprites(data, "./textures/sprites/gun_sprite_0/", 22);
 
 	data->plane_x = -data->dir_y * fov_width;
 	data->plane_y = data->dir_x * fov_width;

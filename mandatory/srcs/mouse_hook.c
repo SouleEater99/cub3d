@@ -23,7 +23,7 @@ void mouse_hooks(t_data *data)
     // int delta_x = x - SCREEN_WIDTH / 2;
     int delta_x = data->mouse_x - x;
 
-    printf("%d\n", data->mouse_x - x);
+    // printf("%d\n", data->mouse_x - x);
 
     // if (x < 0 || x > SCREEN_WIDTH)
     //     return ;
