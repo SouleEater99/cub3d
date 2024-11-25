@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:00 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/25 11:38:59 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/25 20:42:02 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,28 @@
 
 void    ft_write_texture_img(t_data *data)
 {
-    data->texture_img_1.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/1.xpm", &data->texture_img_1.width, &data->texture_img_1.height);
+    data->texture_img_1.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/tiles/wall_1.xpm", &data->texture_img_1.width, &data->texture_img_1.height);
     if (!data->texture_img_1.img_ptr)
         ft_free_all("Texture Image Load Fail\n", data, 1);
     data->texture_img_1.img_data = mlx_get_data_addr(data->texture_img_1.img_ptr, &data->texture_img_1.bits_per_pixel, &data->texture_img_1.size_line, &data->texture_img_1.endian);
     if (!data->texture_img_1.img_data)
         ft_free_all("Texture data Load Fail\n", data, 1);
 
-    data->texture_img_2.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/2.xpm", &data->texture_img_2.width, &data->texture_img_2.height);
+    data->texture_img_2.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/tiles/wall_2.xpm", &data->texture_img_2.width, &data->texture_img_2.height);
     if (!data->texture_img_2.img_ptr)
         ft_free_all("Texture Image Load Fail\n", data, 1);
     data->texture_img_2.img_data = mlx_get_data_addr(data->texture_img_2.img_ptr, &data->texture_img_2.bits_per_pixel, &data->texture_img_2.size_line, &data->texture_img_2.endian);
     if (!data->texture_img_2.img_data)
         ft_free_all("Texture data Load Fail\n", data, 1);
 
-    data->texture_img_3.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/3.xpm", &data->texture_img_3.width, &data->texture_img_3.height);
+    data->texture_img_3.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/tiles/wall_3.xpm", &data->texture_img_3.width, &data->texture_img_3.height);
     if (!data->texture_img_3.img_ptr)
         ft_free_all("Texture Image Load Fail\n", data, 1);
     data->texture_img_3.img_data = mlx_get_data_addr(data->texture_img_3.img_ptr, &data->texture_img_3.bits_per_pixel, &data->texture_img_3.size_line, &data->texture_img_3.endian);
     if (!data->texture_img_3.img_data)
         ft_free_all("Texture data Load Fail\n", data, 1);
 
-    data->texture_img_4.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/wall_4.xpm", &data->texture_img_4.width, &data->texture_img_4.height);
+    data->texture_img_4.img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./textures/tiles/wall_4.xpm", &data->texture_img_4.width, &data->texture_img_4.height);
     if (!data->texture_img_4.img_ptr)
         ft_free_all("Texture Image Load Fail\n", data, 1);
     data->texture_img_4.img_data = mlx_get_data_addr(data->texture_img_4.img_ptr, &data->texture_img_4.bits_per_pixel, &data->texture_img_4.size_line, &data->texture_img_4.endian);
@@ -57,7 +57,7 @@ int main(int ac, char **av)
 
     init_data(&data, ac, av);
     // data->map = map;
-    ft_init_door(&data);
+    // ft_init_door(&data);
     ft_write_texture_img(&data);
     mlx_hook(data.win_ptr, 2, (1L<<0) ,ft_key_press, &data);
     mlx_hook(data.win_ptr, 3, (1L<<1) ,ft_key_release, &data);

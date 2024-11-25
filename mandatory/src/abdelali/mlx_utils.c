@@ -45,6 +45,9 @@ int ft_board_protect(int Width, int High, int x, int  y)
 int ft_is_a_wall(t_data *data, int x, int y)
 {
 	// printf("x : %d | y : %d\n", x, y);
+	if (data->col > 0 && data->col < data->map_.map_height)
+		data->row = data->map_.map_line_len[data->col];
+
 	if (ft_board_protect(data->row, data->col, x / CUBE_TILE, y / CUBE_TILE) == 1)
 	{
 		if (data->map[y / CUBE_TILE][x / CUBE_TILE] == '1')

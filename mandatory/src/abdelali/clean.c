@@ -24,6 +24,7 @@ void    ft_free_all(char *msg, t_data *data, int exit_status)
             mlx_destroy_display(data->mlx_ptr);
             free(data->mlx_ptr);
         }
+        // free(data->door);
         // free(data);
     }
     if (msg)

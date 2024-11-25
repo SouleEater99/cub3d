@@ -137,7 +137,10 @@ void    ft_write_player_wall_hit(t_data  *data)
 	data->is_face_down = ft_is_angle_facing_down(data->player_angle);
 	data->is_face_right = ft_is_angle_facing_right(data->player_angle);
 	ft_get_wall_hit(data, data->player_angle);
-	if (ft_board_protect(data->row, data->col, data->wall_hit_x / CUBE_TILE, data->wall_hit_y / CUBE_TILE) == 1)
+	
+    if (data->col > 0 && data->col < data->map_.map_height)
+		data->row = data->map_.map_line_len[data->col];
+    if (ft_board_protect(data->row, data->col, data->wall_hit_x / CUBE_TILE, data->wall_hit_y / CUBE_TILE) == 1)
     {
         if (data->map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE] == 'D' && data->distance < WALL_DISTANCE)
         {

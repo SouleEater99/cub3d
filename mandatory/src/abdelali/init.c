@@ -1,18 +1,18 @@
 
 #include "../../include/cub3d.h"
 
-void    ft_init_door(t_data *data)
-{
-    data->n_door = 3;
-    data->door = (t_door *)malloc(sizeof(t_door) * data->n_door);
-    data->door   = memset(data->door, 0, sizeof(t_door) * data->n_door);
-    data->door[0].x = 8;
-    data->door[0].y = 1;
-    data->door[1].x = 16;
-    data->door[1].y = 4;
-    data->door[2].x = 8;
-    data->door[2].y = 5;
-}
+// void    ft_init_door(t_data *data)
+// {
+//     data->n_door = 3;
+//     data->door = (t_door *)malloc(sizeof(t_door) * data->n_door);
+//     data->door   = memset(data->door, 0, sizeof(t_door) * data->n_door);
+//     data->door[0].x = 8;
+//     data->door[0].y = 1;
+//     data->door[1].x = 16;
+//     data->door[1].y = 4;
+//     data->door[2].x = 8;
+//     data->door[2].y = 5;
+// }
 
 double rad_to_deg(double rad_angle)
 {

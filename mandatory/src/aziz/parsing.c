@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/25 11:57:29 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/25 21:11:49 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -397,7 +397,6 @@ int get_doors_num(t_map *map)
         x = -1;
         while (++x < map->map_line_len[y])
         {
-            printf("%d\n", doors_num);
             if (map->map[y][x] == DOOR_SYMBOL)
                 doors_num++;
         }
@@ -411,10 +410,26 @@ int get_doors_num(t_map *map)
 bool validate_map(t_data *data)
 {
     int i = -1;
-    bool is_player_found = false;
-    data->doors_num = get_doors_num(&data->map_);
 
-    printf("doors num: %d\n", data->doors_num);
+    while(++i < data->map_.map_height)
+    {
+        data->map_.map_line_len[i] = ft_strlen(data->map_.map[i]);
+        if (i + 1 < data->map_.map_height)
+            data->map_.map_line_len[i] -= 1;
+    }
+    i = -1;
+    
+    bool is_player_found = false;
+    data->n_door = get_doors_num(&data->map_);
+    if (data->n_door != -1)
+    {
+        data->door = malloc(sizeof(t_door) * data->n_door);
+        ft_memset(data->door, 0, sizeof(t_door) * data->n_door);
+    }
+    
+    printf("doors num: %d\n", data->n_door);
+
+    int door_found = -1;
 
     while (++i < data->map_.map_height)
     {
@@ -448,9 +463,11 @@ bool validate_map(t_data *data)
 
             if (data->map_.map[i][j]  == 'D')
             {
+                data->door[++door_found].is_open = 0;
+                data->door[door_found].x = j;
+                data->door[door_found].y = i;
                 printf("door at: [%d] [%d]\n", i, j);
-            }
-            
+            }   
         }
     }
     if (!is_player_found)

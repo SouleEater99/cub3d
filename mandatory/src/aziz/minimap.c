@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 14:31:22 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/25 11:43:42 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/25 20:31:16 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void draw_map(t_data *data, t_image *image)
                 else if (data->map_.map[map_y][map_x] == '0')
                     draw_tile(data, image, tile_x, tile_y, 0xAAAAAA);
                 else if (data->map_.map[map_y][map_x] == 'D')
-                    draw_tile(data, image, tile_x, tile_y, 0xFF00FF);
+                    draw_tile(data, image, tile_x, tile_y, 0x4278f5);
                 
             }
         }

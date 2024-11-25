@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/25 11:57:45 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/25 21:11:04 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 #define PLAYER_TILE     10
 #define FOV             (66 * (PI / 180))
 #define WALL_STRIP      1
-#define WALL_DISTANCE   300
+#define WALL_DISTANCE   150
 #define BLACK           0x00000000
 #define WHITE           0x00FFFFFF
 #define RED             0x00FF0000
@@ -81,8 +81,8 @@
 # define SCROLL_UP          4
 # define SCROLL_DOWN        5
 
-# define ROT_SPEED          0.06
-# define MOVE_SPEED         3
+# define ROT_SPEED          0.2
+# define MOVE_SPEED         6
 
 // ========================= //
 
@@ -221,7 +221,7 @@ typedef struct  s_data
     int         mouse_y;
 	double      sensitivity;
 
-    int         doors_num;
+    // int         doors_num;
 }   t_data;
 
 
