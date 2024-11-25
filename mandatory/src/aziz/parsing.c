@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/24 10:48:05 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/25 11:57:29 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -384,6 +384,27 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
     return (textures_found == 4 && colors_found == 2);
 }
 
+int get_doors_num(t_map *map)
+{
+    int x = -1;
+    int y = -1;
+    int doors_num = 0;
+    if (!map || !map->map || !map->map_line_len)
+        return (-1);
+
+    while (++y < map->map_height)
+    {
+        x = -1;
+        while (++x < map->map_line_len[y])
+        {
+            printf("%d\n", doors_num);
+            if (map->map[y][x] == DOOR_SYMBOL)
+                doors_num++;
+        }
+    }
+    return (doors_num);
+}
+
 /// @brief 
 /// @param data 
 /// @return 
@@ -391,6 +412,9 @@ bool validate_map(t_data *data)
 {
     int i = -1;
     bool is_player_found = false;
+    data->doors_num = get_doors_num(&data->map_);
+
+    printf("doors num: %d\n", data->doors_num);
 
     while (++i < data->map_.map_height)
     {
@@ -401,7 +425,7 @@ bool validate_map(t_data *data)
         int j = -1;
         while (++j < data->map_.map_line_len[i])
         {
-            if (!ft_strchr(SUPPORTED_CHARS, data->map_.map[i][j]))
+            if (!ft_strchr(SUPPORTED_CHARS_BONUS, data->map_.map[i][j]))
             {
                 print_error("Error: unsupported metadata (characters)!\n", __FILE__, __LINE__);
                 return (false);
@@ -417,9 +441,16 @@ bool validate_map(t_data *data)
                 data->player_x = j + 0.5; // in the center of the tile.
                 data->player_y = i + 0.5; // in the center of the tile.
                 data->player_dir = data->map_.map[i][j];
+                printf("player dir: %c\n", data->player_dir);
                 is_player_found = true;
                 data->map_.map[i][j] = '0';
             }
+
+            if (data->map_.map[i][j]  == 'D')
+            {
+                printf("door at: [%d] [%d]\n", i, j);
+            }
+            
         }
     }
     if (!is_player_found)

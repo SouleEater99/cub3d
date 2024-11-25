@@ -1,5 +1,5 @@
 
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
 
 void    ft_free_all(char *msg, t_data *data, int exit_status)
 {

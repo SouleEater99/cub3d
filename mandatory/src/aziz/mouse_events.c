@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mouse_events.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 19:03:55 by heisenberg        #+#    #+#             */
-/*   Updated: 2024/11/24 21:12:02 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/25 11:31:41 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ void mouse_hooks(t_data *data)
 
     int delta_x = data->mouse_x - x;
 
-    // if (x < 0 || x > SCREEN_WIDTH)
-    //     return ;
+    if (x < 0 || x > SCREEN_WIDTH || y < 0 || y > SCREEN_HEIGHT)
+        return ;
 
     if (x != data->mouse_x)
     {
-        data->sensitivity = 0.004;
+        data->sensitivity = 0.01;
         data->player_angle += delta_x * data->sensitivity;
     }
 
+    printf("%lf\n", data->player_angle);
+    
     data->mouse_x = x;
     data->mouse_y = y;
-
-    // mlx_mouse_move(data->mlx_ptr, data->win_ptr, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 }
 
 int check_click_space(t_data *data, int x, int y)

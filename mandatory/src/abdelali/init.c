@@ -1,5 +1,5 @@
 
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
 
 void    ft_init_door(t_data *data)
 {
@@ -12,6 +12,30 @@ void    ft_init_door(t_data *data)
     data->door[1].y = 4;
     data->door[2].x = 8;
     data->door[2].y = 5;
+}
+
+double rad_to_deg(double rad_angle)
+{
+    return (rad_angle * 180 / PI);
+}
+
+double deg_to_rad(double deg_angle)
+{
+    return (deg_angle * PI / 180);
+}
+
+double get_player_dir(int16_t player_dir)
+{
+    printf("player dir: %c\n", player_dir);
+	if (player_dir == 'N')		// North
+        return (-PI / 2);
+	else if (player_dir == 'S')	// South
+        return (PI / 2);
+	else if (player_dir == 'W')	// West
+        return (PI);
+	else if (player_dir == 'E')	// East
+        return (0);
+    return (-1);
 }
 
 int init_data(t_data *data, int ac, char **av)
@@ -31,7 +55,9 @@ int init_data(t_data *data, int ac, char **av)
     data->img_height = data->col * (int)CUBE_TILE;
     data->x_player = 5 * CUBE_TILE; // + (CUBE_TILE / 2);
     data->y_player = 1 * CUBE_TILE; // + (CUBE_TILE / 2);
-    data->player_angle = PI;
+
+    data->player_angle = (double)get_player_dir(data->player_dir);
+
     data->turn_speed = ROT_SPEED; // 0.2;
     data->move_speed = MOVE_SPEED; // 8;
     data->num_rays = WIDTH / WALL_STRIP;

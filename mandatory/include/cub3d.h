@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/24 19:24:21 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/25 11:57:45 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,15 @@
 
 # define PLAYER_DIR         "NSEW"
 # define SUPPORTED_CHARS    "NSEW01\t\n "
+# define SUPPORTED_CHARS_BONUS "DNSEW01\t\n "
 
 # define NUM_TEXTURES       4
 
 # define PLAYER_RADIUS      6
 # define MINIMAP_RADIUS     80
 # define TILE_SIZE          64
+
+# define DOOR_SYMBOL        'D'
 
 # define SCALE              0.25
 
@@ -78,8 +81,8 @@
 # define SCROLL_UP          4
 # define SCROLL_DOWN        5
 
-# define ROT_SPEED          0.1
-# define MOVE_SPEED         4
+# define ROT_SPEED          0.06
+# define MOVE_SPEED         3
 
 // ========================= //
 
@@ -108,7 +111,6 @@ typedef struct s_door
     int y;
     int is_open;
 }t_door;
-
 
 typedef struct  s_image
 {
@@ -218,6 +220,8 @@ typedef struct  s_data
     int         mouse_x;
     int         mouse_y;
 	double      sensitivity;
+
+    int         doors_num;
 }   t_data;
 
 
@@ -269,5 +273,6 @@ void    init_player_sprites(t_data *data, char *dir_path, int frames_num);
 void    print_error (char *error_str, char *file, int line);
 int     mouse_events(int button, int x, int y, t_data *data);
 void    mouse_hooks(t_data *data);
+// int16_t get_player_dir(int16_t player_dir);
 
 #endif

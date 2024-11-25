@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   animation.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 11:59:35 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/24 19:13:48 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/25 11:32:54 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void render_sprites(t_data *data)
     static int frame = 0;
     static int shoot = 0;
     static int frame_counter = 0;
-    int frame_delay = 1;
+    int frame_delay = 4;
 
     t_image *img = &data->projection_img;
     t_image sprite_image = data->player.frames[0];

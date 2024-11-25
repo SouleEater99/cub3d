@@ -14,14 +14,14 @@ LIBFT = include/libft/libft.a
 
 MLX_LIB =	./include/minilibx/minilibx-linux/libmlx.a \
 			./include/minilibx/minilibx-linux/libmlx_Linux.a
-SRC = ./src/cub3d.c\
-		./src/init.c\
-		./src/write_to_img.c\
-		./src/ft_mlx_hook.c\
-		./src/clean.c\
-		./src/mlx_utils.c\
-		./src/update_image.c\
-		./src/ray_casting.c\
+SRC = ./src/abdelali/cub3d.c\
+		./src/abdelali/init.c\
+		./src/abdelali/write_to_img.c\
+		./src/abdelali/ft_mlx_hook.c\
+		./src/abdelali/clean.c\
+		./src/abdelali/mlx_utils.c\
+		./src/abdelali/update_image.c\
+		./src/abdelali/ray_casting.c\
 		./src/aziz/parsing.c\
 		./src/aziz/minimap.c\
 		./src/aziz/shadow.c\

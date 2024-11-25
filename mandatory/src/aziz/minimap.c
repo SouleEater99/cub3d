@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 14:31:22 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/24 10:52:31 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/25 11:43:42 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,9 @@ void draw_map(t_data *data, t_image *image)
                     draw_tile(data, image, tile_x, tile_y, 0x000000);
                 else if (data->map_.map[map_y][map_x] == '0')
                     draw_tile(data, image, tile_x, tile_y, 0xAAAAAA);
+                else if (data->map_.map[map_y][map_x] == 'D')
+                    draw_tile(data, image, tile_x, tile_y, 0xFF00FF);
+                
             }
         }
     }

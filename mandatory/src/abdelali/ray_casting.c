@@ -1,4 +1,4 @@
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
 
 void ft_get_virt_hit(t_data *data, double angle, double *x, double *y)
 {

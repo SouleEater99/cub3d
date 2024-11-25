@@ -1,5 +1,5 @@
 
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
 
 void    ft_write_cub(t_data *data, int x, int y, int color)
 {
