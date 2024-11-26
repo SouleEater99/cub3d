@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/26 13:53:20 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:42:44 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@
 
 #define WIDTH           800
 #define HIGH            600
+
 #define CUBE_TILE       256
 #define TEXTURE_TILE    256
+
 #define PLAYER_TILE     10
 #define FOV             (66 * (PI / 180))
 #define WALL_STRIP      1
