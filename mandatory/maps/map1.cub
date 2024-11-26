@@ -1,9 +1,9 @@
-NO ./textures/tiles/wall_1.xpm
-SO ./textures/tiles/wall_2.xpm
-WE ./textures/tiles/wall_3.xpm
-EA ./textures/tiles/wall_4.xpm
+NO ./textures/dogs/1.xpm
+SO ./textures/dogs/2.xpm
+WE ./textures/dogs/3.xpm
+EA ./textures/dogs/4.xpm
 
-F +80,+80,+80
+F +180,+64,+100
 C 2,130,255
 
 1111111111111111111111111

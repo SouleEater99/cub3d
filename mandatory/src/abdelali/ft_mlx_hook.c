@@ -15,15 +15,7 @@ int ft_key_press(int key, void *param)
         data->turn_direction = 1;
     else if (key == XK_Left)
         data->turn_direction = -1;
-    else if (key == XK_m)
-    {
-        if (data->factor_scale_map == 1)
-            data->factor_scale_map = 0.2;
-        else
-            data->factor_scale_map = 1;
-        mlx_clear_window(data->mlx_ptr, data->win_ptr);
-    }
-    else  if (key == XK_e)
+    else  if (key == XK_space)
     {
         data->flag = 1;
         ft_write_player_wall_hit(data);
@@ -50,8 +42,8 @@ int ft_key_release(int key, void *param)
         data->turn_direction = 0;
     else if (key == XK_Left)
         data->turn_direction = 0;
-    else if(key == CTRL_KEY)
-        data->shoot = 0;
+    // else if(key == CTRL_KEY)
+    //     data->shoot = 0;
     return (0);
 }
 

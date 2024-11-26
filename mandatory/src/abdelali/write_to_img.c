@@ -94,9 +94,9 @@ void	ft_write_mini_map(t_data *data)
         while (x < data->row && x  * ratio < WIDTH)
         {
 			// printf("+=+++++++{x : %d | y : %d | ratio : %d}+++++++\n", x ,y, ratio);
-            if (data->map[y][x] == '1')
+            if (data->map.map[y][x] == '1')
                 ft_write_cub(data, x * ratio, y * ratio, WHITE);
-            else if (data->map[y][x] == 'D')
+            else if (data->map.map[y][x] == 'D')
                 ft_write_cub(data, x * ratio, y * ratio, YELLOW);
             else
                 ft_write_cub(data, x * ratio, y * ratio, BLACK);
@@ -138,11 +138,11 @@ void    ft_write_player_wall_hit(t_data  *data)
 	data->is_face_right = ft_is_angle_facing_right(data->player_angle);
 	ft_get_wall_hit(data, data->player_angle);
 	
-    if (data->col > 0 && data->col < data->map_.map_height)
-		data->row = data->map_.map_line_len[data->col];
+    if (data->col > 0 && data->col < data->map.map_height)
+		data->row = data->map.map_line_len[data->col];
     if (ft_board_protect(data->row, data->col, data->wall_hit_x / CUBE_TILE, data->wall_hit_y / CUBE_TILE) == 1)
     {
-        if (data->map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE] == 'D' && data->distance < WALL_DISTANCE)
+        if (data->map.map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE] == 'D' && data->distance < WALL_DISTANCE)
         {
             data->door_index = ft_get_door_index(data, data->wall_hit_x / CUBE_TILE, data->wall_hit_y / CUBE_TILE);
             if (data->door_index < 0)
@@ -151,7 +151,7 @@ void    ft_write_player_wall_hit(t_data  *data)
                 data->door[data->door_index].is_open = 1;
             else if (data->door[data->door_index].is_open)
                 data->door[data->door_index].is_open = 0;
-            printf("========== { index:  %c | is_open : %d } ==========\n",data->map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE], data->door[data->door_index].is_open);
+            printf("========== { index:  %c | is_open : %d } ==========\n",data->map.map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE], data->door[data->door_index].is_open);
         }
             // printf("===========\n");
  		// Ft_Write_Line(data,(data->wall_hit_x -  data->X_Player) * data->Factor_Scale_Map , (data->wall_hit_y - data->Y_Player)* data->Factor_Scale_Map, BLUE);

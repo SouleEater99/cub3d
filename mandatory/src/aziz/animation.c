@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 11:59:35 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/25 11:32:54 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/26 11:29:08 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,21 +75,22 @@ void render_sprites(t_data *data)
     }
 
     static int frame = 0;
-    static int shoot = 0;
+    // static int shoot = 0;
     static int frame_counter = 0;
     int frame_delay = 4;
 
     t_image *img = &data->projection_img;
     t_image sprite_image = data->player.frames[0];
         
+    // if (data->shoot)
+    // {
+        // shoot = 1;
+        // data->shoot = 0;
+    // }
+
     if (data->shoot)
     {
-        shoot = 1;
-        data->shoot = 0;
-    }
-
-    if (shoot)
-    {
+        // take_a_shoot();
         frame_counter++;
         if (frame_counter >= frame_delay)
         {
@@ -99,7 +100,7 @@ void render_sprites(t_data *data)
             if (frame >= data->frames_num)    // to reset animation.
             {
                 frame = 0;
-                shoot = 0;
+                data->shoot = 0;
             }
         }
         sprite_image = data->player.frames[frame];

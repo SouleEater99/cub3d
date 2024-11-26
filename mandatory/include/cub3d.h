@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/26 10:33:34 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:44:09 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@
 
 #define WIDTH           800
 #define HIGH            600
-#define CUBE_TILE       64
-#define TEXTURE_TILE    64
+#define CUBE_TILE       256
+#define TEXTURE_TILE    256
 #define PLAYER_TILE     10
 #define FOV             (66 * (PI / 180))
 #define WALL_STRIP      1
-#define WALL_DISTANCE   50
+#define WALL_DISTANCE   (1.2 * CUBE_TILE)
 #define BLACK           0x00000000
 #define WHITE           0x00FFFFFF
 #define RED             0x00FF0000
@@ -81,8 +81,8 @@
 # define SCROLL_UP          4
 # define SCROLL_DOWN        5
 
-# define ROT_SPEED          0.03
-# define MOVE_SPEED         3
+# define ROT_SPEED          0.04
+# define MOVE_SPEED         10
 
 // ========================= //
 
@@ -146,7 +146,7 @@ typedef struct  s_data
     void            *mlx_ptr;
     void            *win_ptr;
     
-    char            **map;
+    // char            **map;
     unsigned int    color;
 	int             is_face_down;
 	int             is_face_right;
@@ -196,7 +196,7 @@ typedef struct  s_data
 
     // ================== //
 
-    t_map       map_;
+    t_map       map;
     double      scale;
     int         minimap_radius;
     int         minimap_x_center;
@@ -251,7 +251,7 @@ void	ft_get_wall_hit(t_data *data, double Angle);
 void    ft_get_horz_hit(t_data *data, double Angle, double *x, double *y);
 void    ft_get_virt_hit(t_data *data, double Angle, double *x, double *y);
 void	ft_write_projection(t_data *data, int i);
-void    ft_write_texture_img(t_data *data);
+void    ft_write_texture_img(t_data *data, char *path);
 void	ft_write_mini_map(t_data *data);
 void	ft_write_player(t_data *data);
 void	ft_write_player_view(t_data *data);
@@ -260,7 +260,7 @@ void	ft_write_ceiling(t_data *data, int i, int color);
 void	ft_write_floor(t_data *data, int i, int color);
 void	ft_get_texture_color(t_data *data, int j);
 void    ft_write_player_wall_hit(t_data  *data);
-void    ft_init_door(t_data *data);
+// void    ft_init_door(t_data *data);
 int     ft_get_door_index(t_data *data, int x, int y);
 
 

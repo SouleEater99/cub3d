@@ -45,11 +45,11 @@ int init_data(t_data *data, int ac, char **av)
     if (!parse_map(data, ac, av))
         exit (10);
     
-    data->row = data->map_.map_width;//22;
-    data->col = data->map_.map_height;//10;
-    data->map = data->map_.map;
+    data->row = data->map.map_width;//22;
+    data->col = data->map.map_height;//10;
+    // data->map = data->map.map;
 
-    printf("%d %d\n", data->map_.map_height, data->map_.map_width);
+    printf("%d %d\n", data->map.map_height, data->map.map_width);
     // data->factor_scale_map  = 0.2;
     data->img_width = data->row * (int)CUBE_TILE;
     data->img_height = data->col * (int)CUBE_TILE;
@@ -68,9 +68,9 @@ int init_data(t_data *data, int ac, char **av)
     data->player_x = data->x_player / (CUBE_TILE + (CUBE_TILE / 2));
     data->player_y = data->y_player / (CUBE_TILE + (CUBE_TILE / 2));
     data->scale = SCALE;
-    // data->map_.map = data->map;
-    // data->map_.map_height = data->col;
-    // data->map_.map_width = data->row;
+    // data->map.map = data->map;
+    // data->map.map_height = data->col;
+    // data->map.map_width = data->row;
 	data->player_radius = PLAYER_RADIUS;
 	data->minimap_radius = MINIMAP_RADIUS;
 	data->minimap_x_center = MINIMAP_MID_X;

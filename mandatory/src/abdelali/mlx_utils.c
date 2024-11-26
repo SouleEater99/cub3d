@@ -46,18 +46,18 @@ int ft_is_a_wall(t_data *data, int x, int y)
 {
 	// printf("x : %d | y : %d\n", x, y);
 
-	// if (data->col > 0 && data->col < data->map_.map_height)
-	// 	data->row = data->map_.map_line_len[data->col];
+	// if (data->col > 0 && data->col < data->map.map_height)
+	// 	data->row = data->map.map_line_len[data->col];
 
-	// printf("===========> %d ==== %d === %d ==== %d\n", data->row, data->col, data->map_.map_width, data->map_.map_height);
+	// printf("===========> %d ==== %d === %d ==== %d\n", data->row, data->col, data->map.map_width, data->map.map_height);
 
 	// printf("y = %d\n", y / CUBE_TILE);
 
-	if (ft_board_protect(data->map_.map_line_len[y], data->map_.map_height, x , y) == 1)
+	if (ft_board_protect(data->map.map_line_len[y], data->map.map_height, x , y) == 1)
 	{
-		if (data->map[y][x] == '1')
+		if (data->map.map[y][x] == '1')
 			return (1);
-		else if (data->map[y][x] == 'D')
+		else if (data->map.map[y][x] == 'D')
 		{
         	data->door_index = ft_get_door_index(data, x, y);
         	if (data->door_index < 0)
@@ -83,16 +83,19 @@ int	ft_is_player_inside_wall(t_data *data)
 	// 	return (0);
 
 	// this is for glissing.
-	if (data->map[(int) data->y_player / CUBE_TILE][(int) new_x / CUBE_TILE] == '0')
+	if (data->map.map[(int) data->y_player / CUBE_TILE][(int) new_x / CUBE_TILE] == '0')
 		data->x_player = new_x;
-	if (data->map[(int) new_y / CUBE_TILE][(int) data->x_player / CUBE_TILE] == '0')
+	if (data->map.map[(int) new_y / CUBE_TILE][(int) data->x_player / CUBE_TILE] == '0')
 		data->y_player = new_y;
 
-	if (data->map[(int)new_y / CUBE_TILE][(int) new_x / CUBE_TILE] == 'D')
+	if (data->map.map[(int)new_y / CUBE_TILE][(int) new_x / CUBE_TILE] == 'D')
 	{
 		data->door_index = ft_get_door_index(data, new_x / CUBE_TILE, new_y / CUBE_TILE);
         if (data->door_index < 0)
             ft_free_all("Door_index Fail \n", data, 1);
+			
+		printf("========== { index:  %c | is_open : %d } ==========\n",data->map.map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE], data->door[data->door_index].is_open);
+		
 		if (!data->door[data->door_index].is_open)
 			return (0);
 	}

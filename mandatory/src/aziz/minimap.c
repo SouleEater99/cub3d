@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 14:31:22 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/26 10:05:03 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:48:16 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,7 @@ void draw_player_direction(t_data *data, t_image *image)
 
 void draw_map(t_data *data, t_image *image)
 {
-    // double scale = 0.25;
-    
     int visible_range = (int)(data->minimap_radius / (TILE_SIZE * data->scale)) + 1;
-    
-    // int player_map_x = (int)data->player_x;
-    // int player_map_y = (int)data->player_y;
 
     data->player_x = data->x_player / CUBE_TILE;
     data->player_y = data->y_player / CUBE_TILE;
@@ -133,8 +128,6 @@ void draw_map(t_data *data, t_image *image)
     int player_map_x = (int)data->player_x;
     int player_map_y = (int)data->player_y;
     
-    // printf("%d %d\n", player_map_x, player_map_y);
-
     int dy = -visible_range - 1;
     while (++dy <= visible_range)
     {
@@ -144,27 +137,20 @@ void draw_map(t_data *data, t_image *image)
             int map_x = player_map_x + dx;
             int map_y = player_map_y + dy;
 
-            if (!data->map_.map)
-            {
-                data->map_.map = data->map;
-                // exit (10);
-            }
-
             // Check if the tile is within map bounds
-            if (map_x >= 0 && map_y >= 0 && map_y < data->map_.map_height &&
-                map_x < data->map_.map_line_len[map_y] && 
-                data->map_.map[map_y] != NULL) // Check if row exists
+            if (map_x >= 0 && map_y >= 0 && map_y < data->map.map_height &&
+                map_x < data->map.map_line_len[map_y] && 
+                data->map.map[map_y] != NULL) // Check if row exists
             {
                 double tile_x = map_x * TILE_SIZE * data->scale;
                 double tile_y = map_y * TILE_SIZE * data->scale;
                 
-                if (data->map_.map[map_y][map_x] == '1')
+                if (data->map.map[map_y][map_x] == '1')
                     draw_tile(data, image, tile_x, tile_y, 0x000000);
-                else if (data->map_.map[map_y][map_x] == '0')
+                else if (data->map.map[map_y][map_x] == '0')
                     draw_tile(data, image, tile_x, tile_y, 0xAAAAAA);
-                else if (data->map_.map[map_y][map_x] == 'D')
+                else if (data->map.map[map_y][map_x] == 'D')
                     draw_tile(data, image, tile_x, tile_y, 0x4278f5);
-                
             }
         }
     }

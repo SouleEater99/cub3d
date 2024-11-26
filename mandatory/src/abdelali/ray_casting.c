@@ -23,7 +23,7 @@ void ft_get_virt_hit(t_data *data, double angle, double *x, double *y)
 	int x_pos = (int)(*x / CUBE_TILE);
 	int y_pos = (int)(*y / CUBE_TILE);
 
-	while (y_pos > 0 && y_pos < data->map_.map_height && x_pos > 0 && x_pos < data->map_.map_line_len[y_pos])
+	while (y_pos > 0 && y_pos < data->map.map_height && x_pos > 0 && x_pos < data->map.map_line_len[y_pos])
 	{
 		if (ft_is_a_wall(data, x_pos, y_pos))
 			break;
@@ -58,7 +58,7 @@ void ft_get_horz_hit(t_data *data, double angle, double *x, double *y)
 	int x_pos = (int)(*x / CUBE_TILE);
 	int y_pos = (int)(*y / CUBE_TILE);
 
-	while (y_pos > 0 && y_pos < data->map_.map_height && x_pos > 0 && x_pos < data->map_.map_line_len[y_pos])
+	while (y_pos > 0 && y_pos < data->map.map_height && x_pos > 0 && x_pos < data->map.map_line_len[y_pos])
 	{
 		if (ft_is_a_wall(data, x_pos, y_pos))
 			break;
@@ -192,16 +192,16 @@ void	ft_get_texture_color(t_data *data, int j)
 	texture_offset_y = DistanceFromTop * ((double)TEXTURE_TILE / data->wall_slice_high);
 	if ((texture_offset_x >= 0 && texture_offset_x < TEXTURE_TILE - 1) && (texture_offset_y >= 0 && texture_offset_y < TEXTURE_TILE - 1))
 	{
-		if (data->map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE] == 'D')
-			data->color = ft_get_color(&data->texture_img_5 ,texture_offset_x , texture_offset_y);
+		if (data->map.map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE] == 'D')
+			data->color = ft_get_color(data->textures[0] ,texture_offset_x , texture_offset_y);
 		else if (data->is_hit_virt && data->is_face_right)
-			data->color = ft_get_color(&data->texture_img_1 ,texture_offset_x , texture_offset_y);
+			data->color = ft_get_color(data->textures[0] ,texture_offset_x , texture_offset_y);
 		else if (data->is_hit_virt && !data->is_face_right)
-			data->color = ft_get_color(&data->texture_img_2 ,texture_offset_x , texture_offset_y);
+			data->color = ft_get_color(data->textures[1] ,texture_offset_x , texture_offset_y);
 		else if (!data->is_hit_virt && data->is_face_down)
-			data->color = ft_get_color(&data->texture_img_3 ,texture_offset_x , texture_offset_y);
+			data->color = ft_get_color(data->textures[2] ,texture_offset_x , texture_offset_y);
 		else if (!data->is_hit_virt && !data->is_face_down)
-			data->color = ft_get_color(&data->texture_img_4 ,texture_offset_x , texture_offset_y);
+			data->color = ft_get_color(data->textures[3] ,texture_offset_x , texture_offset_y);
 	}
 }
 
@@ -215,9 +215,9 @@ void	ft_write_projection(t_data *data, int i)
 	data->end = (HIGH / 2) + (data->wall_slice_high / 2); // + mouse_factor;
 	if (data->end > HIGH)
 		data->end = HIGH;
-	ft_write_ceiling(data, i, data->map_.ceiling_color);
+	ft_write_ceiling(data, i, data->map.ceiling_color);
 	ft_write_wall(data, i);	
-	ft_write_floor(data, i, data->map_.floor_color);
+	ft_write_floor(data, i, data->map.floor_color);
 }
 
 void ft_cast_all_rays(t_data *data)

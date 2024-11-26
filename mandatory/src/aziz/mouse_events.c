@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 19:03:55 by heisenberg        #+#    #+#             */
-/*   Updated: 2024/11/26 11:05:09 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/26 11:37:33 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void mouse_hooks(t_data *data)
     if (x != data->mouse_x)
     {
         data->sensitivity = 0.01;
-        data->player_angle += delta_x * data->sensitivity;
+        data->player_angle += (delta_x * data->sensitivity) * -1;
     }
 
     printf("%lf\n", data->player_angle);
@@ -50,7 +50,7 @@ int check_click_space(t_data *data, int x, int y)
 int mouse_events(int button, int x, int y, t_data *data)
 {
     printf("Button %d pressed at (%d, %d)\n", button, x, y);
-    if (button == LEFT_CLICK)
+    if (button == RIGHT_CLICK)
     {
 		if (check_click_space(data, x, y))
         {
@@ -82,19 +82,22 @@ int mouse_events(int button, int x, int y, t_data *data)
     }
     else if (button == MIDDLE_CLICK)
         printf("Middle click!\n");
-    else if (button == RIGHT_CLICK)
+    else if (button == LEFT_CLICK)
+    {
+        data->shoot = 1;
         printf("Right click!\n");
-    else if (button == SCROLL_UP)
-    {
-        // data->scale += 0.2;
-        // data->minimap_radius += 1;
-        printf("Zooming in!\n");
     }
-    else if (button == SCROLL_DOWN)
-    {
-        // data->scale -= 0.2;
-        // data->minimap_radius -= 1;
-        printf("Zooming out!\n");
-    }
+    // else if (button == SCROLL_UP)
+    // {
+    //     data->scale += 0.2;
+    //     data->minimap_radius += CUBE_TILE * data->scale;
+    //     printf("Zooming in!\n");
+    // }
+    // else if (button == SCROLL_DOWN)
+    // {
+    //     data->scale -= 0.2;
+    //     data->minimap_radius -= CUBE_TILE * data->scale;
+    //     printf("Zooming out!\n");
+    // }
     return 0;
 }

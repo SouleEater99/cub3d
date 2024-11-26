@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/26 10:03:18 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/26 13:46:51 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -348,9 +348,9 @@ bool parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_
             int *color_ptr = NULL;
             
             if (!ft_strcmp("F", parts[0]))
-                color_ptr = &data->map_.floor_color;
+                color_ptr = &data->map.floor_color;
             else if (!ft_strcmp("C", parts[0]))
-                color_ptr = &data->map_.ceiling_color;
+                color_ptr = &data->map.ceiling_color;
             
             else
             {
@@ -421,16 +421,16 @@ bool validate_map(t_data *data)
 {
     int i = -1;
 
-    while(++i < data->map_.map_height)
+    while(++i < data->map.map_height)
     {
-        data->map_.map_line_len[i] = ft_strlen(data->map_.map[i]);
-        if (i + 1 < data->map_.map_height)
-            data->map_.map_line_len[i] -= 1;
+        data->map.map_line_len[i] = ft_strlen(data->map.map[i]);
+        if (i + 1 < data->map.map_height)
+            data->map.map_line_len[i] -= 1;
     }
     i = -1;
     
     bool is_player_found = false;
-    data->n_door = get_doors_num(&data->map_);
+    data->n_door = get_doors_num(&data->map);
     if (data->n_door != -1)
     {
         data->door = malloc(sizeof(t_door) * data->n_door);
@@ -441,22 +441,22 @@ bool validate_map(t_data *data)
 
     int door_found = -1;
 
-    while (++i < data->map_.map_height)
+    while (++i < data->map.map_height)
     {
-        data->map_.map_line_len[i] = ft_strlen(data->map_.map[i]);
-        if (i + 1 < data->map_.map_height)
-            data->map_.map_line_len[i] -= 1;
+        data->map.map_line_len[i] = ft_strlen(data->map.map[i]);
+        if (i + 1 < data->map.map_height)
+            data->map.map_line_len[i] -= 1;
         
         int j = -1;
-        while (++j < data->map_.map_line_len[i])
+        while (++j < data->map.map_line_len[i])
         {
-            if (!ft_strchr(SUPPORTED_CHARS_BONUS, data->map_.map[i][j]))
+            if (!ft_strchr(SUPPORTED_CHARS_BONUS, data->map.map[i][j]))
             {
                 print_error("Error: unsupported metadata (characters)!\n", __FILE__, __LINE__);
                 return (false);
             }
             
-            if (ft_strchr(PLAYER_DIR, data->map_.map[i][j]))
+            if (ft_strchr(PLAYER_DIR, data->map.map[i][j]))
             {
                 if (is_player_found)
                 {
@@ -465,13 +465,13 @@ bool validate_map(t_data *data)
                 }
                 data->player_x = j + 0.5; // in the center of the tile.
                 data->player_y = i + 0.5; // in the center of the tile.
-                data->player_dir = data->map_.map[i][j];
+                data->player_dir = data->map.map[i][j];
                 printf("player dir: %c\n", data->player_dir);
                 is_player_found = true;
-                data->map_.map[i][j] = '0';
+                data->map.map[i][j] = '0';
             }
 
-            if (data->map_.map[i][j]  == 'D')
+            if (data->map.map[i][j]  == 'D')
             {
                 data->door[++door_found].is_open = 0;
                 data->door[door_found].x = j;
@@ -526,8 +526,8 @@ void ft_panic(int line_num, int col_num, const char *line, void (*clean_func)(t_
 
 void clean_up(t_data *data)
 {
-	if (data->map_.map_line_len)
-		free(data->map_.map_line_len);
+	if (data->map.map_line_len)
+		free(data->map.map_line_len);
 		
 	// if (data->no_texture_path)
 	// 	free(data->no_texture_path);
@@ -599,7 +599,7 @@ int validate_map_borders(t_data *data, char **map, int height)
     int i = 0;
     int j = -1;
 
-    if (!check_first_last(data, map, data->map_.map_start, data->map_.map_height))
+    if (!check_first_last(data, map, data->map.map_start, data->map.map_height))
         return (0);
 
     // start from the second line to the line befor the last.
@@ -608,27 +608,27 @@ int validate_map_borders(t_data *data, char **map, int height)
         if (is_empty_line(map[i]))
             continue;
         j = -1;
-        while(++j < data->map_.map_line_len[i] && ft_isspace(map[i][j]))
+        while(++j < data->map.map_line_len[i] && ft_isspace(map[i][j]))
             ;
-        if (map[i][j] != '1' || map[i][data->map_.map_line_len[i] - 1] != '1')
+        if (map[i][j] != '1' || map[i][data->map.map_line_len[i] - 1] != '1')
         {
             print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-            ft_panic(i + data->map_.map_start + 1, j + 1, map[i], clean_up, data);            
+            ft_panic(i + data->map.map_start + 1, j + 1, map[i], clean_up, data);            
             return (0);
         }
         
-        while(j + 1 < data->map_.map_line_len[i])
+        while(j + 1 < data->map.map_line_len[i])
         {
             if ((map[i][j] == '0' && map[i][j + 1] == ' ') || (map[i][j] == ' ' && map[i][j + 1] == '0'))
             {
                 print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-                ft_panic(i + data->map_.map_start + 1, j + 1, map[i], clean_up, data);                
+                ft_panic(i + data->map.map_start + 1, j + 1, map[i], clean_up, data);                
                 return (0);
             }
-            if ((i + 1 < height && map[i][j] == '0' && j < data->map_.map_line_len[i + 1] && map[i + 1][j] == ' ') || (map[i][j] == ' ' && i + 1 < height && map[i + 1][j] == '0'))
+            if ((i + 1 < height && map[i][j] == '0' && j < data->map.map_line_len[i + 1] && map[i + 1][j] == ' ') || (map[i][j] == ' ' && i + 1 < height && map[i + 1][j] == '0'))
             {
                 print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-                ft_panic(i + data->map_.map_start + 1, j + 1, map[i], clean_up, data);                
+                ft_panic(i + data->map.map_start + 1, j + 1, map[i], clean_up, data);                
                 return (0);
             }
             j++;
@@ -636,26 +636,26 @@ int validate_map_borders(t_data *data, char **map, int height)
     }
 
     
-    int **visited = malloc(sizeof(int *) * data->map_.map_height);
+    int **visited = malloc(sizeof(int *) * data->map.map_height);
     if (!visited)
         exit (1); // changes
     
     i = -1;
-    while (++i < data->map_.map_height)
+    while (++i < data->map.map_height)
     {
-        visited[i] = ft_calloc(data->map_.map_line_len[i], sizeof(int));
+        visited[i] = ft_calloc(data->map.map_line_len[i], sizeof(int));
         if (!visited[i])
             exit (1);
     }
 
-    if (!dfs(&data->map_, visited, data->player_x, data->player_y))
+    if (!dfs(&data->map, visited, data->player_x, data->player_y))
     {
         print_error("Error: map is not surrounded by walls!\n", __FILE__, __LINE__);
         exit (1);
     }
 
     i = -1;
-    while(++i < data->map_.map_height)
+    while(++i < data->map.map_height)
         free(visited[i]);
     free(visited);
 
@@ -698,13 +698,13 @@ int parse_map(t_data *data, int ac, char **av)
     // data->map_height = height - current_line;
     // data->map = &lines[current_line];
     
-    data->map_.map_start = current_line;
-    data->map_.map_height = height - current_line;
-    data->map_.map = &lines[current_line];
-    data->map_.map_width = ft_strlen(data->map_.map[0]);
+    data->map.map_start = current_line;
+    data->map.map_height = height - current_line;
+    data->map.map = &lines[current_line];
+    data->map.map_width = ft_strlen(data->map.map[0]);
 
-    data->map_.map_line_len = malloc(sizeof(int) * data->map_.map_height);
-    if (!data->map_.map_line_len)
+    data->map.map_line_len = malloc(sizeof(int) * data->map.map_height);
+    if (!data->map.map_line_len)
     {
         free_array(lines);
         return (0);
@@ -717,20 +717,20 @@ int parse_map(t_data *data, int ac, char **av)
         return (0);
     }
 
-    if (!validate_map_borders(data, data->map_.map, data->map_.map_height))
+    if (!validate_map_borders(data, data->map.map, data->map.map_height))
     {
         free_array(lines);
         return (0);
     }
 
-    // data->map_.map = data->map;
-    // data->map_.map_height = data->map_height;
-    // data->map_.ceiling_color = data->ceiling_color;
-    // data->map_.floor_color = data->floor_color;
-    // data->map_.no_texture_path = data->no_texture_path;
-    // data->map_.so_texture_path = data->so_texture_path;
-    // data->map_.ea_texture_path = data->ea_texture_path;
-    // data->map_.we_texture_path = data->we_texture_path;
+    // data->map.map = data->map;
+    // data->map.map_height = data->map_height;
+    // data->map.ceiling_color = data->ceiling_color;
+    // data->map.floor_color = data->floor_color;
+    // data->map.no_texture_path = data->no_texture_path;
+    // data->map.so_texture_path = data->so_texture_path;
+    // data->map.ea_texture_path = data->ea_texture_path;
+    // data->map.we_texture_path = data->we_texture_path;
 
     // print_map(&data->map_);
 
