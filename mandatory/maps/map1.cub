@@ -1,7 +1,7 @@
-NO ./textures/dogs/1.xpm
-SO ./textures/dogs/2.xpm
-WE ./textures/dogs/3.xpm
-EA ./textures/dogs/4.xpm
+NO ./textures/birds/1.xpm
+SO ./textures/birds/2.xpm
+WE ./textures/birds/3.xpm
+EA ./textures/birds/4.xpm
 DR ./textures/cats/1.xpm
 
 F 180,64,100
