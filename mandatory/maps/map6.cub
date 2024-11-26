@@ -1,7 +1,7 @@
-NO ./textures/doodles/1.xpm
-SO ./textures/doodles/2.xpm
-WE ./textures/doodles/3.xpm
-EA ./textures/doodles/4.xpm
+NO ./textures/art/1.xpm
+SO ./textures/art/2.xpm
+WE ./textures/art/3.xpm
+EA ./textures/art/4.xpm
 DR ./textures/cats/1.xpm
 
 F 180,64,100
