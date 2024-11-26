@@ -1,97 +1,59 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/10/08 12:57:30 by aelkheta          #+#    #+#              #
-#    Updated: 2024/10/08 13:18:13 by aelkheta         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+CC = cc  
 
-CC = cc
-GCCFLAGS = -Wall -Wextra -Werror
-GEBUGFLAGS = -g3 -fsanitize=address
-LIBFT = libraries/libft/libft.a
-INCLUDES = -I includes
-MLXLFLAGS = -lmlx -lXext -lX11 -lm
-# MLXLFLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
-NAME = cub3d_bonus
-SRCS = ./srcs/cub3d_bonus.c
+NAME = cub3d
 
-OBJS = $(SRCS:%.c=%.o)
+MAP ?= ./maps/map1.cub
 
-all: $(NAME)
+RM = rm -rf
 
-$(NAME): $(OBJS)
-	@echo "Building..."
-	@$(CC) $(GCCFLAGS) $(OBJS) $(MLXLFLAGS) $(GEBUGFLAGS) $(INCLUDES) $(LIBFT) -o $(NAME)
-	@echo "Building done"
+CFLAG = -Wall -Wextra -Werror -fsanitize=address -g3
+
+MLX_FLAG = -lX11 -lm -lz -lXext
+
+LIBFT = include/libft/libft.a
+
+MLX_LIB =	./include/minilibx/minilibx-linux/libmlx.a \
+			./include/minilibx/minilibx-linux/libmlx_Linux.a
+SRC = ./src/abdelali/cub3d.c\
+		./src/abdelali/init.c\
+		./src/abdelali/write_to_img.c\
+		./src/abdelali/ft_mlx_hook.c\
+		./src/abdelali/clean.c\
+		./src/abdelali/mlx_utils.c\
+		./src/abdelali/update_image.c\
+		./src/abdelali/ray_casting.c\
+		./src/aziz/parsing.c\
+		./src/aziz/minimap.c\
+		./src/aziz/shadow.c\
+		./src/aziz/animation.c\
+		./src/aziz/mouse_events.c\
+
+OBJ = $(SRC:.c=.o)
 
 %.o: %.c
-	@echo "Compiling object files..."
-	@$(CC) $(GCCFLAGS) $(INCLUDES) $(GEBUGFLAGS) -c -o $@ $<
-	@echo "Compiling object files done"
+	$(CC) $(CFLAG) -c $< -o $@
 
-clean:
-	@echo "Removing object files..."
-	@rm -rf $(OBJS)
-	@echo "Removing object files done"
+all : $(NAME) clean
 
-fclean: clean
-	@echo "Removing program name..."
-	@rm -f $(NAME)
-	@echo "Removing program name done"
+run: all
+	./cub3d $(MAP)
 
-re: fclean all
+$(NAME) : $(OBJ) #  $(MLX_LIB) $(LIBFT)
+	$(CC) $(CFLAG) $(OBJ) $(LIBFT) $(MLX_LIB) $(MLX_FLAG) -o $(NAME)
 
-.PHONY: all clean fclean re
-.SECONDARY:
+$(LIBFT):
+	@make -sC ./include/libft all
 
+$(MLX_LIB):
+	@make -sC ./include/minilibx/minilibx-linux
 
-# CC = cc
-# GCCFLAGS = -Wall -Wextra -Werror
-# DEBUGFLAGS = -g3 -fsanitize=address
-# LIBFT = libraries/libft/libft.a
-# INCLUDES = -I includes
-# # MLXLFLAGS = -lmlx -lXext -lX11 -lm
-# MLXLFLAGS = ./libraries/minilibx_opengl_20191021/libmlx.a -framework OpenGL -framework AppKit // for macOS
-# # MLXLFLAGS = ./libraries/minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm
-# SRC_DIR = ./srcs
-# # MLXLFLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
-# NAME = cub3d
-# SRCS = $(SRC_DIR)/cub3d.c $(SRC_DIR)/images.c $(SRC_DIR)/raycasting.c $(SRC_DIR)/init_utiles.c $(SRC_DIR)/release_res.c
+clean :
+	$(RM) $(OBJ)
+	# @make -sC ./include/libft clean
+	# @make -sC ./include/minilibx/minilibx-linux clean
 
-# OBJS = $(SRCS:%.c=%.o)
+fclean : clean
+	$(RM) $(NAME)
+	# @make -sC ./include/libft fclean
 
-# all: $(NAME)
-
-# run: all clean
-# 	@./cub3d
-# 	@ rm ./cub3d
-	
-# $(NAME): $(OBJS)
-# 	@echo "Building..."
-# 	@$(CC) $(GCCFLAGS) $(OBJS) $(MLXLFLAGS) $(DEBUGFLAGS) $(INCLUDES) $(LIBFT) -o $(NAME)
-# 	@echo "Building done"
-
-# %.o: %.c
-# 	@echo "Compiling object files..."
-# 	@$(CC) $(GCCFLAGS) $(INCLUDES) $(DEBUGFLAGS) -c -o $@ $<
-# 	@echo "Compiling object files done"
-
-# clean:
-# 	@echo "Removing object files..."
-# 	@rm -rf $(OBJS)
-# 	@echo "Removing object files done"
-
-# fclean: clean
-# 	@echo "Removing program name..."
-# 	@rm -f $(NAME)
-# 	@echo "Removing program name done"
-
-# re: fclean all
-
-# .PHONY: all clean fclean re
-# .SECONDARY:
+re : fclean all clean
