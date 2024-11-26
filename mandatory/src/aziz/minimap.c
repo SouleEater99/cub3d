@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 14:31:22 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/25 20:31:16 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/26 10:05:03 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,6 @@ void draw_map(t_data *data, t_image *image)
             }
 
             // Check if the tile is within map bounds
-            // if (map_x >= 0 && map_x < data->map_width && map_y >= 0 && map_y < data->map_height)
             if (map_x >= 0 && map_y >= 0 && map_y < data->map_.map_height &&
                 map_x < data->map_.map_line_len[map_y] && 
                 data->map_.map[map_y] != NULL) // Check if row exists

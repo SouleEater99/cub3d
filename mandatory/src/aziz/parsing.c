@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/25 21:11:49 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/26 10:03:18 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ void print_error (char *error_str, char *file, int line)
     ft_putstr_fd("File: ------> ", 2);
     ft_putstr_fd(file, 2);
     ft_putstr_fd(":", 2);
-    // ft_putstr_fd("\n", 2);
-    // ft_putstr_fd("Line: ------> ", 2);
     ft_putnbr_fd(line, 2);
     ft_putstr_fd("\n\n", 2);
 }
@@ -127,7 +125,23 @@ bool is_empty_line(const char *line)
 /// @return true if the format is correct.
 int check_color_format(const char *str_color)
 {
-    if (!str_color || !ft_isdigit(str_color[0]) || !ft_isdigit(str_color[ft_strlen(str_color) - 1]))
+    int i = -1;
+    int sep_count = 0;
+    
+    if (!str_color)
+        return (0);
+        
+    int color_len = ft_strlen(str_color);
+    while(++i < color_len)
+    {
+        if ((i == 0 || str_color[i - 1] == ',') && str_color[i] == '+')
+            continue;
+        if (!ft_isdigit(str_color[i]) && str_color[i] != ',')
+            return (0);
+        if (str_color[i] == ',')
+            sep_count++;    
+    }
+    if (sep_count != 2)
         return (0);
     return (1);
 }
@@ -157,26 +171,22 @@ int64_t parse_color(const char *str_color)
 
     color = -1;
     if (!check_color_format(str_color))
+    {
+        print_error("Error: color format should be like this: 255,255,255\n", __FILE__, __LINE__);   
         return (color);
-
+    }
     colors = ft_split(str_color, ',');
     if (!colors || arr_len(colors) != 3)
     {
         free_array(colors);
         return (-1);
     }
-        
     int r = ft_atoi(colors[0]);
     int g = ft_atoi(colors[1]);
     int b = ft_atoi(colors[2]);
-    
     free_array(colors);
-
     if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
         return (-1);
-
-    // color = (r << 16) + (g << 8) + b;
-    // return ((r << 16) | (g << 8) | b);
     color = (r << 16) | (g << 8) | b;
     return (color);
 }
@@ -575,7 +585,6 @@ int check_first_last(t_data *data, char **map, int map_start, int map_height)
         print_error("Error: invalid map border!\n", __FILE__, __LINE__);
         ft_panic(line + 1, j + 1, map[line], clean_up, data);       
         return (0); 
-        // exit (100);
     }
     return (1);
 }

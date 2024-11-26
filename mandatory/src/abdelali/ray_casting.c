@@ -19,13 +19,19 @@ void ft_get_virt_hit(t_data *data, double angle, double *x, double *y)
 
 	if (!data->is_face_right)
 		*x -= 1;
-	// while (*y > 0 && *y < data->img_height && *x > 0 && *x < data->map_.map_line_len[(int)*y / CUBE_TILE])
-	while ((*x > 0 && *x < data->img_width) && (*y < data->img_height && *y > 0))
+
+	int x_pos = (int)(*x / CUBE_TILE);
+	int y_pos = (int)(*y / CUBE_TILE);
+
+	while (y_pos > 0 && y_pos < data->map_.map_height && x_pos > 0 && x_pos < data->map_.map_line_len[y_pos])
 	{
-		if (ft_is_a_wall(data, *x, *y))
+		if (ft_is_a_wall(data, x_pos, y_pos))
 			break;
 		*y += ystep;
 		*x += xstep;
+
+		x_pos = (int)(*x / CUBE_TILE);
+		y_pos = (int)(*y / CUBE_TILE);
 	}
 }
 
@@ -47,12 +53,20 @@ void ft_get_horz_hit(t_data *data, double angle, double *x, double *y)
 		xstep *= -1;
 	if (!data->is_face_down)
 		*y -= 1;
-	while ((*x > 0 && *x < data->img_width) && (*y < data->img_height && *y > 0))
+
+
+	int x_pos = (int)(*x / CUBE_TILE);
+	int y_pos = (int)(*y / CUBE_TILE);
+
+	while (y_pos > 0 && y_pos < data->map_.map_height && x_pos > 0 && x_pos < data->map_.map_line_len[y_pos])
 	{
-		if (ft_is_a_wall(data, *x, *y))
+		if (ft_is_a_wall(data, x_pos, y_pos))
 			break;
 		*y += ystep;
 		*x += xstep;
+		
+		x_pos = (int)(*x / CUBE_TILE);
+		y_pos = (int)(*y / CUBE_TILE);
 	}
 }
 

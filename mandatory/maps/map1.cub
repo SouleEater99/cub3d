@@ -3,7 +3,7 @@ SO ./textures/tiles/wall_2.xpm
 WE ./textures/tiles/wall_3.xpm
 EA ./textures/tiles/wall_4.xpm
 
-F 203,25,10
+F +80,+80,+80
 C 2,130,255
 
 1111111111111111111111111
