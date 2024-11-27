@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   animation.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 11:59:35 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/27 20:27:07 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/27 21:08:40 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	render_sprites_to_image(t_image *image, t_image *sprite_image, int x,
 {
 	int	sy;
 	int	sx;
-	int	sprite_pixel;
 	int	dx;
 	int	dy;
+	int	sprite_pixel;
 
 	if (!image || !sprite_image || !image->img_data || !sprite_image->img_data)
 		return ;
@@ -77,13 +77,13 @@ void	render_sprites_to_image(t_image *image, t_image *sprite_image, int x,
 
 void	render_sprites(t_data *data)
 {
-	static int	frame = 0;
-	static int	frame_counter = 0;
-	int			frame_delay;
-	t_image		*img;
-	t_image		sprite_image;
 	int			x;
 	int			y;
+	t_image		*img;
+	static int	frame = 0;
+	int			frame_delay;
+	t_image		sprite_image;
+	static int	frame_counter = 0;
 
 	if (!data || !data->mlx_ptr || !data->win_ptr
 		|| !data->projection_img.img_ptr || !data->player.frames)
@@ -92,17 +92,12 @@ void	render_sprites(t_data *data)
 		exit(1);
 	}
 	// static int shoot = 0;
-	frame_delay = 4;
+	frame_delay = FRAME_DELAY;
 	img = &data->projection_img;
 	sprite_image = data->player.frames[0];
-	// if (data->shoot)
-	// {
-	// shoot = 1;
-	// data->shoot = 0;
-	// }
+
 	if (data->shoot)
 	{
-		// take_a_shoot();
 		frame_counter++;
 		if (frame_counter >= frame_delay)
 		{

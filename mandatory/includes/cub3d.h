@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/27 20:28:52 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/27 21:10:04 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,14 @@
 # define SCROLL_UP          4
 # define SCROLL_DOWN        5
 
-# define ROT_SPEED          0.02
-# define MOVE_SPEED         10
+# define MOUSE_SENSITIVITY  0.01
+# define FRAME_DELAY        1
+
+// # define ROT_SPEED          0.02
+// # define MOVE_SPEED         10
+
+# define ROT_SPEED          0.1
+# define MOVE_SPEED         30
 
 // ========================= //
 
@@ -134,7 +140,6 @@ typedef struct s_player
     double      player_x;
     double      player_y;
     void        *current_img;
-    // t_image     *frames[2];
     t_image     *frames;
 }   t_player;
 
@@ -150,7 +155,6 @@ typedef struct  s_data
     void            *mlx_ptr;
     void            *win_ptr;
     
-    // char            **map;
     unsigned int    color;
 	int             is_face_down;
 	int             is_face_right;
@@ -185,16 +189,10 @@ typedef struct  s_data
     double          player_distance;
     double          player_wallhit_x;
     double          player_wallhit_y;
-    
 
     double          factor_scale_map;
 
     t_image         projection_img;
-    // t_image         texture_img_1;
-    // t_image         texture_img_2;
-    // t_image         texture_img_3;
-    // t_image         texture_img_4;
-    // t_image         texture_img_5;
     int             start_player_x;
     int             start_player_y;
     int             player_offset;

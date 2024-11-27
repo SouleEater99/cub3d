@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   mouse_events.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 19:03:55 by heisenberg        #+#    #+#             */
-/*   Updated: 2024/11/27 20:45:47 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/27 21:07:33 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
-
-#define MOUSE_SENSITIVITY 0.01
 
 void	mouse_hooks(t_data *data)
 {
