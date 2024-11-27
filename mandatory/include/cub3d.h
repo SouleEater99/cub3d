@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/27 17:00:25 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/27 18:50:44 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 #define PLAYER_TILE     10
 #define FOV             (66 * (PI / 180))
 #define WALL_STRIP      1
-#define WALL_DISTANCE   (1.2 * CUBE_TILE)
+#define WALL_DISTANCE   (1.5 * CUBE_TILE)
 #define BLACK           0x00000000
 #define WHITE           0x00FFFFFF
 #define RED             0x00FF0000
@@ -84,8 +84,8 @@
 # define SCROLL_UP          4
 # define SCROLL_DOWN        5
 
-# define ROT_SPEED          0.2
-# define MOVE_SPEED         30
+# define ROT_SPEED          0.02
+# define MOVE_SPEED         10
 
 // ========================= //
 
