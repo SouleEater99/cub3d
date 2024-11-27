@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_mlx_hook.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/27 20:29:50 by aelkheta          #+#    #+#             */
+/*   Updated: 2024/11/27 20:34:02 by aelkheta         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "../../include/cub3d.h"
+#include <cub3d.h>
 
 int	ft_key_press(int key, void *param)
 {
@@ -60,7 +71,7 @@ int	ft_key_destroy(void *param)
 
 int	ft_loop_hook(void *param)
 {
-	t_data *data;
+	t_data	*data;
 
 	data = (t_data *)param;
 	(void)data;
@@ -68,6 +79,5 @@ int	ft_loop_hook(void *param)
 	ft_update_image(data);
 	mouse_hooks(data);
 	// render_sprites(data);
-
 	return (0);
 }

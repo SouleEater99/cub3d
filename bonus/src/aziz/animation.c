@@ -6,11 +6,11 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 11:59:35 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/27 19:40:20 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/27 20:27:07 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3d.h"
+#include <cub3d.h>
 
 void	init_player_sprites(t_data *data, char *dir_path, int frames_num)
 {

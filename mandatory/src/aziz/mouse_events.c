@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 19:03:55 by heisenberg        #+#    #+#             */
-/*   Updated: 2024/11/27 20:29:25 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/27 20:45:47 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,28 @@ int	check_click_space(t_data *data, int x, int y)
 	return (0);
 }
 
+void big_minimap(t_data *data)
+{
+	data->scale = SCALE * 2;
+	data->turn_speed = ROT_SPEED * 1.5;
+	data->move_speed = MOVE_SPEED * 1.5;
+	data->player_radius = PLAYER_RADIUS;
+	data->minimap_radius = MINIMAP_RADIUS * 3.8;
+	data->minimap_x_center = MAP_MID_X;
+	data->minimap_y_center = MAP_MID_Y;
+}
+
+void small_minimap(t_data *data)
+{
+	data->scale = SCALE;
+	data->turn_speed = ROT_SPEED;
+	data->move_speed = MOVE_SPEED;
+	data->player_radius = PLAYER_RADIUS;
+	data->minimap_radius = MINIMAP_RADIUS;
+	data->minimap_x_center = MINIMAP_MID_X;
+	data->minimap_y_center = MINIMAP_MID_Y;
+}
+
 int	mouse_events(int button, int x, int y, t_data *data)
 {
 	printf("Button %d pressed at (%d, %d)\n", button, x, y);
@@ -56,49 +78,13 @@ int	mouse_events(int button, int x, int y, t_data *data)
 		if (check_click_space(data, x, y))
 		{
 			data->clicks++;
-			printf("clicks: %d\n", data->clicks);
 			if (data->clicks % 2 != 0)
-			{
-				data->scale = SCALE * 2;
-				data->turn_speed = ROT_SPEED * 1.5;
-				data->move_speed = MOVE_SPEED * 1.5;
-				data->player_radius = PLAYER_RADIUS;
-				data->minimap_radius = MINIMAP_RADIUS * 3.8;
-				data->minimap_x_center = MAP_MID_X;
-				data->minimap_y_center = MAP_MID_Y;
-				// click_animation(data); // TODO
-			}
+				big_minimap(data);
 			else
-			{
-				data->scale = SCALE;
-				data->turn_speed = ROT_SPEED;
-				data->move_speed = MOVE_SPEED;
-				data->player_radius = PLAYER_RADIUS;
-				data->minimap_radius = MINIMAP_RADIUS;
-				data->minimap_x_center = MINIMAP_MID_X;
-				data->minimap_y_center = MINIMAP_MID_Y;
-			}
+				small_minimap(data);
 		}
-		printf("Left click!\n");
 	}
-	else if (button == MIDDLE_CLICK)
-		printf("Middle click!\n");
 	else if (button == LEFT_CLICK)
-	{
 		data->shoot = 1;
-		printf("Right click!\n");
-	}
-	// else if (button == SCROLL_UP)
-	// {
-	//     data->scale += 0.2;
-	//     data->minimap_radius += CUBE_TILE * data->scale;
-	//     printf("Zooming in!\n");
-	// }
-	// else if (button == SCROLL_DOWN)
-	// {
-	//     data->scale -= 0.2;
-	//     data->minimap_radius -= CUBE_TILE * data->scale;
-	//     printf("Zooming out!\n");
-	// }
 	return (0);
 }

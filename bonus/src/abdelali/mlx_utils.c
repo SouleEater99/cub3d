@@ -1,12 +1,16 @@
-#include "../../include/cub3d.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mlx_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/27 20:30:04 by aelkheta          #+#    #+#             */
+/*   Updated: 2024/11/27 20:43:49 by aelkheta         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
-// {
-// 	char	*dst;
-
-// 	dst = img->img_data + (y * img->size_line + x * (img->bits_per_pixel / 8));
-// 	*(unsigned int*)dst = color;
-// }
+#include <cub3d.h>
 
 void	my_mlx_pixel_put(t_image *image, int x, int y, int color)
 {
@@ -81,10 +85,6 @@ int	ft_is_player_inside_wall(t_data *data)
 				data->y_player / CUBE_TILE);
 		if (data->door_index == -1)
 			ft_free_all("Door_index Fail \n", data, 1);
-		printf("========== { index:  %c | is_open : %d } ==========\n",
-			data->map.map[(int)data->wall_hit_y
-			/ CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE],
-			data->door[data->door_index].is_open);
 		if (!data->door[data->door_index].is_open)
 			return (0);
 		else
@@ -97,10 +97,6 @@ int	ft_is_player_inside_wall(t_data *data)
 				new_y / CUBE_TILE);
 		if (data->door_index == -1)
 			ft_free_all("Door_index Fail \n", data, 1);
-		printf("========== { index:  %c | is_open : %d } ==========\n",
-			data->map.map[(int)data->wall_hit_y
-			/ CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE],
-			data->door[data->door_index].is_open);
 		if (!data->door[data->door_index].is_open)
 			return (0);
 		else
@@ -146,7 +142,10 @@ void	ft_write_line(t_data *data, int dx, int dy, int color)
 
 double	ft_calc_distance(t_data *data, double x, double y)
 {
-	double dx = data->x_player - x;
-	double dy = data->y_player - y;
+	double	dx;
+	double	dy;
+
+	dx = data->x_player - x;
+	dy = data->y_player - y;
 	return (sqrt(dx * dx + dy * dy)); // Euclidean distance
 }

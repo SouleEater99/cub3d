@@ -6,7 +6,7 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/27 20:23:19 by aelkheta          #+#    #+#              #
-#    Updated: 2024/11/27 20:26:52 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/11/27 20:44:41 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,9 +49,7 @@ SRCS = ./src/abdelali/cub3d.c\
 
 OBJS := $(SRCS:%.c=%.o)
 
-all: $(NAME)
-	# make -C ./libraries/libft
-	# make clean -C ./libraries/libft
+all: $(NAME) clean
 
 run: all
 	@./$(NAME) ${MAP}

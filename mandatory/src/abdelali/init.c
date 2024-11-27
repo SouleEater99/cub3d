@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:29:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/27 20:30:00 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/27 20:37:40 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,31 +42,27 @@ int	init_data(t_data *data, int ac, char **av)
 		exit(10);
 	data->row = data->map.map_width;  // 22;
 	data->col = data->map.map_height; // 10;
-	// data->map = data->map.map;
-	printf("%d %d\n", data->map.map_height, data->map.map_width);
-	// data->factor_scale_map  = 0.2;
 	data->img_width = SCREEN_WIDTH;
 	data->img_height = SCREEN_HEIGHT;
 	data->x_player = data->player_x * CUBE_TILE; // + (CUBE_TILE / 2);
 	data->y_player = data->player_y * CUBE_TILE; // + (CUBE_TILE / 2);
 	data->player_angle = (double)get_player_dir(data->player_dir);
-	printf("angle: %lf\n", data->player_angle);
 	data->turn_speed = ROT_SPEED;  // 0.2;
 	data->move_speed = MOVE_SPEED; // 8;
 	data->num_rays = WIDTH / WALL_STRIP;
 	data->plan_distanced = (WIDTH / 2) / tan(FOV / 2);
+	
 	// =================================== //
+	
 	data->player_x = data->x_player / (CUBE_TILE + (CUBE_TILE / 2));
 	data->player_y = data->y_player / (CUBE_TILE + (CUBE_TILE / 2));
 	data->scale = SCALE;
-	// data->map.map = data->map;
-	// data->map.map_height = data->col;
-	// data->map.map_width = data->row;
 	data->player_radius = PLAYER_RADIUS;
 	data->minimap_radius = MINIMAP_RADIUS;
 	data->minimap_x_center = MINIMAP_MID_X;
 	data->minimap_y_center = MINIMAP_MID_Y;
 	init_player_sprites(data, "./textures/sprites/gun_sprite_0/", 22);
+	
 	// =================================== //
 	return (0);
 }
