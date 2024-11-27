@@ -1,19 +1,6 @@
 
 #include "../../include/cub3d.h"
 
-// void    ft_init_door(t_data *data)
-// {
-//     data->n_door = 3;
-//     data->door = (t_door *)malloc(sizeof(t_door) * data->n_door);
-//     data->door   = memset(data->door, 0, sizeof(t_door) * data->n_door);
-//     data->door[0].x = 8;
-//     data->door[0].y = 1;
-//     data->door[1].x = 16;
-//     data->door[1].y = 4;
-//     data->door[2].x = 8;
-//     data->door[2].y = 5;
-// }
-
 double rad_to_deg(double rad_angle)
 {
     return (rad_angle * 180 / PI);
@@ -53,10 +40,12 @@ int init_data(t_data *data, int ac, char **av)
     // data->factor_scale_map  = 0.2;
     data->img_width = data->row * (int)CUBE_TILE;
     data->img_height = data->col * (int)CUBE_TILE;
-    data->x_player = 5 * CUBE_TILE; // + (CUBE_TILE / 2);
-    data->y_player = 1 * CUBE_TILE; // + (CUBE_TILE / 2);
+    data->x_player = data->player_x * CUBE_TILE; // + (CUBE_TILE / 2);
+    data->y_player = data->player_y * CUBE_TILE; // + (CUBE_TILE / 2);
 
     data->player_angle = (double)get_player_dir(data->player_dir);
+
+    printf("angle: %lf\n", data->player_angle);
 
     data->turn_speed = ROT_SPEED; // 0.2;
     data->move_speed = MOVE_SPEED; // 8;

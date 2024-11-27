@@ -1,14 +1,14 @@
-NO ./textures/c_doodles/1.xpm
-SO ./textures/c_doodles/2.xpm
-WE ./textures/c_doodles/3.xpm
-EA ./textures/c_doodles/4.xpm
-DR ./textures/dogs/1.xpm
+NO ./textures/dogs/1.xpm
+SO ./textures/dogs/2.xpm
+WE ./textures/dogs/3.xpm
+EA ./textures/dogs/4.xpm
+DR ./textures/funny/1.xpm
 
 C 2,130,255
 F 220,64,65
 
 1111111111111111111111111
-10000E0000000000000000001
+10000S0000000000000000001
 10110000111D1110000000001
 100D0000D000001011000000111111111111111
 111111111000001001110000000000000000001

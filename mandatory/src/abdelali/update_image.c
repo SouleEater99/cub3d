@@ -5,6 +5,7 @@ void    ft_update_data(t_data *data)
     if (data->walk_direction != 0)// && data->Factor_Scale_Map != 1)
     {
         data->move_step = data->move_speed * data->walk_direction;
+        printf("player at: %lf %lf\n", data->x_player / CUBE_TILE, data->y_player / CUBE_TILE);
         ft_is_player_inside_wall(data);
     }
     if (data->turn_direction != 0) //&& data->Factor_Scale_Map != 1)

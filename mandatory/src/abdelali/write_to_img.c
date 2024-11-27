@@ -129,7 +129,7 @@ int     ft_get_door_index(t_data *data, int x, int y)
             return (i);
         i++;
     }
-    return (0);
+    return (-1);
 }
 
 void    ft_write_player_wall_hit(t_data  *data)
@@ -138,14 +138,14 @@ void    ft_write_player_wall_hit(t_data  *data)
 	data->is_face_right = ft_is_angle_facing_right(data->player_angle);
 	ft_get_wall_hit(data, data->player_angle);
 	
-    if (data->col > 0 && data->col < data->map.map_height)
-		data->row = data->map.map_line_len[data->col];
+    // if (data->col > 0 && data->col < data->map.map_height)
+    data->row = data->map.map_line_len[(int)(data->col / CUBE_TILE)];
     if (ft_board_protect(data->row, data->col, data->wall_hit_x / CUBE_TILE, data->wall_hit_y / CUBE_TILE) == 1)
     {
         if (data->map.map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE] == 'D' && data->distance < WALL_DISTANCE)
         {
             data->door_index = ft_get_door_index(data, data->wall_hit_x / CUBE_TILE, data->wall_hit_y / CUBE_TILE);
-            if (data->door_index < 0)
+            if (data->door_index == -1)
                 ft_free_all("Door_index Fail \n", data, 1);
             if (!data->door[data->door_index].is_open)
                 data->door[data->door_index].is_open = 1;
