@@ -38,8 +38,8 @@ int init_data(t_data *data, int ac, char **av)
 
     printf("%d %d\n", data->map.map_height, data->map.map_width);
     // data->factor_scale_map  = 0.2;
-    data->img_width = data->row * (int)CUBE_TILE;
-    data->img_height = data->col * (int)CUBE_TILE;
+    data->img_width = SCREEN_WIDTH;
+    data->img_height = SCREEN_HEIGHT;
     data->x_player = data->player_x * CUBE_TILE; // + (CUBE_TILE / 2);
     data->y_player = data->player_y * CUBE_TILE; // + (CUBE_TILE / 2);
 

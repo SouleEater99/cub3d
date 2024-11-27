@@ -79,36 +79,36 @@ void	ft_write_player(t_data *data)
     }
 }
 
-void	ft_write_mini_map(t_data *data)
-{
+// void	ft_write_mini_map(t_data *data)
+// {
 
-	int		x;
-	int		y;
-	double	ratio;
+// 	int		x;
+// 	int		y;
+// 	double	ratio;
 
-	ratio = (double)CUBE_TILE * data->factor_scale_map;
- 	y = 0;
-    while (y < data->col && y * ratio < HIGH)
-    {
-        x = 0;
-        while (x < data->row && x  * ratio < WIDTH)
-        {
-			// printf("+=+++++++{x : %d | y : %d | ratio : %d}+++++++\n", x ,y, ratio);
-            if (data->map.map[y][x] == '1')
-                ft_write_cub(data, x * ratio, y * ratio, WHITE);
-            else if (data->map.map[y][x] == 'D')
-                ft_write_cub(data, x * ratio, y * ratio, YELLOW);
-            else
-                ft_write_cub(data, x * ratio, y * ratio, BLACK);
-            x++;
-        }
-        y++;
-    }
-	ft_write_player(data);
-    // ft_write_player_wall_hit(data);
-	ft_write_player_view(data);
+// 	ratio = (double)CUBE_TILE * data->factor_scale_map;
+//  	y = 0;
+//     while (y < data->col && y * ratio < HIGH)
+//     {
+//         x = 0;
+//         while (x < data->row && x  * ratio < WIDTH)
+//         {
+// 			// printf("+=+++++++{x : %d | y : %d | ratio : %d}+++++++\n", x ,y, ratio);
+//             if (data->map.map[y][x] == '1')
+//                 ft_write_cub(data, x * ratio, y * ratio, WHITE);
+//             else if (data->map.map[y][x] == 'D')
+//                 ft_write_cub(data, x * ratio, y * ratio, YELLOW);
+//             else
+//                 ft_write_cub(data, x * ratio, y * ratio, BLACK);
+//             x++;
+//         }
+//         y++;
+//     }
+// 	ft_write_player(data);
+//     // ft_write_player_wall_hit(data);
+// 	ft_write_player_view(data);
 
-}
+// }
 
 // void    ft_write_player_wall_hit(t_data  *data)
 // {

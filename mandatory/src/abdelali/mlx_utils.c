@@ -78,84 +78,42 @@ int	ft_is_player_inside_wall(t_data *data)
 
 	new_x = data->x_player + (cos(data->player_angle) * data->move_step);
 	new_y = data->y_player + (sin(data->player_angle) * data->move_step);
-
-	// Check horizontal movement
-	if (data->map.map[(int)data->y_player / CUBE_TILE][(int)new_x / CUBE_TILE] != '1')
-	{
-		if (data->map.map[(int)data->y_player / CUBE_TILE][(int)new_x / CUBE_TILE] == 'D')
-		{
-			data->door_index = ft_get_door_index(data, new_x / CUBE_TILE, data->y_player / CUBE_TILE);
-			if (data->door_index == -1)
-				ft_free_all("Door_index Fail \n", data, 1);
-			if (data->door[data->door_index].is_open)
-			{
-				data->x_player = new_x;
-			}
-		}
-		else
-		{
-			data->x_player = new_x;
-		}
-	}
-
-	// Check vertical movement
-	if (data->map.map[(int)new_y / CUBE_TILE][(int)data->x_player / CUBE_TILE] != '1')
-	{
-		if (data->map.map[(int)new_y / CUBE_TILE][(int)data->x_player / CUBE_TILE] == 'D')
-		{
-			data->door_index = ft_get_door_index(data, data->x_player / CUBE_TILE, new_y / CUBE_TILE);
-			if (data->door_index == -1)
-				ft_free_all("Door_index Fail \n", data, 1);
-			if (data->door[data->door_index].is_open)
-			{
-				data->y_player = new_y;
-			}
-		}
-		else
-		{
-			data->y_player = new_y;
-		}
-	}
-
-	return (1); // Allow movement
-}
-
-
-// int	ft_is_player_inside_wall(t_data *data)
-// {
-// 	double	new_x;
-// 	double	new_y;
-
-// 	new_x = data->x_player + (cos(data->player_angle) * data->move_step);
-// 	new_y = data->y_player + (sin(data->player_angle) * data->move_step);
 	
-// 	// if (data->map[(int)new_y / CUBE_TILE][(int) new_x / CUBE_TILE] == '1')
-// 	// 	return (0);
+	// this is for glissing.
+	if (data->map.map[(int) data->y_player / CUBE_TILE][(int) new_x / CUBE_TILE] == '0')
+		data->x_player = new_x;
+	if (data->map.map[(int) new_y / CUBE_TILE][(int) data->x_player / CUBE_TILE] == '0')
+		data->y_player = new_y;
 
-// 	// this is for glissing.
-// 	if (data->map.map[(int) data->y_player / CUBE_TILE][(int) new_x / CUBE_TILE] == '0')
-// 		data->x_player = new_x;
-// 	if (data->map.map[(int) new_y / CUBE_TILE][(int) data->x_player / CUBE_TILE] == '0')
-// 		data->y_player = new_y;
-
-// 	if (data->map.map[(int)new_y / CUBE_TILE][(int) new_x / CUBE_TILE] == 'D')
-// 	{
-// 		data->door_index = ft_get_door_index(data, new_x / CUBE_TILE, new_y / CUBE_TILE);
-//         if (data->door_index == -1)
-//             ft_free_all("Door_index Fail \n", data, 1);
+	if (data->map.map[(int)data->y_player / CUBE_TILE][(int) new_x / CUBE_TILE] == 'D')
+	{
+		data->door_index = ft_get_door_index(data, new_x / CUBE_TILE, data->y_player / CUBE_TILE);
+        if (data->door_index == -1)
+            ft_free_all("Door_index Fail \n", data, 1);
 			
-// 		printf("========== { index:  %c | is_open : %d } ==========\n",data->map.map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE], data->door[data->door_index].is_open);
+		printf("========== { index:  %c | is_open : %d } ==========\n",data->map.map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE], data->door[data->door_index].is_open);
 		
-// 		if (!data->door[data->door_index].is_open)
-// 			return (0);
-// 		else
-// 		{
-// 			data->x_player = new_x;
-//         	data->y_player = new_y;
-// 		}
-// 	}
-// 	return (1);
-// }
+		if (!data->door[data->door_index].is_open)
+			return (0);
+		else
+			data->x_player = new_x;
+	}
+
+	if (data->map.map[(int) new_y / CUBE_TILE][(int) data->x_player / CUBE_TILE] == 'D')
+	{
+		data->door_index = ft_get_door_index(data, data->x_player / CUBE_TILE, new_y / CUBE_TILE);
+        if (data->door_index == -1)
+            ft_free_all("Door_index Fail \n", data, 1);
+			
+		printf("========== { index:  %c | is_open : %d } ==========\n",data->map.map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE], data->door[data->door_index].is_open);
+		
+		if (!data->door[data->door_index].is_open)
+			return (0);
+		else
+			data->y_player = new_y;
+	}
+	return (1);
+}
 
 double	ft_normalize_angle(double angle)
 {

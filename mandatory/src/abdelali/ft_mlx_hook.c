@@ -15,6 +15,10 @@ int ft_key_press(int key, void *param)
         data->turn_direction = 1;
     else if (key == XK_Left)
         data->turn_direction = -1;
+    else if (key == XK_a)
+        data->strafe_direction = 1;
+    else if (key == XK_d)
+        data->strafe_direction = -1;
     else  if (key == XK_space)
     {
         data->flag = 1;

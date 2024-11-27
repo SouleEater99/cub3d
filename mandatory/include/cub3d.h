@@ -6,7 +6,7 @@
 /*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/26 20:40:52 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/27 17:00:25 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@
 # define SCROLL_UP          4
 # define SCROLL_DOWN        5
 
-# define ROT_SPEED          0.1
+# define ROT_SPEED          0.2
 # define MOVE_SPEED         30
 
 // ========================= //
@@ -175,6 +175,7 @@ typedef struct  s_data
     double          y_player;
     int             turn_direction;
     int             walk_direction;
+    int             strafe_direction;
     double          turn_speed;
     double          move_speed;
     double          move_step;
