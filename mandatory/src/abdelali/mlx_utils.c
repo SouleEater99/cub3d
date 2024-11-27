@@ -1,12 +1,16 @@
-#include "../../include/cub3d.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mlx_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/27 20:30:04 by aelkheta          #+#    #+#             */
+/*   Updated: 2024/11/27 20:30:06 by aelkheta         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// void	my_mlx_pixel_put(t_image *img, int x, int y, int color)
-// {
-// 	char	*dst;
-
-// 	dst = img->img_data + (y * img->size_line + x * (img->bits_per_pixel / 8));
-// 	*(unsigned int*)dst = color;
-// }
+#include <cub3d.h>
 
 void	my_mlx_pixel_put(t_image *image, int x, int y, int color)
 {

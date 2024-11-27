@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/27 18:50:44 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/27 20:28:52 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "./keycodes.h"
-#include "./libft/libft.h"
-#include "./minilibx/minilibx-linux/mlx.h"
-#include "./minilibx/minilibx-linux/mlx_int.h"
+
+#include <mlx.h>
+#include <libft.h>
+#include <mlx_int.h>
+#include <keycodes.h>
 
 #define WIDTH           800
 #define HIGH            600

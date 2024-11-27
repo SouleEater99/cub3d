@@ -6,11 +6,11 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:00 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/26 13:43:57 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/27 20:29:46 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3d.h"
+#include <cub3d.h>
 
 int	main(int ac, char **av)
 {

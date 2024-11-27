@@ -6,11 +6,11 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 12:40:59 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/26 11:32:01 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/27 20:29:33 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3d.h"
+#include <cub3d.h>
 
 int	apply_shadow(int color, double shadow_factor)
 {

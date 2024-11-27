@@ -6,11 +6,11 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 19:03:55 by heisenberg        #+#    #+#             */
-/*   Updated: 2024/11/27 19:42:13 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/27 20:29:25 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3d.h"
+#include <cub3d.h>
 
 #define MOUSE_SENSITIVITY 0.01
 
