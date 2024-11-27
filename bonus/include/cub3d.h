@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/26 13:53:20 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:50:44 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,14 @@
 
 #define WIDTH           800
 #define HIGH            600
+
 #define CUBE_TILE       256
 #define TEXTURE_TILE    256
+
 #define PLAYER_TILE     10
 #define FOV             (66 * (PI / 180))
 #define WALL_STRIP      1
-#define WALL_DISTANCE   (1.2 * CUBE_TILE)
+#define WALL_DISTANCE   (1.5 * CUBE_TILE)
 #define BLACK           0x00000000
 #define WHITE           0x00FFFFFF
 #define RED             0x00FF0000
@@ -82,7 +84,7 @@
 # define SCROLL_UP          4
 # define SCROLL_DOWN        5
 
-# define ROT_SPEED          0.04
+# define ROT_SPEED          0.02
 # define MOVE_SPEED         10
 
 // ========================= //
@@ -173,6 +175,7 @@ typedef struct  s_data
     double          y_player;
     int             turn_direction;
     int             walk_direction;
+    int             strafe_direction;
     double          turn_speed;
     double          move_speed;
     double          move_step;
