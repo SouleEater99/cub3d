@@ -3,53 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   update_image.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:30:22 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/27 20:34:24 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 20:14:08 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-void	ft_update_data(t_data *data)
+void	enter_open_door(t_data *data, double new_x, double new_y)
+{
+	data->door_index = ft_get_door_index(data, new_x / CUBE_TILE, new_y
+			/ CUBE_TILE);
+	if (data->door_index == -1)
+		ft_free_all("Door_index Fail \n", data, 1);
+	if (!data->door[data->door_index].is_open)
+		return ;
+	else
+	{
+		data->x_player = new_x;
+		data->y_player = new_y;
+	}
+}
+
+void	go_left_right(t_data *data)
 {
 	double	new_x;
 	double	new_y;
 
+	new_x = data->x_player + cos(data->player_angle + (PI / 2))
+		* data->move_speed * data->strafe_direction;
+	new_y = data->y_player + sin(data->player_angle + (PI / 2))
+		* data->move_speed * data->strafe_direction;
+	if (data->map.map[(int)(new_y / CUBE_TILE)][(int)(new_x
+			/ CUBE_TILE)] == '0')
+	{
+		data->x_player = new_x;
+		data->y_player = new_y;
+	}
+	else if (data->map.map[(int)(new_y / CUBE_TILE)][(int)(new_x
+			/ CUBE_TILE)] == 'D')
+		enter_open_door(data, new_x, new_y);
+}
+
+void	ft_update_data(t_data *data)
+{
 	if (data->walk_direction != 0)
 	{
 		data->move_step = data->move_speed * data->walk_direction;
 		ft_is_player_inside_wall(data);
 	}
 	if (data->strafe_direction != 0)
-	{
-		new_x = data->x_player + cos(data->player_angle + (PI / 2))
-			* data->move_speed * data->strafe_direction;
-		new_y = data->y_player + sin(data->player_angle + (PI / 2))
-			* data->move_speed * data->strafe_direction;
-		if (data->map.map[(int)(new_y / CUBE_TILE)][(int)(new_x
-				/ CUBE_TILE)] == '0')
-		{
-			data->x_player = new_x;
-			data->y_player = new_y;
-		}
-		else if (data->map.map[(int)(new_y / CUBE_TILE)][(int)(new_x
-				/ CUBE_TILE)] == 'D')
-		{
-			data->door_index = ft_get_door_index(data, new_x / CUBE_TILE, new_y
-					/ CUBE_TILE);
-			if (data->door_index == -1)
-				ft_free_all("Door_index Fail \n", data, 1);
-			if (!data->door[data->door_index].is_open)
-				return ;
-			else
-			{
-				data->x_player = new_x;
-				data->y_player = new_y;
-			}
-		}
-	}
+		go_left_right(data);
 	if (data->turn_direction != 0)
 	{
 		data->player_angle += data->turn_direction * data->turn_speed;

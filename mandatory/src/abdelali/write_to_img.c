@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   write_to_img.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:30:27 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/27 20:30:28 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 22:05:29 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,15 @@ void	ft_write_cub(t_data *data, int x, int y, int color)
 	}
 }
 
+// mlx_get_data_addr(data->projection_img.img_ptr,
+// 			&data->projection_img.bits_per_pixel,
+// 			&data->projection_img.size_line, &data->projection_img.endian);
 void	ft_create_pojection_img(t_data *data)
 {
 	data->projection_img.img_ptr = mlx_new_image(data->mlx_ptr, WIDTH, HIGH);
 	if (!data->projection_img.img_ptr)
 		ft_free_all("Image Projection Image Fail\n", data, 1);
-	data->projection_img.img_data = mlx_get_data_addr(data->projection_img.img_ptr,
-			&data->projection_img.bits_per_pixel,
-			&data->projection_img.size_line, &data->projection_img.endian);
+	data->projection_img.img_data = get_img_address(&data->projection_img);
 	if (!data->projection_img.img_data)
 		ft_free_all("Projection data Addres Fail\n", data, 1);
 }
@@ -79,7 +80,7 @@ void	ft_write_player_wall_hit(t_data *data)
 		&& x < data->map.map_line_len[y])
 	{
 		if (data->map.map[(int)data->wall_hit_y
-			/ CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE] == 'D'
+				/ CUBE_TILE][(int)data->wall_hit_x / CUBE_TILE] == 'D'
 			&& data->distance < WALL_DISTANCE)
 		{
 			data->door_index = ft_get_door_index(data, data->wall_hit_x

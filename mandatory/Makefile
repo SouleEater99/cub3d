@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
+#    By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/27 20:23:19 by aelkheta          #+#    #+#              #
-#    Updated: 2024/11/28 09:19:29 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/11/28 20:04:12 by heisenberg       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC := cc
 GCCFLAGS := -Wall -Wextra -Werror
-DEBUGFLAGS := -g3 # -fsanitize=address
+DEBUGFLAGS := -g3  -fsanitize=address
 LIBFT := libraries/libft/libft.a
 INCLUDES := -I includes
 MAP ?= maps/map2.cub

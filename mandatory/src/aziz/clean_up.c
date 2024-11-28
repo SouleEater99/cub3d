@@ -6,7 +6,7 @@
 /*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:48:00 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 14:24:52 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/28 20:03:24 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,11 @@ void	destroy_images(void *mlx_ptr, t_image **images, int images_num)
 	i = -1;
 	while (++i < images_num)
 	{
-		if (images[i]->img_ptr)
-			mlx_destroy_image(mlx_ptr, images[i]->img_ptr);
+		if (images && images[i])
+		{
+			if (images[i]->img_ptr)
+				mlx_destroy_image(mlx_ptr, images[i]->img_ptr);
+		}
 	}
 	free(images);
 }
@@ -63,8 +66,8 @@ void	clean_up(t_data *data)
 {
 	if (data)
 	{
-		if (data->textures[0])
-			destroy_images(data->mlx_ptr, data->textures, NUM_TEXTURES);
+		// if (data->textures[0])
+		destroy_images(data->mlx_ptr, data->textures, NUM_TEXTURES);
 		if (data->map.map_line_len)
 			free(data->map.map_line_len);
 		if (data->map.map)
