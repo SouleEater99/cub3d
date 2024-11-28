@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/28 13:02:15 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 13:10:13 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,5 +330,9 @@ int     check_extension(const char *file_path, const char *extension);
 void	draw_tile(t_data *data, double x, double y, int color);
 void	draw_ray_line(t_data *data, t_image *image, double end_x, double end_y);
 void	draw_tile_within_bounds(t_data *data, int map_x, int map_y);
+char	*get_img_address(t_image *image);
+void	init_player_sprites(t_data *data, char *dir_path, int frames_num);
+void	draw_pixel(t_image *image, int dx, int dy, int sprite_pixel);
+
 
 #endif

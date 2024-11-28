@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 13:07:21 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 13:07:33 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 13:10:25 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char	*get_img_address(t_image *image)
 
 	addrr = mlx_get_data_addr(image->img_ptr, &image->bits_per_pixel,
 			&image->size_line, &image->endian);
+	return (addrr);
 }
 
 void	init_player_sprites(t_data *data, char *dir_path, int frames_num)
@@ -37,7 +38,7 @@ void	init_player_sprites(t_data *data, char *dir_path, int frames_num)
 		data->player.frames[i].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr,
 				sprite_path, &data->player.frames[i].width,
 				&data->player.frames[i].height);
-		data->player.frames[i].img_data = get_img_address();
+		data->player.frames[i].img_data = get_img_address(&data->player.frames[i]);
 		free(path_slice[2]);
 		free(path_slice[1]);
 		free(sprite_path);
