@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/28 11:06:53 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 13:02:15 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,6 @@ typedef struct  s_data
     double          turn_speed;
     double          move_speed;
     double          move_step;
-    double          step;
     double          player_angle;
     double          player_distance;
     double          player_wallhit_x;
@@ -222,12 +221,17 @@ typedef struct  s_data
     double      player_y;
     int16_t     player_dir;
 
+    char        *trimmed;
+    char        **map_lines;
+
     char        *no_texture_path;
     char        *so_texture_path;
     char        *we_texture_path;
     char        *ea_texture_path;
     char        *dr_texture_path;
     
+    t_image     *image;
+
     t_image     *textures[NUM_TEXTURES];
     t_player    player;
     int         shoot;
@@ -239,6 +243,7 @@ typedef struct  s_data
     int         mouse_x;
     int         mouse_y;
 	double      sensitivity;
+    int         sprite_pixel;
 
     // t_minimap   minimap;
 
@@ -246,6 +251,10 @@ typedef struct  s_data
 	double	dist_y;
 	double	y_increment;
     double	x_increment;
+
+    double	fov;
+    double	steps;
+    int     step;
 
     // int         doors_num;
 }   t_data;
@@ -300,5 +309,26 @@ void    print_error (char *error_str, char *file, int line);
 int     mouse_events(int button, int x, int y, t_data *data);
 void    mouse_hooks(t_data *data);
 void	free_array(char **arr);
+int     get_color(char **colors);
+int     check_color_format(const char *str_color);
+int64_t	parse_color(const char *str_color);
+void	validate_color(t_data *data, char **parts, int *current_line, int *colors_found);
+int     arr_len(char **array);
+int     ft_isspace(int c);
+void	print_error(char *error_str, char *file, int line);
+void	free_parse_allocated(t_data *data, char **parts);
+void	clean_up(t_data *data);
+void	ft_panic(int line_num, int col_num, const char *line, void *data);
+void	free_int_array(int **int_array, int arr_len);
+void	free_parse_allocated(t_data *data, char **parts);
+void	validate_texture(t_data *data, char **parts, int *textures_found);
+char	**get_texture_ptr(t_data *data, char *texture_dir);
+char	*parse_texture(char *texture_path);
+t_image	*load_texture(void *mlx, char *filename);
+
+int     check_extension(const char *file_path, const char *extension);
+void	draw_tile(t_data *data, double x, double y, int color);
+void	draw_ray_line(t_data *data, t_image *image, double end_x, double end_y);
+void	draw_tile_within_bounds(t_data *data, int map_x, int map_y);
 
 #endif

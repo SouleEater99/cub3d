@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 12:40:59 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/27 20:29:33 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 12:53:08 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,12 @@ int	apply_shadow(int color, double shadow_factor)
 	r = (int)(r * shadow_factor);
 	g = (int)(g * shadow_factor);
 	b = (int)(b * shadow_factor);
-	r = (r > 255) ? 255 : r;
-	g = (g > 255) ? 255 : g;
-	b = (b > 255) ? 255 : b;
+	if (r > 255)
+		r = 255;
+	if (g > 255)
+		g = 255;
+	if (b > 255)
+		b = 255;
 	return (r << 16 | (g << 8) | b);
 }
 
