@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/27 21:10:04 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/28 08:59:34 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,11 @@
 # define MOUSE_SENSITIVITY  0.01
 # define FRAME_DELAY        1
 
-// # define ROT_SPEED          0.02
-// # define MOVE_SPEED         10
+# define ROT_SPEED          0.02
+# define MOVE_SPEED         10
 
-# define ROT_SPEED          0.1
-# define MOVE_SPEED         30
+// # define ROT_SPEED          0.1
+// # define MOVE_SPEED         30
 
 // ========================= //
 
@@ -141,6 +141,8 @@ typedef struct s_player
     double      player_y;
     void        *current_img;
     t_image     *frames;
+    int         frames_num;
+    char        *frames_path;
 }   t_player;
 
 typedef struct  s_data
@@ -277,6 +279,6 @@ void    init_player_sprites(t_data *data, char *dir_path, int frames_num);
 void    print_error (char *error_str, char *file, int line);
 int     mouse_events(int button, int x, int y, t_data *data);
 void    mouse_hooks(t_data *data);
-// int16_t get_player_dir(int16_t player_dir);
+void	free_array(char **arr);
 
 #endif

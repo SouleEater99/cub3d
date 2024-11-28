@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/27 20:29:27 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 09:41:40 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,15 +314,18 @@ bool	parse_metadata(t_data *data, char **map_lines, int map_heigh,
 		{
 			free(trimmed);
 			free_array(parts);
-			while (--textures_found >= 0)
-			{
-				mlx_destroy_image(data->mlx_ptr,
-					data->textures[textures_found]->img_ptr);
-				free(data->textures[textures_found]);
-			}
+			// while (--textures_found >= 0)
+			// {
+			// 	mlx_destroy_image(data->mlx_ptr,
+			// 		data->textures[textures_found]->img_ptr);
+			// 	free(data->textures[textures_found]);
+			// }
 			print_error("Error: bad texture or color arguments!\n", __FILE__,
 				__LINE__);
-			return (false);
+			printf(BRED "%d: %s\n" COLOR_RESET, *current_line, trimmed);
+	
+			free_array(map_lines);
+			ft_free_all(NULL, data, 1);
 		}
 		if (textures_found < NUM_TEXTURES)
 		{
@@ -344,7 +347,8 @@ bool	parse_metadata(t_data *data, char **map_lines, int map_heigh,
 				{
 					free(trimmed);
 					free_array(parts);
-					return (0);
+					free_array(map_lines);
+					ft_free_all(NULL, data, 1);
 				}
 				data->textures[textures_found] = load_texture(data->mlx_ptr,
 						*texture_ptr);
@@ -352,13 +356,15 @@ bool	parse_metadata(t_data *data, char **map_lines, int map_heigh,
 				{
 					free(trimmed);
 					free_array(parts);
-					while (--textures_found >= 0)
-					{
-						mlx_destroy_image(data->mlx_ptr,
-							data->textures[textures_found]->img_ptr);
-						free(data->textures[textures_found]);
-					}
-					return (false);
+					// while (--textures_found >= 0)
+					// {
+					// 	mlx_destroy_image(data->mlx_ptr,
+					// 		data->textures[textures_found]->img_ptr);
+					// 	free(data->textures[textures_found]);
+					// }
+					// return (false);
+					free_array(map_lines);
+					ft_free_all(NULL, data, 1);
 				}
 				textures_found++;
 			}
@@ -375,14 +381,16 @@ bool	parse_metadata(t_data *data, char **map_lines, int map_heigh,
 				print_error("Error: bad texture or color arguments!\n",
 					__FILE__, __LINE__);
 				printf(BRED "%d: %s\n" COLOR_RESET, *current_line, trimmed);
-				while (--textures_found >= 0)
-				{
-					mlx_destroy_image(data->mlx_ptr,
-						data->textures[textures_found]->img_ptr);
-					free(data->textures[textures_found]);
-				}
+				// while (--textures_found >= 0)
+				// {
+				// 	mlx_destroy_image(data->mlx_ptr,
+				// 		data->textures[textures_found]->img_ptr);
+				// 	free(data->textures[textures_found]);
+				// }
 				free(trimmed);
 				free_array(parts);
+				free_array(map_lines);
+				ft_free_all(NULL, data, 1);
 				return (0);
 			}
 			if (color_ptr)
@@ -392,15 +400,16 @@ bool	parse_metadata(t_data *data, char **map_lines, int map_heigh,
 				{
 					print_error("Error: bad color!\n", __FILE__, __LINE__);
 					printf(BRED "%d: %s\n" COLOR_RESET, *current_line, trimmed);
-					while (--textures_found >= 0)
-					{
-						mlx_destroy_image(data->mlx_ptr,
-							data->textures[textures_found]->img_ptr);
-						free(data->textures[textures_found]);
-					}
+					// while (--textures_found >= 0)
+					// {
+					// 	mlx_destroy_image(data->mlx_ptr,
+					// 		data->textures[textures_found]->img_ptr);
+					// 	free(data->textures[textures_found]);
+					// }
 					free(trimmed);
 					free_array(parts);
-					return (0);
+					free_array(map_lines);
+					ft_free_all(NULL, data, 1);
 				}
 				colors_found++;
 			}
@@ -458,6 +467,8 @@ bool	validate_map(t_data *data)
 	if (data->n_door != -1)
 	{
 		data->door = malloc(sizeof(t_door) * data->n_door);
+		if (!data->door)
+			ft_free_all("Error: can not allocate memory for doors!\n", data, EXIT_FAILURE);
 		ft_memset(data->door, 0, sizeof(t_door) * data->n_door);
 	}
 	door_found = -1;
@@ -473,7 +484,9 @@ bool	validate_map(t_data *data)
 			{
 				print_error("Error: unsupported metadata (characters)!\n",
 					__FILE__, __LINE__);
-				return (false);
+				printf(BRED "%d: %s\n" COLOR_RESET, i, data->map.map[i]);
+				
+				ft_free_all(NULL, data, 1);
 			}
 			if (ft_strchr(PLAYER_DIR, data->map.map[i][j]))
 			{
@@ -481,7 +494,9 @@ bool	validate_map(t_data *data)
 				{
 					print_error("Error: multiple players!\n", __FILE__,
 						__LINE__);
-					return (false);
+					printf(BRED "%d: %s\n" COLOR_RESET, i, data->map.map[i]);
+					
+					ft_free_all(NULL, data, 1);
 				}
 				data->player_x = j + 0.5; // in the center of the tile.
 				data->player_y = i + 0.5; // in the center of the tile.
@@ -506,7 +521,6 @@ void	print_map(t_map *map)
 {
 	int	i;
 
-	// char **map = map->map;
 	i = -1;
 	while (++i < map->map_height)
 		printf("%s", map->map[i]);
@@ -538,33 +552,50 @@ void	ft_panic(int line_num, int col_num, const char *line,
 	if (clean_func)
 		clean_func(data);
 	exit(EXIT_FAILURE);
-	// print_str("▲", col_num);
 }
 
 void	clean_up(t_data *data)
 {
-	if (data->map.map_line_len)
-		free(data->map.map_line_len);
-	// if (data->no_texture_path)
-	// 	free(data->no_texture_path);
-	// if (data->so_texture_path)
-	// 	free(data->so_texture_path);
-	// if (data->we_texture_path)
-	// 	free(data->we_texture_path);
-	// if (data->ea_texture_path)
-	// 	free(data->ea_texture_path);
-	// if (data->image)
-	// 	mlx_destroy_image(data->mlx_ptr, data->image);
-	if (data->win_ptr)
-		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-#ifdef __linux__
-	if (data->mlx_ptr)
-		mlx_destroy_display(data->mlx_ptr);
-#endif
-	// if (data->map)
-	// 	free_array(data->map);
-	if (data->mlx_ptr)
-		free(data->mlx_ptr);
+	if (data)
+	{	
+		int i = -1;
+		while(++i < NUM_TEXTURES)
+		{
+			if (data->textures[i] && data->textures[i]->img_ptr)
+		    	mlx_destroy_image(data->mlx_ptr, data->textures[i]->img_ptr);
+			free(data->textures[i]);
+		}
+	
+		if (data->map.map_line_len)
+			free(data->map.map_line_len);
+		if (data->map.map)
+			free_array(data->map.map);
+
+		if (data->player.frames)
+		{
+			int i = -1;
+			while(++i < data->player.frames_num)
+			{
+				if (data->player.frames[i].img_ptr)
+					mlx_destroy_image(data->mlx_ptr, data->player.frames[i].img_ptr);
+			}
+			free(data->player.frames);
+		}
+
+		if (data->door)
+			free(data->door);
+		
+		if (data->win_ptr)
+			mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+		if (data->mlx_ptr)
+		{
+			# ifdef __linux__
+				mlx_destroy_display(data->mlx_ptr);
+			# endif
+
+			free(data->mlx_ptr);
+		}
+	}
 }
 
 /// @brief check the first line and the last one if all ones
@@ -585,9 +616,10 @@ int	check_first_last(t_data *data, char **map, int map_start, int map_height)
 	if (map[line][j] != '\n')
 	{
 		print_error("Error: invalid map border!\n", __FILE__, __LINE__);
+		printf(BRED "%d: %s\n" COLOR_RESET, j, data->map.map[j]);
+		
 		ft_panic(map_start + 1, j + 1, map[0], clean_up, data);
 		return (0);
-		// exit (100);
 	}
 	j = -1;
 	line = map_height - 1;
@@ -596,6 +628,8 @@ int	check_first_last(t_data *data, char **map, int map_start, int map_height)
 	if (map[line][j] != '\n' && map[line][j] != '\0')
 	{
 		print_error("Error: invalid map border!\n", __FILE__, __LINE__);
+		printf(BRED "%d: %s\n" COLOR_RESET, j, data->map.map[j]);
+		
 		ft_panic(line + 1, j + 1, map[line], clean_up, data);
 		return (0);
 	}
@@ -678,6 +712,21 @@ int	validate_map_borders(t_data *data, char **map, int height)
 	return (1);
 }
 
+char **copy_array(char **array, int array_len)
+{
+	int i = -1;
+	if (array_len <= 0)
+		return (NULL);
+	
+	char **cpy_array = (char **)ft_calloc(sizeof(char *), array_len + 1);
+	if (!cpy_array)
+		return (NULL);
+	while(++i < array_len)
+		cpy_array[i] = ft_strdup(array[i]);
+
+	return (cpy_array);
+}
+
 /// @brief
 /// @param data
 /// @param ac
@@ -695,6 +744,10 @@ int	parse_map(t_data *data, int ac, char **av)
 		printf("Usage: ./cub3d <map_path>\n");
 		return (0);
 	}
+
+	ft_memset(&data->map, 0, sizeof(t_map));
+	data->map.map = 0;
+
 	if (!check_extension(av[1], ".cub"))
 		return (0);
 	height = 0;
@@ -709,14 +762,15 @@ int	parse_map(t_data *data, int ac, char **av)
 	}
 	while (current_line < height && is_empty_line(lines[current_line]))
 		current_line++;
-	// data->map_start = current_line;
-	// data->map_height = height - current_line;
-	// data->map = &lines[current_line];
+
 	data->map.map_start = current_line;
 	data->map.map_height = height - current_line;
-	data->map.map = &lines[current_line];
+	data->map.map = copy_array(&lines[current_line], data->map.map_height);
 	data->map.map_width = ft_strlen(data->map.map[0]);
 	data->map.map_line_len = malloc(sizeof(int) * data->map.map_height);
+	
+	free_array(lines);
+
 	if (!data->map.map_line_len)
 	{
 		free_array(lines);
@@ -724,7 +778,7 @@ int	parse_map(t_data *data, int ac, char **av)
 	}
 	if (!validate_map(data))
 	{
-		// free(data->map_line_len);
+		free(data->map.map_line_len);
 		free_array(lines);
 		return (0);
 	}
@@ -733,14 +787,5 @@ int	parse_map(t_data *data, int ac, char **av)
 		free_array(lines);
 		return (0);
 	}
-	// data->map.map = data->map;
-	// data->map.map_height = data->map_height;
-	// data->map.ceiling_color = data->ceiling_color;
-	// data->map.floor_color = data->floor_color;
-	// data->map.no_texture_path = data->no_texture_path;
-	// data->map.so_texture_path = data->so_texture_path;
-	// data->map.ea_texture_path = data->ea_texture_path;
-	// data->map.we_texture_path = data->we_texture_path;
-	// print_map(&data->map_);
 	return (1);
 }

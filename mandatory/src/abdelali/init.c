@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:29:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/27 20:37:40 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 09:17:16 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,10 @@ double	get_player_dir(int16_t player_dir)
 int	init_data(t_data *data, int ac, char **av)
 {
 	init_mlx(data);
+	
 	if (!parse_map(data, ac, av))
 		exit(10);
+
 	data->row = data->map.map_width;  // 22;
 	data->col = data->map.map_height; // 10;
 	data->img_width = SCREEN_WIDTH;
@@ -61,7 +63,10 @@ int	init_data(t_data *data, int ac, char **av)
 	data->minimap_radius = MINIMAP_RADIUS;
 	data->minimap_x_center = MINIMAP_MID_X;
 	data->minimap_y_center = MINIMAP_MID_Y;
-	init_player_sprites(data, "./textures/sprites/gun_sprite_0/", 22);
+
+	data->player.frames_num = 22;
+	data->player.frames_path = "./textures/sprites/gun_sprite_0/";
+	init_player_sprites(data, data->player.frames_path, data->player.frames_num);
 	
 	// =================================== //
 	return (0);
