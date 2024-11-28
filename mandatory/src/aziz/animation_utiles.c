@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   animation_utiles.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 13:07:21 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 13:10:25 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:47:37 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,20 @@ void	init_player_sprites(t_data *data, char *dir_path, int frames_num)
 	int		i;
 	char	*path_slice[3];
 	char	*sprite_path;
+	t_image	*frames;
 
 	i = -1;
 	data->player.frames = malloc(sizeof(t_image) * frames_num);
+	frames = data->player.frames;
 	while (++i < frames_num)
 	{
 		path_slice[0] = ft_itoa(i);
 		path_slice[1] = ft_strdup(".xpm");
 		path_slice[2] = ft_strjoin(path_slice[0], path_slice[1]);
 		sprite_path = ft_strjoin(ft_strdup(dir_path), path_slice[2]);
-		data->player.frames[i].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr,
-				sprite_path, &data->player.frames[i].width,
-				&data->player.frames[i].height);
-		data->player.frames[i].img_data = get_img_address(&data->player.frames[i]);
+		frames[i].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr, sprite_path,
+				&frames[i].width, &frames[i].height);
+		frames[i].img_data = get_img_address(&frames[i]);
 		free(path_slice[2]);
 		free(path_slice[1]);
 		free(sprite_path);

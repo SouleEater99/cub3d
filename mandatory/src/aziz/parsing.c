@@ -6,7 +6,7 @@
 /*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 15:13:28 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/28 17:55:04 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ char	**read_map_lines(const char *map_path, int *height)
 	return (lines);
 }
 
-void check_args_num(t_data *data, char **parts, int *current_line)
+void	check_args_num(t_data *data, char **parts, int *current_line)
 {
 	if (!parts || arr_len(parts) != 2)
 	{
@@ -209,25 +209,8 @@ void	init_door(t_door *door, int index, int x_pos, int y_pos)
 	door[index].y = y_pos;
 }
 
-/// @brief
-/// @param data
-/// @return
-bool	validate_map(t_data *data)
+t_door	*allocate_doors(t_data *data)
 {
-	int		i;
-	bool	is_player_found;
-	int		door_found;
-	int		j;
-
-	i = -1;
-	while (++i < data->map.map_height)
-	{
-		data->map.map_line_len[i] = ft_strlen(data->map.map[i]);
-		if (i + 1 < data->map.map_height)
-			data->map.map_line_len[i] -= 1;
-	}
-	i = -1;
-	is_player_found = false;
 	data->n_door = get_doors_num(&data->map);
 	if (data->n_door != -1)
 	{
@@ -237,37 +220,54 @@ bool	validate_map(t_data *data)
 				EXIT_FAILURE);
 		ft_memset(data->door, 0, sizeof(t_door) * data->n_door);
 	}
+	return (data->door);
+}
+
+void	check_map_characters(t_data *data, int i, int j, bool is_player_found)
+{
+	if (!ft_strchr(SUPPORTED_CHARS_BONUS, data->map.map[i][j]))
+	{
+		print_error("Error: unsupported metadata (characters)!\n", __FILE__,
+			__LINE__);
+		printf(BRED "%d: %s\n" COLOR_RESET, i, data->map.map[i]);
+		ft_free_all(NULL, data, 1);
+	}
+	if (ft_strchr(PLAYER_DIR, data->map.map[i][j]))
+	{
+		if (is_player_found)
+		{
+			print_error("Error: multiple players!\n", __FILE__, __LINE__);
+			printf(BRED "%d: %s\n" COLOR_RESET, i, data->map.map[i]);
+			ft_free_all(NULL, data, 1);
+		}
+		data->player_x = j + 0.5;
+		data->player_y = i + 0.5;
+		data->player_dir = data->map.map[i][j];
+		is_player_found = true;
+		data->map.map[i][j] = '0';
+	}
+}
+
+/// @brief
+/// @param data
+/// @return
+bool	validate_map(t_data *data)
+{
+	int		i;
+	int		j;
+	bool	is_player_found;
+	int		door_found;
+
+	i = -1;
+	is_player_found = false;
+	data->door = allocate_doors(data);
 	door_found = -1;
 	while (++i < data->map.map_height)
 	{
-		data->map.map_line_len[i] = ft_strlen(data->map.map[i]);
-		if (i + 1 < data->map.map_height)
-			data->map.map_line_len[i] -= 1;
 		j = -1;
 		while (++j < data->map.map_line_len[i])
 		{
-			if (!ft_strchr(SUPPORTED_CHARS_BONUS, data->map.map[i][j]))
-			{
-				print_error("Error: unsupported metadata (characters)!\n",
-					__FILE__, __LINE__);
-				printf(BRED "%d: %s\n" COLOR_RESET, i, data->map.map[i]);
-				ft_free_all(NULL, data, 1);
-			}
-			if (ft_strchr(PLAYER_DIR, data->map.map[i][j]))
-			{
-				if (is_player_found)
-				{
-					print_error("Error: multiple players!\n", __FILE__,
-						__LINE__);
-					printf(BRED "%d: %s\n" COLOR_RESET, i, data->map.map[i]);
-					ft_free_all(NULL, data, 1);
-				}
-				data->player_x = j + 0.5;
-				data->player_y = i + 0.5;
-				data->player_dir = data->map.map[i][j];
-				is_player_found = true;
-				data->map.map[i][j] = '0';
-			}
+			check_map_characters(data, i, j, is_player_found);
 			if (data->map.map[i][j] == 'D')
 				init_door(data->door, ++door_found, j, i);
 		}
@@ -339,10 +339,10 @@ int	check_first_last(t_data *data, char **map, int map_height)
 	return (1);
 }
 
-void check_map_lr(t_data *data, int height, int i, int j)
+void	check_map_lr(t_data *data, int height, int i, int j)
 {
-	if ((data->map.map[i][j] == '0' && data->map.map[i][j + 1] == ' ') || (data->map.map[i][j] == ' '
-					&& data->map.map[i][j + 1] == '0'))
+	if ((data->map.map[i][j] == '0' && data->map.map[i][j + 1] == ' ')
+		|| (data->map.map[i][j] == ' ' && data->map.map[i][j + 1] == '0'))
 	{
 		print_error("Error: invalid map border!\n", __FILE__, __LINE__);
 		ft_panic(i + data->map.map_start + 1, j + 1, data->map.map[i], data);
@@ -449,8 +449,10 @@ char	**copy_array(char **array, int array_len)
 	return (cpy_array);
 }
 
-void init_map(t_data *data, char **lines, int current_line, int height)
+void	init_map(t_data *data, char **lines, int current_line, int height)
 {
+	int	i;
+
 	data->map.map_start = current_line;
 	data->map.map_height = height - current_line;
 	data->map.map = copy_array(&lines[current_line], data->map.map_height);
@@ -458,11 +460,18 @@ void init_map(t_data *data, char **lines, int current_line, int height)
 	data->map.map_line_len = malloc(sizeof(int) * data->map.map_height);
 	if (!data->map.map_line_len)
 		ft_free_all(NULL, data, 1);
+	i = -1;
+	while (++i < data->map.map_height)
+	{
+		data->map.map_line_len[i] = ft_strlen(data->map.map[i]);
+		if (i + 1 < data->map.map_height)
+			data->map.map_line_len[i] -= 1;
+	}
 }
 
-int validate_map_cont(t_data *data, char **lines, int height)
+int	validate_map_cont(t_data *data, char **lines, int height)
 {
-	int		current_line;
+	int	current_line;
 
 	current_line = 0;
 	if (!parse_metadata(data, lines, height, &current_line))
