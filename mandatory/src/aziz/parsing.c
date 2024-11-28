@@ -6,7 +6,7 @@
 /*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 17:55:04 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/28 17:58:09 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ t_door	*allocate_doors(t_data *data)
 	return (data->door);
 }
 
-void	check_map_characters(t_data *data, int i, int j, bool is_player_found)
+void	check_map_characters(t_data *data, int i, int j, bool *is_player_found)
 {
 	if (!ft_strchr(SUPPORTED_CHARS_BONUS, data->map.map[i][j]))
 	{
@@ -234,7 +234,7 @@ void	check_map_characters(t_data *data, int i, int j, bool is_player_found)
 	}
 	if (ft_strchr(PLAYER_DIR, data->map.map[i][j]))
 	{
-		if (is_player_found)
+		if (*is_player_found)
 		{
 			print_error("Error: multiple players!\n", __FILE__, __LINE__);
 			printf(BRED "%d: %s\n" COLOR_RESET, i, data->map.map[i]);
@@ -243,7 +243,7 @@ void	check_map_characters(t_data *data, int i, int j, bool is_player_found)
 		data->player_x = j + 0.5;
 		data->player_y = i + 0.5;
 		data->player_dir = data->map.map[i][j];
-		is_player_found = true;
+		*is_player_found = true;
 		data->map.map[i][j] = '0';
 	}
 }
@@ -267,7 +267,7 @@ bool	validate_map(t_data *data)
 		j = -1;
 		while (++j < data->map.map_line_len[i])
 		{
-			check_map_characters(data, i, j, is_player_found);
+			check_map_characters(data, i, j, &is_player_found);
 			if (data->map.map[i][j] == 'D')
 				init_door(data->door, ++door_found, j, i);
 		}
