@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/28 10:37:51 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 11:06:53 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@
 # define SCROLL_DOWN        5
 
 # define MOUSE_SENSITIVITY  0.01
-# define FRAME_DELAY        1
+# define FRAME_DELAY        8
 
 # define ROT_SPEED          0.02
 # define MOVE_SPEED         10
@@ -232,6 +232,9 @@ typedef struct  s_data
     t_player    player;
     int         shoot;
     int         frames_num;
+    int         frame_counter;
+	int         frame;
+    // t_image		*img;
 
     int         mouse_x;
     int         mouse_y;

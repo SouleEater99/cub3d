@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   animation.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 11:59:35 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/27 21:08:40 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/28 11:13:51 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,17 @@
 void	init_player_sprites(t_data *data, char *dir_path, int frames_num)
 {
 	int		i;
-	char	*str;
-	char	*sprite_index;
-	char	*extension;
+	char	*path_slice[3];
 	char	*sprite_path;
 
 	i = -1;
 	data->player.frames = malloc(sizeof(t_image) * frames_num);
 	while (++i < frames_num)
 	{
-		sprite_index = ft_itoa(i);
-		extension = ft_strdup(".xpm");
-		str = ft_strjoin(sprite_index, extension);
-		sprite_path = ft_strjoin(ft_strdup(dir_path), str);
+		path_slice[0] = ft_itoa(i);
+		path_slice[1] = ft_strdup(".xpm");
+		path_slice[2] = ft_strjoin(path_slice[0], path_slice[1]);
+		sprite_path = ft_strjoin(ft_strdup(dir_path), path_slice[2]);
 		data->player.frames[i].img_ptr = mlx_xpm_file_to_image(data->mlx_ptr,
 				sprite_path, &data->player.frames[i].width,
 				&data->player.frames[i].height);
@@ -35,11 +33,17 @@ void	init_player_sprites(t_data *data, char *dir_path, int frames_num)
 				&data->player.frames[i].bits_per_pixel,
 				&data->player.frames[i].size_line,
 				&data->player.frames[i].endian);
-		free(str);
-		free(extension);
+		free(path_slice[2]);
+		free(path_slice[1]);
 		free(sprite_path);
 	}
 	data->frames_num = frames_num;
+}
+
+void	draw_pixel(t_image *image, int dx, int dy, int sprite_pixel)
+{
+	if (dx >= 0 && dx < SCREEN_WIDTH && dy >= 0 && dy < SCREEN_HEIGHT)
+		((int *)image->img_data)[dy * SCREEN_WIDTH + dx] = sprite_pixel;
 }
 
 void	render_sprites_to_image(t_image *image, t_image *sprite_image, int x,
@@ -63,27 +67,36 @@ void	render_sprites_to_image(t_image *image, t_image *sprite_image, int x,
 				continue ;
 			sprite_pixel = ((int *)sprite_image->img_data)[sy
 				* sprite_image->width + sx];
-			// Handle transparency (assuming 0xFF000000 is fully transparent)
-			if ((sprite_pixel & 0xFF000000) == 0xFF000000)
+			if ((sprite_pixel & 0xFF000000) == 0xFF000000) // Handle transparency (assuming 0xFF000000 is fully transparent) 
 				continue ;
 			dx = x + sx;
 			dy = y + sy;
-			// Ensure we don't draw outside the main image bounds
-			if (dx >= 0 && dx < SCREEN_WIDTH && dy >= 0 && dy < SCREEN_HEIGHT)
-				((int *)image->img_data)[dy * SCREEN_WIDTH + dx] = sprite_pixel;
+			draw_pixel(image, dx, dy, sprite_pixel);
 		}
 	}
 }
 
+int	get_frame(t_data *data, int frame_delay)
+{
+	if (data->frame_counter >= frame_delay)
+	{
+		data->frame++;
+		data->frame_counter = 0;             // this is for reset frame counter.
+		if (data->frame >= data->frames_num) // to reset animation.
+		{
+			data->frame = 0;
+			data->shoot = 0;
+		}
+	}
+	return (data->frame);
+}
+
 void	render_sprites(t_data *data)
 {
-	int			x;
-	int			y;
-	t_image		*img;
-	static int	frame = 0;
-	int			frame_delay;
-	t_image		sprite_image;
-	static int	frame_counter = 0;
+	int		x;
+	int		y;
+	int		frame_delay;
+	t_image	sprite_image;
 
 	if (!data || !data->mlx_ptr || !data->win_ptr
 		|| !data->projection_img.img_ptr || !data->player.frames)
@@ -91,27 +104,17 @@ void	render_sprites(t_data *data)
 		print_error("Error: frames not initiates!\n", __FILE__, __LINE__);
 		exit(1);
 	}
-	// static int shoot = 0;
 	frame_delay = FRAME_DELAY;
-	img = &data->projection_img;
 	sprite_image = data->player.frames[0];
 	if (data->shoot)
 	{
-		frame_counter++;
-		if (frame_counter >= frame_delay)
-		{
-			frame++;
-			frame_counter = 0;             // this is for reset frame counter.
-			if (frame >= data->frames_num) // to reset animation.
-			{
-				frame = 0;
-				data->shoot = 0;
-			}
-		}
-		sprite_image = data->player.frames[frame];
+		data->frame_counter++;
+		data->frame = get_frame(data, frame_delay);
+		sprite_image = data->player.frames[data->frame];
 	}
 	x = SCREEN_WIDTH / 2 - sprite_image.width / 2;
 	y = SCREEN_HEIGHT - sprite_image.height;
-	render_sprites_to_image(img, &sprite_image, x, y);
-	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, img->img_ptr, 0, 0);
+	render_sprites_to_image(&data->projection_img, &sprite_image, x, y);
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
+		data->projection_img.img_ptr, 0, 0);
 }

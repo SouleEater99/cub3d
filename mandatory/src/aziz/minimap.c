@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 14:31:22 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 10:41:25 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 10:57:14 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,13 @@ void	draw_ray_line(t_data *data, t_image *image, double end_x, double end_y)
 
 void	draw_player_direction(t_data *data, t_image *image)
 {
-	double	ray_angle;
-	double	ray_length;
+	double	fov;
 	double	end_x;
 	double	end_y;
+	double	ray_angle;
+	double	ray_length;
 
-	double fov = 60 * PI / 180.0;
+	fov = 60 * PI / 180.0;
 	for (int i = -30; i <= 30; i++)
 	{
 		ray_angle = data->player_angle + (i * fov / 60);
@@ -132,15 +133,33 @@ void	draw_player_direction(t_data *data, t_image *image)
 	}
 }
 
-void	draw_map(t_data *data, t_image *image)
+void	draw_tile_within_bounds(t_data *data, t_image *image, int map_x,
+		int map_y)
 {
-	int		dy;
-	int		dx;
-	int		map_x;
-	int		map_y;
 	double	tile_x;
 	double	tile_y;
-	int		visible_range;
+
+	if (map_x >= 0 && map_y >= 0 && map_y < data->map.map_height
+		&& map_x < data->map.map_line_len[map_y])
+	{
+		tile_x = map_x * TILE_SIZE * data->scale;
+		tile_y = map_y * TILE_SIZE * data->scale;
+		if (data->map.map[map_y][map_x] == '1')
+			draw_tile(data, image, tile_x, tile_y, 0x000000);
+		else if (data->map.map[map_y][map_x] == '0')
+			draw_tile(data, image, tile_x, tile_y, 0xAAAAAA);
+		else if (data->map.map[map_y][map_x] == 'D')
+			draw_tile(data, image, tile_x, tile_y, 0x4278f5);
+	}
+}
+
+void	draw_map(t_data *data, t_image *image)
+{
+	int	dy;
+	int	dx;
+	int	map_x;
+	int	map_y;
+	int	visible_range;
 
 	visible_range = (int)(data->minimap_radius / (TILE_SIZE * data->scale)) + 1;
 	data->player_x = data->x_player / CUBE_TILE;
@@ -153,20 +172,8 @@ void	draw_map(t_data *data, t_image *image)
 		{
 			map_x = (int)data->player_x + dx;
 			map_y = (int)data->player_y + dy;
+			draw_tile_within_bounds(data, image, map_x, map_y);
 			// Check if the tile is within map bounds
-			if (map_x >= 0 && map_y >= 0 && map_y < data->map.map_height
-				&& map_x < data->map.map_line_len[map_y]
-				&& data->map.map[map_y] != NULL)
-			{
-				tile_x = map_x * TILE_SIZE * data->scale;
-				tile_y = map_y * TILE_SIZE * data->scale;
-				if (data->map.map[map_y][map_x] == '1')
-					draw_tile(data, image, tile_x, tile_y, 0x000000);
-				else if (data->map.map[map_y][map_x] == '0')
-					draw_tile(data, image, tile_x, tile_y, 0xAAAAAA);
-				else if (data->map.map[map_y][map_x] == 'D')
-					draw_tile(data, image, tile_x, tile_y, 0x4278f5);
-			}
 		}
 	}
 }
