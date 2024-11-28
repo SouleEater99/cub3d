@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utiles_3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:13:42 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 18:26:31 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:37:40 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,12 @@ void	check_args_num(t_data *data, char **parts, int *current_line)
 bool	parse_metadata(t_data *data, char **map_lines, int map_heigh,
 		int *current_line)
 {
-	int		textures_found;
-	int		colors_found;
 	char	**parts;
 
-	textures_found = 0;
-	colors_found = 0;
-	while (*current_line < map_heigh && (textures_found < NUM_TEXTURES
-			|| colors_found < NUM_COLORS))
+	data->textures_found = 0;
+	data->colors_found = 0;
+	while (*current_line < map_heigh && (data->textures_found < NUM_TEXTURES
+			|| data->colors_found < NUM_COLORS))
 	{
 		if (is_empty_line(map_lines[*current_line]))
 		{
@@ -49,15 +47,16 @@ bool	parse_metadata(t_data *data, char **map_lines, int map_heigh,
 		data->trimmed = ft_strtrim(map_lines[*current_line], "\n");
 		parts = ft_split(data->trimmed, ' ');
 		check_args_num(data, parts, current_line);
-		if (textures_found < NUM_TEXTURES)
-			validate_texture(data, parts, &textures_found);
-		else if (colors_found < NUM_COLORS)
-			validate_color(data, parts, current_line, &colors_found);
+		if (data->textures_found < NUM_TEXTURES)
+			validate_texture(data, parts, &data->textures_found);
+		else if (data->colors_found < NUM_COLORS)
+			validate_color(data, parts, current_line, &data->colors_found);
 		free(data->trimmed);
 		free_array(parts);
 		(*current_line)++;
 	}
-	return (textures_found == NUM_TEXTURES && colors_found == NUM_COLORS);
+	return (data->textures_found == NUM_TEXTURES
+		&& data->colors_found == NUM_COLORS);
 }
 
 int	get_doors_num(t_map *map)

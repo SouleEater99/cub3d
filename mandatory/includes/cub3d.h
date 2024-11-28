@@ -6,7 +6,7 @@
 /*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/28 14:23:29 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/28 19:37:02 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,6 +256,8 @@ typedef struct  s_data
     double	steps;
     int     step;
 
+	int		textures_found;
+	int		colors_found;
     // int         doors_num;
 }   t_data;
 
@@ -334,6 +336,29 @@ char	*get_img_address(t_image *image);
 void	init_player_sprites(t_data *data, char *dir_path, int frames_num);
 void	draw_pixel(t_image *image, int dx, int dy, int sprite_pixel);
 bool	dfs(t_map *map, int **visited, int x, int y);
+int	arr_len(char **array);
+int	ft_isspace(int c);
+void	print_error(char *error_str, char *file, int line);
+void	ft_panic(int line_num, int col_num, const char *line, void *data);
+bool	is_empty_line(const char *line);
+int	is_empty_map(const char *map_path, int *height);
+char	**read_lines(int fd, int *height);
+char	**read_map_lines(const char *map_path, int *height);
+void	check_args_num(t_data *data, char **parts, int *current_line);
+bool	parse_metadata(t_data *data, char **map_lines, int map_heigh, int *current_line);
+int	get_doors_num(t_map *map);
+void	init_door(t_door *door, int index, int x_pos, int y_pos);
+t_door	*allocate_doors(t_data *data);
+void	check_map_characters(t_data *data, int i, int j, bool *is_player_found);
+bool	validate_map(t_data *data);
+void	print_map(t_map *map);
+void	print_str(char *str, int index);
+int	check_first_last(t_data *data, char **map, int map_height);
+int	validate_map_borders(t_data *data, char **map, int height);
+char	**copy_array(char **array, int array_len);
+int	**init_int_arr(int *lines_len, int arr_len);
+int	check_left_right(t_data *data, char **map, int height);
+void	check_map_lr(t_data *data, int height, int i, int j);
 
 
 
