@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 13:36:28 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 15:13:28 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,17 @@ char	**read_map_lines(const char *map_path, int *height)
 	return (lines);
 }
 
+void check_args_num(t_data *data, char **parts, int *current_line)
+{
+	if (!parts || arr_len(parts) != 2)
+	{
+		print_error("Error: bad texture or color arguments!\n", __FILE__,
+			__LINE__);
+		printf(BRED "%d: %s\n" COLOR_RESET, *current_line, data->trimmed);
+		free_parse_allocated(data, parts);
+	}
+}
+
 /// @brief parse map metadata (01NSEW).
 /// @param data a data structure that has all the nessecery variables.
 /// @param map_lines
@@ -156,13 +167,7 @@ bool	parse_metadata(t_data *data, char **map_lines, int map_heigh,
 		}
 		data->trimmed = ft_strtrim(map_lines[*current_line], "\n");
 		parts = ft_split(data->trimmed, ' ');
-		if (!parts || arr_len(parts) != 2)
-		{
-			print_error("Error: bad texture or color arguments!\n", __FILE__,
-				__LINE__);
-			printf(BRED "%d: %s\n" COLOR_RESET, *current_line, data->trimmed);
-			free_parse_allocated(data, parts);
-		}
+		check_args_num(data, parts, current_line);
 		if (textures_found < NUM_TEXTURES)
 			validate_texture(data, parts, &textures_found);
 		else if (colors_found < NUM_COLORS)
@@ -334,6 +339,24 @@ int	check_first_last(t_data *data, char **map, int map_height)
 	return (1);
 }
 
+void check_map_lr(t_data *data, int height, int i, int j)
+{
+	if ((data->map.map[i][j] == '0' && data->map.map[i][j + 1] == ' ') || (data->map.map[i][j] == ' '
+					&& data->map.map[i][j + 1] == '0'))
+	{
+		print_error("Error: invalid map border!\n", __FILE__, __LINE__);
+		ft_panic(i + data->map.map_start + 1, j + 1, data->map.map[i], data);
+	}
+	if ((i + 1 < height && data->map.map[i][j] == '0'
+			&& j < data->map.map_line_len[i + 1] && data->map.map[i
+			+ 1][j] == ' ') || (data->map.map[i][j] == ' ' && i + 1 < height
+			&& data->map.map[i + 1][j] == '0'))
+	{
+		print_error("Error: invalid map border!\n", __FILE__, __LINE__);
+		ft_panic(i + data->map.map_start + 1, j + 1, data->map.map[i], data);
+	}
+}
+
 int	check_left_right(t_data *data, char **map, int height)
 {
 	int	j;
@@ -354,20 +377,7 @@ int	check_left_right(t_data *data, char **map, int height)
 		}
 		while (j + 1 < data->map.map_line_len[i])
 		{
-			if ((map[i][j] == '0' && map[i][j + 1] == ' ') || (map[i][j] == ' '
-					&& map[i][j + 1] == '0'))
-			{
-				print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-				ft_panic(i + data->map.map_start + 1, j + 1, map[i], data);
-			}
-			if ((i + 1 < height && map[i][j] == '0'
-					&& j < data->map.map_line_len[i + 1] && map[i
-					+ 1][j] == ' ') || (map[i][j] == ' ' && i + 1 < height
-					&& map[i + 1][j] == '0'))
-			{
-				print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-				ft_panic(i + data->map.map_start + 1, j + 1, map[i], data);
-			}
+			check_map_lr(data, height, i, j);
 			j++;
 		}
 	}
@@ -439,6 +449,36 @@ char	**copy_array(char **array, int array_len)
 	return (cpy_array);
 }
 
+void init_map(t_data *data, char **lines, int current_line, int height)
+{
+	data->map.map_start = current_line;
+	data->map.map_height = height - current_line;
+	data->map.map = copy_array(&lines[current_line], data->map.map_height);
+	data->map.map_width = ft_strlen(data->map.map[0]);
+	data->map.map_line_len = malloc(sizeof(int) * data->map.map_height);
+	if (!data->map.map_line_len)
+		ft_free_all(NULL, data, 1);
+}
+
+int validate_map_cont(t_data *data, char **lines, int height)
+{
+	int		current_line;
+
+	current_line = 0;
+	if (!parse_metadata(data, lines, height, &current_line))
+	{
+		free_array(lines);
+		return (0);
+	}
+	init_map(data, lines, current_line, height);
+	free_array(lines);
+	if (!validate_map(data))
+		return (0);
+	if (!validate_map_borders(data, data->map.map, data->map.map_height))
+		return (0);
+	return (1);
+}
+
 /// @brief
 /// @param data
 /// @param ac
@@ -448,7 +488,6 @@ int	parse_map(t_data *data, int ac, char **av)
 {
 	int		height;
 	char	**lines;
-	int		current_line;
 
 	if (ac != 2)
 	{
@@ -462,35 +501,7 @@ int	parse_map(t_data *data, int ac, char **av)
 	lines = read_map_lines(av[1], &height);
 	if (!lines)
 		return (0);
-	current_line = 0;
-	if (!parse_metadata(data, lines, height, &current_line))
-	{
-		free_array(lines);
+	if (!validate_map_cont(data, lines, height))
 		return (0);
-	}
-	while (current_line < height && is_empty_line(lines[current_line]))
-		current_line++;
-	data->map.map_start = current_line;
-	data->map.map_height = height - current_line;
-	data->map.map = copy_array(&lines[current_line], data->map.map_height);
-	data->map.map_width = ft_strlen(data->map.map[0]);
-	data->map.map_line_len = malloc(sizeof(int) * data->map.map_height);
-	free_array(lines);
-	if (!data->map.map_line_len)
-	{
-		free_array(lines);
-		return (0);
-	}
-	if (!validate_map(data))
-	{
-		free(data->map.map_line_len);
-		free_array(lines);
-		return (0);
-	}
-	if (!validate_map_borders(data, data->map.map, data->map.map_height))
-	{
-		free_array(lines);
-		return (0);
-	}
 	return (1);
 }

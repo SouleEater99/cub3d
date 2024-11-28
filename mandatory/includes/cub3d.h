@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/28 13:22:06 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 14:23:29 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,11 @@
 # define MOUSE_SENSITIVITY  0.01
 # define FRAME_DELAY        8
 
-# define ROT_SPEED          0.02
-# define MOVE_SPEED         10
+// # define ROT_SPEED          0.02
+// # define MOVE_SPEED         10
 
-// # define ROT_SPEED          0.1
-// # define MOVE_SPEED         30
+# define ROT_SPEED          0.1
+# define MOVE_SPEED         30
 
 // ========================= //
 
