@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/28 08:59:34 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 10:37:51 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,16 @@
 // # define MOVE_SPEED         30
 
 // ========================= //
+
+typedef struct s_minimap
+{
+
+    double start_x;
+    double start_y;
+		
+    double end_x; 
+    double end_y;
+}   t_minimap;
 
 typedef struct s_map
 {
@@ -226,6 +236,13 @@ typedef struct  s_data
     int         mouse_x;
     int         mouse_y;
 	double      sensitivity;
+
+    // t_minimap   minimap;
+
+	double	dist_x;
+	double	dist_y;
+	double	y_increment;
+    double	x_increment;
 
     // int         doors_num;
 }   t_data;

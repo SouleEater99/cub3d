@@ -46,7 +46,7 @@ int	check_click_space(t_data *data, int x, int y)
 	return (0);
 }
 
-void big_minimap(t_data *data)
+void	big_minimap(t_data *data)
 {
 	data->scale = SCALE * 2;
 	data->turn_speed = ROT_SPEED * 1.5;
@@ -57,7 +57,7 @@ void big_minimap(t_data *data)
 	data->minimap_y_center = MAP_MID_Y;
 }
 
-void small_minimap(t_data *data)
+void	small_minimap(t_data *data)
 {
 	data->scale = SCALE;
 	data->turn_speed = ROT_SPEED;

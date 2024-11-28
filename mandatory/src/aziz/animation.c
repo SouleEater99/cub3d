@@ -95,7 +95,6 @@ void	render_sprites(t_data *data)
 	frame_delay = FRAME_DELAY;
 	img = &data->projection_img;
 	sprite_image = data->player.frames[0];
-
 	if (data->shoot)
 	{
 		frame_counter++;

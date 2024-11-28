@@ -38,10 +38,8 @@ double	get_player_dir(int16_t player_dir)
 int	init_data(t_data *data, int ac, char **av)
 {
 	init_mlx(data);
-	
 	if (!parse_map(data, ac, av))
 		exit(10);
-
 	data->row = data->map.map_width;  // 22;
 	data->col = data->map.map_height; // 10;
 	data->img_width = SCREEN_WIDTH;
@@ -53,9 +51,7 @@ int	init_data(t_data *data, int ac, char **av)
 	data->move_speed = MOVE_SPEED; // 8;
 	data->num_rays = WIDTH / WALL_STRIP;
 	data->plan_distanced = (WIDTH / 2) / tan(FOV / 2);
-	
 	// =================================== //
-	
 	data->player_x = data->x_player / (CUBE_TILE + (CUBE_TILE / 2));
 	data->player_y = data->y_player / (CUBE_TILE + (CUBE_TILE / 2));
 	data->scale = SCALE;
@@ -63,11 +59,10 @@ int	init_data(t_data *data, int ac, char **av)
 	data->minimap_radius = MINIMAP_RADIUS;
 	data->minimap_x_center = MINIMAP_MID_X;
 	data->minimap_y_center = MINIMAP_MID_Y;
-
 	data->player.frames_num = 22;
 	data->player.frames_path = "./textures/sprites/gun_sprite_0/";
-	init_player_sprites(data, data->player.frames_path, data->player.frames_num);
-	
+	init_player_sprites(data, data->player.frames_path,
+		data->player.frames_num);
 	// =================================== //
 	return (0);
 }

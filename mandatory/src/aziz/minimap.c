@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 14:31:22 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/27 20:29:22 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 10:41:25 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ void	draw_background(t_data *data, t_image *image)
 
 void	draw_tile(t_data *data, t_image *image, double x, double y, int color)
 {
+	int		di;
+	int		dj;
 	int		size;
 	double	screen_x;
 	double	screen_y;
 	double	distance;
-	int		di;
-	int		dj;
 
 	size = (int)(TILE_SIZE * data->scale);
 	screen_x = data->minimap_x_center + (x - data->player_x * TILE_SIZE
@@ -85,53 +85,50 @@ void	draw_player(t_data *data, t_image *image)
 	}
 }
 
-void	draw_player_direction(t_data *data, t_image *image)
+void	draw_ray_line(t_data *data, t_image *image, double end_x, double end_y)
 {
-	int		i;
 	double	x;
 	double	y;
 	double	dx;
 	double	dy;
-	int		step;
-	double	end_x;
-	double	end_y;
 	double	steps;
-	double	dist_x;
-	double	dist_y;
+
+	dx = end_x - data->minimap_x_center;
+	dy = end_y - data->minimap_y_center;
+	steps = fmax(fabs(dx), fabs(dy));
+	if (steps == 0)
+		return ;
+	data->x_increment = dx / steps;
+	data->y_increment = dy / steps;
+	x = data->minimap_x_center;
+	y = data->minimap_y_center;
+	for (int step = 0; step <= steps; step++)
+	{
+		data->dist_x = x - data->minimap_x_center;
+		data->dist_y = y - data->minimap_y_center;
+		if (sqrt(data->dist_x * data->dist_x + data->dist_y
+				* data->dist_y) <= MINIMAP_RADIUS)
+			my_mlx_pixel_put(image, round(x), round(y), 0xFF0000);
+		x += data->x_increment;
+		y += data->y_increment;
+	}
+}
+
+void	draw_player_direction(t_data *data, t_image *image)
+{
 	double	ray_angle;
 	double	ray_length;
-	double	x_increment;
-	double	y_increment;
+	double	end_x;
+	double	end_y;
 
-	// Draw direction indicator
-	double fov = 60 * PI / 180.0; // 60 degrees FOV
-	i = -30 - 1;
-	while (++i <= 30)
+	double fov = 60 * PI / 180.0;
+	for (int i = -30; i <= 30; i++)
 	{
 		ray_angle = data->player_angle + (i * fov / 60);
 		ray_length = MINIMAP_RADIUS * 0.3;
 		end_x = data->minimap_x_center + cos(ray_angle) * ray_length;
 		end_y = data->minimap_y_center + sin(ray_angle) * ray_length;
-		// Draw ray line
-		dx = end_x - data->minimap_x_center;
-		dy = end_y - data->minimap_y_center;
-		steps = fmax(fabs(dx), fabs(dy));
-		if (steps == 0)
-			continue ;
-		x_increment = dx / steps;
-		y_increment = dy / steps;
-		x = data->minimap_x_center;
-		y = data->minimap_y_center;
-		step = -1;
-		while (++step <= steps)
-		{
-			dist_x = x - data->minimap_x_center;
-			dist_y = y - data->minimap_y_center;
-			if (sqrt(dist_x * dist_x + dist_y * dist_y) <= MINIMAP_RADIUS)
-				my_mlx_pixel_put(image, round(x), round(y), 0xFF0000);
-			x += x_increment;
-			y += y_increment;
-		}
+		draw_ray_line(data, image, end_x, end_y);
 	}
 }
 
@@ -143,27 +140,23 @@ void	draw_map(t_data *data, t_image *image)
 	int		map_y;
 	double	tile_x;
 	double	tile_y;
-	int		player_map_x;
-	int		player_map_y;
 	int		visible_range;
 
 	visible_range = (int)(data->minimap_radius / (TILE_SIZE * data->scale)) + 1;
 	data->player_x = data->x_player / CUBE_TILE;
 	data->player_y = data->y_player / CUBE_TILE;
-	player_map_x = (int)data->player_x;
-	player_map_y = (int)data->player_y;
 	dy = -visible_range - 1;
 	while (++dy <= visible_range)
 	{
 		dx = -visible_range - 1;
 		while (++dx <= visible_range)
 		{
-			map_x = player_map_x + dx;
-			map_y = player_map_y + dy;
+			map_x = (int)data->player_x + dx;
+			map_y = (int)data->player_y + dy;
 			// Check if the tile is within map bounds
 			if (map_x >= 0 && map_y >= 0 && map_y < data->map.map_height
 				&& map_x < data->map.map_line_len[map_y]
-				&& data->map.map[map_y] != NULL) // Check if row exists
+				&& data->map.map[map_y] != NULL)
 			{
 				tile_x = map_x * TILE_SIZE * data->scale;
 				tile_y = map_y * TILE_SIZE * data->scale;

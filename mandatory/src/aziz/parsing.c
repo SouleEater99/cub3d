@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 09:41:40 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 10:32:57 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,7 +323,6 @@ bool	parse_metadata(t_data *data, char **map_lines, int map_heigh,
 			print_error("Error: bad texture or color arguments!\n", __FILE__,
 				__LINE__);
 			printf(BRED "%d: %s\n" COLOR_RESET, *current_line, trimmed);
-	
 			free_array(map_lines);
 			ft_free_all(NULL, data, 1);
 		}
@@ -468,7 +467,8 @@ bool	validate_map(t_data *data)
 	{
 		data->door = malloc(sizeof(t_door) * data->n_door);
 		if (!data->door)
-			ft_free_all("Error: can not allocate memory for doors!\n", data, EXIT_FAILURE);
+			ft_free_all("Error: can not allocate memory for doors!\n", data,
+				EXIT_FAILURE);
 		ft_memset(data->door, 0, sizeof(t_door) * data->n_door);
 	}
 	door_found = -1;
@@ -485,7 +485,6 @@ bool	validate_map(t_data *data)
 				print_error("Error: unsupported metadata (characters)!\n",
 					__FILE__, __LINE__);
 				printf(BRED "%d: %s\n" COLOR_RESET, i, data->map.map[i]);
-				
 				ft_free_all(NULL, data, 1);
 			}
 			if (ft_strchr(PLAYER_DIR, data->map.map[i][j]))
@@ -495,7 +494,6 @@ bool	validate_map(t_data *data)
 					print_error("Error: multiple players!\n", __FILE__,
 						__LINE__);
 					printf(BRED "%d: %s\n" COLOR_RESET, i, data->map.map[i]);
-					
 					ft_free_all(NULL, data, 1);
 				}
 				data->player_x = j + 0.5; // in the center of the tile.
@@ -556,43 +554,41 @@ void	ft_panic(int line_num, int col_num, const char *line,
 
 void	clean_up(t_data *data)
 {
+	int	i;
+
 	if (data)
-	{	
-		int i = -1;
-		while(++i < NUM_TEXTURES)
+	{
+		i = -1;
+		while (++i < NUM_TEXTURES)
 		{
 			if (data->textures[i] && data->textures[i]->img_ptr)
-		    	mlx_destroy_image(data->mlx_ptr, data->textures[i]->img_ptr);
+				mlx_destroy_image(data->mlx_ptr, data->textures[i]->img_ptr);
 			free(data->textures[i]);
 		}
-	
 		if (data->map.map_line_len)
 			free(data->map.map_line_len);
 		if (data->map.map)
 			free_array(data->map.map);
-
 		if (data->player.frames)
 		{
-			int i = -1;
-			while(++i < data->player.frames_num)
+			i = -1;
+			while (++i < data->player.frames_num)
 			{
 				if (data->player.frames[i].img_ptr)
-					mlx_destroy_image(data->mlx_ptr, data->player.frames[i].img_ptr);
+					mlx_destroy_image(data->mlx_ptr,
+						data->player.frames[i].img_ptr);
 			}
 			free(data->player.frames);
 		}
-
 		if (data->door)
 			free(data->door);
-		
 		if (data->win_ptr)
 			mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 		if (data->mlx_ptr)
 		{
-			# ifdef __linux__
-				mlx_destroy_display(data->mlx_ptr);
-			# endif
-
+#ifdef __linux__
+			mlx_destroy_display(data->mlx_ptr);
+#endif
 			free(data->mlx_ptr);
 		}
 	}
@@ -604,54 +600,42 @@ void	clean_up(t_data *data)
 /// @param map_start
 /// @param map_height
 /// @return
-int	check_first_last(t_data *data, char **map, int map_start, int map_height)
+int	check_first_last(t_data *data, char **map, int map_height)
 {
-	int	j;
+	int	i;
 	int	line;
 
-	j = -1;
+	i = -1;
 	line = 0;
-	while (map[line][++j] && ft_strchr("1 ", map[line][j]))
+	while (map[line][++i] && ft_strchr("1 ", map[line][i]))
 		;
-	if (map[line][j] != '\n')
+	if (map[line][i] != '\n')
 	{
 		print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-		printf(BRED "%d: %s\n" COLOR_RESET, j, data->map.map[j]);
-		
-		ft_panic(map_start + 1, j + 1, map[0], clean_up, data);
+		printf(BRED "%d: %s\n" COLOR_RESET, i, data->map.map[i]);
+		ft_panic(i + 1, i + 1, map[0], clean_up, data);
 		return (0);
 	}
-	j = -1;
+	i = -1;
 	line = map_height - 1;
-	while (map[line][++j] && ft_strchr("1 ", map[line][j]))
+	while (map[line][++i] && ft_strchr("1 ", map[line][i]))
 		;
-	if (map[line][j] != '\n' && map[line][j] != '\0')
+	if (map[line][i] != '\n' && map[line][i] != '\0')
 	{
 		print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-		printf(BRED "%d: %s\n" COLOR_RESET, j, data->map.map[j]);
-		
-		ft_panic(line + 1, j + 1, map[line], clean_up, data);
+		printf(BRED "%d: %s\n" COLOR_RESET, i, data->map.map[i]);
+		ft_panic(line + 1, i + 1, map[line], clean_up, data);
 		return (0);
 	}
 	return (1);
 }
 
-/// @brief check if map is surounded by walls.
-/// @param data
-/// @param map
-/// @param height
-/// @return true if map is surounded by walls.
-int	validate_map_borders(t_data *data, char **map, int height)
+int	check_left_right(t_data *data, char **map, int height)
 {
-	int	i;
 	int	j;
-	int	**visited;
+	int	i;
 
 	i = 0;
-	j = -1;
-	if (!check_first_last(data, map, data->map.map_start, data->map.map_height))
-		return (0);
-	// start from the second line to the line befor the last.
 	while (++i < height - 1)
 	{
 		if (is_empty_line(map[i]))
@@ -664,7 +648,6 @@ int	validate_map_borders(t_data *data, char **map, int height)
 			print_error("Error: invalid map border!\n", __FILE__, __LINE__);
 			ft_panic(i + data->map.map_start + 1, j + 1, map[i], clean_up,
 				data);
-			return (0);
 		}
 		while (j + 1 < data->map.map_line_len[i])
 		{
@@ -674,7 +657,6 @@ int	validate_map_borders(t_data *data, char **map, int height)
 				print_error("Error: invalid map border!\n", __FILE__, __LINE__);
 				ft_panic(i + data->map.map_start + 1, j + 1, map[i], clean_up,
 					data);
-				return (0);
 			}
 			if ((i + 1 < height && map[i][j] == '0'
 					&& j < data->map.map_line_len[i + 1] && map[i
@@ -684,46 +666,87 @@ int	validate_map_borders(t_data *data, char **map, int height)
 				print_error("Error: invalid map border!\n", __FILE__, __LINE__);
 				ft_panic(i + data->map.map_start + 1, j + 1, map[i], clean_up,
 					data);
-				return (0);
 			}
 			j++;
 		}
 	}
-	visited = malloc(sizeof(int *) * data->map.map_height);
-	if (!visited)
-		exit(1); // changes
+	return (1);
+}
+
+void	free_int_array(int **int_array, int arr_len)
+{
+	int	i;
+
 	i = -1;
-	while (++i < data->map.map_height)
+	if (!int_array)
+		return ;
+	while (++i < arr_len)
+		free(int_array[i]);
+	free(int_array);
+}
+
+int	**init_int_arr(int *lines_len, int arr_len)
+{
+	int	i;
+	int	**arr;
+
+	i = -1;
+	arr = malloc(sizeof(int *) * arr_len);
+	if (!arr)
+		return (NULL);
+	while (++i < arr_len)
 	{
-		visited[i] = ft_calloc(data->map.map_line_len[i], sizeof(int));
-		if (!visited[i])
-			exit(1);
+		arr[i] = ft_calloc(lines_len[i], sizeof(int));
+		if (!arr[i])
+		{
+			while (--i >= 0)
+				free(arr[i]);
+			free(arr);
+			return (NULL);
+		}
 	}
+	return (arr);
+}
+
+/// @brief check if map is surounded by walls.
+/// @param data
+/// @param map
+/// @param height
+/// @return true if map is surounded by walls.
+int	validate_map_borders(t_data *data, char **map, int height)
+{
+	int	**visited;
+
+	if (!check_first_last(data, map, data->map.map_height))
+		return (0);
+	if (!check_left_right(data, map, height))
+		return (0);
+	visited = init_int_arr(data->map.map_line_len, data->map.map_height);
+	if (!visited)
+		ft_free_all(NULL, data, 1);
 	if (!dfs(&data->map, visited, data->player_x, data->player_y))
 	{
 		print_error("Error: map is not surrounded by walls!\n", __FILE__,
 			__LINE__);
-		exit(1);
+		ft_free_all(NULL, data, 1);
 	}
-	i = -1;
-	while (++i < data->map.map_height)
-		free(visited[i]);
-	free(visited);
+	free_int_array(visited, data->map.map_height);
 	return (1);
 }
 
-char **copy_array(char **array, int array_len)
+char	**copy_array(char **array, int array_len)
 {
-	int i = -1;
+	int		i;
+	char	**cpy_array;
+
+	i = -1;
 	if (array_len <= 0)
 		return (NULL);
-	
-	char **cpy_array = (char **)ft_calloc(sizeof(char *), array_len + 1);
+	cpy_array = (char **)ft_calloc(sizeof(char *), array_len + 1);
 	if (!cpy_array)
 		return (NULL);
-	while(++i < array_len)
+	while (++i < array_len)
 		cpy_array[i] = ft_strdup(array[i]);
-
 	return (cpy_array);
 }
 
@@ -744,10 +767,8 @@ int	parse_map(t_data *data, int ac, char **av)
 		printf("Usage: ./cub3d <map_path>\n");
 		return (0);
 	}
-
 	ft_memset(&data->map, 0, sizeof(t_map));
 	data->map.map = 0;
-
 	if (!check_extension(av[1], ".cub"))
 		return (0);
 	height = 0;
@@ -762,15 +783,12 @@ int	parse_map(t_data *data, int ac, char **av)
 	}
 	while (current_line < height && is_empty_line(lines[current_line]))
 		current_line++;
-
 	data->map.map_start = current_line;
 	data->map.map_height = height - current_line;
 	data->map.map = copy_array(&lines[current_line], data->map.map_height);
 	data->map.map_width = ft_strlen(data->map.map[0]);
 	data->map.map_line_len = malloc(sizeof(int) * data->map.map_height);
-	
 	free_array(lines);
-
 	if (!data->map.map_line_len)
 	{
 		free_array(lines);
