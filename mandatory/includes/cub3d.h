@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/28 13:10:13 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 13:22:06 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,6 +333,8 @@ void	draw_tile_within_bounds(t_data *data, int map_x, int map_y);
 char	*get_img_address(t_image *image);
 void	init_player_sprites(t_data *data, char *dir_path, int frames_num);
 void	draw_pixel(t_image *image, int dx, int dy, int sprite_pixel);
+bool	dfs(t_map *map, int **visited, int x, int y);
+
 
 
 #endif

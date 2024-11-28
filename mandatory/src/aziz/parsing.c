@@ -6,34 +6,11 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 12:47:40 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 13:36:28 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
-
-// DFS (Depth-First Search) function.
-bool	dfs(t_map *map, int **visited, int x, int y)
-{
-	bool	up;
-	bool	down;
-	bool	left;
-	bool	right;
-
-	if (x < 0 || y < 0 || x >= map->map_line_len[y] || y >= map->map_height)
-		return (false);
-	if (visited[y][x] || map->map[y][x] == '1')
-		return (true);
-	if (x == 0 || y == 0 || x == map->map_line_len[y] - 1
-		|| y == map->map_height - 1)
-		return (false);
-	visited[y][x] = 1; // mark it as visited
-	up = dfs(map, visited, x, y - 1);
-	down = dfs(map, visited, x, y + 1);
-	left = dfs(map, visited, x - 1, y);
-	right = dfs(map, visited, x + 1, y);
-	return (up && down && left && right);
-}
 
 /// @brief check the map file extension (.cub).
 /// @param file_path the file path.
@@ -45,7 +22,8 @@ int	check_extension(const char *file_path, const char *extension)
 
 	if (!file_path || !extension)
 		return (0);
-	if ((fd = open(file_path, O_RDONLY)) == -1)
+	fd = open(file_path, O_RDONLY);
+	if (fd == -1)
 	{
 		print_error("Error: File does not exist!\n", __FILE__, __LINE__);
 		return (0);
@@ -75,47 +53,47 @@ bool	is_empty_line(const char *line)
 		return (true);
 	while (line[++i] && ft_isspace(line[i]))
 		;
-	// if (!line[i])
-	//     return (true);
 	return (!line[i]);
 }
 
-/// @brief count, allocate and copy the map.
-/// @param map_path map file path.
-/// @param height a pointer to the lenght of the map.
-/// @return the allocated map.
-char	**read_map_lines(const char *map_path, int *height)
+int	is_empty_map(const char *map_path, int *height)
 {
 	int		fd;
 	char	*line;
-	char	**lines;
-	int		i;
+	bool	is_empty;
 
+	is_empty = true;
 	fd = open(map_path, O_RDONLY);
 	if (fd == -1)
 		return (print_error("Error: failed to open map file!\n", __FILE__,
-				__LINE__), NULL);
+				__LINE__), 0);
 	*height = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
+		if (!is_empty_line(line))
+			is_empty = false;
 		(*height)++;
 		free(line);
 		line = get_next_line(fd);
 	}
-	if (*height == 0)
+	if (*height == 0 || is_empty)
 		return (print_error("Error: map file is empty!\n", __FILE__, __LINE__),
-			close(fd), NULL);
+			close(fd), 0);
 	close(fd);
-	fd = open(map_path, O_RDONLY);
-	if (fd == -1)
-		return (print_error("Error: failed to open map file!\n", __FILE__,
-				__LINE__), NULL);
+	return (1);
+}
+
+char	**read_lines(int fd, int *height)
+{
+	int		i;
+	char	**lines;
+
+	i = -1;
 	lines = malloc(sizeof(char *) * (*height + 1));
 	if (!lines)
 		return (print_error("Error: failed to allocated memory for map!\n",
-				__FILE__, __LINE__), close(fd), NULL);
-	i = -1;
+				__FILE__, __LINE__), NULL);
 	while (++i < *height)
 	{
 		lines[i] = get_next_line(fd);
@@ -129,6 +107,26 @@ char	**read_map_lines(const char *map_path, int *height)
 		}
 	}
 	lines[*height] = NULL;
+	return (lines);
+}
+
+/// @brief count, allocate and copy the map.
+/// @param map_path map file path.
+/// @param height a pointer to the lenght of the map.
+/// @return the allocated map.
+char	**read_map_lines(const char *map_path, int *height)
+{
+	int		fd;
+	char	**lines;
+
+	*height = 0;
+	if (!is_empty_map(map_path, height))
+		return (NULL);
+	fd = open(map_path, O_RDONLY);
+	if (fd == -1)
+		return (print_error("Error: failed to open map file!\n", __FILE__,
+				__LINE__), NULL);
+	lines = read_lines(fd, height);
 	close(fd);
 	return (lines);
 }
@@ -198,6 +196,7 @@ int	get_doors_num(t_map *map)
 	}
 	return (doors_num);
 }
+
 void	init_door(t_door *door, int index, int x_pos, int y_pos)
 {
 	door[index].is_open = 0;
@@ -273,23 +272,23 @@ bool	validate_map(t_data *data)
 	return (is_player_found);
 }
 
-// void	print_map(t_map *map)
-// {
-// 	int	i;
+void	print_map(t_map *map)
+{
+	int	i;
 
-// 	i = -1;
-// 	while (++i < map->map_height)
-// 		printf("%s", map->map[i]);
-// 	printf("\n\n");
-// 	printf("ceiling_color: 0x%X\n", map->ceiling_color);
-// 	printf("floor_color: 0x%X\n", map->floor_color);
-// 	printf("\n");
-// 	printf("North texture: %s\n", map->no_texture_path);
-// 	printf("South texture: %s\n", map->so_texture_path);
-// 	printf("East texture: %s\n", map->ea_texture_path);
-// 	printf("West texture: %s\n", map->we_texture_path);
-// 	printf("\n");
-// }
+	i = -1;
+	while (++i < map->map_height)
+		printf("%s", map->map[i]);
+	printf("\n\n");
+	printf("ceiling_color: 0x%X\n", map->ceiling_color);
+	printf("floor_color: 0x%X\n", map->floor_color);
+	printf("\n");
+	printf("North texture: %s\n", map->no_texture_path);
+	printf("South texture: %s\n", map->so_texture_path);
+	printf("East texture: %s\n", map->ea_texture_path);
+	printf("West texture: %s\n", map->we_texture_path);
+	printf("\n");
+}
 
 void	print_str(char *str, int index)
 {
@@ -458,10 +457,8 @@ int	parse_map(t_data *data, int ac, char **av)
 		return (0);
 	}
 	ft_memset(&data->map, 0, sizeof(t_map));
-	data->map.map = 0;
 	if (!check_extension(av[1], ".cub"))
 		return (0);
-	height = 0;
 	lines = read_map_lines(av[1], &height);
 	if (!lines)
 		return (0);
