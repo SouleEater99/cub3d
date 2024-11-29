@@ -6,21 +6,20 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 19:03:55 by heisenberg        #+#    #+#             */
-/*   Updated: 2024/11/27 20:45:47 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 12:49:06 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-#define MOUSE_SENSITIVITY 0.01
-
 void	mouse_hooks(t_data *data)
 {
+	int	x;
+	int	y;
 	int	delta_x;
 
 	if (!data || !data->win_ptr)
 		return ;
-	int x, y;
 	mlx_mouse_get_pos(data->mlx_ptr, data->win_ptr, &x, &y);
 	delta_x = data->mouse_x - x;
 	if (x < 0 || x > SCREEN_WIDTH || y < 0 || y > SCREEN_HEIGHT)
@@ -48,7 +47,7 @@ int	check_click_space(t_data *data, int x, int y)
 	return (0);
 }
 
-void big_minimap(t_data *data)
+void	big_minimap(t_data *data)
 {
 	data->scale = SCALE * 2;
 	data->turn_speed = ROT_SPEED * 1.5;
@@ -59,7 +58,7 @@ void big_minimap(t_data *data)
 	data->minimap_y_center = MAP_MID_Y;
 }
 
-void small_minimap(t_data *data)
+void	small_minimap(t_data *data)
 {
 	data->scale = SCALE;
 	data->turn_speed = ROT_SPEED;

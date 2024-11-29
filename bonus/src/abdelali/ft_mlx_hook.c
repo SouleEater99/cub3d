@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_mlx_hook.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:29:50 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/27 20:34:02 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 20:34:14 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	ft_key_press(int key, void *param)
 	t_data	*data;
 
 	data = (t_data *)param;
-	(void)data;
 	if (key == XK_Up || key == XK_w)
 		data->walk_direction = 1;
 	else if (key == XK_Down || key == XK_s)
@@ -47,7 +46,6 @@ int	ft_key_release(int key, void *param)
 	t_data	*data;
 
 	data = (t_data *)param;
-	(void)data;
 	if (key == XK_Up || key == XK_w)
 		data->walk_direction = 0;
 	else if (key == XK_Down || key == XK_s)
@@ -74,10 +72,8 @@ int	ft_loop_hook(void *param)
 	t_data	*data;
 
 	data = (t_data *)param;
-	(void)data;
 	ft_update_data(data);
 	ft_update_image(data);
 	mouse_hooks(data);
-	// render_sprites(data);
 	return (0);
 }

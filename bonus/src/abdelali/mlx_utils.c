@@ -3,105 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:30:04 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/27 20:43:49 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/28 22:02:26 by heisenberg       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-void	my_mlx_pixel_put(t_image *image, int x, int y, int color)
+int	check_door_x_pos(t_data *data, double old_pos, double new_pos)
 {
-	int	pixel_index;
-
-	if (x < 0 || x >= SCREEN_WIDTH || y < 0 || y >= SCREEN_HEIGHT)
-		return ;
-	pixel_index = (y * image->size_line) + (x * (image->bits_per_pixel / 8));
-	*(int *)(image->img_data + pixel_index) = color;
+	data->door_index = ft_get_door_index(data, new_pos / CUBE_TILE, old_pos);
+	if (data->door_index == -1)
+		ft_free_all("Door_index Fail \n", data, 1);
+	if (!data->door[data->door_index].is_open)
+		return (0);
+	else
+		data->x_player = new_pos;
+	return (1);
 }
 
-int	ft_is_angle_facing_down(double angle)
+int	check_door_y_pos(t_data *data, double old_pos, double new_pos)
 {
-	if (angle > 0 && angle < PI)
-		return (1);
-	return (0);
-}
-
-int	ft_is_angle_facing_right(double angle)
-{
-	if ((angle < PI / 2 && angle >= 0) || (angle > (3 * PI) / 2))
-		return (1);
-	return (0);
-}
-
-int	ft_board_protect(int Width, int High, int x, int y)
-{
-	if ((x >= 0 && x < Width) && (y >= 0 && y < High))
-		return (1);
-	return (0);
-}
-
-int	ft_is_a_wall(t_data *data, int x, int y)
-{
-	if (ft_board_protect(data->map.map_line_len[y], data->map.map_height, x,
-			y) == 1)
-	{
-		if (data->map.map[y][x] == '1')
-			return (1);
-		else if (data->map.map[y][x] == 'D')
-		{
-			data->door_index = ft_get_door_index(data, x, y);
-			if (data->door_index == -1)
-				ft_free_all("Door_index Fail \n", data, 1);
-			if (!data->door[data->door_index].is_open)
-				return (1);
-			else if (data->flag == 1 && data->door[data->door_index].is_open)
-				return (1);
-		}
-	}
-	return (0);
+	data->door_index = ft_get_door_index(data, old_pos, new_pos / CUBE_TILE);
+	if (data->door_index == -1)
+		ft_free_all("Door_index Fail \n", data, 1);
+	if (!data->door[data->door_index].is_open)
+		return (0);
+	else
+		data->y_player = new_pos;
+	return (1);
 }
 
 int	ft_is_player_inside_wall(t_data *data)
 {
+	int		x;
+	int		y;
 	double	new_x;
 	double	new_y;
 
-	new_x = data->x_player + (cos(data->player_angle) * data->move_step);
-	new_y = data->y_player + (sin(data->player_angle) * data->move_step);
-	// this is for glissing.
-	if (data->map.map[(int)data->y_player / CUBE_TILE][(int)new_x
-		/ CUBE_TILE] == '0')
+	new_x = (data->x_player + (cos(data->player_angle) * data->move_step));
+	new_y = (data->y_player + (sin(data->player_angle) * data->move_step));
+	x = (int)data->x_player / CUBE_TILE;
+	y = (int)data->y_player / CUBE_TILE;
+	if (data->map.map[y][(int)new_x / CUBE_TILE] == '0')
 		data->x_player = new_x;
-	if (data->map.map[(int)new_y / CUBE_TILE][(int)data->x_player
-		/ CUBE_TILE] == '0')
+	if (data->map.map[(int)new_y / CUBE_TILE][x] == '0')
 		data->y_player = new_y;
-	if (data->map.map[(int)data->y_player / CUBE_TILE][(int)new_x
-		/ CUBE_TILE] == 'D')
-	{
-		data->door_index = ft_get_door_index(data, new_x / CUBE_TILE,
-				data->y_player / CUBE_TILE);
-		if (data->door_index == -1)
-			ft_free_all("Door_index Fail \n", data, 1);
-		if (!data->door[data->door_index].is_open)
+	if (data->map.map[y][(int)new_x / CUBE_TILE] == 'D')
+		if (!check_door_x_pos(data, y, new_x))
 			return (0);
-		else
-			data->x_player = new_x;
-	}
-	if (data->map.map[(int)new_y / CUBE_TILE][(int)data->x_player
-		/ CUBE_TILE] == 'D')
-	{
-		data->door_index = ft_get_door_index(data, data->x_player / CUBE_TILE,
-				new_y / CUBE_TILE);
-		if (data->door_index == -1)
-			ft_free_all("Door_index Fail \n", data, 1);
-		if (!data->door[data->door_index].is_open)
+	if (data->map.map[(int)new_y / CUBE_TILE][x] == 'D')
+		if (!check_door_y_pos(data, x, new_y))
 			return (0);
-		else
-			data->y_player = new_y;
-	}
 	return (1);
 }
 
@@ -138,14 +93,4 @@ void	ft_write_line(t_data *data, int dx, int dy, int color)
 		y += y_increment;
 		data->i++;
 	}
-}
-
-double	ft_calc_distance(t_data *data, double x, double y)
-{
-	double	dx;
-	double	dy;
-
-	dx = data->x_player - x;
-	dy = data->y_player - y;
-	return (sqrt(dx * dx + dy * dy)); // Euclidean distance
 }
