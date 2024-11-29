@@ -3,17 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   update_image.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:30:22 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 20:14:08 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/29 09:43:17 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
+/// @brief player sliding on door.
+/// @param data
+/// @param new_x
+/// @param new_y
 void	enter_open_door(t_data *data, double new_x, double new_y)
 {
+	data->door_index = ft_get_door_index(data, data->x_player / CUBE_TILE, new_y
+			/ CUBE_TILE);
+	if (data->door_index == -1)
+		ft_free_all("Door_index Fail \n", data, 1);
+	if (!data->door[data->door_index].is_open)
+		return ;
+	else
+		data->y_player = new_y;
 	data->door_index = ft_get_door_index(data, new_x / CUBE_TILE, new_y
 			/ CUBE_TILE);
 	if (data->door_index == -1)
@@ -21,10 +33,7 @@ void	enter_open_door(t_data *data, double new_x, double new_y)
 	if (!data->door[data->door_index].is_open)
 		return ;
 	else
-	{
 		data->x_player = new_x;
-		data->y_player = new_y;
-	}
 }
 
 void	go_left_right(t_data *data)
@@ -36,12 +45,12 @@ void	go_left_right(t_data *data)
 		* data->move_speed * data->strafe_direction;
 	new_y = data->y_player + sin(data->player_angle + (PI / 2))
 		* data->move_speed * data->strafe_direction;
-	if (data->map.map[(int)(new_y / CUBE_TILE)][(int)(new_x
+	if (data->map.map[(int)(data->y_player / CUBE_TILE)][(int)(new_x
 			/ CUBE_TILE)] == '0')
-	{
 		data->x_player = new_x;
+	if (data->map.map[(int)(new_y / CUBE_TILE)][(int)(data->x_player
+			/ CUBE_TILE)] == '0')
 		data->y_player = new_y;
-	}
 	else if (data->map.map[(int)(new_y / CUBE_TILE)][(int)(new_x
 			/ CUBE_TILE)] == 'D')
 		enter_open_door(data, new_x, new_y);
