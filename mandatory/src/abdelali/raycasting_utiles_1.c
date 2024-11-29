@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 19:45:38 by heisenberg        #+#    #+#             */
-/*   Updated: 2024/11/29 10:04:16 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/29 10:23:44 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	ft_write_floor(t_data *data, int i, int color)
 	{
 		distance = (j - HIGH / 2) / (double)(HIGH / 2);
 		distance = 1 / distance;
-		shaded_color = color; // shade_walls(color, distance);
+		// shaded_color = color;
+		shaded_color = shade_walls(color, distance);
 		my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++,
 			shaded_color);
 	}
@@ -50,7 +51,8 @@ void	ft_write_ceiling(t_data *data, int i, int color)
 	{
 		distance = (HIGH / 2 - j) / (double)(HIGH / 2);
 		distance = 1 / (distance);
-		shaded_color = color; // shade_walls(color, distance);
+		// shaded_color = color;
+		shaded_color = shade_walls(color, distance);
 		my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++,
 			shaded_color);
 	}
