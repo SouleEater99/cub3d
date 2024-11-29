@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/29 09:26:10 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/29 09:58:03 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,44 +56,21 @@
 
 # define PLAYER_DIR "NSEW"
 # define SUPPORTED_CHARS "NSEW01\t\n "
-# define SUPPORTED_CHARS_BONUS "DNSEW01\t\n "
 
-# define NUM_TEXTURES 5
+# define NUM_TEXTURES 4
 # define NUM_COLORS 2
 
 # define PLAYER_RADIUS 6
 # define MINIMAP_RADIUS 80
 # define TILE_SIZE 64
 
-# define DOOR_SYMBOL 'D'
-
 # define SCALE 0.25
 
 # define SCREEN_WIDTH WIDTH
 # define SCREEN_HEIGHT HIGH
 
-# define MAP_MID_X (SCREEN_WIDTH / 2)
-# define MAP_MID_Y (SCREEN_HEIGHT / 2)
-
-# define MINIMAP_MID_X (SCREEN_WIDTH - MINIMAP_RADIUS - 20)
-# define MINIMAP_MID_Y (MINIMAP_RADIUS + 20)
-
-# define LEFT_CLICK 1
-# define MIDDLE_CLICK 2
-# define RIGHT_CLICK 3
-# define SCROLL_UP 4
-# define SCROLL_DOWN 5
-
-# define MOUSE_SENSITIVITY 0.01
-# define FRAME_DELAY 5
-
 # define ROT_SPEED          0.02
 # define MOVE_SPEED         10
-
-// # define ROT_SPEED 0.1
-// # define MOVE_SPEED 30
-
-// ========================= //
 
 typedef struct s_minimap
 {
@@ -122,13 +99,6 @@ typedef struct s_map
 }					t_map;
 
 // ======================== //
-
-typedef struct s_door
-{
-	int				x;
-	int				y;
-	int				is_open;
-}					t_door;
 
 typedef struct s_image
 {
@@ -180,9 +150,6 @@ typedef struct s_data
 	int				start;
 	int				end;
 
-	t_door			*door;
-	int				n_door;
-	int				door_index;
 	int				flag;
 
 	double			x_player;
@@ -256,9 +223,8 @@ typedef struct s_data
 	int				textures_found;
 	int				colors_found;
 
-	double	ystep;
-	double	xstep;
-	// int         doors_num;
+	double			ystep;
+	double			xstep;
 }					t_data;
 
 int					init_data(t_data *data, int ac, char **av);
@@ -289,17 +255,11 @@ void				ft_get_horz_hit(t_data *data, double Angle, double *x,
 void				ft_get_virt_hit(t_data *data, double Angle, double *x,
 						double *y);
 void				ft_write_projection(t_data *data, int i);
-void				ft_write_texture_img(t_data *data, char *path);
-void				ft_write_mini_map(t_data *data);
-void				ft_write_player(t_data *data);
-void				ft_write_player_view(t_data *data);
 void				ft_write_wall(t_data *data, int i);
 void				ft_write_ceiling(t_data *data, int i, int color);
 void				ft_write_floor(t_data *data, int i, int color);
 void				ft_get_texture_color(t_data *data, int j);
 void				ft_write_player_wall_hit(t_data *data);
-// void    ft_init_door(t_data *data);
-int					ft_get_door_index(t_data *data, int x, int y);
 
 void				draw_minimap(t_data *data);
 int					parse_map(t_data *data, int ac, char **av);
@@ -357,9 +317,6 @@ void				check_args_num(t_data *data, char **parts,
 						int *current_line);
 bool				parse_metadata(t_data *data, char **map_lines,
 						int map_heigh, int *current_line);
-int					get_doors_num(t_map *map);
-void				init_door(t_door *door, int index, int x_pos, int y_pos);
-t_door				*allocate_doors(t_data *data);
 void				check_map_characters(t_data *data, int i, int j,
 						bool *is_player_found);
 bool				validate_map(t_data *data);

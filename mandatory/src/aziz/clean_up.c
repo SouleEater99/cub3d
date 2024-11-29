@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:48:00 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/29 09:31:39 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/29 09:50:54 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ void	clean_up(t_data *data)
 		if (data->player.frames)
 			destroy_images(data->mlx_ptr, &data->player.frames,
 				data->player.frames_num);
-		if (data->door)
-			free(data->door);
 		if (data->win_ptr)
 			mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 		if (data->mlx_ptr)

@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:15:35 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 18:15:47 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/11/29 09:52:21 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	check_map_characters(t_data *data, int i, int j, bool *is_player_found)
 {
-	if (!ft_strchr(SUPPORTED_CHARS_BONUS, data->map.map[i][j]))
+	if (!ft_strchr(SUPPORTED_CHARS, data->map.map[i][j]))
 	{
 		print_error("Error: unsupported metadata (characters)!\n", __FILE__,
 			__LINE__);
@@ -45,21 +45,14 @@ bool	validate_map(t_data *data)
 	int		i;
 	int		j;
 	bool	is_player_found;
-	int		door_found;
 
 	i = -1;
 	is_player_found = false;
-	data->door = allocate_doors(data);
-	door_found = -1;
 	while (++i < data->map.map_height)
 	{
 		j = -1;
 		while (++j < data->map.map_line_len[i])
-		{
 			check_map_characters(data, i, j, &is_player_found);
-			if (data->map.map[i][j] == 'D')
-				init_door(data->door, ++door_found, j, i);
-		}
 	}
 	if (!is_player_found)
 		print_error("Error: no player found!\n", __FILE__, __LINE__);

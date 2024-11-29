@@ -3,38 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:30:04 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 22:02:26 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/29 09:47:43 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
-
-int	check_door_x_pos(t_data *data, double old_pos, double new_pos)
-{
-	data->door_index = ft_get_door_index(data, new_pos / CUBE_TILE, old_pos);
-	if (data->door_index == -1)
-		ft_free_all("Door_index Fail \n", data, 1);
-	if (!data->door[data->door_index].is_open)
-		return (0);
-	else
-		data->x_player = new_pos;
-	return (1);
-}
-
-int	check_door_y_pos(t_data *data, double old_pos, double new_pos)
-{
-	data->door_index = ft_get_door_index(data, old_pos, new_pos / CUBE_TILE);
-	if (data->door_index == -1)
-		ft_free_all("Door_index Fail \n", data, 1);
-	if (!data->door[data->door_index].is_open)
-		return (0);
-	else
-		data->y_player = new_pos;
-	return (1);
-}
 
 int	ft_is_player_inside_wall(t_data *data)
 {
@@ -51,12 +27,6 @@ int	ft_is_player_inside_wall(t_data *data)
 		data->x_player = new_x;
 	if (data->map.map[(int)new_y / CUBE_TILE][x] == '0')
 		data->y_player = new_y;
-	if (data->map.map[y][(int)new_x / CUBE_TILE] == 'D')
-		if (!check_door_x_pos(data, y, new_x))
-			return (0);
-	if (data->map.map[(int)new_y / CUBE_TILE][x] == 'D')
-		if (!check_door_y_pos(data, x, new_y))
-			return (0);
 	return (1);
 }
 

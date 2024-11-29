@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:29:41 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 20:32:47 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/29 09:47:24 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ void	ft_free_all(char *msg, t_data *data, int exit_status)
 	if (data)
 	{
 		free_all(data);
-		if (data->door)
-			free(data->door);
 		if (data->win_ptr)
 			mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 		if (data->mlx_ptr)

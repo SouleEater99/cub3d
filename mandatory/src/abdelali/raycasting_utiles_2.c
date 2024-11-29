@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_utiles_2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 21:59:28 by heisenberg        #+#    #+#             */
-/*   Updated: 2024/11/28 21:59:41 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/29 09:47:59 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,6 @@ int	ft_is_a_wall(t_data *data, int x, int y)
 	{
 		if (data->map.map[y][x] == '1')
 			return (1);
-		else if (data->map.map[y][x] == 'D')
-		{
-			data->door_index = ft_get_door_index(data, x, y);
-			if (data->door_index == -1)
-				ft_free_all("Door_index Fail \n", data, 1);
-			if (!data->door[data->door_index].is_open)
-				return (1);
-			else if (data->flag == 1 && data->door[data->door_index].is_open)
-				return (1);
-		}
 	}
 	return (0);
 }

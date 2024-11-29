@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:29:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 19:45:23 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/29 09:58:43 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,6 @@ double	get_player_dir(int16_t player_dir)
 	return (-1);
 }
 
-void	init_minimap(t_data *data)
-{
-	data->player_x = data->x_player / (CUBE_TILE + (CUBE_TILE / 2));
-	data->player_y = data->y_player / (CUBE_TILE + (CUBE_TILE / 2));
-	data->scale = SCALE;
-	data->player_radius = PLAYER_RADIUS;
-	data->minimap_radius = MINIMAP_RADIUS;
-	data->minimap_x_center = MINIMAP_MID_X;
-	data->minimap_y_center = MINIMAP_MID_Y;
-	data->player.frames_num = 22;
-	data->player.frames_path = "./textures/sprites/gun_sprite_0/";
-	init_player_sprites(data, data->player.frames_path,
-		data->player.frames_num);
-}
-
 int	init_data(t_data *data, int ac, char **av)
 {
 	init_mlx(data);
@@ -56,7 +41,8 @@ int	init_data(t_data *data, int ac, char **av)
 	data->move_speed = MOVE_SPEED;
 	data->num_rays = WIDTH / WALL_STRIP;
 	data->plan_distanced = (WIDTH / 2) / tan(FOV / 2);
-	init_minimap(data);
+	data->player_x = data->x_player / (CUBE_TILE + (CUBE_TILE / 2));
+	data->player_y = data->y_player / (CUBE_TILE + (CUBE_TILE / 2));
 	return (0);
 }
 

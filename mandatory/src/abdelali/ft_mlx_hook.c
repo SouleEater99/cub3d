@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_mlx_hook.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:29:50 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 20:34:14 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/29 09:59:43 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,5 @@ int	ft_loop_hook(void *param)
 	data = (t_data *)param;
 	ft_update_data(data);
 	ft_update_image(data);
-	mouse_hooks(data);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utiles_3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:13:42 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 19:37:40 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/29 09:46:15 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,48 +57,4 @@ bool	parse_metadata(t_data *data, char **map_lines, int map_heigh,
 	}
 	return (data->textures_found == NUM_TEXTURES
 		&& data->colors_found == NUM_COLORS);
-}
-
-int	get_doors_num(t_map *map)
-{
-	int	x;
-	int	y;
-	int	doors_num;
-
-	x = -1;
-	y = -1;
-	doors_num = 0;
-	if (!map || !map->map || !map->map_line_len)
-		return (-1);
-	while (++y < map->map_height)
-	{
-		x = -1;
-		while (++x < map->map_line_len[y])
-		{
-			if (map->map[y][x] == DOOR_SYMBOL)
-				doors_num++;
-		}
-	}
-	return (doors_num);
-}
-
-void	init_door(t_door *door, int index, int x_pos, int y_pos)
-{
-	door[index].is_open = 0;
-	door[index].x = x_pos;
-	door[index].y = y_pos;
-}
-
-t_door	*allocate_doors(t_data *data)
-{
-	data->n_door = get_doors_num(&data->map);
-	if (data->n_door != -1)
-	{
-		data->door = malloc(sizeof(t_door) * data->n_door);
-		if (!data->door)
-			ft_free_all("Error: can not allocate memory for doors!\n", data,
-				EXIT_FAILURE);
-		ft_memset(data->door, 0, sizeof(t_door) * data->n_door);
-	}
-	return (data->door);
 }

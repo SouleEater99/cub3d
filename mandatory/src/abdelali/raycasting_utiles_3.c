@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_utiles_3.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 22:00:27 by heisenberg        #+#    #+#             */
-/*   Updated: 2024/11/28 22:03:47 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/29 10:03:04 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_write_wall(t_data *data, int i)
 	while (j < data->end)
 	{
 		ft_get_texture_color(data, j);
-		data->color = shade_walls(data->color, (data->distance / CUBE_TILE));
+		// data->color = shade_walls(data->color, (data->distance / CUBE_TILE));
 		my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++,
 			data->color);
 	}
@@ -99,5 +99,4 @@ void	ft_cast_all_rays(t_data *data)
 		angle = angle + ((double)FOV / (double)data->num_rays);
 		i++;
 	}
-	render_sprites(data);
 }
