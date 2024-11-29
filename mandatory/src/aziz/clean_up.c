@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_up.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:48:00 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 20:03:24 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/29 09:31:39 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	clean_up(t_data *data)
 {
 	if (data)
 	{
-		// if (data->textures[0])
 		destroy_images(data->mlx_ptr, data->textures, NUM_TEXTURES);
 		if (data->map.map_line_len)
 			free(data->map.map_line_len);

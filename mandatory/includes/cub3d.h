@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/28 20:26:15 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/29 09:26:10 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,13 @@
 # define SCROLL_DOWN 5
 
 # define MOUSE_SENSITIVITY 0.01
-# define FRAME_DELAY 2
+# define FRAME_DELAY 5
 
-// # define ROT_SPEED          0.02
-// # define MOVE_SPEED         10
+# define ROT_SPEED          0.02
+# define MOVE_SPEED         10
 
-# define ROT_SPEED 0.1
-# define MOVE_SPEED 30
+// # define ROT_SPEED 0.1
+// # define MOVE_SPEED 30
 
 // ========================= //
 
@@ -255,6 +255,9 @@ typedef struct s_data
 
 	int				textures_found;
 	int				colors_found;
+
+	double	ystep;
+	double	xstep;
 	// int         doors_num;
 }					t_data;
 

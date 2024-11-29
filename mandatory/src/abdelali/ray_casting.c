@@ -3,117 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:30:15 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 22:01:28 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/11/29 09:30:28 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-void	ft_get_virt_hit(t_data *data, double angle, double *x, double *y)
+void	calc_virt_dist(t_data *data, double angle, double virt_hit_x,
+		double VirtHitY)
 {
-	double	ystep;
-	double	xstep;
-	int		x_pos;
-	int		y_pos;
-
-	if (data->is_face_right)
-		*x = (long)(data->x_player / CUBE_TILE) * CUBE_TILE + CUBE_TILE;
-	else
-		*x = (long)(data->x_player / CUBE_TILE) * CUBE_TILE;
-	*y = ((*x - data->x_player) * tan(angle)) + data->y_player;
-	xstep = CUBE_TILE;
-	if (!data->is_face_right)
-		xstep *= -1;
-	ystep = xstep * tan(angle);
-	if (!data->is_face_down && ystep > 0)
-		ystep *= -1;
-	if (!data->is_face_right)
-		*x -= 1;
-	x_pos = (int)(*x / CUBE_TILE);
-	y_pos = (int)(*y / CUBE_TILE);
-	while (y_pos > 0 && y_pos < data->map.map_height && x_pos > 0
-		&& x_pos < data->map.map_line_len[y_pos])
-	{
-		if (ft_is_a_wall(data, x_pos, y_pos))
-			break ;
-		*y += ystep;
-		*x += xstep;
-		x_pos = (int)(*x / CUBE_TILE);
-		y_pos = (int)(*y / CUBE_TILE);
-	}
+	data->distance = ft_calc_distance(data, virt_hit_x, VirtHitY);
+	data->correct_distance = data->distance * cos(angle - data->player_angle);
+	data->wall_slice_high = ((double)CUBE_TILE / data->correct_distance)
+		* (double)data->plan_distanced;
+	data->wall_hit_x = virt_hit_x;
+	data->wall_hit_y = VirtHitY;
+	data->is_hit_virt = 1;
 }
 
-void	ft_get_horz_hit(t_data *data, double angle, double *x, double *y)
+void	calc_horiz_dist(t_data *data, double angle, double HorzHitX,
+		double HorzHitY)
 {
-	double	ystep;
-	double	xstep;
-	int		x_pos;
-	int		y_pos;
-
-	if (data->is_face_down)
-		*y = (long)(data->y_player / CUBE_TILE) * CUBE_TILE + CUBE_TILE;
-	else
-		*y = (long)(data->y_player / CUBE_TILE) * CUBE_TILE;
-	*x = ((*y - data->y_player) / tan(angle)) + data->x_player;
-	ystep = CUBE_TILE;
-	if (!data->is_face_down)
-		ystep *= -1;
-	xstep = ystep / tan(angle);
-	if (!data->is_face_right && xstep > 0)
-		xstep *= -1;
-	if (!data->is_face_down)
-		*y -= 1;
-	x_pos = (int)(*x / CUBE_TILE);
-	y_pos = (int)(*y / CUBE_TILE);
-	while (y_pos > 0 && y_pos < data->map.map_height && x_pos > 0
-		&& x_pos < data->map.map_line_len[y_pos])
-	{
-		if (ft_is_a_wall(data, x_pos, y_pos))
-			break ;
-		*y += ystep;
-		*x += xstep;
-		x_pos = (int)(*x / CUBE_TILE);
-		y_pos = (int)(*y / CUBE_TILE);
-	}
+	data->distance = ft_calc_distance(data, HorzHitX, HorzHitY);
+	data->correct_distance = data->distance * cos(angle - data->player_angle);
+	data->wall_slice_high = ((double)CUBE_TILE / data->correct_distance)
+		* (double)data->plan_distanced;
+	data->wall_hit_x = HorzHitX;
+	data->wall_hit_y = HorzHitY;
+	data->is_hit_virt = 0;
 }
 
 void	ft_get_wall_hit(t_data *data, double angle)
 {
-	double	VirtHitX;
-	double	VirtHitY;
-	double	HorzHitX;
-	double	HorzHitY;
+	double	virt_hit_x;
+	double	virt_hit_y;
+	double	horz_hit_x;
+	double	horz_hit_y;
 
-	HorzHitX = 0;
-	HorzHitY = 0;
-	VirtHitX = 0;
-	VirtHitY = 0;
-	ft_get_virt_hit(data, angle, &VirtHitX, &VirtHitY);
-	ft_get_horz_hit(data, angle, &HorzHitX, &HorzHitY);
-	if (ft_calc_distance(data, HorzHitX, HorzHitY) < ft_calc_distance(data,
-			VirtHitX, VirtHitY))
-	{
-		data->distance = ft_calc_distance(data, HorzHitX, HorzHitY);
-		data->correct_distance = data->distance * cos(angle
-				- data->player_angle);
-		data->wall_slice_high = ((double)CUBE_TILE / data->correct_distance)
-			* (double)data->plan_distanced;
-		data->wall_hit_x = HorzHitX;
-		data->wall_hit_y = HorzHitY;
-		data->is_hit_virt = 0;
-	}
+	virt_hit_x = 0;
+	virt_hit_y = 0;
+	horz_hit_x = 0;
+	horz_hit_y = 0;
+	ft_get_virt_hit(data, angle, &virt_hit_x, &virt_hit_y);
+	ft_get_horz_hit(data, angle, &horz_hit_x, &horz_hit_y);
+	if (ft_calc_distance(data, horz_hit_x, horz_hit_y) < ft_calc_distance(data,
+			virt_hit_x, virt_hit_y))
+		calc_horiz_dist(data, angle, horz_hit_x, horz_hit_y);
 	else
-	{
-		data->distance = ft_calc_distance(data, VirtHitX, VirtHitY);
-		data->correct_distance = data->distance * cos(angle
-				- data->player_angle);
-		data->wall_slice_high = ((double)CUBE_TILE / data->correct_distance)
-			* (double)data->plan_distanced;
-		data->wall_hit_x = VirtHitX;
-		data->wall_hit_y = VirtHitY;
-		data->is_hit_virt = 1;
-	}
+		calc_virt_dist(data, angle, virt_hit_x, virt_hit_y);
 }
