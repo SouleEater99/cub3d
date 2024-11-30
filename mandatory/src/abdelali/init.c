@@ -27,9 +27,18 @@ double	get_player_dir(int16_t player_dir)
 
 int	init_data(t_data *data, int ac, char **av)
 {
-	init_mlx(data);
+	int	i;
+
 	if (!parse_map(data, ac, av))
-		exit(10);
+		ft_free_all(NULL, data, 1);
+	init_mlx(data);
+	i = -1;
+	while (++i < data->textures_found)
+	{
+		data->textures[i] = load_texture(data->mlx_ptr, data->textures_path[i]);
+		if (!data->textures[i])
+			ft_free_all(NULL, data, 1);
+	}
 	data->row = data->map.map_width;
 	data->col = data->map.map_height;
 	data->img_width = SCREEN_WIDTH;
@@ -41,8 +50,6 @@ int	init_data(t_data *data, int ac, char **av)
 	data->move_speed = MOVE_SPEED;
 	data->num_rays = WIDTH / WALL_STRIP;
 	data->plan_distanced = (WIDTH / 2) / tan(FOV / 2);
-	data->player_x = data->x_player / (CUBE_TILE + (CUBE_TILE / 2));
-	data->player_y = data->y_player / (CUBE_TILE + (CUBE_TILE / 2));
 	return (0);
 }
 

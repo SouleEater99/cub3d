@@ -60,12 +60,6 @@
 # define NUM_TEXTURES 4
 # define NUM_COLORS 2
 
-# define PLAYER_RADIUS 6
-# define MINIMAP_RADIUS 80
-# define TILE_SIZE 64
-
-# define SCALE 0.25
-
 # define SCREEN_WIDTH WIDTH
 # define SCREEN_HEIGHT HIGH
 
@@ -175,12 +169,6 @@ typedef struct s_data
 	// ================== //
 
 	t_map			map;
-	double			scale;
-	int				minimap_radius;
-	int				minimap_x_center;
-	int				minimap_y_center;
-	int				clicks;
-	int				player_radius;
 	double			player_x;
 	double			player_y;
 	int16_t			player_dir;
@@ -195,21 +183,9 @@ typedef struct s_data
 	char			*dr_texture_path;
 
 	t_image			*image;
-
 	t_image			*textures[NUM_TEXTURES];
+	char			*textures_path[NUM_TEXTURES];
 	t_player		player;
-	int				shoot;
-	int				frames_num;
-	int				frame_counter;
-	int				frame;
-	// t_image		*img;
-
-	int				mouse_x;
-	int				mouse_y;
-	double			sensitivity;
-	int				sprite_pixel;
-
-	// t_minimap   minimap;
 
 	double			dist_x;
 	double			dist_y;

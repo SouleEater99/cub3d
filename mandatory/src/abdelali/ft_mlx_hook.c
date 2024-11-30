@@ -36,8 +36,6 @@ int	ft_key_press(int key, void *param)
 	}
 	else if (key == XK_Escape)
 		ft_free_all(NULL, data, 0);
-	else if (key == CTRL_KEY)
-		data->shoot = 1;
 	return (0);
 }
 

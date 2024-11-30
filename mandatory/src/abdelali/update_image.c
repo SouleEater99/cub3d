@@ -48,8 +48,7 @@ void	ft_update_data(t_data *data)
 void	ft_update_image(t_data *data)
 {
 	ft_create_pojection_img(data);
-	if (!(data->clicks % 2))
-		ft_cast_all_rays(data);
+	ft_cast_all_rays(data);
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
 		data->projection_img.img_ptr, 0, 0);
 	mlx_destroy_image(data->mlx_ptr, data->projection_img.img_ptr);

@@ -12,32 +12,17 @@
 
 #include <cub3d.h>
 
-/// @brief
-/// @param texture_path
-/// @return
-char	*parse_texture(char *texture_path)
+int	get_texture_pos(char *texture_dir)
 {
-	if (!check_extension(texture_path, ".xpm"))
-		return (NULL);
-	return (texture_path);
-}
-
-char	**get_texture_ptr(t_data *data, char *texture_dir)
-{
-	char	**texture_ptr;
-
-	texture_ptr = NULL;
 	if (!ft_strcmp("NO", texture_dir))
-		texture_ptr = &data->no_texture_path;
+		return (0);
 	else if (!ft_strcmp("SO", texture_dir))
-		texture_ptr = &data->so_texture_path;
+		return (1);
 	else if (!ft_strcmp("WE", texture_dir))
-		texture_ptr = &data->we_texture_path;
+		return (2);
 	else if (!ft_strcmp("EA", texture_dir))
-		texture_ptr = &data->ea_texture_path;
-	else if (!ft_strcmp("DR", texture_dir))
-		texture_ptr = &data->dr_texture_path;
-	return (texture_ptr);
+		return (3);
+	return (-1);
 }
 
 t_image	*load_texture(void *mlx, char *filename)
@@ -63,19 +48,16 @@ t_image	*load_texture(void *mlx, char *filename)
 
 void	validate_texture(t_data *data, char **parts, int *textures_found)
 {
-	char	**texture_ptr;
+	int	texture_pos;
 
-	texture_ptr = NULL;
-	texture_ptr = get_texture_ptr(data, parts[0]);
-	if (texture_ptr)
+	texture_pos = get_texture_pos(parts[0]);
+	if (texture_pos != -1)
 	{
-		*texture_ptr = parse_texture(parts[1]);
-		if (!*texture_ptr)
+		if (!check_extension(parts[1], ".xpm"))
 			free_parse_allocated(data, parts);
-		data->textures[*textures_found] = load_texture(data->mlx_ptr,
-				*texture_ptr);
-		if (!data->textures[*textures_found])
-			free_parse_allocated(data, parts);
+		data->textures_path[texture_pos] = ft_strdup(parts[1]);
 		(*textures_found)++;
 	}
+	else
+		ft_free_all(NULL, data, 1);
 }

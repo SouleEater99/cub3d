@@ -33,7 +33,6 @@ void	ft_write_floor(t_data *data, int i, int color)
 	{
 		distance = (j - HIGH / 2) / (double)(HIGH / 2);
 		distance = 1 / distance;
-		// shaded_color = color;
 		shaded_color = shade_walls(color, distance);
 		my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++,
 			shaded_color);
@@ -51,7 +50,6 @@ void	ft_write_ceiling(t_data *data, int i, int color)
 	{
 		distance = (HIGH / 2 - j) / (double)(HIGH / 2);
 		distance = 1 / (distance);
-		// shaded_color = color;
 		shaded_color = shade_walls(color, distance);
 		my_mlx_pixel_put(&data->projection_img, i * WALL_STRIP, j++,
 			shaded_color);

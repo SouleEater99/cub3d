@@ -42,9 +42,18 @@ void	init_minimap(t_data *data)
 
 int	init_data(t_data *data, int ac, char **av)
 {
-	init_mlx(data);
+	int	i;
+
 	if (!parse_map(data, ac, av))
-		exit(10);
+		ft_free_all(NULL, data, 1);
+	init_mlx(data);
+	i = -1;
+	while (++i < data->textures_found)
+	{
+		data->textures[i] = load_texture(data->mlx_ptr, data->textures_path[i]);
+		if (!data->textures[i])
+			ft_free_all(NULL, data, 1);
+	}
 	data->row = data->map.map_width;
 	data->col = data->map.map_height;
 	data->img_width = SCREEN_WIDTH;

@@ -21,7 +21,7 @@ void	check_map_lr(t_data *data, int height, int i, int j)
 		ft_panic(i + data->map.map_start + 1, j + 1, data->map.map[i], data);
 	}
 	if ((i + 1 < height && data->map.map[i][j] == '0'
-			&& j < data->map.map_line_len[i + 1] && data->map.map[i
+		&& j < data->map.map_line_len[i + 1] && data->map.map[i
 			+ 1][j] == ' ') || (data->map.map[i][j] == ' ' && i + 1 < height
 			&& data->map.map[i + 1][j] == '0'))
 	{

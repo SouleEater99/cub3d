@@ -229,6 +229,7 @@ typedef struct s_data
 
 	t_image			*image;
 
+	char			*textures_path[NUM_TEXTURES];
 	t_image			*textures[NUM_TEXTURES];
 	t_player		player;
 	int				shoot;
