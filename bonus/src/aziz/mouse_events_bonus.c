@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3d.h>
+#include <cub3d_bonus.h>
 
 void	mouse_hooks(t_data *data)
 {
@@ -54,8 +54,8 @@ void	big_minimap(t_data *data)
 	data->move_speed = MOVE_SPEED * 1.5;
 	data->player_radius = PLAYER_RADIUS;
 	data->minimap_radius = MINIMAP_RADIUS * 3.8;
-	data->minimap_x_center = MAP_MID_X;
-	data->minimap_y_center = MAP_MID_Y;
+	data->minimap_x_center = SCREEN_WIDTH / 2;
+	data->minimap_y_center = SCREEN_HEIGHT / 2;
 }
 
 void	small_minimap(t_data *data)
@@ -65,8 +65,8 @@ void	small_minimap(t_data *data)
 	data->move_speed = MOVE_SPEED;
 	data->player_radius = PLAYER_RADIUS;
 	data->minimap_radius = MINIMAP_RADIUS;
-	data->minimap_x_center = MINIMAP_MID_X;
-	data->minimap_y_center = MINIMAP_MID_Y;
+	data->minimap_x_center = SCREEN_WIDTH / 2;
+	data->minimap_y_center = SCREEN_HEIGHT / 2;
 }
 
 int	mouse_events(int button, int x, int y, t_data *data)

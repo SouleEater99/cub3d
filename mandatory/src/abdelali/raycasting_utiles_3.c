@@ -84,7 +84,7 @@ void	ft_cast_all_rays(t_data *data)
 	double	angle;
 
 	i = 0;
-	angle = data->player_angle - (FOV / 2);
+	angle = data->player_angle - (data->fov / 2);
 	while (i < data->num_rays)
 	{
 		if (angle > 2 * PI)
@@ -96,7 +96,7 @@ void	ft_cast_all_rays(t_data *data)
 		data->flag = 0;
 		ft_get_wall_hit(data, angle);
 		ft_write_projection(data, i);
-		angle = angle + ((double)FOV / (double)data->num_rays);
+		angle = angle + ((double)data->fov / (double)data->num_rays);
 		i++;
 	}
 }

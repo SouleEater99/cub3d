@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3d.h>
+#include <cub3d_bonus.h>
 
 int	check_door_x_pos(t_data *data, double old_pos, double new_pos)
 {

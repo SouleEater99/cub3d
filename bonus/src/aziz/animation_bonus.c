@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3d.h>
+#include <cub3d_bonus.h>
 
 /// @brief Handle transparency (assuming 0xFF000000 is fully transparent)
 /// @param data

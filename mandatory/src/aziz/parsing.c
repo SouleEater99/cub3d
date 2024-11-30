@@ -12,27 +12,46 @@
 
 #include <cub3d.h>
 
+int	get_max_width(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	data->map.map_width = 0;
+	while (++i < data->map.map_height)
+	{
+		data->map.map_line_len[i] = ft_strlen(data->map.map[i]);
+		while (data->map.map_line_len[i] > 0
+			&& ft_isspace(data->map.map[i][data->map.map_line_len[i] - 1]))
+		{
+			data->map.map_line_len[i] -= 1;
+			data->map.map_width = fmax(data->map.map_width,
+					data->map.map_line_len[i]);
+		}
+	}
+	return (data->map.map_width);
+}
+
 void	init_map(t_data *data, char **lines, int current_line, int height)
 {
 	int	i;
 
 	while (current_line < height && is_empty_line(lines[current_line]))
 		current_line++;
+	i = height;
+	while (--i - current_line > 0 && is_empty_line(lines[i]))
+		;
 	data->map.map_start = current_line;
-	data->map.map_height = height - current_line;
+	data->map.map_height = i - current_line + 1;
 	data->map.map = copy_array(&lines[current_line], data->map.map_height);
-	data->map.map_width = ft_strlen(data->map.map[0]);
 	data->map.map_line_len = malloc(sizeof(int) * data->map.map_height);
 	if (!data->map.map_line_len)
 		ft_free_all(NULL, data, 1);
-	i = -1;
-	while (++i < data->map.map_height)
-	{
-		data->map.map_line_len[i] = ft_strlen(data->map.map[i]);
-		while (data->map.map_line_len[i] > 0
-			&& ft_isspace(data->map.map[i][data->map.map_line_len[i] - 1]))
-			data->map.map_line_len[i] -= 1;
-	}
+	data->map.map_width = get_max_width(data);
+	if (data->map.map_height >= MAX_HEIGHT || data->map.map_width >= MAX_WIDTH)
+		ft_free_all("Error: map too big\n", data, 1);
+	else if (data->map.map_height < 2 || data->map.map_width < 2)
+		ft_free_all("Error: map too small\n", data, 1);
 }
 
 int	validate_map_cont(t_data *data, char **lines, int height)

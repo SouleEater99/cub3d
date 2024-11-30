@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3d.h>
+#include <cub3d_bonus.h>
 
 int	get_texture_pos(char *texture_dir)
 {
@@ -61,5 +61,5 @@ void	validate_texture(t_data *data, char **parts, int *textures_found)
 		(*textures_found)++;
 	}
 	else
-		ft_free_all(NULL, data, 1);
+		ft_free_all("Error: need some textures\n", data, 1);
 }

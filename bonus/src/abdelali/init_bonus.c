@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3d.h>
+#include <cub3d_bonus.h>
 
 double	get_player_dir(int16_t player_dir)
 {
@@ -27,13 +27,15 @@ double	get_player_dir(int16_t player_dir)
 
 void	init_minimap(t_data *data)
 {
+	data->fov = 66 * (PI / 180);
+	data->plan_distanced = (WIDTH / 2) / tan(data->fov / 2);
 	data->player_x = data->x_player / (CUBE_TILE + (CUBE_TILE / 2));
 	data->player_y = data->y_player / (CUBE_TILE + (CUBE_TILE / 2));
 	data->scale = SCALE;
 	data->player_radius = PLAYER_RADIUS;
 	data->minimap_radius = MINIMAP_RADIUS;
-	data->minimap_x_center = MINIMAP_MID_X;
-	data->minimap_y_center = MINIMAP_MID_Y;
+	data->minimap_x_center = SCREEN_WIDTH - MINIMAP_RADIUS - 20;
+	data->minimap_y_center = MINIMAP_RADIUS + 20;
 	data->player.frames_num = 22;
 	data->player.frames_path = "./textures/sprites/gun_sprite_0/";
 	init_player_sprites(data, data->player.frames_path,
@@ -64,7 +66,6 @@ int	init_data(t_data *data, int ac, char **av)
 	data->turn_speed = ROT_SPEED;
 	data->move_speed = MOVE_SPEED;
 	data->num_rays = WIDTH / WALL_STRIP;
-	data->plan_distanced = (WIDTH / 2) / tan(FOV / 2);
 	init_minimap(data);
 	return (0);
 }

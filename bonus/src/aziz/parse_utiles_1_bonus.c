@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3d.h>
+#include <cub3d_bonus.h>
 
 /// @brief claculate the lenght of an array of strings.
 /// @param array the array to calculate its lenght.

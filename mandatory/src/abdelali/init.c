@@ -49,7 +49,8 @@ int	init_data(t_data *data, int ac, char **av)
 	data->turn_speed = ROT_SPEED;
 	data->move_speed = MOVE_SPEED;
 	data->num_rays = WIDTH / WALL_STRIP;
-	data->plan_distanced = (WIDTH / 2) / tan(FOV / 2);
+	data->fov = 66 * (PI / 180);
+	data->plan_distanced = (WIDTH / 2) / tan(data->fov / 2);
 	return (0);
 }
 

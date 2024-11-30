@@ -28,13 +28,15 @@
 # define WIDTH 800
 # define HIGH 600
 
+# define MAX_HEIGHT 250
+# define MAX_WIDTH 250
+
 # define CUBE_TILE 256
 # define TEXTURE_TILE 256
 
 # define PLAYER_TILE 10
-# define FOV (66 * (PI / 180))
 # define WALL_STRIP 1
-# define WALL_DISTANCE (1.5 * CUBE_TILE)
+# define WALL_DISTANCE 384
 # define BLACK 0x00000000
 # define WHITE 0x00FFFFFF
 # define RED 0x00FF0000
@@ -47,8 +49,6 @@
 # ifndef PI
 #  define PI 3.14159265358979323846
 # endif
-
-// ========================= //
 
 # define BRED "\e[1;31m"
 # define BGRN "\e[1;32m"
@@ -63,8 +63,8 @@
 # define SCREEN_WIDTH WIDTH
 # define SCREEN_HEIGHT HIGH
 
-# define ROT_SPEED          0.02
-# define MOVE_SPEED         10
+# define ROT_SPEED 0.02
+# define MOVE_SPEED 10
 
 typedef struct s_minimap
 {
@@ -91,8 +91,6 @@ typedef struct s_map
 	int				floor_color;
 	int				ceiling_color;
 }					t_map;
-
-// ======================== //
 
 typedef struct s_image
 {
@@ -165,8 +163,6 @@ typedef struct s_data
 	int				start_player_x;
 	int				start_player_y;
 	int				player_offset;
-
-	// ================== //
 
 	t_map			map;
 	double			player_x;

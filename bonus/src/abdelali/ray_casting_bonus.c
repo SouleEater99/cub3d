@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <cub3d.h>
+#include <cub3d_bonus.h>
 
 void	calc_virt_dist(t_data *data, double angle, double virt_hit_x,
 		double VirtHitY)

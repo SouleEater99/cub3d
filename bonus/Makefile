@@ -28,7 +28,7 @@ else
     MLXLFLAGS := ${MINILIBX_LINUX} -lXext -lX11 -lm
 endif
 
-NAME := cub3d
+NAME := cub3d_bonus
 
 SRC_DIR := src
 BUILD_DIR := build

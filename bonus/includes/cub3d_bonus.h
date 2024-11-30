@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#ifndef CUB3D_BONUS_H
+# define CUB3D_BONUS_H
 
 # include <fcntl.h>
 # include <keycodes.h>
@@ -28,13 +28,15 @@
 # define WIDTH 800
 # define HIGH 600
 
+# define MAX_HEIGHT 250
+# define MAX_WIDTH 250
+
 # define CUBE_TILE 256
 # define TEXTURE_TILE 256
 
 # define PLAYER_TILE 10
-# define FOV (66 * (PI / 180))
 # define WALL_STRIP 1
-# define WALL_DISTANCE (1.5 * CUBE_TILE)
+# define WALL_DISTANCE 300
 # define BLACK 0x00000000
 # define WHITE 0x00FFFFFF
 # define RED 0x00FF0000
@@ -47,8 +49,6 @@
 # ifndef PI
 #  define PI 3.14159265358979323846
 # endif
-
-// ========================= //
 
 # define BRED "\e[1;31m"
 # define BGRN "\e[1;32m"
@@ -72,12 +72,6 @@
 # define SCREEN_WIDTH WIDTH
 # define SCREEN_HEIGHT HIGH
 
-# define MAP_MID_X (SCREEN_WIDTH / 2)
-# define MAP_MID_Y (SCREEN_HEIGHT / 2)
-
-# define MINIMAP_MID_X (SCREEN_WIDTH - MINIMAP_RADIUS - 20)
-# define MINIMAP_MID_Y (MINIMAP_RADIUS + 20)
-
 # define LEFT_CLICK 1
 # define MIDDLE_CLICK 2
 # define RIGHT_CLICK 3
@@ -87,13 +81,8 @@
 # define MOUSE_SENSITIVITY 0.01
 # define FRAME_DELAY 5
 
-# define ROT_SPEED          0.02
-# define MOVE_SPEED         10
-
-// # define ROT_SPEED 0.1
-// # define MOVE_SPEED 30
-
-// ========================= //
+# define ROT_SPEED 0.02
+# define MOVE_SPEED 10
 
 typedef struct s_minimap
 {
@@ -120,8 +109,6 @@ typedef struct s_map
 	int				floor_color;
 	int				ceiling_color;
 }					t_map;
-
-// ======================== //
 
 typedef struct s_door
 {
@@ -205,8 +192,6 @@ typedef struct s_data
 	int				start_player_y;
 	int				player_offset;
 
-	// ================== //
-
 	t_map			map;
 	double			scale;
 	int				minimap_radius;
@@ -236,14 +221,11 @@ typedef struct s_data
 	int				frames_num;
 	int				frame_counter;
 	int				frame;
-	// t_image		*img;
 
 	int				mouse_x;
 	int				mouse_y;
 	double			sensitivity;
 	int				sprite_pixel;
-
-	// t_minimap   minimap;
 
 	double			dist_x;
 	double			dist_y;
@@ -257,8 +239,8 @@ typedef struct s_data
 	int				textures_found;
 	int				colors_found;
 
-	double	ystep;
-	double	xstep;
+	double			ystep;
+	double			xstep;
 	// int         doors_num;
 }					t_data;
 
