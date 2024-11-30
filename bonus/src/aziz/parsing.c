@@ -16,6 +16,8 @@ void	init_map(t_data *data, char **lines, int current_line, int height)
 {
 	int	i;
 
+	while (current_line < height && is_empty_line(lines[current_line]))
+		current_line++;
 	data->map.map_start = current_line;
 	data->map.map_height = height - current_line;
 	data->map.map = copy_array(&lines[current_line], data->map.map_height);
@@ -27,7 +29,8 @@ void	init_map(t_data *data, char **lines, int current_line, int height)
 	while (++i < data->map.map_height)
 	{
 		data->map.map_line_len[i] = ft_strlen(data->map.map[i]);
-		if (i + 1 < data->map.map_height)
+		while (data->map.map_line_len[i] > 0
+			&& ft_isspace(data->map.map[i][data->map.map_line_len[i] - 1]))
 			data->map.map_line_len[i] -= 1;
 	}
 }

@@ -62,26 +62,26 @@ void	destroy_images(void *mlx_ptr, t_image **images, int images_num)
 	free(images);
 }
 
-void	clean_up(t_data *data)
-{
-	if (data)
-	{
-		destroy_images(data->mlx_ptr, data->textures, NUM_TEXTURES);
-		if (data->map.map_line_len)
-			free(data->map.map_line_len);
-		if (data->map.map)
-			free_array(data->map.map);
-		if (data->player.frames)
-			destroy_images(data->mlx_ptr, &data->player.frames,
-				data->player.frames_num);
-		if (data->door)
-			free(data->door);
-		if (data->win_ptr)
-			mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-		if (data->mlx_ptr)
-		{
-			mlx_destroy_display(data->mlx_ptr);
-			free(data->mlx_ptr);
-		}
-	}
-}
+// void	clean_up(t_data *data)
+// {
+// 	if (data)
+// 	{
+// 		destroy_images(data->mlx_ptr, data->textures, NUM_TEXTURES);
+// 		if (data->map.map_line_len)
+// 			free(data->map.map_line_len);
+// 		if (data->map.map)
+// 			free_array(data->map.map);
+// 		if (data->player.frames)
+// 			destroy_images(data->mlx_ptr, &data->player.frames,
+// 				data->player.frames_num);
+// 		if (data->door)
+// 			free(data->door);
+// 		if (data->win_ptr)
+// 			mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+// 		if (data->mlx_ptr)
+// 		{
+// 			mlx_destroy_display(data->mlx_ptr);
+// 			free(data->mlx_ptr);
+// 		}
+// 	}
+// }

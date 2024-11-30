@@ -57,6 +57,5 @@ void	print_error(char *error_str, char *file, int line)
 void	ft_panic(int line_num, int col_num, const char *line, void *data)
 {
 	printf("%d:%d: %s", line_num, col_num, line);
-	clean_up(data);
-	exit(EXIT_FAILURE);
+	ft_free_all(NULL, data, 1);
 }

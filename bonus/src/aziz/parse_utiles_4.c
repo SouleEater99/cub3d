@@ -112,7 +112,7 @@ int	check_first_last(t_data *data, char **map, int map_height)
 	if (map[line][i] != '\n')
 	{
 		print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-		printf(BRED "%d: %s\n" COLOR_RESET, i, data->map.map[i]);
+		printf(BRED "%d: %s\n" COLOR_RESET, i, data->map.map[line]);
 		ft_panic(i + 1, i + 1, map[0], data);
 	}
 	i = -1;
@@ -122,7 +122,7 @@ int	check_first_last(t_data *data, char **map, int map_height)
 	if (map[line][i] != '\n' && map[line][i] != '\0')
 	{
 		print_error("Error: invalid map border!\n", __FILE__, __LINE__);
-		printf(BRED "%d: %s\n" COLOR_RESET, i, data->map.map[i]);
+		printf(BRED "%d: %s\n" COLOR_RESET, i, data->map.map[line]);
 		ft_panic(line + 1, i + 1, map[line], data);
 	}
 	return (1);

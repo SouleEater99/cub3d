@@ -12,6 +12,25 @@
 
 #include <cub3d.h>
 
+void	print_int(int **arr, int *len, int height)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	j = -1;
+	while (++j < height)
+	{
+		i = -1;
+		while (++i < len[j])
+		{
+			printf("%d", arr[j][i]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
 /// @brief DFS (Depth-First Search) function.
 /// @param map
 /// @param visited
@@ -29,8 +48,8 @@ bool	dfs(t_map *map, int **visited, int x, int y)
 		return (false);
 	if (visited[y][x] || map->map[y][x] == '1')
 		return (true);
-	if (x == 0 || y == 0 || x == map->map_line_len[y] - 1
-		|| y == map->map_height - 1)
+	if (x == 0 || y == 0 || x == map->map_line_len[y] || y == map->map_height
+		- 1)
 		return (false);
 	visited[y][x] = 1;
 	up = dfs(map, visited, x, y - 1);

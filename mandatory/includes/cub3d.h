@@ -281,7 +281,7 @@ int					arr_len(char **array);
 int					ft_isspace(int c);
 void				print_error(char *error_str, char *file, int line);
 void				free_parse_allocated(t_data *data, char **parts);
-void				clean_up(t_data *data);
+// void				clean_up(t_data *data);
 void				ft_panic(int line_num, int col_num, const char *line,
 						void *data);
 void				free_int_array(int **int_array, int arr_len);
