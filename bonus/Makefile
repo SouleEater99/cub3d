@@ -36,7 +36,7 @@ BUILD_DIR := build
 SRCS := $(shell find $(SRC_DIR) -name '*.c')
 OBJS := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
 
-all: $(NAME) clean
+all: $(NAME)
 
 run: all
 	@./$(NAME) ${MAP}
