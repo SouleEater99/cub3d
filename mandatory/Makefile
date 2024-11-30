@@ -12,7 +12,7 @@
 
 CC := cc
 GCCFLAGS := -Wall -Wextra -Werror
-DEBUGFLAGS := -g3  -fsanitize=address
+DEBUGFLAGS := -g3 # -fsanitize=address
 LIBFT := libraries/libft/libft.a
 INCLUDES := -I includes
 MAP ?= maps/map2.cub
@@ -56,9 +56,7 @@ $(NAME): $(OBJS)
 	@echo "Building done"
 
 clean:
-	@echo "Removing object files..."
 	@rm -rf $(OBJS)
-	@echo "Removing object files done"
 
 fclean: clean
 	@echo "Removing program name..."

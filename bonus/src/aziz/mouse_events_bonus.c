@@ -65,8 +65,8 @@ void	small_minimap(t_data *data)
 	data->move_speed = MOVE_SPEED;
 	data->player_radius = PLAYER_RADIUS;
 	data->minimap_radius = MINIMAP_RADIUS;
-	data->minimap_x_center = SCREEN_WIDTH / 2;
-	data->minimap_y_center = SCREEN_HEIGHT / 2;
+	data->minimap_x_center = SCREEN_WIDTH - MINIMAP_RADIUS - 20;
+	data->minimap_y_center = MINIMAP_RADIUS + 20;
 }
 
 int	mouse_events(int button, int x, int y, t_data *data)

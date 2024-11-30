@@ -64,7 +64,7 @@
 # define SCREEN_HEIGHT HIGH
 
 # define ROT_SPEED 0.02
-# define MOVE_SPEED 10
+# define MOVE_SPEED 4
 
 typedef struct s_minimap
 {

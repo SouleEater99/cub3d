@@ -14,6 +14,17 @@
 
 void	ft_free_all(char *msg, t_data *data, int exit_status)
 {
+	int i;
+
+	i = -1;
+	while (++i < data->textures_found)
+	{
+		if (data->textures_path[i])
+			free(data->textures_path[i]);
+		if (data->textures[i] && data->textures[i]->img_ptr)
+			mlx_destroy_image(data->mlx_ptr, data->textures[i]->img_ptr);
+		free(data->textures[i]);
+	}
 	if (data)
 	{
 		if (data->map.map_line_len)
