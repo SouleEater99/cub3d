@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/12/03 17:36:16 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:20:00 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ int	validate_map_cont(t_data *data, char **lines, int height)
 /// @return
 int	parse_map(t_data *data, int ac, char **av)
 {
-	int	height;
+	int		height;
+	// char	**lines;
 
 	if (ac != 2)
 	{

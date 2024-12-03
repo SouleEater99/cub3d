@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 18:22:03 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:21:19 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,15 @@ void	init_map(t_data *data, char **lines, int current_line, int height)
 		ft_free_all(NULL, data, 1);
 	data->map.map_width = get_max_width(data);
 	if (data->map.map_height >= MAX_HEIGHT || data->map.map_width >= MAX_WIDTH)
+	{
+		free_array(lines);
 		ft_free_all("Error: map too big\n", data, 1);
+	}
 	else if (data->map.map_height < 2 || data->map.map_width < 2)
+	{
+		free_array(lines);
 		ft_free_all("Error: map too small\n", data, 1);
+	}
 }
 
 int	validate_map_cont(t_data *data, char **lines, int height)
@@ -81,7 +87,6 @@ int	validate_map_cont(t_data *data, char **lines, int height)
 int	parse_map(t_data *data, int ac, char **av)
 {
 	int		height;
-	char	**lines;
 
 	if (ac != 2)
 	{
@@ -92,10 +97,10 @@ int	parse_map(t_data *data, int ac, char **av)
 	ft_memset(&data->map, 0, sizeof(t_map));
 	if (!check_extension(av[1], ".cub"))
 		return (0);
-	lines = read_map_lines(av[1], &height);
-	if (!lines)
+	data->lines = read_map_lines(av[1], &height);
+	if (!data->lines)
 		return (0);
-	if (!validate_map_cont(data, lines, height))
+	if (!validate_map_cont(data, data->lines, height))
 		return (0);
 	return (1);
 }

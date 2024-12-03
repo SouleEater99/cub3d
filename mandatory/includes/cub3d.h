@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/29 09:58:03 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:10:30 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ typedef struct s_data
 
 	double			ystep;
 	double			xstep;
+	char			**lines;
 }					t_data;
 
 int					init_data(t_data *data, int ac, char **av);
