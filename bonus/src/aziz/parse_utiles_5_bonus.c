@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_utiles_5.c                                   :+:      :+:    :+:   */
+/*   parse_utiles_5_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:22:17 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 19:42:53 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/12/03 17:35:48 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int	validate_map_borders(t_data *data, char **map, int height)
 		ft_free_all(NULL, data, 1);
 	if (!dfs(&data->map, visited, data->player_x, data->player_y))
 	{
+		free_int_array(visited, data->map.map_height);
 		print_error("Error: map is not surrounded by walls!\n", __FILE__,
 			__LINE__);
 		ft_free_all(NULL, data, 1);

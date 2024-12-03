@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:48:00 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/12/03 16:39:59 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:56:42 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	free_array(char **arr)
 	while (arr && arr[++i])
 		free(arr[i]);
 	free(arr);
-	// *arr = NULL;
 }
 
 void	free_parse_allocated(t_data *data, char **parts, char *message)
@@ -58,21 +57,21 @@ void	free_parse_allocated(t_data *data, char **parts, char *message)
 	ft_free_all(message, data, 1);
 }
 
-void	destroy_images(void *mlx_ptr, t_image **images, int images_num)
-{
-	int	i;
+// void	destroy_images(void *mlx_ptr, t_image **images, int images_num)
+// {
+// 	int	i;
 
-	i = -1;
-	while (++i < images_num)
-	{
-		if (images && images[i])
-		{
-			if (images[i]->img_ptr)
-				mlx_destroy_image(mlx_ptr, images[i]->img_ptr);
-		}
-	}
-	free(images);
-}
+// 	i = -1;
+// 	while (++i < images_num)
+// 	{
+// 		if (images && images[i])
+// 		{
+// 			if (images[i]->img_ptr)
+// 				mlx_destroy_image(mlx_ptr, images[i]->img_ptr);
+// 		}
+// 	}
+// 	free(images);
+// }
 
 // void	clean_up(t_data *data)
 // {

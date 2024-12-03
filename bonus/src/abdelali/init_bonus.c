@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:29:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/12/03 16:32:20 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:33:39 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	init_data(t_data *data, int ac, char **av)
 	{
 		data->textures[i] = load_texture(data->mlx_ptr, data->textures_path[i]);
 		if (!data->textures[i])
-			ft_free_all(NULL, data, 1);
+			ft_free_all("Error: can't load textures!\n", data, 1);
 	}
 	data->row = data->map.map_width;
 	data->col = data->map.map_height;

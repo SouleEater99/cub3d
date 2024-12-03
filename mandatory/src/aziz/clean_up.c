@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:48:00 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/29 09:50:54 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:07:16 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	destroy_images(void *mlx_ptr, t_image **images, int images_num)
 	int	i;
 
 	i = -1;
+	if (!images || images_num <= 0)
+		return ;
 	while (++i < images_num)
 	{
 		if (images && images[i])

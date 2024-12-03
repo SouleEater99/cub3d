@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:41:10 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/12/03 12:58:19 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:35:09 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,5 @@ void	validate_texture(t_data *data, char **parts, int *textures_found)
 		(*textures_found)++;
 	}
 	else
-	{
-		free_parse_allocated(data, parts, "Error: Bad textures\n");	
-		// ft_free_all("Error: need some textures\n", data, 1);
-	}
+		free_parse_allocated(data, parts, "Error: Bad textures\n");
 }

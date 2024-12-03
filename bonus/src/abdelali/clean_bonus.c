@@ -6,11 +6,26 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:29:41 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/12/03 16:39:24 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:03:16 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d_bonus.h>
+
+void	destroy_image(void *mlx_ptr, t_image *images, int images_num)
+{
+	int	i;
+
+	i = -1;
+	if (!images || images_num <= 0)
+		return ;
+	while (++i < images_num)
+	{
+		if (images[i].img_ptr)
+			mlx_destroy_image(mlx_ptr, images[i].img_ptr);
+	}
+	free(images);
+}
 
 void	free_all(t_data *data)
 {
@@ -30,16 +45,8 @@ void	free_all(t_data *data)
 	if (data->map.map)
 		free_array(data->map.map);
 	if (data->player.frames)
-	{
-		i = -1;
-		while (++i < data->player.frames_num)
-		{
-			if (data->player.frames[i].img_ptr)
-				mlx_destroy_image(data->mlx_ptr,
-					data->player.frames[i].img_ptr);
-		}
-		free(data->player.frames);
-	}
+		destroy_image(data->mlx_ptr, data->player.frames,
+			data->player.frames_num);
 }
 
 void	ft_free_all(char *msg, t_data *data, int exit_status)
@@ -47,8 +54,6 @@ void	ft_free_all(char *msg, t_data *data, int exit_status)
 	if (data)
 	{
 		free_all(data);
-		// if (data->lines)
-		// 	free_array(&data->lines);
 		if (data->door)
 			free(data->door);
 		if (data->win_ptr)

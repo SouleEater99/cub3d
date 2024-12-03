@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:41:10 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/12/03 12:55:45 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:07:25 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,5 @@ void	validate_texture(t_data *data, char **parts, int *textures_found)
 		(*textures_found)++;
 	}
 	else
-	{
 		free_parse_allocated(data, parts);
-		// ft_free_all("Error: need some textures\n", data, 1);
-	}
 }

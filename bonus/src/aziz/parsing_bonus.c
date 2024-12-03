@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/12/03 16:41:08 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:36:16 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,11 @@ void	init_map(t_data *data, char **lines, int current_line, int height)
 		free_array(lines);
 		ft_free_all("Error: map too big\n", data, 1);
 	}
-		// free_parse_allocated(data, NULL, "map too big\n");
 	else if (data->map.map_height < 2 || data->map.map_width < 3)
 	{
 		free_array(lines);
 		ft_free_all("Error: map too small\n", data, 1);
 	}
-		// free_parse_allocated(data, NULL, "map too small\n");
 }
 
 int	validate_map_cont(t_data *data, char **lines, int height)
@@ -88,8 +86,7 @@ int	validate_map_cont(t_data *data, char **lines, int height)
 /// @return
 int	parse_map(t_data *data, int ac, char **av)
 {
-	int		height;
-	// char	**lines;
+	int	height;
 
 	if (ac != 2)
 	{
