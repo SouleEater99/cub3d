@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 14:45:04 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/12/03 16:00:36 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/12/03 16:27:43 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,39 +64,43 @@ char	*get_buffer_line(int fd, char *buckup)
 // #include <fcntl.h>
 // #include <stdio.h>
 
-# include "libft.h"
+#include "libft.h"
 
-
-char* get_next_line(int fd) {
+char *get_next_line(int fd)
+{
     size_t buffer_size = 128;
-    char* line = malloc(buffer_size);
+    char *line = malloc(buffer_size);
     size_t pos = 0;
     char ch;
     ssize_t bytes_read;
 
-    while ((bytes_read = read(fd, &ch, 1)) > 0) {
-        if (pos >= buffer_size - 1) {
-            buffer_size *= 2;
-            char* temp = realloc(line, buffer_size);
-            if (!temp) {
+    if (fd < 0 || !line)
+        return (NULL);
+
+    while ((bytes_read = read(fd, &ch, 1)) > 0)
+    {
+        if (pos >= buffer_size - 1)
+        {
+            char *temp = realloc(line, buffer_size * 2);
+            if (!temp)
+            {
                 free(line);
-                return NULL;
+                return (NULL);
             }
             line = temp;
+            buffer_size *= 2;
         }
-
         line[pos++] = ch;
-
-        if (ch == '\n') {
+        if (ch == '\n')
             break;
-        }
     }
 
-    if (bytes_read <= 0 && pos == 0) {
+    if (bytes_read <= 0 && pos == 0)
+    {
         free(line);
-        return NULL;
+        return (NULL);
     }
 
     line[pos] = '\0';
-    return line;
+    return (line);
 }

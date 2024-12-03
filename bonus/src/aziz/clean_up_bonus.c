@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:48:00 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/12/03 12:56:17 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:39:59 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	free_array(char **arr)
 	while (arr && arr[++i])
 		free(arr[i]);
 	free(arr);
+	// *arr = NULL;
 }
 
 void	free_parse_allocated(t_data *data, char **parts, char *message)
@@ -45,9 +46,15 @@ void	free_parse_allocated(t_data *data, char **parts, char *message)
 		free_array(data->lines);
 		data->lines = NULL;
 	}
-	free(data->trimmed);
-	free_array(parts);
-	free_array(data->map_lines);
+	if (parts)
+		free_array(parts);
+	if (data)
+	{
+		if (data->trimmed)
+			free(data->trimmed);
+		if (data->map_lines)
+			free_array(data->map_lines);
+	}
 	ft_free_all(message, data, 1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:29:41 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/12/03 12:54:18 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:39:24 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	ft_free_all(char *msg, t_data *data, int exit_status)
 	if (data)
 	{
 		free_all(data);
+		// if (data->lines)
+		// 	free_array(&data->lines);
 		if (data->door)
 			free(data->door);
 		if (data->win_ptr)
