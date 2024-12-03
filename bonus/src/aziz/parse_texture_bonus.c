@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_texture.c                                    :+:      :+:    :+:   */
+/*   parse_texture_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:41:10 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 11:55:24 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/03 12:58:19 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,13 @@ void	validate_texture(t_data *data, char **parts, int *textures_found)
 	if (texture_pos != -1)
 	{
 		if (!check_extension(parts[1], ".xpm"))
-			free_parse_allocated(data, parts);
+			free_parse_allocated(data, parts, "Error: Bad textures\n");
 		data->textures_path[texture_pos] = ft_strdup(parts[1]);
 		(*textures_found)++;
 	}
 	else
-		ft_free_all("Error: need some textures\n", data, 1);
+	{
+		free_parse_allocated(data, parts, "Error: Bad textures\n");	
+		// ft_free_all("Error: need some textures\n", data, 1);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 12:16:43 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/10/26 14:14:03 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/03 13:01:10 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define BUFFER_SIZE 10
+# define BUFFER_SIZE 1
 
 int		ft_atoi(const char *str);
 void	ft_bzero(void *s, size_t n);

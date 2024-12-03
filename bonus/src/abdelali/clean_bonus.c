@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean.c                                            :+:      :+:    :+:   */
+/*   clean_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 20:29:41 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 20:32:47 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/12/03 12:54:18 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_all(t_data *data)
 	int	i;
 
 	i = -1;
-	while (++i < data->textures_found)
+	while (++i < NUM_TEXTURES)
 	{
 		if (data->textures_path[i])
 			free(data->textures_path[i]);

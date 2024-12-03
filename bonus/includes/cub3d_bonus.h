@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/11/29 09:26:10 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/03 12:56:43 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,8 @@ typedef struct s_data
 
 	double			ystep;
 	double			xstep;
+
+	char			**lines;
 	// int         doors_num;
 }					t_data;
 
@@ -303,12 +305,12 @@ void				validate_color(t_data *data, char **parts,
 int					arr_len(char **array);
 int					ft_isspace(int c);
 void				print_error(char *error_str, char *file, int line);
-void				free_parse_allocated(t_data *data, char **parts);
+// void				free_parse_allocated(t_data *data, char **parts);
 void				clean_up(t_data *data);
 void				ft_panic(int line_num, int col_num, const char *line,
 						void *data);
 void				free_int_array(int **int_array, int arr_len);
-void				free_parse_allocated(t_data *data, char **parts);
+void				free_parse_allocated(t_data *data, char **parts, char *message);
 void				validate_texture(t_data *data, char **parts,
 						int *textures_found);
 char				**get_texture_ptr(t_data *data, char *texture_dir);

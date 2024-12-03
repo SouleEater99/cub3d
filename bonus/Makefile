@@ -6,13 +6,13 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/27 20:23:19 by aelkheta          #+#    #+#              #
-#    Updated: 2024/11/29 09:32:28 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/12/03 12:16:38 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC := cc
 GCCFLAGS := -Wall -Wextra -Werror
-DEBUGFLAGS := -g3  -fsanitize=address
+DEBUGFLAGS := -g3 # -fsanitize=address
 LIBFT := libraries/libft/libft.a
 INCLUDES := -I includes
 MAP ?= maps/map2.cub
