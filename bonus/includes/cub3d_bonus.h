@@ -316,7 +316,8 @@ void				clean_up(t_data *data);
 void				ft_panic(int line_num, int col_num, const char *line,
 						void *data);
 void				free_int_array(int **int_array, int arr_len);
-void				free_parse_allocated(t_data *data, char **parts, char *message);
+void				free_parse_allocated(t_data *data, char **parts,
+						char *message);
 void				validate_texture(t_data *data, char **parts,
 						int *textures_found);
 char				**get_texture_ptr(t_data *data, char *texture_dir);
