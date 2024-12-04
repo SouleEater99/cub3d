@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:40:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/12/03 18:29:43 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:14:44 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	validate_color(t_data *data, char **parts, int *current_line,
 		print_error("Error: bad texture or color arguments!\n", __FILE__,
 			__LINE__);
 		printf(BRED "%d: %s\n" COLOR_RESET, *current_line, data->trimmed);
-		free_parse_allocated(data, parts);
+		free_parse_allocated(data, parts, NULL);
 	}
 	if (color_ptr)
 	{
@@ -104,7 +104,7 @@ void	validate_color(t_data *data, char **parts, int *current_line,
 		{
 			print_error("Error: bad color!\n", __FILE__, __LINE__);
 			printf(BRED "%d: %s\n" COLOR_RESET, *current_line, data->trimmed);
-			free_parse_allocated(data, parts);
+			free_parse_allocated(data, parts, NULL);
 		}
 		(*colors_found)++;
 	}

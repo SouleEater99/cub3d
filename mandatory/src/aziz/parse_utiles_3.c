@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:13:42 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/12/03 18:30:44 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:15:42 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	check_args_num(t_data *data, char **parts, int *current_line)
 		print_error("Error: bad texture or color arguments!\n", __FILE__,
 			__LINE__);
 		printf(BRED "%d: %s\n" COLOR_RESET, *current_line, data->trimmed);
-		free_parse_allocated(data, parts);
+		free_parse_allocated(data, parts, NULL);
 	}
 }
 

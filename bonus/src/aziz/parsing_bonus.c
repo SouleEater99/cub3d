@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 09:57:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/12/03 18:20:00 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:19:38 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,12 @@ int	validate_map_cont(t_data *data, char **lines, int height)
 int	parse_map(t_data *data, int ac, char **av)
 {
 	int		height;
-	// char	**lines;
 
 	if (ac != 2)
 	{
 		print_error("Error: bad arguments!\n", __FILE__, __LINE__);
 		printf("Usage: ./cub3d <map_path>\n");
-		return (0);
+		return (1);
 	}
 	ft_memset(&data->map, 0, sizeof(t_map));
 	if (!check_extension(av[1], ".cub"))

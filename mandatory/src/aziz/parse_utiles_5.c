@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utiles_5.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heisenberg <heisenberg@student.42.fr>      +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 18:22:17 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/11/28 19:42:53 by heisenberg       ###   ########.fr       */
+/*   Updated: 2024/12/04 14:08:40 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int	validate_map_borders(t_data *data, char **map, int height)
 	{
 		print_error("Error: map is not surrounded by walls!\n", __FILE__,
 			__LINE__);
+		free_int_array(visited, data->map.map_height);
 		ft_free_all(NULL, data, 1);
 	}
 	free_int_array(visited, data->map.map_height);
