@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/12/03 16:39:12 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:34:42 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,12 @@
 # define GREEN 0x0000FF00
 # define CEILING 0x00E11E1E
 # define FLOOR 0x00DC6400
+
+# define NO 0
+# define SO 1
+# define WE 2
+# define EA 3
+# define DR 4
 
 # ifndef PI
 #  define PI 3.14159265358979323846

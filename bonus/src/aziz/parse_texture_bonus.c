@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 11:41:10 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/12/03 17:35:09 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:34:36 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 int	get_texture_pos(char *texture_dir)
 {
 	if (!ft_strcmp("NO", texture_dir))
-		return (0);
+		return (NO);
 	else if (!ft_strcmp("SO", texture_dir))
-		return (1);
+		return (SO);
 	else if (!ft_strcmp("WE", texture_dir))
-		return (2);
+		return (WE);
 	else if (!ft_strcmp("EA", texture_dir))
-		return (3);
+		return (EA);
 	else if (!ft_strcmp("DR", texture_dir))
-		return (4);
+		return (DR);
 	return (-1);
 }
 

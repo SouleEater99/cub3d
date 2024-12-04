@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/12/04 14:14:28 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:36:21 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@
 # ifndef PI
 #  define PI 3.14159265358979323846
 # endif
+
+# define NO 0
+# define SO 1
+# define WE 2
+# define EA 3
 
 # define BRED "\e[1;31m"
 # define BGRN "\e[1;32m"

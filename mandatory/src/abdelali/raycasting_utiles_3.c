@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 22:00:27 by heisenberg        #+#    #+#             */
-/*   Updated: 2024/11/29 10:24:12 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:36:37 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,17 @@ void	ft_write_wall(t_data *data, int i)
 void	get_the_right_color(t_data *data, int texture_offset_x,
 		int texture_offset_y)
 {
-	if (data->map.map[(int)data->wall_hit_y / CUBE_TILE][(int)data->wall_hit_x
-		/ CUBE_TILE] == 'D')
-		data->color = ft_get_color(data->textures[4], texture_offset_x,
-				texture_offset_y);
-	else if (data->is_hit_virt && data->is_face_right)
-		data->color = ft_get_color(data->textures[0], texture_offset_x,
-				texture_offset_y);
-	else if (data->is_hit_virt && !data->is_face_right)
-		data->color = ft_get_color(data->textures[1], texture_offset_x,
+	if (!data->is_hit_virt && !data->is_face_down)
+		data->color = ft_get_color(data->textures[NO], texture_offset_x,
 				texture_offset_y);
 	else if (!data->is_hit_virt && data->is_face_down)
-		data->color = ft_get_color(data->textures[2], texture_offset_x,
+		data->color = ft_get_color(data->textures[SO], texture_offset_x,
 				texture_offset_y);
-	else if (!data->is_hit_virt && !data->is_face_down)
-		data->color = ft_get_color(data->textures[3], texture_offset_x,
+	else if (data->is_hit_virt && !data->is_face_right)
+		data->color = ft_get_color(data->textures[WE], texture_offset_x,
+				texture_offset_y);
+	else if (data->is_hit_virt && data->is_face_right)
+		data->color = ft_get_color(data->textures[EA], texture_offset_x,
 				texture_offset_y);
 }
 
