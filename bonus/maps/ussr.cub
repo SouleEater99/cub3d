@@ -1,8 +1,8 @@
-NO ./textures/art/1.xpm
-SO ./textures/art/2.xpm
-WE ./textures/art/3.xpm
-EA ./textures/art/4.xpm
-DR ./textures/art/5.xpm
+NO ./textures/ussr_community/1.xpm
+SO ./textures/ussr_community/2.xpm
+WE ./textures/ussr_community/3.xpm
+EA ./textures/ussr_community/4.xpm
+DR ./textures/ussr_community/5.xpm
 
 F 180,64,100
 C 2,130,255

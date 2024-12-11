@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 04:00:30 by ael-maim          #+#    #+#             */
-/*   Updated: 2024/12/04 14:34:42 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:48:58 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@
 # define FRAME_DELAY 5
 
 # define ROT_SPEED 0.02
-# define MOVE_SPEED 10
+# define MOVE_SPEED 5
 
 typedef struct s_minimap
 {
