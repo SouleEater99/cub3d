@@ -7,6 +7,7 @@
 ![Success Rate](https://img.shields.io/badge/Success_Rate-66%25-brightgreen)  
 
 ## 🚀 Features  
+
 - **Ray-casting Engine**:  
   - 3D projection from 2D maps  
   - Wall collision detection  
@@ -23,6 +24,7 @@
   - Color configuration  
 
 ## 📊 Project Stats  
+
 - **Team Size**: 2 developers  
 - **Development Time**: ~280 hours  
 - **Success Rate**: 66.7% (832 completions)  
@@ -32,11 +34,13 @@
   - Edge case handling (1.4% leak rate)  
 
 ## 🛠️ Installation  
+
 ```bash  
 git clone https://github.com/<your-username>/cub3D.git  
 cd cub3D  
 make  
 ```
+
 Requires MiniLibX (included)
 
 ## 🎮 Usage
@@ -44,11 +48,25 @@ Requires MiniLibX (included)
 ```bash
 ./cub3D maps/example.cub  
 ```
+
 Gameplay Demo ← Add gameplay screenshot/GIF
+
+## 🎮 Gameplay  
+
+### Screenshot  
+
+![Maze View](./gallery/img_1c.pnggallery/)  
+![Maze View](./gallery/img_2.pnggallery/)  
+![Maze View](./gallery/img_3.pnggallery/)  
+
+### Demo (GIF)  
+
+![Gameplay Demo](./gallery/video.mp4)  
 
 ## 📚 Technical Deep Dive
 
-* **Ray-casting Math:**
+- **Ray-casting Math:**
+
 ```c
 void cast_rays(t_game *game) {  
   // Ray direction calculation  
@@ -56,13 +74,15 @@ void cast_rays(t_game *game) {
   // Texture coordinate mapping  
 }
 ```
+
 **Performance:** 60 FPS target
 
 **Memory:** Zero leaks enforced
 
 ## 🌟 Learning Outcomes
-* **Graphics Programming:** Learned low-level rendering techniques
 
-* **Team Collaboration:** Git workflow and task division
+- **Graphics Programming:** Learned low-level rendering techniques
 
-* **Optimization:** Balanced accuracy vs performance
+- **Team Collaboration:** Git workflow and task division
+
+- **Optimization:** Balanced accuracy vs performance
