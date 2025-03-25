@@ -55,13 +55,13 @@ Gameplay Demo ← Add gameplay screenshot/GIF
 
 ### Screenshot  
 
-![Maze View](./gallery/img_1c.pnggallery/)  
-![Maze View](./gallery/img_2.pnggallery/)  
-![Maze View](./gallery/img_3.pnggallery/)  
+![Maze View](./gallery/img_1c.png)  
+![Maze View](./gallery/img_2.png)  
+![Maze View](./gallery/img_3.png/)  
 
 ### Demo (GIF)  
 
-![Gameplay Demo](./gallery/video.mp4)  
+![Gameplay Demo](./gallery/video.gif)  
 
 ## 📚 Technical Deep Dive
 
