@@ -85,10 +85,10 @@
 # define SCROLL_DOWN 5
 
 # define MOUSE_SENSITIVITY 0.01
-# define FRAME_DELAY 5
+# define FRAME_DELAY 2
 
-# define ROT_SPEED 0.02
-# define MOVE_SPEED 5
+# define ROT_SPEED 0.05
+# define MOVE_SPEED 12
 
 typedef struct s_minimap
 {
